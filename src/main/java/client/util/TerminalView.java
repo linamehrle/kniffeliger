@@ -5,15 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class TerminalView {
-    private BufferedReader reader;
 
     /**
      * Constructor of the TerminalView class.
      */
     public TerminalView() {
-        // init
-        reader =  new BufferedReader(new InputStreamReader(System.in));
-
         // print welcome message
         String welcomeText = "==============================================================\n" +
                              "===                     Kniffeliger                        ===\n" +
@@ -36,11 +32,20 @@ public class TerminalView {
      * @return message entered by user
      */
     public String writePrompt(String text) {
+        // create reader
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
         printText(text);
 
         try {
             // read and return input
-            return reader.readLine();
+            String input = reader.readLine();
+
+            //TODO: create a BufferedReader as attribute to the class and then close on quit somewhere
+            reader.close();
+
+            // return input
+            return input;
         } catch (IOException e) {
             printText("An error occurred.");
             throw new RuntimeException(e);

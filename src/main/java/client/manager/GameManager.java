@@ -6,9 +6,7 @@ public class GameManager {
     // Manager
     private NetworkManager networkManager;
     private TerminalView terminalView;
-
-    // marks the current "scene", for now 0: MainMenu, 1: IN_GAME
-    private int currentScene;
+    private GameLogicManager logicManager;
 
     /**
      * Constructor of GameManager.
@@ -17,9 +15,7 @@ public class GameManager {
         // create manager
         networkManager = new NetworkManager();
         terminalView = new TerminalView();
-
-        // init
-        currentScene = 0;
+        logicManager = new GameLogicManager();
 
         // start game
         this.start();
@@ -29,7 +25,7 @@ public class GameManager {
      * This function starts the game.
      */
     private void start() {
-        // ask if a game should be started
+        // TODO: start game over logicManager
     }
 
 
