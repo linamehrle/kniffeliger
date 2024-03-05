@@ -12,7 +12,7 @@ Dominique: Networking
 
 NAME OF THE GAME:
 Then we talked about the name. We all agreed to the name: Kniffliger (it is funny because the original game is
-called kniffel).
+called Kniffel).
 
 PRESENTATION:
 Lina started already with a great presentation which we went through and talked about.
@@ -38,3 +38,18 @@ PLAN OF THE PROJECTS:
 - Gradle: (next week after we had the exercise lesson about Gradle)
 - Project Management and Documentation: Anisja
 - Police Officer: Riccardo
+
+########################################################################################################################
+
+TUE, 5.3.24 (Anisja)
+
+Dear Diary
+
+After our team meeting I went around and asks for advice of people who coded their own game in the past. Here are the
+tips and tricks:
+
+- Basic structures should be accessible to all classes. Nico: "If you write a method think about weather other people
+  need to use this method in other parts of the project and write a general version of it (so they can use it)."
+- Networking: commands as enums (or ask tutors how they want this)
+
+########################################################################################################################
