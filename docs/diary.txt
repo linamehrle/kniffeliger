@@ -1,0 +1,40 @@
+TUE, 5.3.24 (Team Meeting)
+
+Dear Diary
+Today we had our first team meeting - how exciting!
+First we assigned the tasks of milestone 1. You can see the assignments below:
+
+MILESTON 1 ASSIGNMENTS:
+Lina: About a Game + (advanced), Requirement of the Game, Process, Requirements
+Riccardo: Ahead of Schedule and Under Budget
+Anisja: Ahead of Schedule and Under Budget, Dear Diary, Mockup, Who?/What?/When? + (advanced)
+Dominique: Networking
+
+NAME OF THE GAME:
+Then we talked about the name. We all agreed to the name: Kniffliger (it is funny because the original game is
+called kniffel).
+
+PRESENTATION:
+Lina started already with a great presentation which we went through and talked about.
+
+RULES OF THE GAME:
+Then we talked about all the rules of our game, which is an extension of kniffel/yatzy. We brainstormed about how
+we can improve the existing game
+- Changing probabilities when a specific sum is rolled with the dices.
+- 4 players at most.
+- When a player rolls the dices and the sum of the dice is divisible by 5, then the player can roll a dice for an action:
+    - Shifting entries (the entry sheets go around).
+    - Steal the entries of other players. This entry gets crossed by the person you steal from.
+    - Freeze entries of other players.
+    - Switch entries.
+    - Block a person from rolling the dices. This person needs to cross an entry.
+    - action 6.
+
+PLAN OF THE PROJECTS:
+- Networking: Dominique, Lina
+- Game Logic: Riccardo, Anisja
+- Testing: Riccardo, Anisja (Unit-Tests)
+- GUI: Lina, Dominique
+- Gradle: (next week after we had the exercise lesson about Gradle)
+- Project Management and Documentation: Anisja
+- Police Officer: Riccardo
