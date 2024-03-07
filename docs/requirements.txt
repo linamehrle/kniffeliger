@@ -1,0 +1,69 @@
+This document details the requirements for the game "Kniffeliger".
+
+- The game is based on client/server architecture.
+- The server:
+    - [...]
+- The client:
+    - can suggest a name for a player based on the system username
+    - [...]
+
+- there is a broadcast to all players across all lobbies and games
+ [other backend stuff, maybe?]
+
+ - when opening the game, the player can choose to enter a lobby (if one exists already) or create a new lobby
+ - all existing lobbies and ongoing games are listed, the player can not enter an ongoing game
+ - with each lobby, a list with player that are in the lobby is shown
+ - the player can choose a name, the name has to be unique and is automatically changed if it is not
+ - up to four players can enter one lobby
+ - one player can start the game if at least two players are in the lobby
+ - only one player can play at the same time
+ - to play, a player can roll up to five dice up to three times:
+    - in the first round, the player rolls all five dice
+    - the player can then choose to keep up to five of the dice and re-roll the rest
+    - the process can be repeated one more time
+- after at most three rolls, the player can choose a combination for which the dice are counted as points, combinations include:
+    - dice with the same number, here the sum of the chosen dice is counted
+    - three of a kind or four of a kind, again the sum is counted
+    - full house, 25 points
+    - small straight (four sequential dice), 30 points
+    - large straight (five sequential dice), 40 points
+    - kniffeliger (five dice with the same number), 50 points
+    - chance, every combination can count, the points is the sum of the dice
+- every combination can only be filled once
+- if the player can not or does not want to fill a combination, they have to cross out one of the left over combinations
+- if at the end the sum of the dice is a multiple of five, the player can roll one die one additional time to get:
+    - steal an entry: the player can steal an entry of another player instead of rolling the dice, the other player then
+    gets zero points for this combination
+    - freeze a combination: the player can freeze one combination of another player, the other player can not fill this
+    field in the next round
+    - cross out one combination: the player can cross out one combination of another player, the other player can not fill
+    this combination at any later point and is skipped the following turn
+    - shift all combination sheets: the player can shift the collected points/ combination of all players in a circle by one
+    - exchange two combination sheets: the player can exchange their collected points/ combinations with another player
+    - [no idea?, maybe the player can choose one of the other things? or all of the above?]
+- those bonuses can be collected and used whenever it is the players turn
+- the game ends when all combinations are filled
+- the player with the most points wins
+- there is a high-score list
+
+[how do we implement the changing of the prob.??]
+
+The GUI offers:
+- a window in which the lobby is created/chosen
+- a game window
+- a button which opens a game tutorial/ list of the rules
+- a button to roll the dice
+- five dice to show the rolled numbers
+- five fields to select the dice that are not rolled the next time
+- a counter that shows how many rolls are left
+- up to four lists that show the combinations and acquired points for each player
+- a list with the collected bonus actions for each player, the player can use an action by clicking on it
+- a chat in which the player can send a message to all other players or to only one other player
+- a button to leave the game
+- a winning animation after the game is finished which shows the name of the winner and the amount of points
+- there is a button to open the high score list [as a pop-up??]
+
+For a mockup, see [insert here].
+
+
+
