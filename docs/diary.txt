@@ -53,3 +53,15 @@ tips and tricks:
 - Networking: commands as enums (or ask tutors how they want this)
 
 ########################################################################################################################
+
+THU, 7.3.24 (Anisja)
+
+Dear Diary
+
+Today Riccardo and I had a mini-meeting. We talked about the plan for the game logic. We agreed on a basic logic and
+some basic features we can already start coding. So we can start now!
+
+########################################################################################################################
+
+
+
