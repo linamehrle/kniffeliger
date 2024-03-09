@@ -2,10 +2,36 @@ This document details the requirements for the game "Kniffeliger".
 
 - The game is based on client/server architecture.
 - The server:
-    - [...]
+    - keeps track of the state of the game
+      - every player has an identifier (username -> #)
+      - every field on the playing card has a unique identifier
+      - if dice are rolled in client, request is send to server to generate a random number for each dice
+      - the server compares the numbers with the fields and determines which number can entered into which field according to the rules of the game
+      - the server sends this information to the client
+    - has a procedure to end the game (also prematurely), including determining the winner according to the rules of the game
+    - incorporates the game logic
+      - number of dice, number of dice rolls per round
+      - which numbers can be entered into which fields
+      - distribution of points
+      - special events
+    
+
 - The client:
     - can suggest a name for a player based on the system username
-    - [...]
+    - displays the state of the game (values of fields, number of rounds, active player)
+    - inititates the roll of the dice (button or animated dice)
+    - handles the assignment of dice numbers to fields (e.g. pulling the dice to the field)
+    - highlights the admissible fields (according to the rules of the game) upon receiving this information from the server
+    - offers an option to end the game prematurely
+
+
+- Examples for client-server communication
+      - client sends: roll dice <number> # roll of dice number specifies which dice rolled (only important if one dice is saved)
+      - server answers: <number of dice> <value> # random number for each dice in the game
+      - client sends: <value> to <field> # assignment of dice value to some field <value>=0 corresponds to erasing field, <field> has format <Int row, Int column>
+      - ...
+      - client sends: player <number> ends turn # signals end of turn, upon which server stores values and makes the filled fields immutable 
+      - server sends: active player <number> # signals that player x is now active player
 
 - there is a broadcast to all players across all lobbies and games
  [other backend stuff, maybe?]
