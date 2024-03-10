@@ -39,6 +39,8 @@ PLAN OF THE PROJECTS:
 - Project Management and Documentation: Anisja
 - Police Officer: Riccardo
 
+Until next time!
+
 ########################################################################################################################
 
 TUE, 5.3.24 (Anisja)
@@ -52,6 +54,8 @@ tips and tricks:
   need to use this method in other parts of the project and write a general version of it (so they can use it)."
 - Networking: commands as enums (or ask tutors how they want this)
 
+Until next time!
+
 ########################################################################################################################
 
 THU, 7.3.24 (Anisja)
@@ -61,7 +65,18 @@ Dear Diary
 Today Riccardo and I had a mini-meeting. We talked about the plan for the game logic. We agreed on a basic logic and
 some basic features we can already start coding. So we can start now!
 
+Until next time!
+
 ########################################################################################################################
 
+SUN, 10.3.24 (Anisja)
 
+Dear Diary
 
+Today I finished the first version of out gantt project plan. I do not know, if it is like the tutors would like it, but
+I tried my best. I also finished the comics of out group and of the server-client architecture for out presentation.
+Maybe I can start coding a little today.
+
+Until next time!
+
+########################################################################################################################
