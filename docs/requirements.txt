@@ -6,7 +6,8 @@ This document details the requirements for the game "Kniffeliger".
       - every player has an identifier (username -> #)
       - every field on the playing card has a unique identifier
       - if dice are rolled in client, request is send to server to generate a random number for each dice
-      - the server compares the numbers with the fields and determines which number can entered into which field according to the rules of the game
+      - the server compares the numbers with the fields and determines which number can be entered into which field
+       according to the rules of the game
       - the server sends this information to the client
     - has a procedure to end the game (also prematurely), including determining the winner according to the rules of the game
     - incorporates the game logic
@@ -19,7 +20,7 @@ This document details the requirements for the game "Kniffeliger".
 - The client:
     - can suggest a name for a player based on the system username
     - displays the state of the game (values of fields, number of rounds, active player)
-    - inititates the roll of the dice (button or animated dice)
+    - initiates the roll of the dice (button or animated dice)
     - handles the assignment of dice numbers to fields (e.g. pulling the dice to the field)
     - highlights the admissible fields (according to the rules of the game) upon receiving this information from the server
     - offers an option to end the game prematurely
@@ -34,7 +35,6 @@ This document details the requirements for the game "Kniffeliger".
       - server sends: active player <number> # signals that player x is now active player
 
 - there is a broadcast to all players across all lobbies and games
- [other backend stuff, maybe?]
 
  - when opening the game, the player can choose to enter a lobby (if one exists already) or create a new lobby
  - all existing lobbies and ongoing games are listed, the player can not enter an ongoing game
@@ -50,7 +50,7 @@ This document details the requirements for the game "Kniffeliger".
 - after at most three rolls, the player can choose a combination for which the dice are counted as points, combinations include:
     - dice with the same number, here the sum of the chosen dice is counted
     - three of a kind or four of a kind, again the sum is counted
-    - full house, 25 points
+    - full house (three of a kind and a pair), 25 points
     - small straight (four sequential dice), 30 points
     - large straight (five sequential dice), 40 points
     - kniffeliger (five dice with the same number), 50 points
@@ -66,13 +66,11 @@ This document details the requirements for the game "Kniffeliger".
     this combination at any later point and is skipped the following turn
     - shift all combination sheets: the player can shift the collected points/ combination of all players in a circle by one
     - exchange two combination sheets: the player can exchange their collected points/ combinations with another player
-    - [no idea?, maybe the player can choose one of the other things? or all of the above?]
+    - the player gets one of each of the above
 - those bonuses can be collected and used whenever it is the players turn
 - the game ends when all combinations are filled
 - the player with the most points wins
 - there is a high-score list
-
-[how do we implement the changing of the prob.??]
 
 The GUI offers:
 - a window in which the lobby is created/chosen
@@ -87,9 +85,9 @@ The GUI offers:
 - a chat in which the player can send a message to all other players or to only one other player
 - a button to leave the game
 - a winning animation after the game is finished which shows the name of the winner and the amount of points
-- there is a button to open the high score list [as a pop-up??]
+- there is a button to open the high score list
 
-For a mockup, see [insert here].
+For a mockup, see MockUp.jpeg.
 
 
 
