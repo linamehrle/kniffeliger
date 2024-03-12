@@ -22,7 +22,8 @@ Then we talked about all the rules of our game, which is an extension of kniffel
 we can improve the existing game
 - Changing probabilities when a specific sum is rolled with the dices.
 - 4 players at most.
-- When a player rolls the dices and the sum of the dice is divisible by 5, then the player can roll a dice for an action:
+- When a player rolls the dices and the sum of the dice is divisible by 5, then the player can roll a dices for an
+  action:
     - Shifting entries (the entry sheets go around).
     - Steal the entries of other players. This entry gets crossed by the person you steal from.
     - Freeze entries of other players.
@@ -78,5 +79,54 @@ I tried my best. I also finished the comics of out group and of the server-clien
 Maybe I can start coding a little today.
 
 Until next time!
+
+########################################################################################################################
+
+TUE, 12.3.24 (tutoring lesson, Lina/Riccardo/Anisja)
+
+Dear Diary
+
+Today we had the tutoring lesson and learnt a few new things. I write it down for you, so we do not forget this and also
+you have the important information too:
+
+- If we use libraries it is important to check first if it is supported by gradle (mavencentral).
+- check the presentation which is on java.
+- use hamachi for client server or in Spiegelgasse 1 (SSID: DMI PROGRAMMING
+  passphrase: StudyingIT@unibas=reallyGreat2019)
+- To avoid bugs: review codes (inspect function in intelliJ), unit-tests, GUI tests by hand, coding conventions (google
+  coding conventions, check style) no manually wildcard imports: imports with *, one class per file, first all variables
+  then all methods, camelCase for variables, never ignore exceptions: catch them, Housekeeping: test before committing
+  and check everything weekly
+- Javadoc: try to make it short ind informative
+
+Hope this helps us to rock this project even more!
+
+Until next time!
+
+########################################################################################################################
+
+TUE, 12.3.24 (mini team meeting, Lina/Anisja)
+
+Dear Diary
+
+Lina and I talked about the game requirements and decided that we change things a little. Here are the new game rules:
+
+- The change of probability of the dices got kicked out.
+- 4 players at most.
+- When a player rolls the dices and the sum of the dice is divisible by 5, then the player can roll a dices for an
+  action:
+    - Shifting entries (the entry sheets go around).
+    - Steal the entries of other players. This entry gets crossed by the person you steal from.
+    - Freeze entries of other players.
+    - Switch entry sheets.
+    - Block a person from rolling the dices. This person needs to cross an entry.
+    - Jackpot: the person gets all actions above.
+
+What is left to do:
+1. Finish the presentation (Lina)
+2. Write the concept: About a Game (Anisja)
+3. Review Gantt plan (Lina)
+4. Write meaningful Code (Lina/Riccardo/Anisja)
+5. Finish drawings (Anisja)
 
 ########################################################################################################################
