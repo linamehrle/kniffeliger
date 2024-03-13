@@ -5,24 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class TerminalView {
-
-    /**
-     * Constructor of the TerminalView class.
-     */
-    public TerminalView() {
-        // print welcome message
-        String welcomeText = "==============================================================\n" +
-                             "===                     Kniffeliger                        ===\n" +
-                             "==============================================================\n" +
-                             "Welcome to Kniffeliger TestDemo.";
-        printText(welcomeText);
-    }
-
     /**
      * This function prints the given text in a new line to the console.
      * @param text the given text which will be printed to the console
      */
-    public void printText(String text) {
+    public static void printText(String text) {
         System.out.println(text);
     }
 
@@ -31,7 +18,7 @@ public class TerminalView {
      * @param text the given text which will be printed to the console
      * @return message entered by user
      */
-    public String writePrompt(String text) {
+    public static String writePrompt(String text) {
         // create reader
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
