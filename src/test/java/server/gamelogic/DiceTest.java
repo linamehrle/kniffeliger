@@ -21,19 +21,19 @@ class DiceTest {
         dice3.rollDice();
         dice3.rollDice();
 
-        assertAll(() -> assertTrue(dice1.rollDice()),
-                () -> assertTrue(dice2.rollDice()),
-                () -> assertFalse(dice3.rollDice()),
-                () -> assertFalse(dice1.getRolledStatus()),
+        assertAll(() -> assertFalse(dice1.getRolledStatus()),
                 () -> assertTrue(dice2.getRolledStatus()),
                 () -> assertTrue(dice3.getRolledStatus()),
                 () -> assertEquals(0, dice1.getNumberOfRolls()),
                 () -> assertEquals(1, dice2.getNumberOfRolls()),
                 () -> assertEquals(3, dice3.getNumberOfRolls()),
+                () -> assertTrue(dice1.rollDice()),
+                () -> assertTrue(dice2.rollDice()),
+                () -> assertFalse(dice3.rollDice()),
                 () -> assertFalse(dice1.getSavingStatus()),
                 () -> assertFalse(dice2.getSavingStatus()),
                 () -> assertTrue(dice3.getSavingStatus()),
-                () -> assertEquals(0, dice1.getDiceValue()),
+                () -> assertTrue(dice1.getDiceValue() <= 6 && dice1.getDiceValue() >= 1),
                 () -> assertTrue(dice2.getDiceValue() <= 6 && dice2.getDiceValue() >= 1),
                 () -> assertTrue(dice3.getDiceValue() <= 6 && dice3.getDiceValue() >= 1)
                 );
@@ -60,7 +60,7 @@ class DiceTest {
         dice.rollDice();
         dice.resetDice();
 
-        assertAll(() -> assertTrue(dice.getRolledStatus()),
+        assertAll(() -> assertFalse(dice.getRolledStatus()),
                 () -> assertFalse(dice.getSavingStatus()),
                 () -> assertEquals(0, dice.getNumberOfRolls()),
                 () -> assertEquals(0, dice.getDiceValue()),
