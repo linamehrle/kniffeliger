@@ -2,10 +2,11 @@ package server.gamelogic;
 
 public class Dice {
 
-    private int diceValue;
-    private int numberOfRolls;
     private boolean rolledStatus;
     private boolean savingStatus;
+    private int numberOfRolls;
+    private int diceValue;
+
 
 
     /**
@@ -14,6 +15,13 @@ public class Dice {
      */
     public Dice (){
         resetDice();
+    }
+
+    /**
+     * Returns number of rolls.
+     */
+    public int getNumberOfRolls(){
+        return numberOfRolls;
     }
 
     /**
@@ -39,16 +47,28 @@ public class Dice {
 
     /**
      * Rolls the dice if it has not been saved yet and if the dice has been rolled less than 3 times.
-     * Will change the value of the dice to a random value between 1 and 6 includinc both.
+     * Will change the value of the dice to a random value between 1 and 6 including both.
      * It also increases the number of rolls by one (numberOfRolls++) and sets the variable rolledStatus to true, since the
-     * dice has been rolled after calling this method.
+     * dice has been rolled after calling this method. If the dice has been rolled three times, it gets saved automatically.
+     * Method returns true if dice could be rolled and false, if it could not be rolled (so if dice has already been saved or if
+     * dice has been rolled 3 times already).
      */
-    public void rollDice(){
+    //TODO: Tutor fragen, ob hier try-catch Sinn ergibt
+    //TODO: Tutor fragen, ob es hier sinn ergibt true/false zurückzugeben (unter anderem für das unit testing)
+    public boolean rollDice(){
+        boolean couldRoll = false;
         if (!(savingStatus) && numberOfRolls < 3) {
+            // adjusts variables after dice was rolled
             rolledStatus = true;
             numberOfRolls = numberOfRolls + 1;
             diceValue = (int)Math.floor(Math.random() * 6 + 1);
+            // if dice has been rolled three times it gets saved automatically
+            if(numberOfRolls == 3){
+                saveDice();
+            }
+            couldRoll = true;
         }
+        return couldRoll;
     }
 
     /**
