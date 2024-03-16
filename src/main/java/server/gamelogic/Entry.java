@@ -33,48 +33,49 @@ public class Entry {
     }
 
     /**
-     * Checks rolled dices for 3 or 4 or 5 dices of value 'value' (if 5 dice then it is a "kinffeliger"/Yahtzee). If the rolled dices have exactly x
-     * dices of value 'value' then the sum of those get returned, so: x*value. (Dreier-/Viererpasch/Kniffeliger)
+     * Checks for 3 of a kind by sorting the array first and then checking where the three of a kind are,
+     * because there are only three options after sorting: {t, t, t, x, y}, {x, t, t, t, y}, {x, y, t, t, t}
      * @param rolledDices are the dices that have been rolled and saved
-     * @param value method dices for this value (for example checks how many 6 it has, so value = 6)
-     * @param x shows it is 3, 4 or 5 of a kind (5 of a kind = Kniffeliger/Yahtzee)
-     * @return the sum of dices or, if it is a Kniffeliger/Yahtzee, it returns 50
-     * @throws Exception if there are less than 5 dices saved
-     * @throws Exception if the value we need to compare the dices value with is not between 1 and 6
-     * @throws Exception if it is not 3, 4 or 5 of a kind
+     * @return returns value of three same dices
      */
-    public int xOfAKind(int[] rolledDices, int value, int x) throws Exception {
+    public int threeOfAKind(int[] rolledDices) throws Exception {
         // checks if there are 5 rolled dices
         if(!(rolledDices.length == 5)){
             throw new Exception("There are 5 dices but you handed me more or less.");
         }
-        // checks if we inserted a valid value for dice
-        if(!(value >=1 && value <= 6)){
-            throw new Exception("A dice can only have values 1 to 6.");
-        }
-        //checks if we have valid value for x, which would be 3 and 4 since there is only
-        // 3 of a kind and 4 of a kind (Dreierpasch und Viererpasch)
-        if(!(x == 3 || x == 4 || x == 5)){
-            throw new Exception("There only exists '3 of a kind' and '4 of a kind' or ah Kniffeliger/Yathzee (5 of a kind).");
-        }
 
-
+        // sorts rolled dices first
+        Arrays.sort(rolledDices);
         int sum = 0;
-        int counter = 0;
-        for (int d : rolledDices){
-            if(d == value && counter < x){
-                counter = counter + 1;
-            }
+        if(rolledDices[0] == rolledDices[2]){
+            sum = 3 * rolledDices[0];
+        } else if (rolledDices[1] == rolledDices[3]){
+            sum = 3 * rolledDices[1];
+        } else if (rolledDices[2] == rolledDices[4]){
+            sum = 3 * rolledDices[4];
         }
-        // returns sum of dice except if x == 5, then we have a Kniffeliger/Yahtzee
-        if(counter == x){
-            if (counter != 5){
-                sum = x * value;
-            } else {
-                // if x = 5 and we count 5 of the same values we have a Kniffeliger/Yahtzee, so we get 50 points
-                sum = 50;
-            }
+        return sum;
+    }
 
+    /**
+     * Checks for 4 of a kind by sorting the array first and then checking where the four of a kind are,
+     * because there are only two options after sorting: {f, f, f, f, x}, {x, f, f, f, f}
+     * @param rolledDices are the dices that have been rolled and saved
+     * @return returns value of four same dices
+     */
+    public int fourOfAKind(int[] rolledDices) throws Exception {
+        // checks if there are 5 rolled dices
+        if(!(rolledDices.length == 5)){
+            throw new Exception("There are 5 dices but you handed me more or less.");
+        }
+
+        // sorts rolled dices first
+        Arrays.sort(rolledDices);
+        int sum = 0;
+        if(rolledDices[0] == rolledDices[3]){
+            sum = 4 * rolledDices[0];
+        } else if (rolledDices[1] == rolledDices[4]){
+            sum = 4 * rolledDices[4];
         }
         return sum;
     }
@@ -104,7 +105,6 @@ public class Entry {
         Then in the loop we check if we have at most 1 repetition then we can continue loop as long as we have only one. Also, we check if the next value is the previous vale + 1.
         If so, if continues the loop (else) and if not, it returns 0. If it made it through the loop without return then we have a small straight and return 30.
         */
-
         if ((rolledDices[1] == rolledDices[0] + 1) || (rolledDices[4] == rolledDices[3] + 1)){
             for(int i = 0; i < rolledDices.length; i++){
                 if(rolledDices[i+1] == rolledDices[i] && repetitionCounter < 1){
@@ -180,6 +180,26 @@ public class Entry {
             res = 25;
         }
         return res;
+    }
+
+    /**
+     * Checks for Kniffeliger/Yahtzee (= 5 of a kind) by sorting the array first and then checking if there are five of a kind,
+     * because if there are, the first and the last value are the same: {f, f, f, f, f}
+     * @param rolledDices are the dices that have been rolled and saved
+     * @return returns value of five same dices
+     */
+    public int kniffel(int[] rolledDices) throws Exception {
+        // checks if there are 5 rolled dices
+        if(!(rolledDices.length == 5)){
+            throw new Exception("There are 5 dices but you handed me more or less.");
+        }
+
+        // we do not need to sort rolled dices first because it should be all the same value
+        int sum = 0;
+        if(rolledDices[0] == rolledDices[4]){
+            sum = 5 * rolledDices[0];
+        }
+        return sum;
     }
 
     /**
