@@ -130,3 +130,30 @@ What is left to do:
 5. Finish drawings (Anisja)
 
 ########################################################################################################################
+
+SAT, 16.3.24 (Ansija)
+
+Dear Diary
+
+Sorry I haven't written you since Tuesday. Woah - that is too long. It has been a week full of action: Our MVP Riccardo
+coded the echo server in just one evening (tuesday evening, so he was on fire) - it is probably because we were a little
+late. Also, Lina finished her beautiful presentation with cool zoom effects on wednesday just an hour before the deadline.
+
+We even had our first milestone presentation! Although we had technical problems, it was relatively okay. We were the
+last group of that day so people were tired (we were too) but that also meant we did not have to answer nasty questions
+about our game that we have no answer for. I think they liked the simplicity of the extension and that you can mock
+other players. You need a special kind of humour to like that kind of stuff. Also, I think it was Maria that said it was
+her favourite presentation of that day despite the technical problems that were totally not our fault.
+
+During the break and after the lecture, we also asked Prof Schuldt, Maria and Raphael (I will call him Raphi from now
+on, since we all know him outside of this lecture) if we are allowed to draw their faces on our action dice with silly
+word plays like "Du bist so raphi-niert, dass du einen Eintrag klauen kannst!" and they said yes.
+So there are only 3 more tutors to convince.
+
+Since that day we have only fixed some git problems and I have been continuing coding the game logic. I focussed
+especially on the game itself, even though we need to have the chat first. I wanted to do something fun first.
+But I will start with the login/logout and the chat next week. After all, milestone 2 is in 9 days.
+
+Until next time!
+
+########################################################################################################################
