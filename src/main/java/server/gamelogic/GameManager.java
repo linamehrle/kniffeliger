@@ -2,6 +2,7 @@ package server.gamelogic;
 
 import java.util.Arrays;
 
+
 public class GameManager {
 
     //TODO: GameMangager should read inputs from client (which entry it chose and get an array of dice values) which

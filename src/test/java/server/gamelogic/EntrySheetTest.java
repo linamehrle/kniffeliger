@@ -15,12 +15,12 @@ class EntrySheetTest {
     String[] defaultEntrySheetNames = {"ones", "twos", "threes", "fours", "fives", "sixes", "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight", "largeStraight", "kniffeliger", "chance"};
 
     @Test
-    @DisplayName("Tests if default of entry sheet is correct, so if resetEntrySheet() works and if methods getUsername(), getTotalPoints()")
+    @DisplayName("Tests if default of entry sheet is correct, so if resetEntrySheet() works and if methods getUsername(), getTotalPoints(), deleteEntry(), addEntry() work.")
     void getTest() {
         try {
             entrySheet2.addEntry(new Entry("ones", 1));
         } catch (Exception e){
-            new Exception("Could not find the entry name.");
+            e.getMessage();
         }
         assertAll(() -> assertTrue(Arrays.equals(defaultEntrySheetNames, entrySheet1.getEntryNames())),
                 () -> assertTrue(Arrays.equals(defaultEntrySheetValues, entrySheet1.getEntryValues())),
@@ -37,5 +37,20 @@ class EntrySheetTest {
         assertAll(() -> assertTrue(Arrays.equals(defaultEntrySheetNames, entrySheet2.getEntryNames())),
                 () -> assertEquals(0, entrySheet2.getTotalPoints())
         );
+
+        try {
+            entrySheet2.addEntry(new Entry("twos", 6));
+        } catch (Exception e){
+            e.getMessage();
+        }
+        try {
+            entrySheet2.deleteEntry(new Entry("twos", 6));
+        } catch (Exception e){
+            e.getMessage();
+        }
+        assertAll(() -> assertTrue(Arrays.equals(defaultEntrySheetNames, entrySheet2.getEntryNames())),
+                () -> assertEquals(0, entrySheet2.getTotalPoints())
+        );
+
     }
 }

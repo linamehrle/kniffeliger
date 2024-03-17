@@ -1,7 +1,5 @@
 package server.gamelogic;
 
-import java.util.Arrays;
-
 public class Entry {
 
     private final String name;
@@ -35,7 +33,7 @@ public class Entry {
      *
      * @param newValue new value that entry should have
      */
-    public void setValue(int newValue){
+    public void setValue(int newValue) {
         value = newValue;
     }
 }

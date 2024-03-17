@@ -9,7 +9,6 @@ class EntryTest {
     Entry entry1 = new Entry("ones", 0);
     Entry entry2 = new Entry("twos", 0);
 
-
     @Test
     @DisplayName("Checks if value can be set.")
     void setValueTest(){

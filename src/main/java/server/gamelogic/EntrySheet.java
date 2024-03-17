@@ -48,6 +48,15 @@ public class EntrySheet {
     }
 
     /**
+     * Access total points of entry sheet
+     *
+     * @return all the points of the entry sheet added together
+     */
+    public int getTotalPoints() {
+        return totalPoints;
+    }
+
+    /**
      * Access entry sheet as an array.
      *
      * @return entry sheet array
@@ -80,15 +89,6 @@ public class EntrySheet {
             entryNames[i] = entrySheet[i].getName();
         }
         return entryNames;
-    }
-
-    /**
-     * Access total points of entry sheet
-     *
-     * @return all the points of the entry sheet added together
-     */
-    public int getTotalPoints() {
-        return totalPoints;
     }
 
     /**
