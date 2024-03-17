@@ -157,3 +157,26 @@ But I will start with the login/logout and the chat next week. After all, milest
 Until next time!
 
 ########################################################################################################################
+
+SUN, 17.3.24 (Anisja)
+
+Dear Diary
+
+OMG look at me, writing twice in a row - aren't you proud of me? Anyway, I just wanted to update you that I will be
+seeing Lina tomorrow, and we will talk about the client-server-things and the network-stuff. She also needs to know what
+the client needs to send the server when we see it from a pure game logic perspective. I will think about this tomorrow
+morning. Tonight I finished the unit test for the EntrySheet and I will continue to set up a file with the class
+structure for the game logic, so Riccardo knows what my thoughts were.
+
+Enough about today because I also learnt THREE VERY IMPORTANT THINGS THIS WEEK:
+
+1. Renato is Git-God, so if I have any questions, I can aks him.
+2. IntelliJ has a local history. So if you are as stupid as me and delete the code you worked on all weekend, you can
+   get it restored with the local history (File >> Local History >> Show History...).
+3. There are many many shortcuts you can take in IntelliJ, like when you are in a class you want to build a unit test for
+   you can press CRTL + Shift + t which sets up a file with the class name + "Test" in the right directory. Pretty cool,
+   huh?
+
+Okay that is all for today. Sleep well and until next time!
+
+########################################################################################################################
