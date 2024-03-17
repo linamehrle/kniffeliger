@@ -53,8 +53,6 @@ public class Dice {
      * Method returns true if dice could be rolled and false, if it could not be rolled (so if dice has already been saved or if
      * dice has been rolled 3 times already).
      */
-    //TODO: Tutor fragen, ob hier try-catch Sinn ergibt
-    //TODO: Tutor fragen, ob es hier sinn ergibt true/false zurückzugeben (unter anderem für das unit testing)
     public boolean rollDice(){
         boolean couldRoll = false;
         if (!(savingStatus) && numberOfRolls < 3) {

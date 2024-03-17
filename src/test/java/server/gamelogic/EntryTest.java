@@ -22,7 +22,6 @@ class EntryTest {
     int[] largeStraight1 = {1, 2, 3, 4, 5};
     int[] largeStraight2 = {2, 3, 4, 5, 6};
 
-
     @Test
     @DisplayName("Checks if single value entries work.")
     void singleValueRollsTest(){
@@ -118,5 +117,3 @@ class EntryTest {
         );
     }
 }
-
-
