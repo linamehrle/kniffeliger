@@ -1,15 +1,35 @@
 package server;
 
-import server.networking.NetworkManagerServer;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import server.networking.ClientThread;
 
 public class Server {
-    NetworkManagerServer networkManager;
+
+    private ServerSocket socket;
 
     public static void main(String[] args) {
         new Server(Integer.parseInt(args[0]));
     }
 
     public Server(int port) {
-        networkManager = new NetworkManagerServer(port);
+        try {
+            // establish connection
+            socket = new ServerSocket(port);
+
+            // connection established
+            System.out.println("Waiting for connection on " + port);
+
+            while(true) {
+                // wait for connections and create new thread
+                Socket clientSocket = socket.accept();
+                ClientThread client = new ClientThread(clientSocket);
+                Thread echoClientThread = new Thread(client);
+                echoClientThread.start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

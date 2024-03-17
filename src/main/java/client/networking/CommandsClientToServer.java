@@ -1,4 +1,4 @@
-package client.util.networking;
+package client.networking;
 
 /**
  * contains all commands the client can send to the server

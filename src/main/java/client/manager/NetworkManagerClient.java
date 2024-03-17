@@ -1,57 +1,46 @@
 package client.manager;
 
-import client.util.TerminalView;
-import client.util.networking.ServerReader;
-
+import client.networking.CommandsClientToServer;
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 public class NetworkManagerClient {
-    private Socket socket;
-    private InputStream in;
-    private OutputStream out;
+    private BufferedWriter out;
 
-    private ServerReader serverReader;
+    public NetworkManagerClient(Socket socket) throws IOException {
 
-    public NetworkManagerClient(String hostName, int port) {
-        try {
-            // create server socket
-            socket = new Socket(hostName, port);
+        out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-            // create io streams
-            in = socket.getInputStream();
-            out = socket.getOutputStream();
+    }
 
-            // create input thread
-            ServerReader th = new ServerReader(in);
-            Thread iT = new Thread(th);
-            iT.start();
+    public synchronized void send(CommandsClientToServer cmd, String message) {
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        switch (cmd) {
+
+            case CHNA -> sendToServer("CHNA " + message);
+            default -> System.out.println("unknown command to send from client to server " + message);
+
         }
     }
 
-    public void sendToServer(String msg) {
+    private synchronized void sendToServer(String message) {
         try {
-            out.write(msg.getBytes());
-
-            String end = "\r\n";
-            out.write(end.getBytes());
+            out.write(message);
+            out.newLine();
+            out.flush();
+            System.out.println("Sent a message to server");
         } catch (IOException e) {
-            TerminalView.printText(e.getMessage());
+            e.printStackTrace();
         }
     }
 
     public void close() {
         try {
-            in.close();
             out.close();
-            socket.close();
         } catch (IOException e) {
-            TerminalView.printText(e.getMessage());
+            e.printStackTrace();
         }
     }
 }

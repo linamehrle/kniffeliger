@@ -1,46 +1,47 @@
 package server.networking;
+import server.Player;
 
-import client.util.TerminalView;
-
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ClientThread implements Runnable{
-    private int id;
+
+    private static ArrayList<Player> playerList = new ArrayList<>();
+    private Player player;
     private Socket socket;
 
-    public ClientThread(int id, Socket socket) {
-        this.id = id;
+    private NetworkManagerServer networkManager;
+    private ServerInput serverInput;
+
+    public ClientThread(Socket socket) {
+        this.player = new Player();
+        playerList.add(player);
         this.socket = socket;
     }
 
+    @Override
     public void run() {
+        networkManager = new NetworkManagerServer(socket);
+        serverInput = new ServerInput(socket, this);
+        Thread thread = new Thread(serverInput);
+        thread.start();
+
         // connection
-        String msg = "EchoServer: Connection " + id;
-        TerminalView.printText(msg);
+        String msg = "Connection with " + player.getUsername() + " established.";
+        System.out.println(msg);
 
-        try {
-            // create io streams
-            InputStream in = socket.getInputStream();
-            OutputStream out = socket.getOutputStream();
+        //networkManager.send(CommandsServerToClient.PRNT, "Alfred: " + msg);
 
-            // send welcome
-            out.write(("Alfred: " + msg + "\r\n").getBytes());
+    }
 
-            int c;
-            while((c = in.read()) != -1) {
-                out.write((char) c);
-                System.out.print((char) c);
-            }
+    public synchronized void changePlayerName(String username) {
+        player.setUsername(username);
+        networkManager.send(CommandsServerToClient.CHNA, username);
+    }
 
-            // terminate con
-            TerminalView.printText("Terminate: " + id);
-            socket.close();
-        } catch (Exception e) {
-            TerminalView.printText(e.getMessage());
-            throw new RuntimeException(e);
-        }
-
+    public NetworkManagerServer getNetworkManager() {
+        return networkManager;
     }
 }

@@ -1,34 +1,42 @@
 package server.networking;
 
-import client.util.TerminalView;
-
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.ServerSocket;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 public class NetworkManagerServer {
-    private ServerSocket socket;
-    private int ctr;
 
-    public NetworkManagerServer(int port) {
+    private BufferedWriter out;
+
+    public NetworkManagerServer(Socket socket) {
+
         try {
-            // establish connection
-            socket = new ServerSocket(port);
-
-            // connection established
-            TerminalView.printText("Waiting for connection on " + port);
-
-            while(true) {
-                // wait for connections and create new thread
-                Socket clientSocket = socket.accept();
-                ClientThread client = new ClientThread(++ctr, clientSocket);
-                Thread echoClientThread = new Thread(client);
-                echoClientThread.start();
-            }
+            out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         } catch (IOException e) {
-            TerminalView.printText(e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public synchronized void send(CommandsServerToClient cmd, String message) {
+
+        switch (cmd) {
+
+            case CHNA -> sendToClient("CHNA " + message);
+            default -> System.out.println("unknown command to send from server to client " + message);
+
+        }
+    }
+
+    private synchronized void sendToClient(String message) {
+        try {
+            out.write(message);
+            out.newLine();
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
