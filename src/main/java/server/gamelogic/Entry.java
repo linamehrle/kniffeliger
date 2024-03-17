@@ -13,7 +13,7 @@ public class Entry {
      * @throws Exception if there are less than 5 dices saved
      * @throws Exception if the value we need to compare the dices value with is not between 1 and 6
      */
-    public int singleValueRolls(int[] rolledDices, int value) throws Exception {
+    public static int singleValueRolls(int[] rolledDices, int value) throws Exception {
         // checks if there are 5 rolled dices
         if(!(rolledDices.length == 5)){
             throw new Exception("There are 5 dices but you handed me more or less.");
@@ -38,7 +38,7 @@ public class Entry {
      * @param rolledDices are the dices that have been rolled and saved
      * @return returns value of three same dices
      */
-    public int threeOfAKind(int[] rolledDices) throws Exception {
+    public static int threeOfAKind(int[] rolledDices) throws Exception {
         // checks if there are 5 rolled dices
         if(!(rolledDices.length == 5)){
             throw new Exception("There are 5 dices but you handed me more or less.");
@@ -63,7 +63,7 @@ public class Entry {
      * @param rolledDices are the dices that have been rolled and saved
      * @return returns value of four same dices
      */
-    public int fourOfAKind(int[] rolledDices) throws Exception {
+    public static int fourOfAKind(int[] rolledDices) throws Exception {
         // checks if there are 5 rolled dices
         if(!(rolledDices.length == 5)){
             throw new Exception("There are 5 dices but you handed me more or less.");
@@ -87,7 +87,7 @@ public class Entry {
      * @return return 30 if it is a small straight and 0 if not
      * @throws Exception if there are less than 5 dices saved
      */
-    public int smallStraight(int[] rolledDices) throws Exception {
+    public static int smallStraight(int[] rolledDices) throws Exception {
         // checks if there are 5 rolled dices
         if (!(rolledDices.length == 5)) {
             throw new Exception("There are 5 dices but you handed me more or less.");
@@ -106,7 +106,7 @@ public class Entry {
         If so, if continues the loop (else) and if not, it returns 0. If it made it through the loop without return then we have a small straight and return 30.
         */
         if ((rolledDices[1] == rolledDices[0] + 1) || (rolledDices[4] == rolledDices[3] + 1)){
-            for(int i = 0; i < rolledDices.length; i++){
+            for(int i = 0; i < rolledDices.length - 1; i++){
                 if(rolledDices[i+1] == rolledDices[i] && repetitionCounter < 1){
                     repetitionCounter = repetitionCounter + 1;
                 } else if (rolledDices[i+1] != rolledDices[i] + 1){
@@ -127,7 +127,7 @@ public class Entry {
      * @return return 40 if it is a large straight and 0 if not
      * @throws Exception if there are less than 5 dices saved
      */
-    public int largeStraight(int[] rolledDices) throws Exception {
+    public static int largeStraight(int[] rolledDices) throws Exception {
         // checks if there are 5 rolled dices
         if(!(rolledDices.length == 5)){
             throw new Exception("There are 5 dices but you handed me more or less.");
@@ -161,7 +161,7 @@ public class Entry {
      * @return return 25 if it is a full house and 0 if not
      * @throws Exception if there are less than 5 dices saved
      */
-    public int fullHouse(int[] rolledDices) throws Exception {
+    public static int fullHouse(int[] rolledDices) throws Exception {
         // checks if there are 5 rolled dices
         if(!(rolledDices.length == 5)){
             throw new Exception("There are 5 dices but you handed me more or less.");
@@ -188,7 +188,7 @@ public class Entry {
      * @param rolledDices are the dices that have been rolled and saved
      * @return returns value of five same dices
      */
-    public int kniffel(int[] rolledDices) throws Exception {
+    public static int kniffeliger(int[] rolledDices) throws Exception {
         // checks if there are 5 rolled dices
         if(!(rolledDices.length == 5)){
             throw new Exception("There are 5 dices but you handed me more or less.");
@@ -197,7 +197,7 @@ public class Entry {
         // we do not need to sort rolled dices first because it should be all the same value
         int sum = 0;
         if(rolledDices[0] == rolledDices[4]){
-            sum = 5 * rolledDices[0];
+            sum = 50;
         }
         return sum;
     }
@@ -208,7 +208,7 @@ public class Entry {
      * @return return the sum of all dices
      * @throws Exception if there are less than 5 dices saved
      */
-    public int chance(int[] rolledDices) throws Exception{
+    public static int chance(int[] rolledDices) throws Exception{
         // checks if there are 5 rolled dices
         if(!(rolledDices.length == 5)){
             throw new Exception("There are 5 dices but you handed me more or less.");
