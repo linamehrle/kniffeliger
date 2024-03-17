@@ -21,9 +21,9 @@ class DiceTest {
         dice3.rollDice();
         dice3.rollDice();
 
-        assertAll(() -> assertFalse(dice1.getRolledStatus()),
-                () -> assertTrue(dice2.getRolledStatus()),
-                () -> assertTrue(dice3.getRolledStatus()),
+        assertAll(() -> assertEquals(0, dice1.getNumberOfRolls()),
+                () -> assertEquals(1, dice2.getNumberOfRolls()),
+                () -> assertEquals(3, dice3.getNumberOfRolls()),
                 () -> assertEquals(0, dice1.getNumberOfRolls()),
                 () -> assertEquals(1, dice2.getNumberOfRolls()),
                 () -> assertEquals(3, dice3.getNumberOfRolls()),
@@ -60,7 +60,7 @@ class DiceTest {
         dice.rollDice();
         dice.resetDice();
 
-        assertAll(() -> assertFalse(dice.getRolledStatus()),
+        assertAll(() -> assertEquals(0, dice.getNumberOfRolls()),
                 () -> assertFalse(dice.getSavingStatus()),
                 () -> assertEquals(0, dice.getNumberOfRolls()),
                 () -> assertEquals(0, dice.getDiceValue()),
