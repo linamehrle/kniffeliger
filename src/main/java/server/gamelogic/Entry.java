@@ -4,6 +4,32 @@ import java.util.Arrays;
 
 public class Entry {
 
+    private String name;
+    private int value;
+
+    public Entry(String name, int value){
+        this.name = name;
+        this.value = value;
+    }
+
+    /**
+     * Access name of entry.
+     *
+     * @return name of entry
+     */
+    public String getName(){
+        return name;
+    }
+
+    /**
+     * Access value of entry.
+     *
+     * @return value of entry
+     */
+    public int getValue(){
+        return value;
+    }
+
     /**
      * Checks rolled dice for a specific value and adds all dice with this value up. The sum is then returned.
      * (1er, 2er, 3er, 4er, 5er, 6er)
