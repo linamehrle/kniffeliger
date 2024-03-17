@@ -4,30 +4,12 @@ import java.util.Arrays;
 
 public class Entry {
 
-    private String name;
-    private int value;
+    private final String name;
+    private final int value;
 
-    public Entry(String name, int value){
+    public Entry(String name, int value) {
         this.name = name;
         this.value = value;
-    }
-
-    /**
-     * Access name of entry.
-     *
-     * @return name of entry
-     */
-    public String getName(){
-        return name;
-    }
-
-    /**
-     * Access value of entry.
-     *
-     * @return value of entry
-     */
-    public int getValue(){
-        return value;
     }
 
     /**
@@ -35,24 +17,24 @@ public class Entry {
      * (1er, 2er, 3er, 4er, 5er, 6er)
      *
      * @param rolledDice are the dice that have been rolled and saved
-     * @param value method dice for this value (for example checks how many 6 it has, so value = 6)
+     * @param value      method dice for this value (for example checks how many 6 it has, so value = 6)
      * @return the sum of dice
      * @throws Exception if there are less than 5 dice saved
      * @throws Exception if the value we need to compare the dice value with is not between 1 and 6
      */
     public static int singleValueRolls(int[] rolledDice, int value) throws Exception {
         // checks if there are 5 rolled dice
-        if(!(rolledDice.length == 5)){
+        if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
         }
         // checks if we inserted a valid value for dice
-        if(!(value >=1 && value <= 6)){
+        if (!(value >= 1 && value <= 6)) {
             throw new Exception("A dice can only have values 1 to 6.");
         }
 
         int sum = 0;
-        for (int d : rolledDice){
-            if(d == value){
+        for (int d : rolledDice) {
+            if (d == value) {
                 sum = sum + d;
             }
         }
@@ -69,18 +51,18 @@ public class Entry {
      */
     public static int threeOfAKind(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
-        if(!(rolledDice.length == 5)){
+        if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
         }
 
         // sorts rolled dice first
         Arrays.sort(rolledDice);
         int sum = 0;
-        if(rolledDice[0] == rolledDice[2]){
+        if (rolledDice[0] == rolledDice[2]) {
             sum = 3 * rolledDice[0];
-        } else if (rolledDice[1] == rolledDice[3]){
+        } else if (rolledDice[1] == rolledDice[3]) {
             sum = 3 * rolledDice[1];
-        } else if (rolledDice[2] == rolledDice[4]){
+        } else if (rolledDice[2] == rolledDice[4]) {
             sum = 3 * rolledDice[4];
         }
         return sum;
@@ -96,16 +78,16 @@ public class Entry {
      */
     public static int fourOfAKind(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
-        if(!(rolledDice.length == 5)){
+        if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
         }
 
         // sorts rolled dice first
         Arrays.sort(rolledDice);
         int sum = 0;
-        if(rolledDice[0] == rolledDice[3]){
+        if (rolledDice[0] == rolledDice[3]) {
             sum = 4 * rolledDice[0];
-        } else if (rolledDice[1] == rolledDice[4]){
+        } else if (rolledDice[1] == rolledDice[4]) {
             sum = 4 * rolledDice[4];
         }
         return sum;
@@ -127,22 +109,28 @@ public class Entry {
         }
 
         int res = 30;
-        // counts for repeated values in between such as {1,2,2,3,4}. If there are more than 1 repetition, then we do not have a small straight.
+        /*
+         * counts for repeated values in between such as {1,2,2,3,4}. If there are more than 1 repetition, then we do not
+         * have a small straight.
+         */
         int repetitionCounter = 0;
         // sorts rolled dice in ascending order, so we can loop over it and check conditions for a small straight.
         Arrays.sort(rolledDice);
         /*
-        * First check if the first 4 values in rolledDice-array or last 4 values are supposed to be the small straight. If is one of those two cases since we sorted the array.
-        * That means we check: if rolledDice[1] == rolledDice[0] + 1, then it is the first 4 values, if rolledDice[4] == rolledDice[3] + 1, then it is the last 4 values.
-        * If it is none of those two above, then we do not have a small straight and return 0.
-        * Then in the loop we check if we have at most 1 repetition then we can continue loop as long as we have only one. Also, we check if the next value is the previous vale + 1.
-        * If so, if continues the loop (else) and if not, it returns 0. If it made it through the loop without return then we have a small straight and return 30.
-        */
-        if ((rolledDice[1] == rolledDice[0] + 1) || (rolledDice[4] == rolledDice[3] + 1)){
-            for(int i = 0; i < rolledDice.length - 1; i++){
-                if(rolledDice[i+1] == rolledDice[i] && repetitionCounter < 1){
+         * First check if the first 4 values in rolledDice-array or last 4 values are supposed to be the small straight.
+         * If is one of those two cases since we sorted the array. That means we check:
+         * if rolledDice[1] == rolledDice[0] + 1, then it is the first 4 values,
+         * if rolledDice[4] == rolledDice[3] + 1, then it is the last 4 values.
+         * If it is none of those two above, then we do not have a small straight and return 0.
+         * Then in the loop we check if we have at most 1 repetition then we can continue loop as long as we have only
+         * one. Also, we check if the next value is the previous vale + 1. If so, if continues the loop (else) and if
+         * not, it returns 0. If it made it through the loop without return then we have a small straight and return 30.
+         */
+        if ((rolledDice[1] == rolledDice[0] + 1) || (rolledDice[4] == rolledDice[3] + 1)) {
+            for (int i = 0; i < rolledDice.length - 1; i++) {
+                if (rolledDice[i + 1] == rolledDice[i] && repetitionCounter < 1) {
                     repetitionCounter = repetitionCounter + 1;
-                } else if (rolledDice[i+1] != rolledDice[i] + 1){
+                } else if (rolledDice[i + 1] != rolledDice[i] + 1) {
                     return 0;
                 } //else: continue loop
             }
@@ -154,8 +142,8 @@ public class Entry {
     }
 
     /**
-     * Checks rolled dice for large straight by sorting them first and then checking, if each of the values inside the array
-     * is the previous value + 1.
+     * Checks rolled dice for large straight by sorting them first and then checking, if each of the values inside the
+     * array is the previous value + 1.
      * Attention: rolledDice array is sorted after applying this method.
      *
      * @param rolledDice are the dice that have been rolled and saved
@@ -164,7 +152,7 @@ public class Entry {
      */
     public static int largeStraight(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
-        if(!(rolledDice.length == 5)){
+        if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
         }
 
@@ -172,13 +160,14 @@ public class Entry {
         // sorts rolled dice in ascending order, so we can loop over it and check conditions for a large straight.
         Arrays.sort(rolledDice);
         /*
-        * First check if array starts with 1 or 2 because if not, then it is definitely not a straight, so it returns the res, which at that point is 0.
-        * To check a straight, we loop through rolled dice and check if next value is the previous value + 1.
-        * If we reached at the last entry it does not check the mentioned condition since this has already been checked by the leap before.
-        */
-        if(rolledDice[0] == 1 || rolledDice[0] == 2){
-            for(int i = 0; i < rolledDice.length - 1; i++){
-                if(rolledDice[i+1] != rolledDice[i] + 1){
+         * First check if array starts with 1 or 2 because if not, then it is definitely not a straight, so it returns
+         * the res, which at that point is 0. To check a straight, we loop through rolled dice and check if next value
+         * is the previous value + 1. If we reached at the last entry it does not check the mentioned condition since
+         * this has already been checked by the leap before.
+         */
+        if (rolledDice[0] == 1 || rolledDice[0] == 2) {
+            for (int i = 0; i < rolledDice.length - 1; i++) {
+                if (rolledDice[i + 1] != rolledDice[i] + 1) {
                     return 0;
                 }
             }
@@ -190,8 +179,9 @@ public class Entry {
     }
 
     /**
-     * Checks rolled dice for a full house (=a pair and a triplet) by first sorting the rolled dice, then checking if there is a pair and a triplet,
-     * because after sorting, there are only two options left for them to occur {t, t, t, p, p} or {p, p, t, t, t}. Returns 25 if it is a full house, returns 0 otherwise.
+     * Checks rolled dice for a full house (=a pair and a triplet) by first sorting the rolled dice, then checking if
+     * there is a pair and a triplet, because after sorting, there are only two options left for them to occur
+     * {t, t, t, p, p} or {p, p, t, t, t}. Returns 25 if it is a full house, returns 0 otherwise.
      * Attention: rolledDice array is sorted after applying this method.
      *
      * @param rolledDice are the dice that have been rolled and saved
@@ -200,7 +190,7 @@ public class Entry {
      */
     public static int fullHouse(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
-        if(!(rolledDice.length == 5)){
+        if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
         }
 
@@ -208,20 +198,23 @@ public class Entry {
         // sorts array first
         Arrays.sort(rolledDice);
         /*
-        * There are have two options for a full house after sorting the array {t, t, t, p, p} of {p, p, t, t, t}.
-        * If the rolledDice[0] == rolledDice[2] && rolledDice[3] == rolledDice[4] (then we have the triplet first and the pair second)
-        * OR the rolledDice[0] == rolledDice[1] && rolledDice[2] == rolledDice[4] (then we have the pair first and the triplet last).
-        * If it is a full house we return 25, in all the other cases we do not have a full house and the res = 0 gets returned.
-        */
-        if((rolledDice[0] == rolledDice[2] && rolledDice[3] == rolledDice[4]) || (rolledDice[0] == rolledDice[1] && rolledDice[2] == rolledDice[4])){
+         * There are have two options for a full house after sorting the array {t, t, t, p, p} of {p, p, t, t, t}.
+         * If the rolledDice[0] == rolledDice[2] && rolledDice[3] == rolledDice[4] (then we have the triplet first and
+         * the pair second) OR the rolledDice[0] == rolledDice[1] && rolledDice[2] == rolledDice[4] (then we have the
+         * pair first and the triplet last). If it is a full house we return 25, in all the other cases we do not have
+         * a full house and the res = 0 gets returned.
+         */
+        boolean tripletFirstPairLast = rolledDice[0] == rolledDice[2] && rolledDice[3] == rolledDice[4];
+        boolean pairFirstTripletLast = rolledDice[0] == rolledDice[1] && rolledDice[2] == rolledDice[4];
+        if (tripletFirstPairLast || pairFirstTripletLast) {
             res = 25;
         }
         return res;
     }
 
     /**
-     * Checks for Kniffeliger/Yahtzee (= 5 of a kind) by sorting the array first and then checking if there are five of a kind,
-     * because if there are, the first and the last value are the same: {f, f, f, f, f}.
+     * Checks for Kniffeliger/Yahtzee (= 5 of a kind) by sorting the array first and then checking if there are five of
+     * a kind, because if there are, the first and the last value are the same: {f, f, f, f, f}.
      * Attention: rolledDice array is sorted after applying this method.
      *
      * @param rolledDice are the dice that have been rolled and saved
@@ -229,13 +222,13 @@ public class Entry {
      */
     public static int kniffeliger(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
-        if(!(rolledDice.length == 5)){
+        if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
         }
 
         // we do not need to sort rolled dice first because it should be all the same value
         int res = 0;
-        if(rolledDice[0] == rolledDice[4]){
+        if (rolledDice[0] == rolledDice[4]) {
             res = 50;
         }
         return res;
@@ -248,17 +241,35 @@ public class Entry {
      * @return return the sum of all dice
      * @throws Exception if there are less than 5 dice saved
      */
-    public static int chance(int[] rolledDice) throws Exception{
+    public static int chance(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
-        if(!(rolledDice.length == 5)){
+        if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
         }
 
         // adds dice up
         int sum = 0;
-        for (int d : rolledDice){
+        for (int d : rolledDice) {
             sum = sum + d;
         }
         return sum;
+    }
+
+    /**
+     * Access name of entry.
+     *
+     * @return name of entry
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Access value of entry.
+     *
+     * @return value of entry
+     */
+    public int getValue() {
+        return value;
     }
 }
