@@ -4,10 +4,92 @@ import java.util.Arrays;
 
 
 public class GameManager {
+    /*
+     * ##################################################################################################################
+     * ROLLS DICE
+     * ##################################################################################################################
+     */
 
-    //TODO: GameMangager should read inputs from client (which entry it chose and get an array of dice values) which
-    // should then be interpreted/rearranged as Entry with the value that will be interpreted by GameManager through
-    // the right Entry method (maybe transfer the entry methods to game manager then)
+    /**
+     * Rolls 5 dice using the rollDice() method from class Dice. This class already checks if player is allowed to roll the
+     * dice, so it has not been saved and if it has less than 3 rolls. Saves dice automatically if it has been rolled 3 times.
+     *
+     * @param playersDice dice client hands to server
+     * @return new rolled dice
+     */
+    //TODO: write a unit test for this method
+    public static Dice[] rollDice(Dice[] playersDice) throws Exception {
+        if (!(playersDice.length == 5)) {
+            throw new Exception("There are 5 dice but you handed me more or less.");
+        }
+        for (Dice dice : playersDice){
+            /* rollDice() already checks if dice has been saved or if it has been rolled 3 times already (because then dice
+            * cannot be rolled
+            */
+            dice.rollDice();
+        }
+        return playersDice;
+    }
+
+    /*
+    * ##################################################################################################################
+    * METHODS TO CHECK IF ENTRY IS VALID AND HOW MANY POINTS A PLAYER GETS
+    * ##################################################################################################################
+    */
+
+    // TODO: needs to be of type Dice not array (because need to check if it has been saved. So it gets final dice
+    //  result, checks if the all have been saved and transforms them to int[] array
+    //  (with static Dice.getAsIntArray(Dice[] diceArray) method) to use them in the following
+    //  methods which use and int-array input and which check if the chosen entry is valid.
+    //  so maybe write a method with switch case (to choose the right entry but before applying the check of the
+    //  entry transform Dice-array to int-array. Like in the example below. (Also maybe put functions like threeOfAKind() on EntrySheet or Entry??
+//
+//    public void entryValidation (String nameOfEntry, Dice[] finalDiceValues) throws Exception {
+//        // transforms Dice-array into int-array
+//        int[] finalDiceInt = Dice.getAsIntArray(finalDiceValues);
+//
+//        switch (nameOfEntry) {
+//            case "ones":
+//                singleValueRolls(finalDiceInt, 1);
+//                break;
+//            case "twos":
+//                singleValueRolls(finalDiceInt, 2);
+//                break;
+//            case "threes":
+//                singleValueRolls(finalDiceInt, 3);
+//                break;
+//            case "fours":
+//                singleValueRolls(finalDiceInt, 4);
+//                break;
+//            case "fives":
+//                singleValueRolls(finalDiceInt, 5);
+//                break;
+//            case "sixes":
+//                singleValueRolls(finalDiceInt, 5);
+//                break;
+//            case "threeOfAKind":
+//                threeOfAKind(finalDiceInt);
+//                break;
+//            case "fourOfAKind":
+//                fourOfAKind(finalDiceInt);
+//                break;
+//            case "fullHouse":
+//                fullHouse(finalDiceInt);
+//                break;
+//            case "smallStraight":
+//                smallStraight(finalDiceInt);
+//                break;
+//            case "largeStraight":
+//                largeStraight(finalDiceInt);
+//                break;
+//            case "kniffeliger":
+//                kniffeliger(finalDiceInt);
+//                break;
+//            case "chance":
+//                chance(finalDiceInt);
+//                break;
+//        }
+//    }
 
     /**
      * Checks rolled dice for a specific value and adds all dice with this value up. The sum is then returned.
@@ -19,7 +101,7 @@ public class GameManager {
      * @throws Exception if there are less than 5 dice saved
      * @throws Exception if the value we need to compare the dice value with is not between 1 and 6
      */
-    public static int singleValueRolls(int[] rolledDice, int value) throws Exception {
+    public int singleValueRolls(int[] rolledDice, int value) throws Exception {
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -46,7 +128,7 @@ public class GameManager {
      * @param rolledDice are the dice that have been rolled and saved
      * @return returns value of three same dice
      */
-    public static int threeOfAKind(int[] rolledDice) throws Exception {
+    public int threeOfAKind(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -73,7 +155,7 @@ public class GameManager {
      * @param rolledDice are the dice that have been rolled and saved
      * @return returns value of four same dice
      */
-    public static int fourOfAKind(int[] rolledDice) throws Exception {
+    public int fourOfAKind(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -100,7 +182,7 @@ public class GameManager {
      * @return return 25 if it is a full house and 0 if not
      * @throws Exception if there are less than 5 dice saved
      */
-    public static int fullHouse(int[] rolledDice) throws Exception {
+    public int fullHouse(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -133,7 +215,7 @@ public class GameManager {
      * @return return 30 if it is a small straight and 0 if not
      * @throws Exception if there are less than 5 dice saved
      */
-    public static int smallStraight(int[] rolledDice) throws Exception {
+    public int smallStraight(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -181,7 +263,7 @@ public class GameManager {
      * @return return 40 if it is a large straight and 0 if not
      * @throws Exception if there are less than 5 dice saved
      */
-    public static int largeStraight(int[] rolledDice) throws Exception {
+    public int largeStraight(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -217,7 +299,7 @@ public class GameManager {
      * @param rolledDice are the dice that have been rolled and saved
      * @return returns 50 if it is a Kniffeliger/Yathzee, 0 otherwise
      */
-    public static int kniffeliger(int[] rolledDice) throws Exception {
+    public int kniffeliger(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -238,7 +320,7 @@ public class GameManager {
      * @return return the sum of all dice
      * @throws Exception if there are less than 5 dice saved
      */
-    public static int chance(int[] rolledDice) throws Exception {
+    public int chance(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
