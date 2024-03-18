@@ -42,12 +42,29 @@ public class Dice {
     }
 
     /**
+     * Transforms Dice-array to int-array.
+     *
+     * @param diceArray with Dice-values
+     * @return int-array with dice values as values
+     */
+    // TODO: needed?
+    public static int[] getAsIntArray(Dice[] diceArray){
+        int[] diceArrayAsIntArray = new int[diceArray.length];
+        for(int i = 0; i < diceArray.length; i++){
+            diceArrayAsIntArray[i] = diceArray[i].getDiceValue();
+        }
+        return diceArrayAsIntArray;
+    }
+
+    /**
      * Rolls the dice if it has not been saved yet and if the dice has been rolled less than 3 times.
      * With rolling the dice comes the increase of number of rolls (numberOfRolls), the change of the value of the dice
      * (diceValue) and it automatically saves the dice after rolling it three times.
      *
      * @return true if dice can be rolled and false if it cannot be rolled
      */
+
+    // TODO: Does not need to check for numberOfRolls < 3 and saveDice() for 3 rolls because if numberOfRolls >= 3 then it gets saved automatically
     public boolean rollDice() {
         boolean couldRoll = false;
         if (!(savingStatus) && numberOfRolls < 3) {
