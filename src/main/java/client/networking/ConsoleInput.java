@@ -4,46 +4,40 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import client.manager.NetworkManagerClient;
-
+/**
+ * this class reads the terminal input for the client
+ */
 public class ConsoleInput implements Runnable {
 
-    NetworkManagerClient networkManager;
+    private boolean stop;
 
-    public ConsoleInput(NetworkManagerClient networkManager) {
-        this.networkManager = networkManager;
+    ClientOutput clientOutput;
+
+    public ConsoleInput(ClientOutput networkManager) {
+        this.stop = false;
+        this.clientOutput = networkManager;
     }
 
+    /**
+     * the client input is send to ClientOutput to be handled
+     */
     @Override
     public void run() {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
         try {
-            while (true) {
-                String message = in.readLine();
-
-                // Hier consoleIn splitten in Command und Message Teil.
-                // Dann Command zu inum mit valueOf oder so an network manager übergeben
-                String[] input = message.split(" ", 2);
-                CommandsClientToServer cmd;
-
-                try {
-                    cmd = CommandsClientToServer.valueOf(input[0].toUpperCase());
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Alfred: received invalid command " + input[0]);
-                    return;
+            while (!stop) {
+                if(in.ready()) {
+                    String message = in.readLine();
+                    clientOutput.sendFromConsoleIn(message);
                 }
-
-                // if quit was entered
-                if (message.equalsIgnoreCase("QUIT")) {
-                    // quit an server geben
-                    break;
-                }
-
-                networkManager.send(cmd, input[1]);
             }
         } catch(IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void stop() {
+        stop = true;
     }
 }

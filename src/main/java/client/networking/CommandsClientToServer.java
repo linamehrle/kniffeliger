@@ -23,6 +23,11 @@ public enum CommandsClientToServer {
     /**
      *  returns a ping from the server with a ping from the client
      */
-    PONG
+    PONG,
+
+    /**
+     *  send message to server that a client has disconnected
+     */
+    QUIT
 
 }

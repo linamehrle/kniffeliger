@@ -1,8 +1,7 @@
 package server.networking;
 import server.Player;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -12,7 +11,7 @@ public class ClientThread implements Runnable{
     private Player player;
     private Socket socket;
 
-    private NetworkManagerServer networkManager;
+    private ServerOutput networkManager;
     private ServerInput serverInput;
 
     public ClientThread(Socket socket) {
@@ -23,7 +22,7 @@ public class ClientThread implements Runnable{
 
     @Override
     public void run() {
-        networkManager = new NetworkManagerServer(socket);
+        networkManager = new ServerOutput(socket);
         serverInput = new ServerInput(socket, this);
         Thread thread = new Thread(serverInput);
         thread.start();
@@ -37,6 +36,8 @@ public class ClientThread implements Runnable{
     }
 
     public synchronized void changePlayerName(String username) {
+
+        username = username.replace(" ", "_");
 
         if(usernameIsTaken(username)) {
             int counter = 1;
@@ -62,7 +63,21 @@ public class ClientThread implements Runnable{
         return false;
     }
 
-    public NetworkManagerServer getNetworkManager() {
+    public ServerOutput getNetworkManager() {
         return networkManager;
+    }
+
+    public void disconnect() {
+        try {
+            networkManager.send(CommandsServerToClient.QUIT, "goodbye client");
+            playerList.remove(player);
+            serverInput.stop();
+            socket.close();
+
+            System.out.println("Client has successfully disconnected");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

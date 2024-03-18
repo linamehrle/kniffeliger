@@ -18,6 +18,8 @@ public enum CommandsServerToClient {
     /**
      * sends a ping to check for connection losses
      */
-    PING
+    PING,
+
+    QUIT
 
 }

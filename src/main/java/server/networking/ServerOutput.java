@@ -1,16 +1,15 @@
 package server.networking;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
-public class NetworkManagerServer {
+public class ServerOutput {
 
     private BufferedWriter out;
 
-    public NetworkManagerServer(Socket socket) {
+    public ServerOutput(Socket socket) {
 
         try {
             out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -25,6 +24,7 @@ public class NetworkManagerServer {
         switch (cmd) {
 
             case CHNA -> sendToClient("CHNA " + message);
+            case QUIT -> sendToClient("QUIT " + message);
             default -> System.out.println("unknown command to send from server to client " + message);
 
         }
@@ -38,5 +38,9 @@ public class NetworkManagerServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void stop() throws IOException {
+        out.close();
     }
 }
