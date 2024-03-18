@@ -37,59 +37,71 @@ public class GameManager {
     * ##################################################################################################################
     */
 
-    // TODO: needs to be of type Dice not array (because need to check if it has been saved. So it gets final dice
-    //  result, checks if the all have been saved and transforms them to int[] array
-    //  (with static Dice.getAsIntArray(Dice[] diceArray) method) to use them in the following
-    //  methods which use and int-array input and which check if the chosen entry is valid.
-    //  so maybe write a method with switch case (to choose the right entry but before applying the check of the
+    // TODO: handed needs to be of type Dice not array (because need to check if it has been saved. So it gets final dice
+    //  result, checks if the all have been saved and then transforms them to int[] array
+    //  (with static Dice.getAsIntArray(Dice[] diceArray) method) to use them in the entry validation
+    //  methods.
+    //  So maybe write a method with switch case (to choose the right entry but before applying the check of the
     //  entry transform Dice-array to int-array. Like in the example below. (Also maybe put functions like threeOfAKind() on EntrySheet or Entry??
-//
-//    public void entryValidation (String nameOfEntry, Dice[] finalDiceValues) throws Exception {
-//        // transforms Dice-array into int-array
-//        int[] finalDiceInt = Dice.getAsIntArray(finalDiceValues);
-//
-//        switch (nameOfEntry) {
-//            case "ones":
-//                singleValueRolls(finalDiceInt, 1);
-//                break;
-//            case "twos":
-//                singleValueRolls(finalDiceInt, 2);
-//                break;
-//            case "threes":
-//                singleValueRolls(finalDiceInt, 3);
-//                break;
-//            case "fours":
-//                singleValueRolls(finalDiceInt, 4);
-//                break;
-//            case "fives":
-//                singleValueRolls(finalDiceInt, 5);
-//                break;
-//            case "sixes":
-//                singleValueRolls(finalDiceInt, 5);
-//                break;
-//            case "threeOfAKind":
-//                threeOfAKind(finalDiceInt);
-//                break;
-//            case "fourOfAKind":
-//                fourOfAKind(finalDiceInt);
-//                break;
-//            case "fullHouse":
-//                fullHouse(finalDiceInt);
-//                break;
-//            case "smallStraight":
-//                smallStraight(finalDiceInt);
-//                break;
-//            case "largeStraight":
-//                largeStraight(finalDiceInt);
-//                break;
-//            case "kniffeliger":
-//                kniffeliger(finalDiceInt);
-//                break;
-//            case "chance":
-//                chance(finalDiceInt);
-//                break;
-//        }
-//    }
+
+    public void entryValidation (String nameOfEntry, Dice[] finalDiceValues) throws Exception {
+        // checks if all dice have been saved
+        boolean allDiceSaved = true;
+        for (Dice d : finalDiceValues){
+            if (d.getSavingStatus() == false){
+                allDiceSaved = false;
+            }
+        }
+        // throws exception if not all dice have been saved
+        if (allDiceSaved == false){
+            throw new Exception("Not all dice have been saved.");
+        }
+
+        // transforms Dice-array into int-array if all dice have been saved, so we can apply methods below to it
+        int[] finalDiceInt = Dice.getAsIntArray(finalDiceValues);
+
+        switch (nameOfEntry) {
+            case "ones":
+                singleValueRolls(finalDiceInt, 1);
+                break;
+            case "twos":
+                singleValueRolls(finalDiceInt, 2);
+                break;
+            case "threes":
+                singleValueRolls(finalDiceInt, 3);
+                break;
+            case "fours":
+                singleValueRolls(finalDiceInt, 4);
+                break;
+            case "fives":
+                singleValueRolls(finalDiceInt, 5);
+                break;
+            case "sixes":
+                singleValueRolls(finalDiceInt, 5);
+                break;
+            case "threeOfAKind":
+                threeOfAKind(finalDiceInt);
+                break;
+            case "fourOfAKind":
+                fourOfAKind(finalDiceInt);
+                break;
+            case "fullHouse":
+                fullHouse(finalDiceInt);
+                break;
+            case "smallStraight":
+                smallStraight(finalDiceInt);
+                break;
+            case "largeStraight":
+                largeStraight(finalDiceInt);
+                break;
+            case "kniffeliger":
+                kniffeliger(finalDiceInt);
+                break;
+            case "chance":
+                chance(finalDiceInt);
+                break;
+        }
+    }
 
     /**
      * Checks rolled dice for a specific value and adds all dice with this value up. The sum is then returned.
