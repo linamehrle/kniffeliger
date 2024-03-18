@@ -11,8 +11,9 @@ public class ClientThread implements Runnable{
     private Player player;
     private Socket socket;
 
-    private ServerOutput networkManager;
+    private ServerOutput serverOutput;
     private ServerInput serverInput;
+    private Ping ping;
 
     public ClientThread(Socket socket) {
         this.player = new Player();
@@ -22,7 +23,9 @@ public class ClientThread implements Runnable{
 
     @Override
     public void run() {
-        networkManager = new ServerOutput(socket);
+        serverOutput = new ServerOutput(socket);
+
+        //getter für den socket? nur this übergeben?
         serverInput = new ServerInput(socket, this);
         Thread thread = new Thread(serverInput);
         thread.start();
@@ -31,8 +34,11 @@ public class ClientThread implements Runnable{
         String msg = "Connection with " + player.getUsername() + " established.";
         System.out.println(msg);
 
-        //networkManager.send(CommandsServerToClient.PRNT, "Alfred: " + msg);
+        //serverOutput.send(CommandsServerToClient.PRNT, "Alfred: " + msg);
 
+        ping = new Ping(this);
+        Thread pingThread = new Thread(ping);
+        pingThread.start();
     }
 
     public synchronized void changePlayerName(String username) {
@@ -50,7 +56,7 @@ public class ClientThread implements Runnable{
         }
 
         player.setUsername(username);
-        networkManager.send(CommandsServerToClient.CHNA, username);
+        serverOutput.send(CommandsServerToClient.CHNA, username);
     }
 
     private synchronized boolean usernameIsTaken(String username) {
@@ -63,14 +69,23 @@ public class ClientThread implements Runnable{
         return false;
     }
 
-    public ServerOutput getNetworkManager() {
-        return networkManager;
+    public ServerOutput getServerOutput() {
+        return serverOutput;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public Ping getPing() {
+        return ping;
     }
 
     public void disconnect() {
         try {
-            networkManager.send(CommandsServerToClient.QUIT, "goodbye client");
+            serverOutput.send(CommandsServerToClient.QUIT, "goodbye client");
             playerList.remove(player);
+            ping.stop();
             serverInput.stop();
             socket.close();
 

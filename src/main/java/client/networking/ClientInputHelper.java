@@ -9,10 +9,12 @@ import server.networking.CommandsServerToClient;
 public class ClientInputHelper implements Runnable {
     GameManager gameManager;
     String message;
+    Pong pong;
 
     public ClientInputHelper(GameManager gameManager, String message) {
         this.gameManager = gameManager;
         this.message = message;
+        this.pong = gameManager.getPong();
     }
 
     @Override
@@ -32,6 +34,7 @@ public class ClientInputHelper implements Runnable {
 
             case CHNA -> System.out.println("Your username is now " + input[1] + ". To change it, use the command CHNA.");
             case QUIT -> gameManager.disconnect();
+            case PING -> pong.returnPing(input[1]);
             default -> System.out.println("unknown command received from server " + message);
         }
 

@@ -25,6 +25,7 @@ public class ServerOutput {
 
             case CHNA -> sendToClient("CHNA " + message);
             case QUIT -> sendToClient("QUIT " + message);
+            case PING -> sendToClient("PING " + message);
             default -> System.out.println("unknown command to send from server to client " + message);
 
         }

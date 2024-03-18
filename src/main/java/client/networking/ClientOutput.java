@@ -74,6 +74,7 @@ public class ClientOutput {
         switch (cmd) {
 
             case CHNA -> sendToServer("CHNA " + message);
+            case PONG -> sendToServer("PONG " + message);
             default -> System.out.println("unknown command to send from client to server " + message);
 
         }
