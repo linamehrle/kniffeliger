@@ -37,8 +37,29 @@ public class ClientThread implements Runnable{
     }
 
     public synchronized void changePlayerName(String username) {
+
+        if(usernameIsTaken(username)) {
+            int counter = 1;
+
+            while (usernameIsTaken(username + "_" + counter)) {
+                counter++;
+            }
+
+            username = username + "_" + counter;
+        }
+
         player.setUsername(username);
         networkManager.send(CommandsServerToClient.CHNA, username);
+    }
+
+    private synchronized boolean usernameIsTaken(String username) {
+        for (Player player : playerList) {
+            if (player.getUsername().equals(username)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public NetworkManagerServer getNetworkManager() {
