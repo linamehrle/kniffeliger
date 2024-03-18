@@ -79,7 +79,7 @@ public class EntrySheet {
     }
 
     /**
-     * Extracts names of entry sheet into an array.
+     * Extracts names of entry sheet into an array. Does not change names but copies them into an array.
      *
      * @return array with names of entries as values
      */
