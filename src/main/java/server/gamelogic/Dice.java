@@ -47,7 +47,6 @@ public class Dice {
      * @param diceArray with Dice-values
      * @return int-array with dice values as values
      */
-    // TODO: needed?
     public static int[] getAsIntArray(Dice[] diceArray){
         int[] diceArrayAsIntArray = new int[diceArray.length];
         for(int i = 0; i < diceArray.length; i++){
@@ -63,9 +62,7 @@ public class Dice {
      *
      * @return true if dice can be rolled and false if it cannot be rolled
      */
-
-    // TODO: Does not need to check for numberOfRolls < 3 and saveDice() for 3 rolls because if numberOfRolls >= 3 then it gets saved automatically
-    public boolean rollDice() {
+    public boolean rollSingleDice() {
         boolean couldRoll = false;
         if (!(savingStatus) && numberOfRolls < 3) {
             // adjusts variables after dice was rolled
