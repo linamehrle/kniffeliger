@@ -1,15 +1,19 @@
 To assure the quality of our game we have the following plan.
 
 GAME LOGIC:
-1.  Unit Tests of crucial methods and relevant functions: To assure the functions and quality of the game logic, we test
+The team members coding the game logic will be Riccardo and Anisja. They both also assure the software quality by testing
+the game logic with the following methods:
+
+1.  Unit tests of crucial methods and relevant functions: To assure the functions and quality of the game logic, we test
     every class of the game logic with unit tests. Not all methods in every class will be tested, only the core critical
     ones aka the core components. Methods that only get a specific value or return the value in a different format, like
     the following:
 
         public String getName() { return name; }
 
-    will not be tested. Only complex methods that are crucial for the game will be tested with unit tests, just like
-    this one:
+    will not be tested. Only complex methods that are crucial for the game mechanics will be tested with unit tests,
+    just like the following code snippet that ensures that a integer array (set of combinations) gets tested for
+    a full house combination:
 
         public static int fullHouse(int[] rolledDice) throws Exception {
             if (!(rolledDice.length == 5)) {
@@ -27,10 +31,12 @@ GAME LOGIC:
         }
 
     which is really crucial for the game and has a higher complexity.
-2.  Random and specific unit tests: We obviously will skip happy testing, but we will need to sometimes test specific
-    cases, like seen in GameManagerTest.java. For example if we want to test the fullHouse() method above, we need to
-    hand it specific dice combinations to test, if it really recognises a full house (a pair and a triplet). We then
-    test combinations that are a full house and some that are not. For other methods like a rolled dice method like this
+
+2.  Random and specific unit tests: We obviously will skip happy testing, but we will sometimes need to test specific
+    cases, like seen in GameManagerTest.java class. For example if we want to test the fullHouse() method from earlier,
+    we need to hand specific combinations to the method to test, if it really recognises a full house (a pair and a
+    triplet). We then test combinations that are a full house and some that are not. For other methods like the
+    following rollDice() method:
 
         public boolean rollDice() {
             boolean couldRoll = false;
@@ -47,14 +53,53 @@ GAME LOGIC:
             return couldRoll;
         }
 
-    we use randomly generated values and check, if this method returns us values between 1 and 6.
-3.  Unit tests for Exceptions: When an exception is thrown in a method, we ALWAYS test this with a uni test. Just like
-    in the GameManager method fullHouse() above. The exception is tested with the assertThrows() method.
+    we use randomly generated values and check, if this method returns us values between 1 and 6. You can see an
+    example of such a unit test code snippet here:
+        void rollDiceTest(){
+            Dice dice2 = new Dice();
+            Dice dice3 = new Dice();
+            dice2.rollDice();
+            dice3.rollDice();
+            dice3.rollDice();
+            dice3.rollDice();
 
-NETWORKING:
+            assertAll(() -> assertTrue(dice2.getDiceValue() <= 6 && dice2.getDiceValue() >= 1),
+                    () -> assertTrue(dice3.getDiceValue() <= 6 && dice3.getDiceValue() >= 1)
+                    );
+        }
+
+3.  Unit tests for exceptions: When an exception is thrown in a method, we ALWAYS test this with a uni test. Just like
+    in the GameManager method fullHouse() above. The exception is tested with the assertThrows() method. For example:
+    the fullHouse method from earlier throws an exception, if it gets handed an array that is of length < 5 or > 5. The
+    exception test will look like this:
+
+     void gameManagerExceptionsTest() {
+            // generate array of random length between 6 and 100 with numbers of values between 1 and 6 inside
+            int[] largeRandomArray = new int[(int) Math.floor(Math.random() * 100+ 6)];
+            for (int num : largeRandomArray){
+                num = (int) Math.floor(Math.random() * 6+ 1);
+            }
+            // generate array of random length between 1 and 5 with numbers of values between 1 and 6 inside
+            int[] smallRandomArray = new int[(int) Math.floor(Math.random() * 4+ 1)];
+            for (int num : smallRandomArray){
+                num = (int) Math.floor(Math.random() * 6+ 1);
+            }
+
+            assertAll(() -> assertThrows(Exception.class, () -> assertThrows(Exception.class, () -> GameManager.fullHouse(largeRandomArray)),
+                            () -> assertThrows(Exception.class, () -> GameManager.fullHouse(smallRandomArray))
+                    );
+     }
+
+    So we test different sizes and use the assertThrows() method to test if the method throws exceptions correctly.
+
+4.  Two pair of eyes: To ensure nothing gets lost in lines and lines of code without testing, we have a second pair of
+    eyes reviewing all the code and the tests we write.
+
+NETWORKING: (Lina)
 
 1.  We test the networking with the mockito library since it simplifies the server-client process: we do not need to
     have server and several clients to test this.
+2.
 
 
 
