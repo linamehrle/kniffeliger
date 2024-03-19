@@ -5,8 +5,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// asserThrows
+// augenzahl <= 25
 class GameManagerTest {
 
+    /*
+     * Tests specific cases of dice rolls so the outcome can be determined.
+    */
     int[] ones = {2, 1, 1, 4, 1};
     int[] twos = {2, 1, 1, 4, 2};
     int[] threes = {3, 3, 3, 3, 3};

@@ -111,7 +111,7 @@ public class GameManager {
      * @throws Exception if there are less than 5 dice saved
      * @throws Exception if the value we need to compare the dice value with is not between 1 and 6
      */
-    public int singleValueRolls(int[] rolledDice, int value) throws Exception {
+    public static int singleValueRolls(int[] rolledDice, int value) throws Exception {
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -138,7 +138,7 @@ public class GameManager {
      * @param rolledDice are the dice that have been rolled and saved
      * @return returns value of three same dice
      */
-    public int threeOfAKind(int[] rolledDice) throws Exception {
+    public static int threeOfAKind(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -165,7 +165,7 @@ public class GameManager {
      * @param rolledDice are the dice that have been rolled and saved
      * @return returns value of four same dice
      */
-    public int fourOfAKind(int[] rolledDice) throws Exception {
+    public static int fourOfAKind(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -192,7 +192,7 @@ public class GameManager {
      * @return return 25 if it is a full house and 0 if not
      * @throws Exception if there are less than 5 dice saved
      */
-    public int fullHouse(int[] rolledDice) throws Exception {
+    public static int fullHouse(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -225,7 +225,7 @@ public class GameManager {
      * @return return 30 if it is a small straight and 0 if not
      * @throws Exception if there are less than 5 dice saved
      */
-    public int smallStraight(int[] rolledDice) throws Exception {
+    public static int smallStraight(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -273,7 +273,7 @@ public class GameManager {
      * @return return 40 if it is a large straight and 0 if not
      * @throws Exception if there are less than 5 dice saved
      */
-    public int largeStraight(int[] rolledDice) throws Exception {
+    public static int largeStraight(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -309,7 +309,7 @@ public class GameManager {
      * @param rolledDice are the dice that have been rolled and saved
      * @return returns 50 if it is a Kniffeliger/Yathzee, 0 otherwise
      */
-    public int kniffeliger(int[] rolledDice) throws Exception {
+    public static int kniffeliger(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -330,7 +330,7 @@ public class GameManager {
      * @return return the sum of all dice
      * @throws Exception if there are less than 5 dice saved
      */
-    public int chance(int[] rolledDice) throws Exception {
+    public static int chance(int[] rolledDice) throws Exception {
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
