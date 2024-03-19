@@ -1,0 +1,83 @@
+To assure the quality of our game we have the following plan.
+
+GAME LOGIC:
+1.  Unit Tests of crucial methods and relevant functions: To assure the functions and quality of the game logic, we test
+    every class of the game logic with unit tests. Not all methods in every class will be tested, only the core critical
+    ones aka the core components. Methods that only get a specific value or return the value in a different format, like
+    the following:
+
+        public String getName() { return name; }
+
+    will not be tested. Only complex methods that are crucial for the game will be tested with unit tests, just like
+    this one:
+
+        public static int fullHouse(int[] rolledDice) throws Exception {
+            if (!(rolledDice.length == 5)) {
+                throw new Exception("There are 5 dice but you handed me more or less.");
+            }
+
+            int res = 0;
+            Arrays.sort(rolledDice);
+            boolean tripletFirstPairLast = rolledDice[0] == rolledDice[2] && rolledDice[3] == rolledDice[4];
+            boolean pairFirstTripletLast = rolledDice[0] == rolledDice[1] && rolledDice[2] == rolledDice[4];
+            if (tripletFirstPairLast || pairFirstTripletLast) {
+                res = 25;
+            }
+            return res;
+        }
+
+    which is really crucial for the game and has a higher complexity.
+2.  Random and specific unit tests: We obviously will skip happy testing, but we will need to sometimes test specific
+    cases, like seen in GameManagerTest.java. For example if we want to test the fullHouse() method above, we need to
+    hand it specific dice combinations to test, if it really recognises a full house (a pair and a triplet). We then
+    test combinations that are a full house and some that are not. For other methods like a rolled dice method like this
+
+        public boolean rollDice() {
+            boolean couldRoll = false;
+            if (!(savingStatus) && numberOfRolls < 3) {
+                // adjusts variables after dice was rolled
+                numberOfRolls = numberOfRolls + 1;
+                diceValue = (int) Math.floor(Math.random() * 6 + 1);
+                // if dice has been rolled three times it gets saved automatically
+                if (numberOfRolls == 3) {
+                    saveDice();
+                }
+                couldRoll = true;
+            }
+            return couldRoll;
+        }
+
+    we use randomly generated values and check, if this method returns us values between 1 and 6.
+3.  Unit tests for Exceptions: When an exception is thrown in a method, we ALWAYS test this with a uni test. Just like
+    in the GameManager method fullHouse() above. The exception is tested with the assertThrows() method.
+
+NETWORKING:
+
+1.  We test the networking with the mockito library since it simplifies the server-client process: we do not need to
+    have server and several clients to test this.
+
+
+
+CONVENTIONS FOR UNIT TESTS:
+1.  Crucial methods get tested.
+2.  Exceptions ALWAYS get tested. Those tests are names classname + "ExceptionsTest".
+3.  The test class is always named like the original class + "Test", for example: GameManager.java has the
+    test class GameManagerTest.java.
+4.  The method that gets tested is always called like the original method + "Test", for example: fullHouse() is the
+    original method and fullHouseTest() is the test method.
+5.  The correct structure and naming of the test files is ensured with the CRTL + Shift + t combination, that gets
+    pressed in the class we want to get a test class for.
+6.  Skip happy testing and ensure random unit tests.
+7.  We use lambda-tests so tests run through and do not stop, when first test fails.
+
+
+
+
+mockito for testing everything that is not game logic.
+junit
+
+
+Unit-Test 10 Available on Milestone 4
+All relevant features of a core component of your game are tested
+
+log4j
