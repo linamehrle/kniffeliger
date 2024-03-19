@@ -1,3 +1,5 @@
+ABOUT THE GAME:
+
 Oh hi there!
 
 Are you looking for a fun game for the next gathering with your friends?
@@ -23,18 +25,47 @@ that will have you and your friends hooked from the very first roll. So gather y
 for an epic battle of luck and strategy in the ultimate game of Kniffeliger. Get ready to outsmart, outplay, and outroll
 your opponents in the most exhilarating game night experience yet!
 
+DETAILED RULES:
+The objective of Kniffeliger is to score points by rolling five dice to make specific combinations which are on the
+entry sheet. The game consists of 13 rounds. In each round, a player can roll the dice up to three times to achieve the
+desired combination. At the beginning of each turn, the player rolls all five dice. After the first roll, the player can
+choose to:
+- Keep all the dice as they are
+- Keep some of the dice and reroll the rest
+- Reroll all the dice
+After the second roll, the player can again choose to keep some or all of the dice and reroll the rest if desired.
+After the third roll (or earlier if the player chooses), the player must choose one of the 13 scoring categories to
+score the roll.
+There are 13 scoring categories, and each can only be used once per game. After you saved all the rolled dice, you
+assign them to a combination in the entry sheet. The scoring categories are the following:
+- Ones: Total of all ones rolled
+- Twos: Total of all twos rolled
+- Threes: Total of all threes rolled
+- Fours: Total of all fours rolled
+- Fives: Total of all fives rolled
+- Sixes: Total of all sixes rolled
+- Three of a Kind: Total sum of all dice if at least three are the same
+- Four of a Kind: Total sum of all dice if at least four are the same
+- Full House: 25 points for three of one number and two of another, so one pair, one triplet
+- Small Straight: 30 points for a sequence of four consecutive numbers (e.g., 1-2-3-4)
+- Large Straight: 40 points for a sequence of five consecutive numbers (e.g., 2-3-4-5-6)
+- Kniffeliger: 50 points for all five dice showing the same number
+- Chance: Total sum of all dice regardless of combination
+After you saved your dice and assigned them to a combination and your saved dice show a sum that is zero modulo 5, you
+get to roll another dice: the action dice. With this dice you can perform the following actions:
+- steal an entry: you can steal an entry of another player instead of rolling the dice, the other player then
+  gets zero points for this combination
+- freeze a combination: you can freeze one combination of another player, the other player can not fill this
+  field in the next round
+- cross out one combination: you can cross out one combination of another player, the other player can not fill
+  this combination at any later point and is skipped the following turn
+- shift all combination sheets: you can shift the collected points/ combination of all players in a circle by one
+- exchange two combination sheets: you can exchange their collected points/ combinations with another player
+- the player gets one of each of the above
+After rolling the action dice you can choose to keep it for later or if you want to play it immediately. After that you
+finished a round.
+
 
 
 
 * kind of German for "trickier"
-
-
-
-
-
-
-
-
-
-
-~Zu Risiken und Nebenwirkungen, fragen Sie Ihren Professor oder Tutor.~
