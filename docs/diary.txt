@@ -173,10 +173,27 @@ Enough about today because I also learnt THREE VERY IMPORTANT THINGS THIS WEEK:
 1. Renato is Git-God, so if I have any questions, I can aks him.
 2. IntelliJ has a local history. So if you are as stupid as me and delete the code you worked on all weekend, you can
    get it restored with the local history (File >> Local History >> Show History...).
-3. There are many many shortcuts you can take in IntelliJ, like when you are in a class you want to build a unit test for
+3. There are many, many shortcuts you can take in IntelliJ, like when you are in a class you want to build a unit test for
    you can press CRTL + Shift + t which sets up a file with the class name + "Test" in the right directory. Pretty cool,
    huh?
 
 Okay that is all for today. Sleep well and until next time!
 
 ########################################################################################################################
+
+TUE, 19.3.24 (Anisja)
+
+Dear Diary
+
+We received the points for milestone one, or should I say no points. That humbled us quickly. Also, I think not all the
+negative points are valid. But they said our pen pal-ship is good, so we keep that going for sure. In this exercise
+lesson, we went through the milestone 2 requirements and realised, that they definitely do not always put down every
+requirement in their little list - how malicious! Anyway, talk to you soon!
+
+Next step is: team meeting today. We will talk about game logic, networking and how bad milestone 1 was.
+I will update you on the meeting later.
+
+Until next time!
+
+########################################################################################################################
+
