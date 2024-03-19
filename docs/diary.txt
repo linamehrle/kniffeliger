@@ -196,3 +196,23 @@ I will update you on the meeting later.
 Until next time!
 
 ########################################################################################################################
+
+TUE, 19.3.24 (Team Meeting)
+
+Dear Diary
+
+Today we had a team meeting. We talked about the following things:
+1.  We went through the milestone two requirements. Lina set up a cool google file on which we can assign the tasks to
+    the single members.
+2.  We also went through the milestone three requirements.
+3.  We wrote an email to Rahel with our questions to milestone 1.
+
+Next steps for our team:
+- Lina: finishes networking.
+- Dominique: tidies up files and starts looking into GUI programming.
+- Riccardo: does handle the Gradle build file and the Log4j library.
+- Anisja: continues game logic and writes down the necessary network protocol for the game logic and its integration.
+
+Until next time!
+
+########################################################################################################################
