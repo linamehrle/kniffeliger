@@ -25,7 +25,7 @@ public class GameManager {
             /* rollDice() already checks if dice has been saved or if it has been rolled 3 times already (because then dice
             * cannot be rolled
             */
-            dice.rollDice();
+            dice.rollSingleDice();
         }
         return playersDice;
     }

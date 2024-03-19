@@ -5,43 +5,38 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-// asserThrows
-// augenzahl <= 25
+
 class GameManagerTest {
 
     /*
-     * Tests specific cases of dice rolls so the outcome can be determined.
-    */
-    int[] ones = {2, 1, 1, 4, 1};
-    int[] twos = {2, 1, 1, 4, 2};
-    int[] threes = {3, 3, 3, 3, 3};
-    int[] fours = {2, 6, 4, 4, 1};
-    int[] fives = {5, 1, 5, 5, 5};
-    int[] sixes = {3, 6, 3, 6, 5};
-    int[] fourOfAKind1 = {4, 3, 4, 4, 4};
-    int[] fourOfAKind2 = {6, 5, 5, 5, 5};
-    int[] fullHouse = {6, 4, 6, 4, 6};
-    int[] smallStraight1 = {1, 2, 3, 4, 1};
-    int[] smallStraight2 = {2, 3, 3, 5, 4};
-    int[] smallStraight3 = {4, 4, 3, 2, 1};
-    int[] largeStraight1 = {1, 2, 3, 4, 5};
-    int[] largeStraight2 = {2, 3, 4, 5, 6};
-
+     * #################################################################################################################
+     * TESTS IF EXCEPTIONS GET THROWN CORRECTLY
+     * #################################################################################################################
+     */
     @Test
     @DisplayName("Tests if exceptions get thrown correctly.")
     void gameManagerExceptionsTest() {
+        // generates Dice array of length between 6 and 100 with numbers of values between 1 and 6 inside
+        Dice[] largeRandomDiceArray = new Dice[(int) Math.floor(Math.random() * 100+ 6)];
+
+        // generates Dice array of length between 6 and 100 with numbers of values between 1 and 6 inside
+        Dice[] smallRandomDiceArray = new Dice[(int) Math.floor(Math.random() * 4+ 1)];
+
         // generate array of random length between 6 and 100 with numbers of values between 1 and 6 inside
         int[] largeRandomArray = new int[(int) Math.floor(Math.random() * 100+ 6)];
         for (int num : largeRandomArray){
             num = (int) Math.floor(Math.random() * 6+ 1);
         }
+        
         // generate array of random length between 1 and 5 with numbers of values between 1 and 6 inside
         int[] smallRandomArray = new int[(int) Math.floor(Math.random() * 4+ 1)];
         for (int num : smallRandomArray){
             num = (int) Math.floor(Math.random() * 6+ 1);
         }
 
-        assertAll(() -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(largeRandomArray, 1)),
+        assertAll(() -> assertThrows(Exception.class, () -> GameManager.rollDice(largeRandomDiceArray)),
+                () -> assertThrows(Exception.class, () -> GameManager.rollDice(smallRandomDiceArray)),
+                () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(largeRandomArray, 1)),
                 () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(largeRandomArray, 2)),
                 () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(largeRandomArray, 3)),
                 () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(largeRandomArray, 4)),
@@ -63,13 +58,36 @@ class GameManagerTest {
                 () -> assertThrows(Exception.class, () -> GameManager.threeOfAKind(smallRandomArray)),
                 () -> assertThrows(Exception.class, () -> GameManager.fourOfAKind(smallRandomArray)),
                 () -> assertThrows(Exception.class, () -> GameManager.fullHouse(smallRandomArray)),
-                () -> assertThrows(Exception.class, () -> GameManager.smallStraight(smallStraight1)),
+                () -> assertThrows(Exception.class, () -> GameManager.smallStraight(smallRandomArray)),
                 () -> assertThrows(Exception.class, () -> GameManager.largeStraight(smallRandomArray)),
                 () -> assertThrows(Exception.class, () -> GameManager.kniffeliger(smallRandomArray)),
                 () -> assertThrows(Exception.class, () -> GameManager.chance(smallRandomArray))
+
+
         );
     }
 
+    /*
+     * #################################################################################################################
+     * TESTS FOR ENTRY CHECKS
+     * #################################################################################################################
+     */
+
+    //specific cases of dice rolls so the outcome can be determined.
+    int[] ones = {2, 1, 1, 4, 1};
+    int[] twos = {2, 1, 1, 4, 2};
+    int[] threes = {3, 3, 3, 3, 3};
+    int[] fours = {2, 6, 4, 4, 1};
+    int[] fives = {5, 1, 5, 5, 5};
+    int[] sixes = {3, 6, 3, 6, 5};
+    int[] fourOfAKind1 = {4, 3, 4, 4, 4};
+    int[] fourOfAKind2 = {6, 5, 5, 5, 5};
+    int[] fullHouse = {6, 4, 6, 4, 6};
+    int[] smallStraight1 = {1, 2, 3, 4, 1};
+    int[] smallStraight2 = {2, 3, 3, 5, 4};
+    int[] smallStraight3 = {4, 4, 3, 2, 1};
+    int[] largeStraight1 = {1, 2, 3, 4, 5};
+    int[] largeStraight2 = {2, 3, 4, 5, 6};
 
     @Test
     @DisplayName("Checks if single value entries work.")
