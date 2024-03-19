@@ -30,24 +30,43 @@ class GameManagerTest {
     @Test
     @DisplayName("Tests if exceptions get thrown correctly.")
     void gameManagerExceptionsTest() {
-        // generate array of random length between 6 and 100 with only 1 to 6 inside
-        int[] randomArray = new int[(int) Math.floor(Math.random() * 100+ 6)];
-        for (int num : randomArray){
+        // generate array of random length between 6 and 100 with numbers of values between 1 and 6 inside
+        int[] largeRandomArray = new int[(int) Math.floor(Math.random() * 100+ 6)];
+        for (int num : largeRandomArray){
             num = (int) Math.floor(Math.random() * 6+ 1);
         }
-        assertAll(() -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(randomArray, 1)),
-                () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(randomArray, 2)),
-                () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(randomArray, 3)),
-                () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(randomArray, 4)),
-                () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(randomArray, 5)),
-                () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(randomArray, 6)),
-                () -> assertThrows(Exception.class, () -> GameManager.threeOfAKind(randomArray)),
-                () -> assertThrows(Exception.class, () -> GameManager.fourOfAKind(randomArray)),
-                () -> assertThrows(Exception.class, () -> GameManager.fullHouse(randomArray)),
-                () -> assertThrows(Exception.class, () -> GameManager.smallStraight(randomArray)),
-                () -> assertThrows(Exception.class, () -> GameManager.largeStraight(randomArray)),
-                () -> assertThrows(Exception.class, () -> GameManager.kniffeliger(randomArray)),
-                () -> assertThrows(Exception.class, () -> GameManager.chance(randomArray))
+        // generate array of random length between 1 and 5 with numbers of values between 1 and 6 inside
+        int[] smallRandomArray = new int[(int) Math.floor(Math.random() * 4+ 1)];
+        for (int num : smallRandomArray){
+            num = (int) Math.floor(Math.random() * 6+ 1);
+        }
+
+        assertAll(() -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(largeRandomArray, 1)),
+                () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(largeRandomArray, 2)),
+                () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(largeRandomArray, 3)),
+                () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(largeRandomArray, 4)),
+                () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(largeRandomArray, 5)),
+                () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(largeRandomArray, 6)),
+                () -> assertThrows(Exception.class, () -> GameManager.threeOfAKind(largeRandomArray)),
+                () -> assertThrows(Exception.class, () -> GameManager.fourOfAKind(largeRandomArray)),
+                () -> assertThrows(Exception.class, () -> GameManager.fullHouse(largeRandomArray)),
+                () -> assertThrows(Exception.class, () -> GameManager.smallStraight(largeRandomArray)),
+                () -> assertThrows(Exception.class, () -> GameManager.largeStraight(largeRandomArray)),
+                () -> assertThrows(Exception.class, () -> GameManager.kniffeliger(largeRandomArray)),
+                () -> assertThrows(Exception.class, () -> GameManager.chance(largeRandomArray)),
+                () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(smallRandomArray, 1)),
+                () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(smallRandomArray, 2)),
+                () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(smallRandomArray, 3)),
+                () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(smallRandomArray, 4)),
+                () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(smallRandomArray, 5)),
+                () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(smallRandomArray, 6)),
+                () -> assertThrows(Exception.class, () -> GameManager.threeOfAKind(smallRandomArray)),
+                () -> assertThrows(Exception.class, () -> GameManager.fourOfAKind(smallRandomArray)),
+                () -> assertThrows(Exception.class, () -> GameManager.fullHouse(smallRandomArray)),
+                () -> assertThrows(Exception.class, () -> GameManager.smallStraight(smallStraight1)),
+                () -> assertThrows(Exception.class, () -> GameManager.largeStraight(smallRandomArray)),
+                () -> assertThrows(Exception.class, () -> GameManager.kniffeliger(smallRandomArray)),
+                () -> assertThrows(Exception.class, () -> GameManager.chance(smallRandomArray))
         );
     }
 
