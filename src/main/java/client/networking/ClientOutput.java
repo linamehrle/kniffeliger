@@ -93,9 +93,9 @@ public class ClientOutput {
             out.write(message);
             out.newLine();
             out.flush();
-            if (!message.contains("PONG")) {
+            /*if (!message.contains("PONG")) {
                 System.out.println("message send to server: " + message);
-            }
+            }*/
         } catch (IOException e) {
             e.printStackTrace();
         }

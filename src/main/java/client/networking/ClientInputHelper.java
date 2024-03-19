@@ -32,7 +32,7 @@ public class ClientInputHelper implements Runnable {
 
         switch (cmd) {
 
-            case CHNA -> System.out.println("Your username is now " + input[1] + ". To change it, use the command CHNA.");
+            case CHNA -> System.out.println("Your username is now " + input[1]);
             case QUIT -> gameManager.disconnect();
             case PING -> pong.returnPing(input[1]);
             default -> System.out.println("unknown command received from server " + message);

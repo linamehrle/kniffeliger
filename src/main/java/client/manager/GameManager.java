@@ -16,7 +16,8 @@ public class GameManager {
     private ClientInput clientInput;
     private ClientOutput clientOutput;
     private Pong pong;
-    private GameLogicManager logicManager;
+
+    //private GameLogicManager logicManager; for later
 
     /**
      * Constructor of GameManager.
@@ -28,6 +29,7 @@ public class GameManager {
             // create manager
             clientOutput = new ClientOutput(socket);
 
+            // auch einfach this übergeben?
             consoleInput = new ConsoleInput(clientOutput);
             Thread consoleThread = new Thread(consoleInput);
             consoleThread.start();
@@ -40,16 +42,21 @@ public class GameManager {
             Thread pongThread = new Thread(pong);
             pongThread.start();
 
-            //logicManager = new GameLogicManager();
+            //logicManager = new GameLogicManager(); for later
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("no server found\ngoodbye!");
+            //e.printStackTrace();
+            return;
         }
 
         // print welcome text
         String welcomeText = "==============================================================\n" +
                 "===                     Kniffeliger                        ===\n" +
                 "==============================================================\n" +
-                "Welcome to Kniffeliger TestDemo.";
+                "Welcome to Kniffeliger TestDemo.\n" +
+                "You can use the following commands:\n" +
+                "\\changeUsername <new username> to change your username\n" +
+                "add other stuff here";
         System.out.println(welcomeText);
 
         String username = System.getenv("USERNAME");

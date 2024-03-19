@@ -31,7 +31,7 @@ public class ConsoleInput implements Runnable {
             while (!stop) {
                 if(in.ready()) {
                     String message = in.readLine();
-                    System.out.println("read the following message: " + message);
+                    //System.out.println("read the following message: " + message);
                     clientOutput.sendFromConsoleIn(message);
                 }
             }
