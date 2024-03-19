@@ -180,3 +180,19 @@ Enough about today because I also learnt THREE VERY IMPORTANT THINGS THIS WEEK:
 Okay that is all for today. Sleep well and until next time!
 
 ########################################################################################################################
+
+TUE, 19.3.24 (Anisja)
+
+Dear Diary
+
+We received the points for milestone one, or should I say no points. That humbled us quickly. Also, I think not all the
+negative points are valid. But they said our pen pal-ship is good, so we keep that going for sure. In this exercise
+lesson, we went through the milestone 2 requirements and realised, that they definitely do not always put down every
+requirement in their little list - how malicious! Anyway, talk to you soon!
+
+Next step is: team meeting today. We will talk about game logic, networking and how bad milestone 1 was.
+I will update you on the meeting later.
+
+Until next time!
+
+########################################################################################################################
