@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 public class ServerOutput {
 
@@ -30,6 +31,7 @@ public class ServerOutput {
             case CHNA -> sendToClient("CHNA " + message);
             case QUIT -> sendToClient("QUIT " + message);
             case PING -> sendToClient("PING " + message);
+            case PONG -> sendToClient("PONG " + message);
             default -> System.out.println("unknown command to send from server to client " + message);
 
         }
@@ -45,6 +47,7 @@ public class ServerOutput {
         }
     }
 
+    //where did we use this again?
     public void stop() throws IOException {
         out.close();
     }

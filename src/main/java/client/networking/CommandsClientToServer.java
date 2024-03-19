@@ -20,6 +20,8 @@ public enum CommandsClientToServer {
      */
     CHNA,
 
+    PING,
+
     /**
      *  returns a ping from the server with a ping from the client
      */

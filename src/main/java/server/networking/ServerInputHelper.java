@@ -7,11 +7,13 @@ public class ServerInputHelper implements Runnable {
     ClientThread client;
     String message;
     Ping ping;
+    ServerOutput serverOutput;
 
     ServerInputHelper(ClientThread client, String message) {
         this.client = client;
         this.message = message;
         this.ping = client.getPing();
+        this.serverOutput = client.getServerOutput();
     }
 
     @Override
@@ -37,6 +39,7 @@ public class ServerInputHelper implements Runnable {
             case CHNA -> client.changePlayerName(input[1]);
             case QUIT -> client.disconnect();
             case PONG -> ping.updatePong(input[1]);
+            case PING -> serverOutput.send(CommandsServerToClient.PONG, input[1]);
             //TODO chat? eigene klasse?
             default -> System.out.println("unknown command received from client " + message);
         }

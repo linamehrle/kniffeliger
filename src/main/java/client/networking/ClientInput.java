@@ -31,14 +31,13 @@ public class ClientInput implements Runnable {
                     String message = in.readLine();
                     ClientInputHelper processor = new ClientInputHelper(gameManager, message);
                     Thread processorThread = new Thread(processor);
-                    processorThread.run();
+                    processorThread.start();
                 }
             }
 
             in.close();
 
-        } catch (
-                Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }

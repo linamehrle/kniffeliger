@@ -23,6 +23,7 @@ public class ClientThread implements Runnable{
 
     @Override
     public void run() {
+        //warum muss der output kein thread sein?
         serverOutput = new ServerOutput(socket);
 
         //getter für den socket? nur this übergeben?
@@ -63,7 +64,7 @@ public class ClientThread implements Runnable{
 
     private synchronized boolean usernameIsTaken(String username) {
         for (Player player : playerList) {
-            if (player.getUsername().equals(username)) {
+            if (player.getUsername().equals(username) && !player.equals(this.player)) {
                 return true;
             }
         }

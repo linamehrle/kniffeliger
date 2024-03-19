@@ -25,8 +25,8 @@ public class Server {
                 // wait for connections and create new thread
                 Socket clientSocket = socket.accept();
                 ClientThread client = new ClientThread(clientSocket);
-                Thread echoClientThread = new Thread(client);
-                echoClientThread.start();
+                Thread clientThread = new Thread(client);
+                clientThread.start();
             }
         } catch (IOException e) {
             e.printStackTrace();

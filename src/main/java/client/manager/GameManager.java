@@ -54,9 +54,11 @@ public class GameManager {
                 "===                     Kniffeliger                        ===\n" +
                 "==============================================================\n" +
                 "Welcome to Kniffeliger TestDemo.\n" +
+                "==============================================================\n" +
                 "You can use the following commands:\n" +
                 "\\changeUsername <new username> to change your username\n" +
-                "add other stuff here";
+                "add other stuff here\n" +
+                "==============================================================\n";
         System.out.println(welcomeText);
 
         String username = System.getenv("USERNAME");

@@ -1,8 +1,6 @@
 package client.networking;
 
-import client.networking.CommandsClientToServer;
 import java.io.BufferedWriter;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
@@ -78,7 +76,8 @@ public class ClientOutput {
         switch (cmd) {
 
             case CHNA -> sendToServer("CHNA " + message);
-            case PONG -> sendToServer("PONG " + message);
+            case PONG -> sendToServer("PONG " + message); //does this happen?
+            case PING -> sendToServer("PING " + message);
             default -> System.out.println("unknown command to send from client to server " + message);
 
         }

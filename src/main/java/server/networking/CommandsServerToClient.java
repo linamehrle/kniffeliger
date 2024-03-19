@@ -20,6 +20,8 @@ public enum CommandsServerToClient {
      */
     PING,
 
+    PONG,
+
     QUIT
 
 }

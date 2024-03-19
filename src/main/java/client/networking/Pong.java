@@ -4,11 +4,11 @@ import client.manager.GameManager;
 
 public class Pong implements Runnable {
 
-    private boolean receivedFirstPing = false;
+    //private boolean receivedFirstPing = false;
 
     //stop überall direkt als false?
     private boolean stop = false;
-    private long lastReceivedPing = System.currentTimeMillis();
+    private long lastReceivedPong;
     private ClientOutput clientOutput;
     private GameManager gameManager;
 
@@ -19,20 +19,13 @@ public class Pong implements Runnable {
 
     @Override
     public void run() {
-        //waiting for the first ping
-        while (!receivedFirstPing && !stop) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
 
-        //check difference in system times server/client
-        long timeDifference = Math.abs(lastReceivedPing - System.currentTimeMillis());
+        lastReceivedPong = System.currentTimeMillis();
 
         //checking for timeouts
-        while (!stop && Math.abs(lastReceivedPing - System.currentTimeMillis()) < timeDifference + 5000) {
+        while (!stop && Math.abs(lastReceivedPong - System.currentTimeMillis()) < 5000) {
+            clientOutput.send(CommandsClientToServer.PING, String.valueOf(System.currentTimeMillis()));
+            //System.out.println("Ping send");
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -46,15 +39,10 @@ public class Pong implements Runnable {
         }
     }
 
-    public void returnPing(String pingTime) {
-        if (!receivedFirstPing) {
-            receivedFirstPing = true;
-        }
-        lastReceivedPing = Long.parseLong(pingTime);
-        clientOutput.send(CommandsClientToServer.PONG, pingTime);
-        //System.out.println("Ping received and returned");
+    public void updatePong(String pongTime) {
+        lastReceivedPong = Long.parseLong(pongTime);
+        //System.out.println("Pong received and updated");
     }
-
     public void stop() {
         stop = true;
     }

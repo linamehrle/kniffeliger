@@ -1,8 +1,5 @@
 package client.networking;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-
 import client.manager.GameManager;
 import server.networking.CommandsServerToClient;
 
@@ -10,11 +7,13 @@ public class ClientInputHelper implements Runnable {
     GameManager gameManager;
     String message;
     Pong pong;
+    ClientOutput clientOutput;
 
     public ClientInputHelper(GameManager gameManager, String message) {
         this.gameManager = gameManager;
         this.message = message;
         this.pong = gameManager.getPong();
+        this.clientOutput = gameManager.getClientOutput();
     }
 
     @Override
@@ -34,7 +33,9 @@ public class ClientInputHelper implements Runnable {
 
             case CHNA -> System.out.println("Your username is now " + input[1]);
             case QUIT -> gameManager.disconnect();
-            case PING -> pong.returnPing(input[1]);
+            //case PING -> pong.returnPing(input[1]);
+            case PING -> clientOutput.send(CommandsClientToServer.PONG, input[1]); // simply return the ping
+            case PONG -> pong.updatePong(input[1]);
             default -> System.out.println("unknown command received from server " + message);
         }
 

@@ -1,8 +1,6 @@
 package server.networking;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -22,15 +20,14 @@ public class ServerInput implements Runnable {
     @Override
     public void run() {
         try {
-            //DataInputStream in = new DataInputStream(socket.getInputStream());
+
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
             String message;
 
             while (!stop) {
                 if(in.ready()) {
                     message = in.readLine();
-                    System.out.println("received message: " + message);
-                    //message = in.readUTF();
+                    //System.out.println("received message: " + message);
                     ServerInputHelper processor = new ServerInputHelper(client, message);
                     Thread processorThread = new Thread(processor);
                     processorThread.start();
