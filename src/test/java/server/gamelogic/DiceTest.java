@@ -16,10 +16,10 @@ class DiceTest {
         Dice dice1 = new Dice();
         Dice dice2 = new Dice();
         Dice dice3 = new Dice();
-        dice2.rollDice();
-        dice3.rollDice();
-        dice3.rollDice();
-        dice3.rollDice();
+        dice2.rollSingleDice();
+        dice3.rollSingleDice();
+        dice3.rollSingleDice();
+        dice3.rollSingleDice();
 
         assertAll(() -> assertEquals(0, dice1.getNumberOfRolls()),
                 () -> assertEquals(1, dice2.getNumberOfRolls()),
@@ -27,9 +27,9 @@ class DiceTest {
                 () -> assertEquals(0, dice1.getNumberOfRolls()),
                 () -> assertEquals(1, dice2.getNumberOfRolls()),
                 () -> assertEquals(3, dice3.getNumberOfRolls()),
-                () -> assertTrue(dice1.rollDice()),
-                () -> assertTrue(dice2.rollDice()),
-                () -> assertFalse(dice3.rollDice()),
+                () -> assertTrue(dice1.rollSingleDice()),
+                () -> assertTrue(dice2.rollSingleDice()),
+                () -> assertFalse(dice3.rollSingleDice()),
                 () -> assertFalse(dice1.getSavingStatus()),
                 () -> assertFalse(dice2.getSavingStatus()),
                 () -> assertTrue(dice3.getSavingStatus()),
@@ -48,8 +48,8 @@ class DiceTest {
 
         assertAll(() -> assertFalse(dice1.getSavingStatus()),
                 () -> assertTrue(dice2.getSavingStatus()),
-                () -> assertTrue(dice1.rollDice()),
-                () -> assertFalse(dice2.rollDice())
+                () -> assertTrue(dice1.rollSingleDice()),
+                () -> assertFalse(dice2.rollSingleDice())
         );
     }
 
@@ -57,14 +57,14 @@ class DiceTest {
     @DisplayName("Checks if reset function works.")
     void resetDiceTest(){
         Dice dice = new Dice();
-        dice.rollDice();
+        dice.rollSingleDice();
         dice.resetDice();
 
         assertAll(() -> assertEquals(0, dice.getNumberOfRolls()),
                 () -> assertFalse(dice.getSavingStatus()),
                 () -> assertEquals(0, dice.getNumberOfRolls()),
                 () -> assertEquals(0, dice.getDiceValue()),
-                () -> assertTrue(dice.rollDice())
+                () -> assertTrue(dice.rollSingleDice())
         );
 
     }
