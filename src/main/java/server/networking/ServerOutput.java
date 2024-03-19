@@ -1,18 +1,22 @@
 package server.networking;
 
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class ServerOutput {
 
     private BufferedWriter out;
+    //private DataOutputStream out;
 
     public ServerOutput(Socket socket) {
 
         try {
-            out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            //out = new DataOutputStream(socket.getOutputStream());
+            out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

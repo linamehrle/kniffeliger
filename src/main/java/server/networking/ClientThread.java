@@ -43,6 +43,8 @@ public class ClientThread implements Runnable{
 
     public synchronized void changePlayerName(String username) {
 
+        System.out.println("received the username: " + username);
+
         username = username.replace(" ", "_");
 
         if(usernameIsTaken(username)) {

@@ -2,19 +2,23 @@ package client.networking;
 
 import client.networking.CommandsClientToServer;
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 /**
  * handles commands and messages from client to server
  */
 public class ClientOutput {
     private BufferedWriter out;
+    //DataOutputStream out;
 
     public ClientOutput(Socket socket) throws IOException {
 
-        out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        //out = new DataOutputStream(socket.getOutputStream());
+        out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
 
     }
 
@@ -89,6 +93,9 @@ public class ClientOutput {
             out.write(message);
             out.newLine();
             out.flush();
+            if (!message.contains("PONG")) {
+                System.out.println("message send to server: " + message);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

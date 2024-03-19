@@ -1,8 +1,10 @@
 package client.networking;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 /**
  * this class reads the terminal input for the client
@@ -23,12 +25,13 @@ public class ConsoleInput implements Runnable {
      */
     @Override
     public void run() {
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
+        //DataInputStream in = new DataInputStream(System.in);
         try {
             while (!stop) {
                 if(in.ready()) {
                     String message = in.readLine();
+                    System.out.println("read the following message: " + message);
                     clientOutput.sendFromConsoleIn(message);
                 }
             }
