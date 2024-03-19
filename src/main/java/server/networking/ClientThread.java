@@ -1,4 +1,5 @@
 package server.networking;
+import server.Chat;
 import server.Player;
 
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 public class ClientThread implements Runnable{
 
     private static ArrayList<Player> playerList = new ArrayList<>();
+    private static Chat chat = new Chat(playerList);
     private Player player;
     private Socket socket;
 
@@ -42,6 +44,7 @@ public class ClientThread implements Runnable{
         pingThread.start();
     }
 
+    //in den player verlegen?
     public synchronized void changePlayerName(String username) {
 
         System.out.println("received the username: " + username);
@@ -62,6 +65,7 @@ public class ClientThread implements Runnable{
         serverOutput.send(CommandsServerToClient.CHNA, username);
     }
 
+    //in den player verlegen?
     private synchronized boolean usernameIsTaken(String username) {
         for (Player player : playerList) {
             if (player.getUsername().equals(username) && !player.equals(this.player)) {
