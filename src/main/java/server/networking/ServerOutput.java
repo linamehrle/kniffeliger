@@ -33,6 +33,7 @@ public class ServerOutput {
             case PING -> sendToClient("PING " + message);
             case PONG -> sendToClient("PONG " + message);
             case CHAT -> sendToClient("CHAT " + message);
+            case PRNT -> sendToClient("PRNT " + message);
             default -> System.out.println("unknown command to send from server to client " + message);
 
         }
