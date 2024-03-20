@@ -41,7 +41,7 @@ public class NetworkManagerClient {
             String end = "\r\n";
             out.write(end.getBytes());
         } catch (IOException e) {
-            TerminalView.printText(e.getMessage());
+            TerminalView.printlnText(e.getMessage());
         }
     }
 
@@ -51,7 +51,7 @@ public class NetworkManagerClient {
             out.close();
             socket.close();
         } catch (IOException e) {
-            TerminalView.printText(e.getMessage());
+            TerminalView.printlnText(e.getMessage());
         }
     }
 }

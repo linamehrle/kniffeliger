@@ -6,25 +6,32 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * This class represents the centrepiece of the client. It is designed to manage between the networking and GUI. The
+ * GameManager also serves as starting point for the client.
+ */
 public class GameManager {
     // Manager
     private NetworkManagerClient networkManager;
-    private GameLogicManager logicManager;
 
     /**
-     * Constructor of GameManager.
+     * This method constructs the game manager of the client with given parameter given from the main method.
+     * @param hostName host address to connect to
+     * @param port port to connect to
+     * @param username name of the user
      */
-    public GameManager(String hostName, int port) {
+    public GameManager(String hostName, int port, String username) {
         // create manager
         networkManager = new NetworkManagerClient(hostName, port);
-        logicManager = new GameLogicManager();
 
         // print welcome text
-        String welcomeText = "==============================================================\n" +
-                "===                     Kniffeliger                        ===\n" +
-                "==============================================================\n" +
-                "Welcome to Kniffeliger TestDemo.";
-        TerminalView.printText(welcomeText);
+        String welcomeText = """
+                ==============================================================
+                ===                     Kniffeliger                        ===
+                ==============================================================
+                Welcome to Kniffeliger TestDemo.""";
+
+        TerminalView.printlnText(welcomeText);
 
         // start game
         this.start();
@@ -49,19 +56,9 @@ public class GameManager {
                 networkManager.sendToServer(consoleIn);
             }
         } catch(IOException e) {
-            TerminalView.printText(e.getMessage());
+            TerminalView.printlnText(e.getMessage());
         }
 
         networkManager.close();
-    }
-
-
-
-    /**
-     * The main method.
-     * @param args first param is hostname, second port
-     */
-    public static void main(String[] args) {
-        GameManager gameManager = new GameManager(args[0], Integer.parseInt(args[1]));
     }
 }

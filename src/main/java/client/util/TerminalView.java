@@ -9,8 +9,16 @@ public class TerminalView {
      * This function prints the given text in a new line to the console.
      * @param text the given text which will be printed to the console
      */
-    public static void printText(String text) {
+    public static void printlnText(String text) {
         System.out.println(text);
+    }
+
+    /**
+     * This function prints the given text to the console.
+     * @param text the given text which will be printed to the console
+     */
+    public static void printText(String text) {
+        System.out.print(text);
     }
 
     /**
@@ -22,7 +30,7 @@ public class TerminalView {
         // create reader
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        printText(text);
+        printlnText(text);
 
         try {
             // read and return input
@@ -34,7 +42,7 @@ public class TerminalView {
             // return input
             return input;
         } catch (IOException e) {
-            printText("An error occurred.");
+            printlnText("An error occurred.");
             throw new RuntimeException(e);
         }
     }
