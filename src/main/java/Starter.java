@@ -9,7 +9,7 @@ public class Starter {
     /**
      * The main method.
      * @param args In args we have that args[0] should be either "client" or "server". The subsequent parameters are then
-     *             for client <hostadress>:<port> [<username>] and for server <port>.
+     *             for client &lt;hostadress&gt;:&lt;port&gt; [&lt;username&gt;] and for server &lt;port&gt;.
      */
     public static void main(String[] args) {
         try {
