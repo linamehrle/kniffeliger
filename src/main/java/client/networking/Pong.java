@@ -25,7 +25,7 @@ public class Pong implements Runnable {
         //checking for timeouts
         while (!stop && Math.abs(lastReceivedPong - System.currentTimeMillis()) < 5000) {
             clientOutput.send(CommandsClientToServer.PING, String.valueOf(System.currentTimeMillis()));
-            //System.out.println("Ping send");
+            System.out.println("Ping send");
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -41,7 +41,7 @@ public class Pong implements Runnable {
 
     public void updatePong(String pongTime) {
         lastReceivedPong = Long.parseLong(pongTime);
-        //System.out.println("Pong received and updated");
+        System.out.println("Pong received and updated");
     }
     public void stop() {
         stop = true;

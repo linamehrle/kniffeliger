@@ -4,17 +4,18 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import server.Player;
 
 public class ServerInput implements Runnable {
 
     private boolean stop;
     private Socket socket;
-    private ClientThread client;
+    private ClientThread clientThread;
 
-    public ServerInput(Socket socket, ClientThread client) {
+    public ServerInput(ClientThread clientThread) {
         this.stop = false;
-        this.socket = socket;
-        this.client = client;
+        this.socket = clientThread.getSocket();
+        this.clientThread = clientThread;
     }
 
     @Override
@@ -28,7 +29,7 @@ public class ServerInput implements Runnable {
                 if(in.ready()) {
                     message = in.readLine();
                     //System.out.println("received message: " + message);
-                    ServerInputHelper processor = new ServerInputHelper(client, message);
+                    ServerInputHelper processor = new ServerInputHelper(clientThread, message);
                     Thread processorThread = new Thread(processor);
                     processorThread.start();
                 }

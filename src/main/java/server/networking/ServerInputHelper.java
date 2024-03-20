@@ -1,19 +1,23 @@
 package server.networking;
 
 import client.networking.CommandsClientToServer;
+import server.Player;
 
 public class ServerInputHelper implements Runnable {
 
-    ClientThread client;
+    //ClientThread client;  not necc?
     String message;
     Ping ping;
     ServerOutput serverOutput;
+    Player player;
 
-    ServerInputHelper(ClientThread client, String message) {
-        this.client = client;
+    //wie greife ich auf die player liste auf dem server zu?
+
+    ServerInputHelper(ClientThread clientThread, String message) {
         this.message = message;
-        this.ping = client.getPing();
-        this.serverOutput = client.getServerOutput();
+        this.ping = clientThread.getPing();
+        this.serverOutput = clientThread.getServerOutput();
+        this.player = clientThread.getPlayer();
     }
 
     @Override
@@ -36,11 +40,10 @@ public class ServerInputHelper implements Runnable {
 
         switch (cmd) {
 
-            case CHNA -> client.changePlayerName(input[1]);
-            case QUIT -> client.disconnect();
+            case CHNA -> player.changePlayerName(input[1]);
+            //case QUIT -> client.disconnect(); how to handle disconnect?
             case PONG -> ping.updatePong(input[1]);
             case PING -> serverOutput.send(CommandsServerToClient.PONG, input[1]);
-            //TODO chat? eigene klasse?
             default -> System.out.println("unknown command received from client " + message);
         }
 

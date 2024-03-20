@@ -1,15 +1,11 @@
 package server.networking;
-import server.Chat;
-import server.Player;
 
+import server.Player;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class ClientThread implements Runnable{
 
-    private static ArrayList<Player> playerList = new ArrayList<>();
-    private static Chat chat = new Chat(playerList);
     private Player player;
     private Socket socket;
 
@@ -17,9 +13,8 @@ public class ClientThread implements Runnable{
     private ServerInput serverInput;
     private Ping ping;
 
-    public ClientThread(Socket socket) {
-        this.player = new Player();
-        playerList.add(player);
+    public ClientThread(Socket socket, Player player) {
+        this.player = player;
         this.socket = socket;
     }
 
@@ -29,7 +24,7 @@ public class ClientThread implements Runnable{
         serverOutput = new ServerOutput(socket);
 
         //getter für den socket? nur this übergeben?
-        serverInput = new ServerInput(socket, this);
+        serverInput = new ServerInput(this);
         Thread thread = new Thread(serverInput);
         thread.start();
 
@@ -45,7 +40,7 @@ public class ClientThread implements Runnable{
     }
 
     //in den player verlegen?
-    public synchronized void changePlayerName(String username) {
+    /*public synchronized void changePlayerName(String username) {
 
         System.out.println("received the username: " + username);
 
@@ -74,6 +69,10 @@ public class ClientThread implements Runnable{
         }
 
         return false;
+    }*/
+
+    public void sendToServerOutput(CommandsServerToClient cmd, String message) {
+        serverOutput.send(cmd, message);
     }
 
     public ServerOutput getServerOutput() {
@@ -88,10 +87,14 @@ public class ClientThread implements Runnable{
         return ping;
     }
 
+    public Socket getSocket() {
+        return socket;
+    }
+
     public void disconnect() {
         try {
             serverOutput.send(CommandsServerToClient.QUIT, "goodbye client");
-            playerList.remove(player);
+            //playerList.remove(player); //how to remove player on disconnect?
             ping.stop();
             serverInput.stop();
             socket.close();
