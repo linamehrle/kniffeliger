@@ -50,15 +50,17 @@ public class GameManager {
         }
 
         // print welcome text
-        String welcomeText = "==============================================================\n" +
-                "===                     Kniffeliger                        ===\n" +
-                "==============================================================\n" +
+        String welcomeText = "======================================================================\n" +
+                "====                        Kniffeliger                           ====\n" +
+                "======================================================================\n" +
                 "Welcome to Kniffeliger TestDemo.\n" +
-                "==============================================================\n" +
+                "======================================================================\n" +
                 "You can use the following commands:\n" +
                 "\\changeUsername <new username> to change your username\n" +
-                "add other stuff here\n" +
-                "==============================================================\n";
+                "\\chat <message> to send a chat message to all other players\n" +
+                "\\whisper <username> <message> to send a chat to only one other player\n" +
+                "\\quit to leave the game\n" +
+                "======================================================================\n";
         System.out.println(welcomeText);
 
         String username = System.getenv("USERNAME");

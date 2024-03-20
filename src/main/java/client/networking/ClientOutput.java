@@ -24,25 +24,18 @@ public class ClientOutput {
      */
     public synchronized void sendFromConsoleIn(String message) {
 
-        //TODO: what happens when " " or /newline is entered only, i.e. if input[0] doesnt exist
-        //TODO: input in the console must not be the exact protocol
+        //TODO what happens when " " or /newline is entered only, i.e. if input[0] doesnt exist
+        //TODO input in the console must not be the exact protocol
 
         String[] input = message.split(" ", 2);
         CommandsClientToServer cmd;
-
-        /*try {
-            cmd = CommandsClientToServer.valueOf(input[0].toUpperCase());
-        } catch (IllegalArgumentException e) {
-            System.out.println("Invalid command " + input[0]);
-            return;
-        }*/
 
         //case: only command without message is entered
         if(input.length == 1) {
 
             switch (input[0]) {
 
-                case "QUIT" -> sendToServer("QUIT goodbye!");
+                case "\\quit" -> sendToServer("QUIT goodbye!");
 
             }
 
@@ -52,9 +45,9 @@ public class ClientOutput {
 
             switch (input[0]) {
 
-                case "CHNA" -> sendToServer("CHNA " + input[1]);
-                case "CHAT" -> sendToServer("CHAT " + input[1]);
-                case "WHSP" -> sendToServer("WHSP " + input[1]);
+                case "\\changeUsername" -> sendToServer("CHNA " + input[1]);
+                case "\\chat" -> sendToServer("CHAT " + input[1]);
+                case "\\whisper" -> sendToServer("WHSP " + input[1]);
             }
 
         } else {
