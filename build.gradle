@@ -8,8 +8,12 @@ plugins {
  * set important variables/settings as sourceSet and the name of the main class.
  */
 version 0.2
-mainClassName = 'java.client.manager.GameManager'
+mainClassName = 'client.manager.GameManager'
 
+build {
+    // generate docs
+    dependsOn 'generateDocs'
+}
 
 javafx {
     version = "19.0.2.1"
