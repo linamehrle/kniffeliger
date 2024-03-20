@@ -26,11 +26,8 @@ public class Server {
             System.out.println("Waiting for connection on " + port);
 
             while(true) {
-                // wait for connections and create new thread
+                // wait for connections and create new player
                 Socket clientSocket = serverSocket.accept();
-                /*ClientThread client = new ClientThread(clientSocket);
-                Thread clientThread = new Thread(client);
-                clientThread.start();*/
                 Player player = new Player(clientSocket, playerList);
                 playerList.add(player);
             }

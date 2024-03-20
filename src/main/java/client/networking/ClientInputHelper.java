@@ -33,9 +33,9 @@ public class ClientInputHelper implements Runnable {
 
             case CHNA -> System.out.println("Your username is now " + input[1]);
             case QUIT -> gameManager.disconnect();
-            //case PING -> pong.returnPing(input[1]);
-            case PING -> clientOutput.send(CommandsClientToServer.PONG, input[1]); // simply return the ping
+            case PING -> clientOutput.send(CommandsClientToServer.PONG, input[1]);
             case PONG -> pong.updatePong(input[1]);
+            case CHAT -> System.out.println(input[1]);
             default -> System.out.println("unknown command received from server " + message);
         }
 

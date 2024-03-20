@@ -22,6 +22,10 @@ public enum CommandsServerToClient {
 
     PONG,
 
-    QUIT
+    QUIT,
+
+    CHAT,
+
+    WHSP
 
 }

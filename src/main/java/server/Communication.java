@@ -1,14 +1,10 @@
 package server;
 
 import java.util.ArrayList;
+import server.networking.CommandsServerToClient;
+import server.networking.ServerOutput;
 
-public class Chat {
-
-    private ArrayList<Player> playerList;
-
-    public Chat(ArrayList<Player> playerList) {
-        this.playerList = playerList;
-    }
+public class Communication {
 
     /**
      * sends a message from the server to all connected clients
@@ -23,8 +19,14 @@ public class Chat {
      * @param player the player which is sending the message
      * @param message
      */
-    public void sendChat(Player player, String message) {
-        //TODO
+    public static void sendChat(Player player, String message) {
+        ArrayList<Player> playerList = player.getPlayerList();
+        for (Player playerInList : playerList) {
+            if (!playerInList.equals(player)) {
+                ServerOutput serverOutput = playerInList.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
+                serverOutput.send(CommandsServerToClient.CHAT, player.getUsername() + ": " + message);
+            }
+        }
     }
 
     /**

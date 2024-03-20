@@ -11,11 +11,9 @@ import java.nio.charset.StandardCharsets;
  */
 public class ClientOutput {
     private BufferedWriter out;
-    //DataOutputStream out;
 
     public ClientOutput(Socket socket) throws IOException {
 
-        //out = new DataOutputStream(socket.getOutputStream());
         out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
 
     }
@@ -44,7 +42,7 @@ public class ClientOutput {
 
             switch (input[0]) {
 
-                case "QUIT" -> sendToServer("QUIT goodbye!"); //TODO how to end the client in this case
+                case "QUIT" -> sendToServer("QUIT goodbye!");
 
             }
 
@@ -56,8 +54,7 @@ public class ClientOutput {
 
                 case "CHNA" -> sendToServer("CHNA " + input[1]);
                 case "CHAT" -> sendToServer("CHAT " + input[1]);
-
-                //TODO: add other cases
+                case "WHSP" -> sendToServer("WHSP " + input[1]);
             }
 
         } else {
@@ -76,7 +73,7 @@ public class ClientOutput {
         switch (cmd) {
 
             case CHNA -> sendToServer("CHNA " + message);
-            case PONG -> sendToServer("PONG " + message); //does this happen?
+            case PONG -> sendToServer("PONG " + message);
             case PING -> sendToServer("PING " + message);
             default -> System.out.println("unknown command to send from client to server " + message);
 

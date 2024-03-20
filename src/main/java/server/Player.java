@@ -64,5 +64,11 @@ public class Player {
         this.username = username;
     }
 
-    //more getter and setter here
+    public ArrayList<Player> getPlayerList() {
+        return playerList;
+    }
+
+    public ClientThread getPlayerThreadManager() {
+        return playerThreadManager;
+    }
 }

@@ -3,6 +3,7 @@ package server.networking;
 import server.Player;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ClientThread implements Runnable{
 
@@ -39,38 +40,6 @@ public class ClientThread implements Runnable{
         pingThread.start();
     }
 
-    //in den player verlegen?
-    /*public synchronized void changePlayerName(String username) {
-
-        System.out.println("received the username: " + username);
-
-        username = username.replace(" ", "_");
-
-        if(usernameIsTaken(username)) {
-            int counter = 1;
-
-            while (usernameIsTaken(username + "_" + counter)) {
-                counter++;
-            }
-
-            username = username + "_" + counter;
-        }
-
-        player.setUsername(username);
-        serverOutput.send(CommandsServerToClient.CHNA, username);
-    }
-
-    //in den player verlegen?
-    private synchronized boolean usernameIsTaken(String username) {
-        for (Player player : playerList) {
-            if (player.getUsername().equals(username) && !player.equals(this.player)) {
-                return true;
-            }
-        }
-
-        return false;
-    }*/
-
     public void sendToServerOutput(CommandsServerToClient cmd, String message) {
         serverOutput.send(cmd, message);
     }
@@ -94,7 +63,8 @@ public class ClientThread implements Runnable{
     public void disconnect() {
         try {
             serverOutput.send(CommandsServerToClient.QUIT, "goodbye client");
-            //playerList.remove(player); //how to remove player on disconnect?
+            ArrayList<Player> playerList = player.getPlayerList();
+            playerList.remove(player);
             ping.stop();
             serverInput.stop();
             socket.close();

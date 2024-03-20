@@ -1,19 +1,19 @@
 package server.networking;
 
 import client.networking.CommandsClientToServer;
+import server.Communication;
 import server.Player;
 
 public class ServerInputHelper implements Runnable {
 
-    //ClientThread client;  not necc?
+    ClientThread clientThread;
     String message;
     Ping ping;
     ServerOutput serverOutput;
     Player player;
 
-    //wie greife ich auf die player liste auf dem server zu?
-
     ServerInputHelper(ClientThread clientThread, String message) {
+        this.clientThread = clientThread;
         this.message = message;
         this.ping = clientThread.getPing();
         this.serverOutput = clientThread.getServerOutput();
@@ -27,24 +27,26 @@ public class ServerInputHelper implements Runnable {
         CommandsClientToServer cmd;
 
         if (input.length != 2) {
-            System.out.println("Alfred: invalid message to server");
+            System.out.println("Invalid message to server");
             return;
         }
 
         try {
             cmd = CommandsClientToServer.valueOf(input[0].toUpperCase());
         } catch (IllegalArgumentException e) {
-            System.out.println("Alfred: received invalid command " + input[0]);
+            System.out.println("Received invalid command " + input[0]);
             return;
         }
 
         switch (cmd) {
 
             case CHNA -> player.changePlayerName(input[1]);
-            //case QUIT -> client.disconnect(); how to handle disconnect?
+            case QUIT -> clientThread.disconnect();
             case PONG -> ping.updatePong(input[1]);
             case PING -> serverOutput.send(CommandsServerToClient.PONG, input[1]);
+            case CHAT -> Communication.sendChat(player, input[1]);
             default -> System.out.println("unknown command received from client " + message);
+
         }
 
 
