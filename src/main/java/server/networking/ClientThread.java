@@ -30,7 +30,7 @@ public class ClientThread implements Runnable{
         thread.start();
 
         // connection
-        String msg = "Connection with " + player.getUsername() + " established.";
+        String msg = "Connection with " + player.getUsername() + " established";
         System.out.println(msg);
 
         //serverOutput.send(CommandsServerToClient.PRNT, "Alfred: " + msg);
@@ -69,7 +69,7 @@ public class ClientThread implements Runnable{
             serverInput.stop();
             socket.close();
 
-            System.out.println("Client has successfully disconnected");
+            System.out.println(player.getUsername() + " has successfully disconnected");
         } catch (IOException e) {
             e.printStackTrace();
         }

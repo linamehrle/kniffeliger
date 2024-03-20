@@ -27,12 +27,11 @@ public class Player {
     }
 
     public synchronized void changePlayerName(String username) {
-
-        System.out.println("received the username: " + username);
+        String savedUsername = this.username;
 
         username = username.replace(" ", "_");
 
-        if(usernameIsTaken(username)) {
+        if (usernameIsTaken(username)) {
             int counter = 1;
 
             while (usernameIsTaken(username + "_" + counter)) {
@@ -42,8 +41,15 @@ public class Player {
             username = username + "_" + counter;
         }
 
+        if (username == null) {
+            username = "AnisjaIstDieBeste<3";
+        }
+
         setUsername(username);
         playerThreadManager.sendToServerOutput(CommandsServerToClient.CHNA, username);
+
+        System.out.println("Player " + savedUsername + " has changed their name to " + username);
+
     }
 
     private synchronized boolean usernameIsTaken(String username) {

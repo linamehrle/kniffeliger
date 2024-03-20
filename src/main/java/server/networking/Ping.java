@@ -33,7 +33,7 @@ public class Ping implements Runnable{
         }
 
         if (!stop) {
-           System.out.println(player.getUsername() + " has timed out.");
+           System.out.println(player.getUsername() + " has timed out");
            clientThread.disconnect();
         }
 

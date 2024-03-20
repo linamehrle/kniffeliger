@@ -65,4 +65,13 @@ public class Communication {
         serverOutputRecipient.send(CommandsServerToClient.CHAT, player.getUsername() + " whispered: " + input[1]);
     }
 
+    /**
+     * send the message to all other players in the same lobby
+     * @param player the sender
+     * @param message
+     */
+    public static void sendToLobby(Player player, String message) {
+        //TODO
+    }
+
 }
