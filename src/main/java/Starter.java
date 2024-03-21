@@ -1,4 +1,3 @@
-import client.util.TerminalView;
 import server.Server;
 
 /**
@@ -32,8 +31,8 @@ public class Starter {
                     Please try again with the correct syntax.""";
 
 
-            TerminalView.printlnText(e.getMessage());
-            TerminalView.printlnText(errMsg);
+            System.out.println(e.getMessage());
+            System.out.println(errMsg);
         }
     }
 
@@ -72,7 +71,7 @@ public class Starter {
         }
 
         // start client
-        client.manager.GameManager client = new client.manager.GameManager(hostAddress, port, username);
+        client.GameManager client = new client.GameManager(hostAddress, port, username);
     }
 
     /**

@@ -1,14 +1,32 @@
 package server;
 
-import server.networking.NetworkManagerServer;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
 
-/**
- * This class represents the server and is designed to handle communications between the single lobbies, clients and logic.
- */
 public class Server {
-    NetworkManagerServer networkManager;
+
+    private ServerSocket serverSocket;
+
+    private static ArrayList<Player> playerList = new ArrayList<>();
 
     public Server(int port) {
-        networkManager = new NetworkManagerServer(port);
+        try {
+            // establish connection
+            serverSocket = new ServerSocket(port);
+
+            // connection established
+            System.out.println("Waiting for connection on " + port);
+
+            while(true) {
+                // wait for connections and create new player
+                Socket clientSocket = serverSocket.accept();
+                Player player = new Player(clientSocket, playerList);
+                playerList.add(player);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
