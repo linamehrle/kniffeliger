@@ -216,3 +216,29 @@ Next steps for our team:
 Until next time!
 
 ########################################################################################################################
+
+
+THU, 21.3.24 (Anisja)
+
+Dear Diary
+
+Woah, exception handling is exhausting. I am going through my code to test it with "meaningful unit tests" and also to
+catch those sneaky exceptions. That is a lot of work, but I think I will finish it by the end of today. I am also so
+excited that Lina soon has her network protocol all ready, and we can merge my game logic with her code. This is going
+to be the BEST PART because I will learn so, so much about networking and her code and I just love to work with her. I
+got to finish my game logic first though - woopsie. I also got to finish my quality assurance concept for this milestone
+and I think I already overdid it - double woopsie. I am also very excited for Dominique's work because he started to
+implement the basic GUI. Riccardo did the Gradle stuff for this milestone. He also is the police officer of our dreams
+(and our nightmares): he reminds us of important tasks, keeps us on track and gets on our nerves if we do sloppy work.
+We love and hate it at the same time (but we love him for doing this). So, as you can tell, we are all totally invested
+and super deeply committed to our roles (especially Riccardo*) and I am very, very grateful to have such cool,
+hardworking, smart team members. It is so much fun working with them. <3
+
+Until next time!
+
+* just kidding**
+
+
+** or not
+
+########################################################################################################################
