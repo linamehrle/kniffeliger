@@ -1,4 +1,3 @@
-# Kniffeliger
 
 <!---
 This is a readme file. It typically includes some information about your project.
@@ -20,7 +19,7 @@ Kniffeliger is a multiplayer computer game inspired by the classic [Kniffel](htt
     * [System Requirements](#systemrequirements)
     * [Installation](#installation)
 2. [Implementation](#implementation)
-3. [Ressources](#ressources)
+3. [Resources](#resources)
 4. [License](#license)
 5. [Authors](#authors)
 
@@ -36,7 +35,7 @@ Kniffeliger is implemented in [Java 19.0](https://dev.java) in a [client-server 
 
 
 
-## Ressources <a name="ressources"></a>
+## Resources <a name="resources"></a>
 * [Development Requirements](/docs/requirements.txt)
 * [Technical Documentation](TODO)
 * [Network protocol](/docs/networkProtocol.md)
