@@ -1,6 +1,6 @@
 package client.networking;
 
-import client.manager.GameManager;
+import client.GameManager;
 
 /**
  * This class handles the thread which sends a ping to the server in set intervals. It also handles a timeout.

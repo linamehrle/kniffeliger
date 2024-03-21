@@ -1,4 +1,4 @@
-package client.manager;
+package client;
 
 import client.networking.ClientInput;
 import client.networking.ClientOutput;

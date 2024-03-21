@@ -1,6 +1,6 @@
 package client.networking;
 
-import client.manager.GameManager;
+import client.GameManager;
 import server.networking.CommandsServerToClient;
 
 /**

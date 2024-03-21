@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import client.manager.GameManager;
+import client.GameManager;
 
 /**
  * This is the thread that reads input from the server.
