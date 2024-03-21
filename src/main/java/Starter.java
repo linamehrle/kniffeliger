@@ -53,17 +53,23 @@ public class Starter {
         String hostAddress = firstInput[0];
         int port = Integer.parseInt(firstInput[1]);
 
-        // get username
-        int startIdx = args[2].indexOf('[') + 1;
-        int endIdx = args[2].indexOf(']');
+        // set default username
+        String username = "default";
 
-        // assure user entered something
-        if(startIdx >= endIdx || startIdx <= 0) {
-            throw new Exception("Incorrect syntax in username " + args[2] +
-                    ".\nPlease enter a nonempty username with correct syntax.");
+        // allow additional syntax
+        if(args.length != 2) {
+            // get username
+            int startIdx = args[2].indexOf('[') + 1;
+            int endIdx = args[2].indexOf(']');
+
+            // assure user entered something
+            if(startIdx >= endIdx || startIdx <= 0) {
+                throw new Exception("Incorrect syntax in username " + args[2] +
+                        ".\nPlease enter a nonempty username with correct syntax.");
+            }
+
+            username = args[2].substring(startIdx, endIdx);
         }
-
-        String username = args[2].substring(startIdx, endIdx);
 
         // start client
         client.manager.GameManager client = new client.manager.GameManager(hostAddress, port, username);
