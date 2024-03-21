@@ -1,6 +1,7 @@
 QA CONCEPT
 
-To assure the quality of our game we have the following plan which is quickly summarised and then looked at in detail.
+To assure the quality of our game we have the following plan which is quickly summarized and then looked at in detail
+below.
 1.  CONSTRUCTIVE QUALITY MANAGEMENT:
     1.1 TECHNICAL PROCEDURE:
         1.1.1   STICK TO THE RULES:
@@ -15,7 +16,7 @@ To assure the quality of our game we have the following plan which is quickly su
                 code. It also makes reviewing easier.
         1.1.4   NO EXCEPTIONS FOR THE EXCEPTION HANDLING:
                 We like to play catch, so we throw around exceptions a lot. And with a lot we mean: where it is needed.
-                W catch them as well, of course, and handle them in a meaningful way (meaningful depends on the context).
+                We catch them as well, of course, and handle them in a meaningful way (meaningful depends on the context).
         1.1.5   UNI-T TESTS:
                 No, we do not test the uni dance group but the most important methods and its exceptions for each class.
                 We want to ensure that out code runs properly with writing tests while we are coding. When we do both
@@ -39,15 +40,15 @@ To assure the quality of our game we have the following plan which is quickly su
                 8.  Did the team member write unit tests for the code?
                     Is there a unit test for the most important methods in the class?
                     Is there a unit test for the exceptions in this class?
-                We then either fix the code right away or give the developer a feedback.
+                We then either fix the code right away or give the developer feedback.
         1.2.3   BUG AND BEES:
                 We keep a ticketing list (also a Google Sheet) for the bugs in the software that need to be handled and
                 that should be our to-do-list for more time-consuming bugs.
 2.  ANALYTICAL QUALITY MANAGEMENT:
     2.1 ANALYTICAL PROCEDURE:
         2.1.1   A SECOND PAIR OF EYES:
-                Every important snipped of code will be reviewed by Riccardo and Anisja. We are the QA-police that do
-                not play any games (except for playing catch with exceptions ... and of course kniffeliger).
+                Every important snippet of code will be reviewed by Riccardo and Anisja. We are the QA-police that do
+                not play any games (except for playing catch with exceptions ... and of course Kniffeliger).
         2.1.2   "IT'S A TEAM EFFORT":
                 We plan to go through the most important parts of our code every second team meeting. That way we can
                 all get an idea of what the other person coded and can easily review it if necessary.
