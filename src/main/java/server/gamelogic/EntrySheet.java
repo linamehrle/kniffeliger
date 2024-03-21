@@ -1,6 +1,7 @@
 package server.gamelogic;
 
 public class EntrySheet {
+    // TODO: NullpointerException handling
 
     // value with which every Entry starts with
     private final int defaultValue = 0;
@@ -26,7 +27,7 @@ public class EntrySheet {
     private Entry kniffeliger = new Entry("kniffeliger", defaultValue);
     private Entry chance = new Entry("chance", defaultValue);
 
-    // entry sheet as an array
+    // entry sheet as an Entry-array
     private Entry[] entrySheet = new Entry[]{ones, twos, threes, fours, fives, sixes, threeOfAKind, fourOfAKind, fullHouse, smallStraight, largeStraight, kniffeliger, chance};
 
     /**

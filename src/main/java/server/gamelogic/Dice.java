@@ -48,11 +48,15 @@ public class Dice {
      * @return int-array with dice values as values
      */
     public static int[] getAsIntArray(Dice[] diceArray){
-        int[] diceArrayAsIntArray = new int[diceArray.length];
+        int[] diceAsIntArray = new int[diceArray.length];
         for(int i = 0; i < diceArray.length; i++){
-            diceArrayAsIntArray[i] = diceArray[i].getDiceValue();
+            // TODO: NullpointerException handled correctly?
+            if (diceArray[i] == null){
+                diceArray[i] = new Dice();
+            }
+            diceAsIntArray[i] = diceArray[i].getDiceValue();
         }
-        return diceArrayAsIntArray;
+        return diceAsIntArray;
     }
 
     /**
@@ -63,6 +67,7 @@ public class Dice {
      * @return true if dice can be rolled and false if it cannot be rolled
      */
     public boolean rollSingleDice() {
+        // TODO: shoul not get a NullpointerException since not static and not array input
         boolean couldRoll = false;
         if (!(savingStatus) && numberOfRolls < 3) {
             // adjusts variables after dice was rolled

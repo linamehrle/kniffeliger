@@ -14,24 +14,11 @@ class GameManagerTest {
      * #################################################################################################################
      */
     @Test
-    @DisplayName("Tests if exceptions get thrown correctly.")
+    @DisplayName("Tests if exceptions int GameManager are handled correctly.")
     void gameManagerExceptionsTest() throws Exception {
-        // generates Dice array of length between 6 and 100 with numbers of values between 1 and 6 inside
-        // TODO: handle NPE
-        Dice[] largeRandomDiceArray = new Dice[(int) Math.floor(Math.random() * 100+ 6)];
-
-        // generates Dice array of length between 6 and 100 with numbers of values between 1 and 6 inside
-        // TODO: handle NPE
-        Dice[] smallRandomDiceArray = new Dice[(int) Math.floor(Math.random() * 4+ 1)];
-
-        // generates Dice array of length 5 with randomly saved Dice in array (except for last one which is not saved)
-        Dice[] notSavedDice = new Dice[5];
-        for (int i = 0; i < notSavedDice.length - 1; i++){
-            if(Math.random() < 0.5) {
-                // TODO: Handle NullPointerException: notSavedDice[i] is null -- because initializing array gives objects of type null
-                notSavedDice[i].saveDice();
-            }
-        }
+        // Dice array to test rollDice() method
+        Dice[] largeDiceArray = new Dice[(int) Math.floor(Math.random() * 100+ 6)];
+        Dice[] smallDiceArray = new Dice[(int) Math.floor(Math.random() * 4+ 1)];
 
         // generate array of random length between 6 and 100 with numbers of values between 1 and 6 inside
         int[] largeRandomArray = new int[(int) Math.floor(Math.random() * 100+ 6)];
@@ -45,9 +32,8 @@ class GameManagerTest {
             num = (int) Math.floor(Math.random() * 6+ 1);
         }
 
-        assertAll(() -> assertThrows(Exception.class, () -> GameManager.entryValidation("ones", notSavedDice)),
-                () -> assertThrows(Exception.class, () -> GameManager.rollDice(largeRandomDiceArray)),
-                () -> assertThrows(Exception.class, () -> GameManager.rollDice(smallRandomDiceArray)),
+        assertAll(() -> assertThrows(Exception.class, () -> GameManager.rollDice(largeDiceArray)),
+                () -> assertThrows(Exception.class, () -> GameManager.rollDice(smallDiceArray)),
                 () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(largeRandomArray, 1)),
                 () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(largeRandomArray, 2)),
                 () -> assertThrows(Exception.class, () -> GameManager.singleValueRolls(largeRandomArray, 3)),

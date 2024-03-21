@@ -17,16 +17,20 @@ public class GameManager {
      * @return new rolled dice
      */
     public static Dice[] rollDice(Dice[] playersDice) throws Exception {
+        // TODO:Exception handling correct?
         if (!(playersDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
         }
         // handle NullPointerException if Dice array has only values null
         for (Dice dice : playersDice){
             /* rollDice() already checks if dice has been saved or if it has been rolled 3 times already (because then dice
-             * cannot be rolled. Initializes dice if it is not initialized yet to handle NullPointerException, so it cam
-             * be rolled.
+             * cannot be rolled. Initializes dice if it is not initialized yet to handle NullPointerException, so it can
+             * be rolled after.
              */
-            // TODO: NullPointerException to be handled
+            // TODO: NullpointerException handled correctly?
+            if (dice == null){
+                dice = new Dice();
+            }
             dice.rollSingleDice();
         }
 
@@ -46,14 +50,19 @@ public class GameManager {
     //  entry transform Dice-array to int-array. Like in the example below. (Also maybe put functions like threeOfAKind() on EntrySheet or Entry??
 
     public static void entryValidation (String nameOfEntry, Dice[] finalDiceValues) throws Exception {
-        // checks if all dice have been saved
+        // checks if all dice have been saved, if one is not, then throw an exception
         boolean allDiceSaved = true;
         for (Dice d : finalDiceValues){
+            // TODO: NuppointerException hendled correctly?
+            if (d == null) {
+                d = new Dice();
+            }
             if (d.getSavingStatus() == false){
                 allDiceSaved = false;
             }
         }
-        // throws exception if not all dice have been saved
+        // throws exception if not all dice have been saved, so if allDiceSaved is false (set in for-loop)
+        // TODO: Exception handled correctly?
         if (allDiceSaved == false){
             throw new Exception("Not all dice have been saved.");
         }
@@ -118,6 +127,8 @@ public class GameManager {
      * @throws Exception if the value we need to compare the dice value with is not between 1 and 6
      */
     public static int singleValueRolls(int[] rolledDice, int value) throws Exception {
+        // TODO: Cannot get NullpointerException from empty rolledDice array, since entryValidation() already checks
+        //  for empty array
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -145,6 +156,8 @@ public class GameManager {
      * @return returns value of three same dice
      */
     public static int threeOfAKind(int[] rolledDice) throws Exception {
+        // TODO: Cannot get NullpointerException from empty rolledDice array, since entryValidation() already checks
+        //  for empty array
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -172,6 +185,8 @@ public class GameManager {
      * @return returns value of four same dice
      */
     public static int fourOfAKind(int[] rolledDice) throws Exception {
+        // TODO: Cannot get NullpointerException from empty rolledDice array, since entryValidation() already checks
+        //  for empty array
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -199,6 +214,8 @@ public class GameManager {
      * @throws Exception if there are less than 5 dice saved
      */
     public static int fullHouse(int[] rolledDice) throws Exception {
+        // TODO: Cannot get NullpointerException from empty rolledDice array, since entryValidation() already checks
+        //  for empty array
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -232,6 +249,8 @@ public class GameManager {
      * @throws Exception if there are less than 5 dice saved
      */
     public static int smallStraight(int[] rolledDice) throws Exception {
+        // TODO: Cannot get NullpointerException from empty rolledDice array, since entryValidation() already checks
+        //  for empty array
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -280,6 +299,8 @@ public class GameManager {
      * @throws Exception if there are less than 5 dice saved
      */
     public static int largeStraight(int[] rolledDice) throws Exception {
+        // TODO: Cannot get NullpointerException from empty rolledDice array, since entryValidation() already checks
+        //  for empty array
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -316,6 +337,8 @@ public class GameManager {
      * @return returns 50 if it is a Kniffeliger/Yathzee, 0 otherwise
      */
     public static int kniffeliger(int[] rolledDice) throws Exception {
+        // TODO: Cannot get NullpointerException from empty rolledDice array, since entryValidation() already checks
+        //  for empty array
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
@@ -337,6 +360,8 @@ public class GameManager {
      * @throws Exception if there are less than 5 dice saved
      */
     public static int chance(int[] rolledDice) throws Exception {
+        // TODO: Cannot get NullpointerException from empty rolledDice array, since entryValidation() already checks
+        //  for empty array
         // checks if there are 5 rolled dice
         if (!(rolledDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
