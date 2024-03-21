@@ -17,8 +17,8 @@ If you don't like reading documentation, [here's a cheatsheet](https://github.co
 Kniffeliger is a multiplayer computer game inspired by the classic [Kniffel](https://de.wikipedia.org/wiki/Kniffel) (also known as [Yahtzee](https://en.wikipedia.org/wiki/Yahtzee) ). Apart from being fully computer-based and offering remote multiplayer capability, it offers additional game rules compared to its analogue antetype.
 
 1. [Getting Started](#gettingstarted)
-  * [System Requirements](#systemrequirements)
-  * [Installation](#installation)
+    * [System Requirements](#systemrequirements)
+    * [Installation](#installation)
 2. [Implementation](#implementation)
 3. [Ressources](#ressources)
 4. [License](#license)
@@ -39,7 +39,7 @@ Kniffeliger is implemented in [Java 19.0](https://dev.java) in a [client-server 
 ## Ressources <a name="ressources"></a>
 * [Technical Documentation](TODO)
 * [Network protocol](/docs/networkProtocol.md)
-* [Rules of the Game](/docs/About\ a\ Game\ (advanced))
+* [Rules of the Game](/docs/About%20a%20Game%20(advanced))
 
 
 
