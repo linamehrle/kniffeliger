@@ -1,33 +1,33 @@
 QA CONCEPT
 
 To assure the quality of our game we have the following plan which is quickly summarised and then looked at in detail.
-1.  Constructive Quality Management:
-    1.1 Technical Procedure:
-        1.1.1   Stick to the rules:
+1.  CONSTRUCTIVE QUALITY MANAGEMENT:
+    1.1 TECHNICAL PROCEDURE:
+        1.1.1   STICK TO THE RULES:
                 For the software itself we closely stick to the requirements list Lina wrote. It gets updated as the
                 project continues and the requirements get more detailed.
-        1.1.2   What did you do?!:
+        1.1.2   WHAT DID YOU DO?!:
                 We ensure that the code is sufficiently documented and complex thoughts and methods are explained in
                 detail. The Javadoc covers the main function of the method while the single-line or multi-line comments
                 explain the implementation in detail. We stick to the conventions here.
-        1.1.3   Let's be a little lame:
+        1.1.3   LET'S BE A LITTLE LAME:
                 Speaking of conventions: we stick to the coding conventions to ensure cohesive, Printerest-worthy, sexy
                 code. It also makes reviewing easier.
-        1.1.4   No exceptions for the exception handling:
+        1.1.4   NO EXCEPTIONS FOR THE EXCEPTION HANDLING:
                 We like to play catch, so we throw around exceptions a lot. And with a lot we mean: where it is needed.
                 W catch them as well, of course, and handle them in a meaningful way (meaningful depends on the context).
-        1.1.5   Uni-T tests:
+        1.1.5   UNI-T TESTS:
                 No, we do not test the uni dance group but the most important methods and its exceptions for each class.
                 We want to ensure that out code runs properly with writing tests while we are coding. When we do both
                 simultaneously, the workload gets evenly distributed. Proper energy and (human-) resource management
                 we do here, y'all. We also have some conventions set for our unit tests.
-    1.2 Organisation:
-        1.2.1   No task is left behind:
+    1.2 ORGANISATION:
+        1.2.1   NO TASK IS LEFT BEHIND:
                 There is a Google Excel sheet (which is only meant for our group to see) with a responsibility
                 assignment of each task of the milestones. The person responsible for a task can then update the status
                 to: will do, in progress or done. This ensures that each task is handled and everyone can see if someone
                 can't handle the workload or has not enough work to so.
-        1.2.2   The list goes on:
+        1.2.2   THE LIST GOES ON:
                 We have a checklist for reviewing the code:
                 1.  Did the team member sufficiently document the code?
                 2.  Did the team member stick to the code structure we agreed on?
@@ -40,15 +40,15 @@ To assure the quality of our game we have the following plan which is quickly su
                     Is there a unit test for the most important methods in the class?
                     Is there a unit test for the exceptions in this class?
                 We then either fix the code right away or give the developer a feedback.
-        1.2.3   Bugs and Bees:
+        1.2.3   BUG AND BEES:
                 We keep a ticketing list (also a Google Sheet) for the bugs in the software that need to be handled and
                 that should be our to-do-list for more time-consuming bugs.
-2. Analytical Quality Management:
-    2.1 Analytical Procedure:
-        2.1.1   A second pair of eyes:
+2.  ANALYTICAL QUALITY MANAGEMENT:
+    2.1 ANALYTICAL PROCEDURE:
+        2.1.1   A SECOND PAIR OF EYES:
                 Every important snipped of code will be reviewed by Riccardo and Anisja. We are the QA-police that do
                 not play any games (except for playing catch with exceptions ... and of course kniffeliger).
-        2.1.2   "It was a team effort":
+        2.1.2   "IT'S A TEAM EFFORT":
                 We plan to go through the most important parts of our code every second team meeting. That way we can
                 all get an idea of what the other person coded and can easily review it if necessary.
 
@@ -59,14 +59,16 @@ All team member must assure the quality of our software and the ones coding also
 snippets since they are the ones being completely involved in the parts they wrote. The overall QA is Riccardo's and
 Anisja's responsibility. They will review the code of every team member, will check the unit tests and throw and catch
 some more exceptions, if needed.
-1.  Constructive Quality Management:
-    1.1 Technical Procedure:
-        1.1.1   Our software's guide is the requirements file authored by Lina for milestone 1. It encompasses crucial
+1.  CONSTRUCTIVE QUALITY MANAGEMENT::
+    1.1 TECHNICAL PROCEDURE:
+        1.1.1   STICK TO THE RULES:
+                Our software's guide is the requirements file authored by Lina for milestone 1. It encompasses crucial
                 rules governing the game logic, GUI, and network protocol. This document serves as the cornerstone of
                 our software development, providing a comprehensive reference for all code. As we progress with the
                 project and delve into finer details, each team member is responsible for updating this file. All
                 decisions that need to be done are written down in this file.
-        1.1.2   We place a strong emphasis on thorough documentation throughout our codebase to ensure clarity and ease
+        1.1.2   WHAT DID YOU DO?!:
+                We place a strong emphasis on thorough documentation throughout our codebase to ensure clarity and ease
                 of understanding for all team members. Our approach involves using Javadoc comments to provide concise
                 summaries of the main purpose and functionality of each method. These comments serve as a quick
                 reference point for developers seeking to understand the role of a particular method within the code.
@@ -78,10 +80,12 @@ some more exceptions, if needed.
                 codebase with ease, promoting collaboration and efficiency in our development process.
                 By maintaining meticulous documentation, we not only foster a deeper understanding of the codebase among
                 our team members but also pave the way for seamless future maintenance and expansion of our software.
-        1.1.3   We adhere to coding conventions to maintain cohesive, visually appealing, and easily reviewable code.
+        1.1.3   LET'S BE A LITTLE LAME:
+                We adhere to coding conventions to maintain cohesive, visually appealing, and easily reviewable code.
                 Following these conventions ensures that our code is not only aesthetically pleasing but also
                 facilitates smoother code reviews. We stick to the intelliJ default coding and formatting conventions.
-        1.1.4   We find ourselves navigating exception handling much like a game of catch – tossing them where necessary
+        1.1.4   NO EXCEPTIONS FOR THE EXCEPTION HANDLING:
+                We find ourselves navigating exception handling much like a game of catch – tossing them where necessary
                 and ensuring we catch them as well. It's a fundamental aspect of our coding practice, allowing us to
                 address expected issues that can occur promptly and effectively. Whenever exceptions occur, we take care
                 to handle them thoughtfully, considering the specific context in which they arise. This approach ensures
@@ -90,7 +94,8 @@ some more exceptions, if needed.
                 An example for such meaningful exception handling can be seen here:
 
                 TODO: EXAMPLE EXCEPTION HANDLING
-        1.1.5   To assure the functions and quality of the game, especially the networking and the game logic, we test
+        1.1.5   UNI-T TESTS:
+                To assure the functions and quality of the game, especially the networking and the game logic, we test
                 every class with unit tests. Here is our unit test conventions list:
                 1.  Important/Fundamental methods get tested.
                 2.  Exceptions ALWAYS get tested. Those tests are names classname + "ExceptionsTest".
@@ -206,14 +211,15 @@ some more exceptions, if needed.
 
                 So we test different sizes and use the assertThrows() method to test if the method throws exceptions
                 correctly.
-    1.2 Organisation:
-        1.2.1   We maintain a Google Excel sheet accessible only to our group, serving as a central hub for task
+    1.2 ORGANISATION:
+        1.2.1   NO TASK IS LEFT BEHIND:
+                We maintain a Google Excel sheet accessible only to our group, serving as a central hub for task
                 assignment and tracking across milestones. Each task is assigned to a responsible individual, who
                 updates the status as "will do," "in progress," or "done." This system ensures that every task is
                 accounted for and progress is transparent to all team members. It facilitates effective workload
                 management, allowing us to identify instances where someone may need assistance or where tasks need to
                 be redistributed to maintain balance and productivity within the team.
-        1.2.2   The list goes on:
+        1.2.2   THE LIST GOES ON:
                 As part of our rigorous quality assurance process, we've developed a comprehensive checklist to guide
                 our code review procedures. This checklist serves as a structured framework for evaluating each team
                 member's contributions, ensuring that our code meets the highest standards of quality, readability, and
@@ -246,7 +252,8 @@ some more exceptions, if needed.
                 collaborate to address them promptly, whether it involves fixing the code immediately or providing
                 guidance for improvement in future iterations. This iterative feedback loop fosters continuous
                 improvement and ensures the ongoing refinement of our codebase.
-        1.2.3   Within our project management toolkit, we maintain a meticulously curated ticketing list specifically
+        1.2.3   BUG AND BEES:
+                Within our project management toolkit, we maintain a meticulously curated ticketing list specifically
                 dedicated to tracking and addressing bugs within our software. This comprehensive system, housed within
                 a Google Sheet accessible to our team members, serves as our go-to resource for managing and prioritizing
                 bug fixes.
@@ -278,13 +285,15 @@ some more exceptions, if needed.
                Our ticketing list for bug tracking and resolution is a fundamental component of our software development
                workflow. By providing a centralized platform for documenting, prioritizing, and resolving bugs, it
                enables us to maintain the stability, reliability, and quality of our software product over time.
-2. Analytical Quality Management:
-    2.1 Analytical Procedure:
-        2.1.1   Riccardo and Anisja are our QA-police, ensuring the quality of our code. They carefully review every
+2.  ANALYTICAL QUALITY MANAGEMENT:
+    2.1 ANALYTICAL PROCEDURE:
+        2.1.1   A SECOND PAIR OF EYES:
+                Riccardo and Anisja are our QA-police, ensuring the quality of our code. They carefully review every
                 important snippet, focusing on logic, structure, and coding standards. Their attention to detail
                 guarantees our code's reliability. They then list any bugs in the Google Sheet and handle them themselves
                 or report it to the developer, providing feedback for improvement.
-        2.1.2   As part of our continuous improvement efforts, we've implemented a structured practice of reviewing the
+        2.1.2   "IT'S A TEAM EFFORT":
+                As part of our continuous improvement efforts, we've implemented a structured practice of reviewing the
                 most critical sections of our codebase during every second team meeting. This proactive approach allows
                 us to foster a deeper understanding of each other's contributions and ensures that all team members are
                 familiar with the key aspects of our software development efforts. During these code review sessions, we
