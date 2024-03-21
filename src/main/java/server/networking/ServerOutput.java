@@ -1,12 +1,10 @@
 package server.networking;
 
 import java.io.BufferedWriter;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
 public class ServerOutput {
 
@@ -33,7 +31,7 @@ public class ServerOutput {
             case PING -> sendToClient("PING " + message);
             case PONG -> sendToClient("PONG " + message);
             case CHAT -> sendToClient("CHAT " + message);
-            case PRNT -> sendToClient("PRNT " + message);
+            case BRCT -> sendToClient("BRCT " + message);
             default -> System.out.println("unknown command to send from server to client " + message);
 
         }

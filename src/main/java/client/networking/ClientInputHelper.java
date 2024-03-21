@@ -36,7 +36,7 @@ public class ClientInputHelper implements Runnable {
             case PING -> clientOutput.send(CommandsClientToServer.PONG, input[1]);
             case PONG -> pong.updatePong(input[1]);
             case CHAT -> System.out.println(input[1]);
-            case PRNT -> System.out.println("Alfred: " + input[1]);
+            case BRCT-> System.out.println("Alfred: " + input[1]);
             default -> System.out.println("unknown command received from server " + message);
         }
 

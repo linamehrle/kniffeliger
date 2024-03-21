@@ -30,10 +30,10 @@ public class ClientThread implements Runnable{
         thread.start();
 
         // connection
-        String msg = "Connection with " + player.getUsername() + " established";
-        System.out.println(msg);
+        System.out.println("Connection with " + player.getUsername() + " established");
 
-        //serverOutput.send(CommandsServerToClient.PRNT, "Alfred: " + msg);
+        serverOutput.send(CommandsServerToClient.BRCT, "Connection to server established");
+        Communication.broadcast(player, "Player " + player.getUsername() + " connected to the server");
 
         ping = new Ping(this);
         Thread pingThread = new Thread(ping);
@@ -63,6 +63,7 @@ public class ClientThread implements Runnable{
     public void disconnect() {
         try {
             serverOutput.send(CommandsServerToClient.QUIT, "goodbye client");
+            Communication.broadcast(player, "Player " + player.getUsername() + " has disconnected");
             ArrayList<Player> playerList = player.getPlayerList();
             playerList.remove(player);
             ping.stop();

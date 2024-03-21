@@ -8,7 +8,7 @@ public enum CommandsServerToClient {
     /**
      *  sends a message for the client to print out in the terminal
      */
-    PRNT,
+    BRCT,
 
     /**
      *  confirms name change to client
@@ -24,8 +24,6 @@ public enum CommandsServerToClient {
 
     QUIT,
 
-    CHAT,
-
-    WHSP
+    CHAT
 
 }

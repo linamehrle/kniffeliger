@@ -27,7 +27,7 @@ public class ServerInputHelper implements Runnable {
 
         if (input.length != 2) {
             System.out.println("Invalid message to server");
-            serverOutput.send(CommandsServerToClient.PRNT, "Invalid message: try again.");
+            serverOutput.send(CommandsServerToClient.BRCT, "Invalid message: try again.");
             return;
         }
 
@@ -35,7 +35,7 @@ public class ServerInputHelper implements Runnable {
             cmd = CommandsClientToServer.valueOf(input[0].toUpperCase());
         } catch (IllegalArgumentException e) {
             System.out.println("Received invalid command " + input[0]);
-            serverOutput.send(CommandsServerToClient.PRNT, "Invalid command: try again.");
+            serverOutput.send(CommandsServerToClient.BRCT, "Invalid command: try again.");
             return;
         }
 

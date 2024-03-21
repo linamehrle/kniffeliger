@@ -1,10 +1,7 @@
 package server.networking;
 
 import java.util.ArrayList;
-
 import server.Player;
-import server.networking.CommandsServerToClient;
-import server.networking.ServerOutput;
 
 public class Communication {
 
@@ -12,8 +9,23 @@ public class Communication {
      * sends a message from the server to all connected clients
      * @param message
      */
-    public void broadcast(String message) {
+    public static void broadcastToAll(ArrayList<Player> playerList, String message) {
         //TODO
+    }
+
+    /**
+     * sends a message from the server to all connected clients but the specified player
+     * @param player
+     * @param message
+     */
+    public static void broadcast(Player player, String message) {
+        ArrayList<Player> playerList = player.getPlayerList();
+        for (Player playerInList : playerList) {
+            if (!playerInList.equals(player)) {
+                ServerOutput serverOutput = playerInList.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
+                serverOutput.send(CommandsServerToClient.BRCT, message);
+            }
+        }
     }
 
     /**
@@ -53,12 +65,12 @@ public class Communication {
         }
 
         if (recipient == null) {
-            serverOutputSender.send(CommandsServerToClient.PRNT, "There is no player with this name");
+            serverOutputSender.send(CommandsServerToClient.BRCT, "There is no player with this name");
             return;
         }
 
         if (input.length < 2) {
-            serverOutputSender.send(CommandsServerToClient.PRNT, "Empty message: please try again.");
+            serverOutputSender.send(CommandsServerToClient.BRCT, "Empty message: please try again.");
         }
 
         ServerOutput serverOutputRecipient = recipient.getPlayerThreadManager().getServerOutput();

@@ -4,6 +4,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import server.networking.ClientThread;
 import server.networking.CommandsServerToClient;
+import server.networking.Communication;
 
 public class Player {
 
@@ -46,7 +47,8 @@ public class Player {
         }
 
         setUsername(username);
-        playerThreadManager.sendToServerOutput(CommandsServerToClient.CHNA, username);
+        playerThreadManager.sendToServerOutput(CommandsServerToClient.BRCT, "Your username is now " + username);
+        Communication.broadcast(this, "Player " + savedUsername + " has changed their name to " + username);
 
         System.out.println("Player " + savedUsername + " has changed their name to " + username);
 
