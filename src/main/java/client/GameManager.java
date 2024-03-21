@@ -29,7 +29,9 @@ public class GameManager {
      * @param hostName
      * @param port
      */
-    public GameManager(String hostName, int port) {
+    public GameManager(String hostName, int port, String username) {
+
+        //TODO handle username given as input parameter
 
         try {
             socket = new Socket(hostName, port);
@@ -73,8 +75,8 @@ public class GameManager {
                 "======================================================================\n";
         System.out.println(welcomeText);
 
-        String username = System.getenv("USERNAME");
-        clientOutput.send(CommandsClientToServer.CHNA, username);
+        String systemUsername = System.getenv("USERNAME");
+        clientOutput.send(CommandsClientToServer.CHNA, systemUsername);
 
         // start game
         this.start();
@@ -117,14 +119,5 @@ public class GameManager {
      */
     public Pong getPong() {
         return pong;
-    }
-
-
-    /**
-     * The main method.
-     * @param args first param is hostname, second port
-     */
-    public static void main(String[] args) {
-        GameManager gameManager = new GameManager(args[0], Integer.parseInt(args[1]));
     }
 }

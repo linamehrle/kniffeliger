@@ -11,10 +11,6 @@ public class Server {
 
     private static ArrayList<Player> playerList = new ArrayList<>();
 
-    public static void main(String[] args) {
-        new Server(Integer.parseInt(args[0]));
-    }
-
     public Server(int port) {
         try {
             // establish connection
