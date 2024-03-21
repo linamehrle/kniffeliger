@@ -37,6 +37,7 @@ Kniffeliger is implemented in [Java 19.0](https://dev.java) in a [client-server 
 
 
 ## Ressources <a name="ressources"></a>
+* [Development Requirements](/docs/requirement.txt)
 * [Technical Documentation](TODO)
 * [Network protocol](/docs/networkProtocol.md)
 * [Rules of the Game](/docs/About%20a%20Game%20(advanced))
