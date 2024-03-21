@@ -58,6 +58,7 @@ public class GameManager {
                 d = new Dice();
             }
             if (d.getSavingStatus() == false){
+                // TODO: just save the damn dice
                 allDiceSaved = false;
             }
         }

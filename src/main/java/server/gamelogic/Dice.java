@@ -42,6 +42,15 @@ public class Dice {
     }
 
     /**
+     * Changes the saving status of a dice.
+     *
+     * @param newSavingStatus value of new saving status of dice
+     */
+    public void setSavingStatus(boolean newSavingStatus) {
+        savingStatus = newSavingStatus;
+    }
+
+    /**
      * Transforms Dice-array to int-array.
      *
      * @param diceArray with Dice-values
