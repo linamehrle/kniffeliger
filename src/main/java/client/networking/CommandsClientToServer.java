@@ -6,29 +6,35 @@ package client.networking;
 public enum CommandsClientToServer {
 
     /**
-     * sends a message to be redistributed to all clients (and printed by them)
+     * sends a message to be redistributed to all other clients. The message si shown as a chat in the form
+     * sender: message
      */
     CHAT,
 
     /**
-     *  sends a message and a recipient to the server, only the given client receives the message
+     *  sends a message and a recipient to the server, only the given client receives the message in the form
+     *  sender whispered: message
      */
     WHSP,
 
     /**
-     *  sends a new username to the server, server changes the saved username
+     *  used to change the username of a client, sends the new username to the server, server changes the saved username
+     *  and informs all connected clients of this change appropriately
      */
     CHNA,
 
+    /**
+     * indicates that a ping is sent to the server, the message contains the system time
+     */
     PING,
 
     /**
-     *  returns a ping from the server with a ping from the client
+     *  indicates a ping that has been returned by the server
      */
     PONG,
 
     /**
-     *  send message to server that a client has disconnected
+     *  used to disconnect a client, send message to server that a client has disconnected
      */
     QUIT
 

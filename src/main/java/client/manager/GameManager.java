@@ -5,10 +5,15 @@ import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
 import client.networking.ConsoleInput;
 import client.networking.Pong;
-
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * This is the main class for the client. It contains the input thread for the console and from the server and the
+ * output stream to the server as well as a separate thread for the ping.
+ * The constructor starts all necessary threads and prints a welcome message in the console for the user.
+ * The class also contains a disconnect method which closes all threads when the client disconnects.
+ */
 public class GameManager {
 
     private Socket socket;
@@ -20,24 +25,29 @@ public class GameManager {
     //private GameLogicManager logicManager; for later
 
     /**
-     * Constructor of GameManager.
+     * Constructor for the GameManager
+     * @param hostName
+     * @param port
      */
     public GameManager(String hostName, int port) {
 
         try {
             socket = new Socket(hostName, port);
-            // create manager
+
+            //start the output stream
             clientOutput = new ClientOutput(socket);
 
-            // auch einfach this übergeben?
+            //start the input thread from the console
             consoleInput = new ConsoleInput(clientOutput);
             Thread consoleThread = new Thread(consoleInput);
             consoleThread.start();
 
+            //start the input thread from the client
             clientInput = new ClientInput(socket, this);
             Thread clientThread = new Thread(clientInput);
             clientThread.start();
 
+            //start the thread for the ping
             pong = new Pong(this);
             Thread pongThread = new Thread(pong);
             pongThread.start();
@@ -74,9 +84,12 @@ public class GameManager {
      * This function starts the game.
      */
     private void start() {
-
+        //do we need this later?
     }
 
+    /**
+     * This method handles the disconnect of the client.
+     */
     public void disconnect() {
         try {
             consoleInput.stop();
@@ -90,11 +103,18 @@ public class GameManager {
         }
     }
 
-    //andere auch mit this und getter??
+    /**
+     * Getter for the output thread to the server.
+     * @return
+     */
     public ClientOutput getClientOutput() {
         return clientOutput;
     }
 
+    /**
+     * Getter for the ping Thread.
+     * @return
+     */
     public Pong getPong() {
         return pong;
     }

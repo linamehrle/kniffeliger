@@ -46,6 +46,10 @@ public class Player {
             username = "AnisjaIstDieBeste<3";
         }
 
+        if (username == "") {
+            username = "defaultName";
+        }
+
         setUsername(username);
         playerThreadManager.sendToServerOutput(CommandsServerToClient.BRCT, "Your username is now " + username);
         Communication.broadcast(this, "Player " + savedUsername + " has changed their name to " + username);

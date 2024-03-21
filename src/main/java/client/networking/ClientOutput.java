@@ -7,11 +7,16 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 /**
- * handles commands and messages from client to server
+ * This class handles outgoing commands and messages from client to server.
  */
 public class ClientOutput {
     private BufferedWriter out;
 
+    /**
+     * The constructor for ClientOutput, it starts the output stream to the server.
+     * @param socket
+     * @throws IOException
+     */
     public ClientOutput(Socket socket) throws IOException {
 
         out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
@@ -19,45 +24,37 @@ public class ClientOutput {
     }
 
     /**
-     * handles commands that are entered in the console
+     * This method handles commands that are entered in the console.
      * @param message the whole String read from the console
      */
     public synchronized void sendFromConsoleIn(String message) {
 
-        //TODO what happens when " " or /newline is entered only, i.e. if input[0] doesnt exist
-        //TODO input in the console must not be the exact protocol
-
         String[] input = message.split(" ", 2);
-        CommandsClientToServer cmd;
 
-        //case: only command without message is entered
-        if(input.length == 1) {
+        if(input.length == 1) { //case: only command without message is entered
 
             switch (input[0]) {
 
                 case "\\quit" -> sendToServer("QUIT goodbye!");
+                default -> System.out.println("Invalid input entered");
 
             }
 
-
-        //command with message is entered
-        } else if (input.length == 2) {
+        } else if (input.length == 2) { //case: the command is followed by a message
 
             switch (input[0]) {
 
                 case "\\changeUsername" -> sendToServer("CHNA " + input[1]);
                 case "\\chat" -> sendToServer("CHAT " + input[1]);
                 case "\\whisper" -> sendToServer("WHSP " + input[1]);
+                default -> System.out.println("Invalid command or message entered: command " + input[0] + " message " + input[1]);
             }
-
-        } else {
-            System.out.println("Invalid input");
         }
 
     }
 
     /**
-     * handles internal commands to server
+     * This method handles internal commands to server.
      * @param cmd command as defined by the network protocol
      * @param message
      */
@@ -74,7 +71,7 @@ public class ClientOutput {
     }
 
     /**
-     * writes the message to the server on the out-stream
+     * This method writes the message to the server on the out-stream
      * @param message has to contain a command first, then a blank followed by a non-empty message
      */
     private synchronized void sendToServer(String message) {
@@ -90,6 +87,10 @@ public class ClientOutput {
         }
     }
 
+    /**
+     * This method closes the output stream when the client disconnects.
+     * @throws IOException
+     */
     public void stop() throws IOException {
         out.close();
     }

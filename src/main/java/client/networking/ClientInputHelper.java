@@ -3,12 +3,21 @@ package client.networking;
 import client.manager.GameManager;
 import server.networking.CommandsServerToClient;
 
+/**
+ * This class handles the input read by the ClientInput class and processes it accordingly.
+ * This class is a thread.
+ */
 public class ClientInputHelper implements Runnable {
     GameManager gameManager;
     String message;
     Pong pong;
     ClientOutput clientOutput;
 
+    /**
+     * The constructor for the ClientInputHelper
+     * @param gameManager
+     * @param message the input that was read by the ClientInput coming from the server
+     */
     public ClientInputHelper(GameManager gameManager, String message) {
         this.gameManager = gameManager;
         this.message = message;
@@ -16,6 +25,10 @@ public class ClientInputHelper implements Runnable {
         this.clientOutput = gameManager.getClientOutput();
     }
 
+    /**
+     * The run method for the ClientInputHelper. It splits the incoming string according to the network protocol
+     * and handles the different cases accordingly.
+     */
     @Override
     public void run() {
 
@@ -29,6 +42,7 @@ public class ClientInputHelper implements Runnable {
             return;
         }
 
+        //switch case for the different possible incoming commands
         switch (cmd) {
 
             case CHNA -> System.out.println("Your username is now " + input[1]);
