@@ -1,7 +1,5 @@
 package server;
 
-import server.networking.NetworkManagerServer;
-
 public class Server {
     NetworkManagerServer networkManager;
 
