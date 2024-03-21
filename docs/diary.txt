@@ -18,7 +18,7 @@ PRESENTATION:
 Lina started already with a great presentation which we went through and talked about.
 
 RULES OF THE GAME:
-Then we talked about all the rules of our game, which is an extension of kniffel/yatzy. We brainstormed about how
+Then we talked about all the rules of our game, which is an extension of kniffel/Yahtzee. We brainstormed about how
 we can improve the existing game
 - Changing probabilities when a specific sum is rolled with the dices.
 - 4 players at most.
@@ -74,7 +74,7 @@ SUN, 10.3.24 (Anisja)
 
 Dear Diary
 
-Today I finished the first version of out gantt project plan. I do not know, if it is like the tutors would like it, but
+Today I finished the first version of out gantt project plan. I do not know if it is like the tutors would like it, but
 I tried my best. I also finished the comics of out group and of the server-client architecture for out presentation.
 Maybe I can start coding a little today.
 
@@ -86,7 +86,7 @@ TUE, 12.3.24 (tutoring lesson, Lina/Riccardo/Anisja)
 
 Dear Diary
 
-Today we had the tutoring lesson and learnt a few new things. I write it down for you, so we do not forget this and also
+Today we had the tutoring lesson and learnt a few new things. I write it down for you, so we do not forget this, and so
 you have the important information too:
 
 - If we use libraries it is important to check first if it is supported by gradle (mavencentral).
@@ -173,7 +173,7 @@ Enough about today because I also learnt THREE VERY IMPORTANT THINGS THIS WEEK:
 1. Renato is Git-God, so if I have any questions, I can aks him.
 2. IntelliJ has a local history. So if you are as stupid as me and delete the code you worked on all weekend, you can
    get it restored with the local history (File >> Local History >> Show History...).
-3. There are many many shortcuts you can take in IntelliJ, like when you are in a class you want to build a unit test for
+3. There are many, many shortcuts you can take in IntelliJ, like when you are in a class you want to build a unit test for
    you can press CRTL + Shift + t which sets up a file with the class name + "Test" in the right directory. Pretty cool,
    huh?
 
