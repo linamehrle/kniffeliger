@@ -18,7 +18,7 @@ public class ClientThread implements Runnable{
     public void run() {
         // connection
         String msg = "EchoServer: Connection " + id;
-        TerminalView.printText(msg);
+        TerminalView.printlnText(msg);
 
         try {
             // create io streams
@@ -35,10 +35,10 @@ public class ClientThread implements Runnable{
             }
 
             // terminate con
-            TerminalView.printText("Terminate: " + id);
+            TerminalView.printlnText("Terminate: " + id);
             socket.close();
         } catch (Exception e) {
-            TerminalView.printText(e.getMessage());
+            TerminalView.printlnText(e.getMessage());
             throw new RuntimeException(e);
         }
 

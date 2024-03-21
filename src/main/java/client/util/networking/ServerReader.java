@@ -27,7 +27,7 @@ public class ServerReader implements Runnable {
                 System.out.write(b, 0, length);
             }
         } catch(IOException e) {
-            TerminalView.printText(e.getMessage());
+            TerminalView.printlnText(e.getMessage());
         }
     }
 }

@@ -3,8 +3,6 @@ package server.networking;
 import client.util.TerminalView;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -18,7 +16,7 @@ public class NetworkManagerServer {
             socket = new ServerSocket(port);
 
             // connection established
-            TerminalView.printText("Waiting for connection on " + port);
+            TerminalView.printlnText("Waiting for connection on " + port);
 
             while(true) {
                 // wait for connections and create new thread
@@ -28,7 +26,7 @@ public class NetworkManagerServer {
                 echoClientThread.start();
             }
         } catch (IOException e) {
-            TerminalView.printText(e.getMessage());
+            TerminalView.printlnText(e.getMessage());
         }
     }
 }

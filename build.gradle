@@ -4,14 +4,21 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.0.13'
 }
 
+/**
+ * set important variables/settings as sourceSet and the name of the main class.
+ */
+version 0.2
+mainClassName = 'Starter'
+
+build {
+    // generate docs
+    dependsOn 'generateDocs'
+}
+
 javafx {
     version = "19.0.2.1"
     modules = ['javafx.controls', 'javafx.fxml', 'javafx.base']
 }
-
-group 'ch.unibas.dmi.dbis'
-version '0.0.1-ALPHA'
-mainClassName = 'ch.unibas.dmi.dbis.cs108.example.HelloWorld'
 
 java {
     toolchain {
@@ -19,33 +26,41 @@ java {
     }
 }
 
-//adds maven central as a maven repository
+// sets options for the task javadoc
+javadoc {
+    options {
+        // Customize the Javadoc options as needed
+        author true
+        version true
+    }
+}
+
+// creates task createJavadox
+task generateDocs(type: Javadoc) {
+    // set the source of the classes and classpath for which a documentation should be generated
+    source = sourceSets.main.allJava
+    classpath += project.files(sourceSets.main.compileClasspath)
+
+    // set the destination dir for the javadoc
+    destinationDir = file("/build/docs/javadoc")
+}
+
+// create task given by milestone 3
+task "build-cs108"(type: GradleBuild) {
+    dependsOn 'generateDocs'
+    tasks = ['Jar']
+}
+
+// adds maven central as a maven repository
 repositories {
     mavenCentral()
 }
 
-/* The following lines are extensively documented. Please remove the documentation when you have read and understood it. */
 dependencies {
-    // EXAMPLE: LOGGING
-    /*
-    The following adds the logging framework Apache Log4J2.
-    The statements serve as an example on how to use libraries.
-    Since these are `implementation` dependencies, they are packed in the final jar.
-    Read the documentation at https://docs.gradle.org/current/userguide/declaring_dependencies.html to learn more
-     */
-    //implementation 'org.apache.logging.log4j:log4j-api:2.+'
-    //implementation 'org.apache.logging.log4j:log4j-core:2.+'
-
-    /*
-    This is another example - it imports the javafx-controls dependency
-     */
+    // dependencies for implementation
     implementation 'org.openjfx:javafx-controls:19.0.2.1'
 
-    // JUNIT
-    /*
-    The following dependency is required to perform JUnit tests, as for example HelloWorldTest.
-    Since it is a `testCompile` dependency, it will not be part of the final product, only during testing.
-     */
+    // dependencies for testing
     testImplementation("org.junit.jupiter:junit-jupiter:5.+")
 }
 
@@ -53,9 +68,7 @@ test {
     useJUnitPlatform()
 }
 
-/*
-The following block adds both compile and runtime dependencies to the jar
- */
+// The following block adds both compile and runtime dependencies to the jar
 jar {
     manifest {
         attributes(
@@ -66,4 +79,5 @@ jar {
         configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
+    duplicatesStrategy(DuplicatesStrategy.INCLUDE)
 }
