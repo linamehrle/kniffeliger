@@ -16,17 +16,20 @@ public class GameManager {
      * @param playersDice dice client hands to server
      * @return new rolled dice
      */
-    //TODO: write a unit test for this method
     public static Dice[] rollDice(Dice[] playersDice) throws Exception {
         if (!(playersDice.length == 5)) {
             throw new Exception("There are 5 dice but you handed me more or less.");
         }
+        // handle NullPointerException if Dice array has only values null
         for (Dice dice : playersDice){
             /* rollDice() already checks if dice has been saved or if it has been rolled 3 times already (because then dice
-            * cannot be rolled
-            */
+             * cannot be rolled. Initializes dice if it is not initialized yet to handle NullPointerException, so it cam
+             * be rolled.
+             */
+            // TODO: NullPointerException to be handled
             dice.rollSingleDice();
         }
+
         return playersDice;
     }
 
@@ -41,65 +44,68 @@ public class GameManager {
     //  methods.
     //  So maybe write a method with switch case (to choose the right entry but before applying the check of the
     //  entry transform Dice-array to int-array. Like in the example below. (Also maybe put functions like threeOfAKind() on EntrySheet or Entry??
-//
-//    public void entryValidation (String nameOfEntry, Dice[] finalDiceValues) throws Exception {
-//        // checks if all dice have been saved
-//        boolean allDiceSaved = true;
-//        for (Dice d : finalDiceValues){
-//            if (d.getSavingStatus() == false){
-//                allDiceSaved = false;
-//            }
-//        }
-//        // throws exception if not all dice have been saved
-//        if (allDiceSaved == false){
-//            throw new Exception("Not all dice have been saved.");
-//        }
-//
-//        // transforms Dice-array into int-array if all dice have been saved, so we can apply methods below to it
-//        int[] finalDiceInt = Dice.getAsIntArray(finalDiceValues);
-//
-//        switch (nameOfEntry) {
-//            case "ones":
-//                singleValueRolls(finalDiceInt, 1);
-//                break;
-//            case "twos":
-//                singleValueRolls(finalDiceInt, 2);
-//                break;
-//            case "threes":
-//                singleValueRolls(finalDiceInt, 3);
-//                break;
-//            case "fours":
-//                singleValueRolls(finalDiceInt, 4);
-//                break;
-//            case "fives":
-//                singleValueRolls(finalDiceInt, 5);
-//                break;
-//            case "sixes":
-//                singleValueRolls(finalDiceInt, 5);
-//                break;
-//            case "threeOfAKind":
-//                threeOfAKind(finalDiceInt);
-//                break;
-//            case "fourOfAKind":
-//                fourOfAKind(finalDiceInt);
-//                break;
-//            case "fullHouse":
-//                fullHouse(finalDiceInt);
-//                break;
-//            case "smallStraight":
-//                smallStraight(finalDiceInt);
-//                break;
-//            case "largeStraight":
-//                largeStraight(finalDiceInt);
-//                break;
-//            case "kniffeliger":
-//                kniffeliger(finalDiceInt);
-//                break;
-//            case "chance":
-//                chance(finalDiceInt);
-//                break;
-//        }
-//    }
+
+    public static void entryValidation (String nameOfEntry, Dice[] finalDiceValues) throws Exception {
+        // checks if all dice have been saved
+        boolean allDiceSaved = true;
+        for (Dice d : finalDiceValues){
+            if (d.getSavingStatus() == false){
+                allDiceSaved = false;
+            }
+        }
+        // throws exception if not all dice have been saved
+        if (allDiceSaved == false){
+            throw new Exception("Not all dice have been saved.");
+        }
+
+        // transforms Dice-array into int-array if all dice have been saved, so we can apply methods below to it
+        int[] finalDiceInt = Dice.getAsIntArray(finalDiceValues);
+
+        switch (nameOfEntry) {
+            // TODO: Do I need to catch the exception here?
+            case "ones":
+                singleValueRolls(finalDiceInt, 1);
+                break;
+            case "twos":
+                singleValueRolls(finalDiceInt, 2);
+                break;
+            case "threes":
+                singleValueRolls(finalDiceInt, 3);
+                break;
+            case "fours":
+                singleValueRolls(finalDiceInt, 4);
+                break;
+            case "fives":
+                singleValueRolls(finalDiceInt, 5);
+                break;
+            case "sixes":
+                singleValueRolls(finalDiceInt, 6);
+                break;
+            case "threeOfAKind":
+                threeOfAKind(finalDiceInt);
+                break;
+            case "fourOfAKind":
+                fourOfAKind(finalDiceInt);
+                break;
+            case "fullHouse":
+                fullHouse(finalDiceInt);
+                break;
+            case "smallStraight":
+                smallStraight(finalDiceInt);
+                break;
+            case "largeStraight":
+                largeStraight(finalDiceInt);
+                break;
+            case "kniffeliger":
+                kniffeliger(finalDiceInt);
+                break;
+            case "chance":
+                chance(finalDiceInt);
+                break;
+            default:
+                new Exception("Your entry choice is not valid.");
+        }
+    }
 
     /**
      * Checks rolled dice for a specific value and adds all dice with this value up. The sum is then returned.
