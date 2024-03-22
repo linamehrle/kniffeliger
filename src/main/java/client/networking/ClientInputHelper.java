@@ -5,7 +5,6 @@ import server.networking.CommandsServerToClient;
 
 /**
  * This class handles the input read by the ClientInput class and processes it accordingly.
- * This class is a thread.
  */
 public class ClientInputHelper implements Runnable {
     GameManager gameManager;

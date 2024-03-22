@@ -2,21 +2,34 @@ package server.networking;
 
 import server.Player;
 
+/**
+ * This class handles the thread which sends a ping to the client in set intervals. It also handles a timeout.
+ */
 public class Ping implements Runnable{
+
+    /**
+     * This variable indicates whether the thread is running. It will be set true when the client disconnects.
+     */
     private boolean stop = false;
     private ClientThread clientThread;
     private Player player; //change to only get player name?
     private ServerOutput serverOutput;
     private long lastReceivedPong;
 
+    /**
+     * The constructor for Ping
+     * @param clientThread
+     */
     public Ping(ClientThread clientThread) {
         this.clientThread = clientThread;
         this.serverOutput = clientThread.getServerOutput();
         this.player = clientThread.getPlayer();
     }
 
-
-    //are the time limits okay?
+    /**
+     * The run method for Ping. It sends pings to the client every two seconds and shuts down this separate player object
+     * when a timeout is detected.
+     */
     @Override
     public void run() {
 
@@ -32,6 +45,7 @@ public class Ping implements Runnable{
             }
         }
 
+        // this occurs if a timeout is detected
         if (!stop) {
            System.out.println(player.getUsername() + " has timed out");
            clientThread.disconnect();
@@ -39,11 +53,18 @@ public class Ping implements Runnable{
 
     }
 
+    /**
+     * this method updates the time of the last received returned ping from the client
+     * @param pongTime
+     */
     public void updatePong(String pongTime) {
-        //does this need an exception?
         lastReceivedPong = Long.parseLong(pongTime);
         //System.out.println("Pong received and updated");
     }
+
+    /**
+     * This method sets the variable stop as true. It is used to handle a disconnect.
+     */
     public void stop() {
         stop = true;
     }

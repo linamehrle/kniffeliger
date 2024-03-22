@@ -3,6 +3,9 @@ package server.networking;
 import client.networking.CommandsClientToServer;
 import server.Player;
 
+/**
+ * This class handles the input read by the ServerInput class and processes it accordingly.
+ */
 public class ServerInputHelper implements Runnable {
 
     ClientThread clientThread;
@@ -11,6 +14,11 @@ public class ServerInputHelper implements Runnable {
     ServerOutput serverOutput;
     Player player;
 
+    /**
+     * The constructor for the ServerInputHelper
+     * @param clientThread
+     * @param message the input read by the ServerInput coming from the client
+     */
     ServerInputHelper(ClientThread clientThread, String message) {
         this.clientThread = clientThread;
         this.message = message;
@@ -19,6 +27,10 @@ public class ServerInputHelper implements Runnable {
         this.player = clientThread.getPlayer();
     }
 
+    /**
+     * The run method for the ServerInputHelper. It splits the incoming string according to the network protocol
+     * and handles the different cases accordingly.
+     */
     @Override
     public void run() {
 
@@ -39,6 +51,7 @@ public class ServerInputHelper implements Runnable {
             return;
         }
 
+        //switch case for the different possible incoming commands
         switch (cmd) {
 
             case CHNA -> player.changePlayerName(input[1]);
