@@ -50,10 +50,6 @@ public class Dice {
     public static int[] getAsIntArray(Dice[] diceArray){
         int[] diceAsIntArray = new int[diceArray.length];
         for(int i = 0; i < diceArray.length; i++){
-            // TODO: NullpointerException handled correctly?
-            if (diceArray[i] == null){
-                diceArray[i] = new Dice();
-            }
             diceAsIntArray[i] = diceArray[i].getDiceValue();
         }
         return diceAsIntArray;

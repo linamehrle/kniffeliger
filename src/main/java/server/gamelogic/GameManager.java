@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class GameManager {
     /*
      * #################################################################################################################
-     * ROLLS DICE
+     * ROLLS AND PRINTS DICE
      * #################################################################################################################
      */
     /**
@@ -23,10 +23,22 @@ public class GameManager {
              * cannot be rolled. Initializes dice if it is not initialized yet to handle NullPointerException, so it can
              * be rolled after.
              */
-            dice.rollSingleDice();
+            if (dice.getSavingStatus() == false) {
+                dice.rollSingleDice();
+            }
         }
-
         return playersDice;
+    }
+
+    /**
+     * Prints dice values.
+     *
+     * @param playersDice
+     */
+    public static void printDice(Dice[] playersDice){
+        for (Dice dice : playersDice){
+            System.out.println(dice.getDiceValue() + " ");
+        }
     }
 
     /*
