@@ -19,15 +19,32 @@ Kniffeliger is a multiplayer computer game inspired by the classic [Kniffel](htt
     * [System Requirements](#systemrequirements)
     * [Installation](#installation)
     Build instructions will be added here.
-2. [Implementation](#implementation)
-3. [Resources](#resources)
-4. [License](#license)
-5. [Authors](#authors)
+2. [Gameplay](#gameplay)
+3. [Implementation](#implementation)
+4. [Resources](#resources)
+5. [License](#license)
+6. [Authors](#authors)
 
 ## Getting Started <a name="gettingstarted"></a>
 
 ### System Requirements <a name="systemrequirements"></a>
+
+* Java 19.0 or later <!-- is this correct? -->
+
 ### Installation <a name="Installation"></a>
+1. Clone the repository
+2. Build the JAR-file with the command:
+```sh
+gradlew task build-cs108
+```
+3. Run the JAR-file with the command:
+```sh
+java -jar <location>
+```
+where &lt;location&gt; is a placeholder for the path of the JAR-file.
+
+## Gameplay <a name="gameplay"></a>
+This only gives a quick overview about starting a game, changing the username and the basic flow of the game. Detailled game rules are available in the [documentation]((/docs/About%20a%20Game%20(advanced))).
 
 
 ## Implementation <a name="implementation"></a>
@@ -53,5 +70,4 @@ Not yet public.
 * Lina Mehrle
 * Riccardo Grieco
 * Dominique Ostermayer
-
 
