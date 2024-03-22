@@ -18,6 +18,7 @@ Kniffeliger is a multiplayer computer game inspired by the classic [Kniffel](htt
 1. [Getting Started](#gettingstarted)
     * [System Requirements](#systemrequirements)
     * [Installation](#installation)
+    Build instructions will be added here.
 2. [Implementation](#implementation)
 3. [Resources](#resources)
 4. [License](#license)
@@ -36,7 +37,7 @@ Kniffeliger is implemented in [Java 19.0](https://dev.java) in a [client-server 
 
 
 ## Resources <a name="resources"></a>
-* [Development Requirements](/docs/requirements.txt)
+* [Specification Catalogue (Requirements)](/docs/requirements.txt)
 * [Technical Documentation](TODO)
 * [Network protocol](/docs/networkProtocol.md)
 * [Rules of the Game](/docs/About%20a%20Game%20(advanced))
@@ -49,6 +50,8 @@ Not yet public.
 ## Authors <a name="authors"></a>
 <!-- insert team cartoons? -->
 * Anisja Mayer
-* Dominique Ostermayer
 * Lina Mehrle
 * Riccardo Grieco
+* Dominique Ostermayer
+
+
