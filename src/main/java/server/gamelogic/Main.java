@@ -25,6 +25,7 @@ public class Main {
 
         for (int round = 0; round < 13; round++){
             for (EntrySheet entrySheet : allEntrySheets){
+
                 boolean rolled = false;
                 while (rolled == false) {
                     System.out.println("Please roll the dice with the command ´roll'.");
