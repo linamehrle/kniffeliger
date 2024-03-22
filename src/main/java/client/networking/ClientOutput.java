@@ -18,9 +18,7 @@ public class ClientOutput {
      * @throws IOException
      */
     public ClientOutput(Socket socket) throws IOException {
-
         out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-
     }
 
     /**
@@ -79,9 +77,6 @@ public class ClientOutput {
             out.write(message);
             out.newLine();
             out.flush();
-            /*if (!message.contains("PONG")) {
-                System.out.println("message send to server: " + message);
-            }*/
         } catch (IOException e) {
             e.printStackTrace();
         }

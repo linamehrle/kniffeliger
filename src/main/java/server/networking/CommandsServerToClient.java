@@ -6,24 +6,34 @@ package server.networking;
 public enum CommandsServerToClient {
 
     /**
-     *  sends a message for the client to print out in the terminal
+     *  Used to send an internal message from the server to the client. The message will be shown to the client as
+     *  Alfred: message
      */
     BRCT,
 
     /**
-     *  confirms name change to client
+     *  Used to confirm name change to client
      */
     CHNA,
 
     /**
-     * sends a ping to check for connection losses
+     * Used to send a ping to check for connection losses
      */
     PING,
 
+    /**
+     * Used to return a ping coming from the client.
+     */
     PONG,
 
+    /**
+     * Used to initiate the disconnect of a client.
+     */
     QUIT,
 
+    /**
+     * Used to send chat messages to other clients.
+     */
     CHAT
 
 }

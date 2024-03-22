@@ -6,15 +6,20 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * This class handles outgoing commands and messages from server to client.
+ */
 public class ServerOutput {
 
     private BufferedWriter out;
-    //private DataOutputStream out;
 
+    /**
+     * The constructor for ServerOutput, it starts the output stream to the client.
+     * @param socket
+     */
     public ServerOutput(Socket socket) {
 
         try {
-            //out = new DataOutputStream(socket.getOutputStream());
             out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -22,6 +27,11 @@ public class ServerOutput {
 
     }
 
+    /**
+     * This message handles the different commands according to the network protocol.
+     * @param cmd
+     * @param message
+     */
     public synchronized void send(CommandsServerToClient cmd, String message) {
 
         switch (cmd) {
@@ -37,6 +47,10 @@ public class ServerOutput {
         }
     }
 
+    /**
+     * This method writes the message to the client on the out-stream
+     * @param message has to contain a command first, then a blank followed by a non-empty message
+     */
     private synchronized void sendToClient(String message) {
         try {
             out.write(message);
@@ -47,7 +61,10 @@ public class ServerOutput {
         }
     }
 
-    //where did we use this again?
+    /**
+     * This method closes the output stream when the client disconnects.
+     * @throws IOException
+     */
     public void stop() throws IOException {
         out.close();
     }

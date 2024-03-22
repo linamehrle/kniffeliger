@@ -3,6 +3,9 @@ package server.networking;
 import java.util.ArrayList;
 import server.Player;
 
+/**
+ * This class contains all necessary methods for communication between clients and from server to client.
+ */
 public class Communication {
 
     /**

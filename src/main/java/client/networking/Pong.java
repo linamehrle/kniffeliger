@@ -55,7 +55,7 @@ public class Pong implements Runnable {
     }
 
     /**
-     * this method updates the time of the last received returned ping from the client
+     * this method updates the time of the last received returned ping from the server
      * @param pongTime
      */
     public void updatePong(String pongTime) {
