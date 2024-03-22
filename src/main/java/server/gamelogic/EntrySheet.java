@@ -6,8 +6,11 @@ public class EntrySheet {
     // value with which every Entry starts with
     private final int defaultValue = 0;
 
-    // name of user which also ist name of entry sheet
-    private final String username;
+    // player that is associated with entry sheet
+    private Player player;
+
+    // username of player
+    private String username;
 
     // total points per default 0
     private int totalPoints = 0;
@@ -31,12 +34,14 @@ public class EntrySheet {
     private Entry[] entrySheet = new Entry[]{ones, twos, threes, fours, fives, sixes, threeOfAKind, fourOfAKind, fullHouse, smallStraight, largeStraight, kniffeliger, chance};
 
     /**
-     * Constructor that builds new entry sheet with unique name which is handed to it as a parameter.
+     * Constructor that builds new entry sheet with unique player (that has unique username and id) which is handed to
+     * it as a parameter.
      *
-     * @param username is unique so server knows exactly who entry sheet belongs to
+     * @param player is unique so server knows exactly who entry sheet belongs to
      */
-    public EntrySheet(String username) {
-        this.username = username;
+    public EntrySheet(Player player) {
+        this.player = player;
+        this.username = player.getUsername();
     }
 
     /**
@@ -147,6 +152,16 @@ public class EntrySheet {
             entry.setValue(defaultValue);
         }
         totalPoints = 0;
+    }
+
+    public void printEntrySheet(){
+        System.out.println("##############################");
+        System.out.println("Your Entry Sheet");
+        System.out.println("Name" + username);
+        System.out.println("##############################");
+        for (Entry e : entrySheet) {
+            System.out.println(e.getName() + ": " + e.getValue());
+        }
     }
 
 }

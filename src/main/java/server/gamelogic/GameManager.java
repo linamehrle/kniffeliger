@@ -31,21 +31,22 @@ public class GameManager {
 
     /*
     * ##################################################################################################################
-    * METHODS THAT HANDLE ENTRIES
+    * METHODS THAT HANDLES NEW ENTRIES
     * ##################################################################################################################
     */
 
     /**
-     * Sees if entry
-     * @param nameOfEntry
-     * @param finalDiceValues
-     * @throws Exception
+     * Sees if entry is valid and adds it to entry sheet
+     *
+     * @param nameOfEntry entry name which player wants to save the dice/points for.
+     * @param finalDiceValues the dice values after the player is done rolling.
+     * @throws Exception if entry cannot be found in sheet
      */
     public static void entryValidation (EntrySheet entrySheet, String nameOfEntry, Dice[] finalDiceValues) throws Exception {
         // checks if all dice have been saved, if one is not, then save them
         for (Dice d : finalDiceValues){
             if (d.getSavingStatus() == false){
-                d.setSavingStatus(true);
+                d.saveDice();
             }
         }
 
@@ -54,44 +55,109 @@ public class GameManager {
 
         switch (nameOfEntry) {
             case "ones":
-                // TODO: if entrySheet(ones)
-                singleValueRolls(finalDiceInt, 1);
+                try {
+                    Entry ones = new Entry("ones", singleValueRolls(finalDiceInt, 1));
+                    entrySheet.addEntry(ones);
+                } catch (Exception e) {
+                    e.getMessage();
+                }
                 break;
             case "twos":
-                singleValueRolls(finalDiceInt, 2);
+                try{
+                    Entry twos = new Entry("twos", singleValueRolls(finalDiceInt, 2));
+                    entrySheet.addEntry(twos);
+                } catch (Exception e) {
+                    e.getMessage();
+                }
                 break;
             case "threes":
-                singleValueRolls(finalDiceInt, 3);
+                try {
+                    Entry threes = new Entry("threes", singleValueRolls(finalDiceInt, 3));
+                    entrySheet.addEntry(threes);
+                } catch (Exception e) {
+                    e.getMessage();
+                }
                 break;
             case "fours":
-                singleValueRolls(finalDiceInt, 4);
+                try {
+                    Entry fours = new Entry("fours", singleValueRolls(finalDiceInt, 4));
+                    entrySheet.addEntry(fours);
+                } catch (Exception e) {
+                    e.getMessage();
+                }
                 break;
             case "fives":
-                singleValueRolls(finalDiceInt, 5);
+                try {
+                    Entry fives = new Entry("fives", singleValueRolls(finalDiceInt, 5));
+                    entrySheet.addEntry(fives);
+                } catch (Exception e) {
+                    e.getMessage();
+                }
                 break;
             case "sixes":
-                singleValueRolls(finalDiceInt, 6);
+                try {
+                    Entry sixes = new Entry("sixes", singleValueRolls(finalDiceInt, 6));
+                    entrySheet.addEntry(sixes);
+                } catch (Exception e) {
+                    e.getMessage();
+                }
                 break;
             case "threeOfAKind":
-                threeOfAKind(finalDiceInt);
+                try {
+                    Entry threeOfAKind = new Entry("threeOfAKind", threeOfAKind(finalDiceInt));
+                    entrySheet.addEntry(threeOfAKind);
+                } catch (Exception e) {
+                    e.getMessage();
+                }
                 break;
             case "fourOfAKind":
-                fourOfAKind(finalDiceInt);
+                try {
+                    Entry fourOfAKind = new Entry("fourOfAKind", fourOfAKind(finalDiceInt));
+                    entrySheet.addEntry(fourOfAKind);
+                } catch (Exception e) {
+                    e.getMessage();
+                }
                 break;
             case "fullHouse":
-                fullHouse(finalDiceInt);
+                try {
+                    Entry fullHouse = new Entry("fullHouse", fullHouse(finalDiceInt));
+                    entrySheet.addEntry(fullHouse);
+                } catch (Exception e) {
+                    e.getMessage();
+                }
                 break;
             case "smallStraight":
-                smallStraight(finalDiceInt);
+                try {
+                    Entry smallStraight = new Entry("smallStraight", smallStraight(finalDiceInt));
+                    entrySheet.addEntry(smallStraight);
+                } catch (Exception e) {
+                    e.getMessage();
+                }
                 break;
             case "largeStraight":
+                try {
+                    Entry largeStraight = new Entry("largeStraight", largeStraight(finalDiceInt));
+                    entrySheet.addEntry(largeStraight);
+                } catch (Exception e) {
+                    e.getMessage();
+                }
                 largeStraight(finalDiceInt);
                 break;
             case "kniffeliger":
-                kniffeliger(finalDiceInt);
+                try {
+                    Entry kniffeliger = new Entry("kniffeliger", kniffeliger(finalDiceInt));
+                    entrySheet.addEntry(kniffeliger);
+                } catch (Exception e) {
+                    e.getMessage();
+                }
                 break;
             case "chance":
-                chance(finalDiceInt);
+                try {
+                    Entry chance = new Entry("chance", chance(finalDiceInt));
+                    entrySheet.addEntry(chance);
+                } catch (Exception e) {
+                    e.getMessage();
+                }
                 break;
             /*
             default:

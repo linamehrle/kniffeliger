@@ -42,15 +42,6 @@ public class Dice {
     }
 
     /**
-     * Changes the saving status of a dice.
-     *
-     * @param newSavingStatus value of new saving status of dice
-     */
-    public void setSavingStatus(boolean newSavingStatus) {
-        savingStatus = newSavingStatus;
-    }
-
-    /**
      * Transforms Dice-array to int-array.
      *
      * @param diceArray with Dice-values
@@ -76,7 +67,6 @@ public class Dice {
      * @return true if dice can be rolled and false if it cannot be rolled
      */
     public boolean rollSingleDice() {
-        // TODO: shoul not get a NullpointerException since not static and not array input
         boolean couldRoll = false;
         if (!(savingStatus) && numberOfRolls < 3) {
             // adjusts variables after dice was rolled

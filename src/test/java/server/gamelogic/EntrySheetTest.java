@@ -9,8 +9,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EntrySheetTest {
     // default entry sheet
-    EntrySheet entrySheet1 = new EntrySheet("uniqueName001");
-    EntrySheet entrySheet2 = new EntrySheet("uniqueName002");
+    Player p1 = new Player("uniqueName001", 001);
+    Player p2 = new Player("uniqueName002", 002);
+    // entry sheets
+    EntrySheet entrySheet1 = new EntrySheet(p1);
+    EntrySheet entrySheet2 = new EntrySheet(p2);
     int[] defaultEntrySheetValues = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     String[] defaultEntrySheetNames = {"ones", "twos", "threes", "fours", "fives", "sixes", "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight", "largeStraight", "kniffeliger", "chance"};
 
