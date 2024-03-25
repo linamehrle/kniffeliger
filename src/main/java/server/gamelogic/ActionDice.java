@@ -68,6 +68,7 @@ public class ActionDice {
         }
         return message;
         // TODO: unfreeze after it has been frozen once
+        // TODO: unfreeze all entries after a player finished his round
     }
 
     // TODO: shift, switch, cross out, all of the above
