@@ -1,3 +1,4 @@
+import client.Client;
 import server.Server;
 
 /**
@@ -71,7 +72,7 @@ public class Starter {
         }
 
         // start client
-        client.GameManager client = new client.GameManager(hostAddress, port, username);
+        Client client = new Client(hostAddress, port, username);
     }
 
     /**

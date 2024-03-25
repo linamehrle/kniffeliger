@@ -41,6 +41,11 @@ public enum CommandsClientToServer {
     /**
      *  Communicates to the server that a player wants to roll all dice that are not saved
      */
-    ROLL
+    ROLL,
+
+    /**
+     * used to save certain dice, so they are not rerolled in the next roll
+     */
+    SAVE
 
 }

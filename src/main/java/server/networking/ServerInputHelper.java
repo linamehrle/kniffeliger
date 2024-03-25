@@ -61,7 +61,12 @@ public class ServerInputHelper implements Runnable {
             case PING -> serverOutput.send(CommandsServerToClient.PONG, input[1]);
             case CHAT -> Communication.sendChat(player, input[1]);
             case WHSP -> Communication.sendWhisper(player, input[1]);
-            case ROLL -> serverOutput.send(CommandsServerToClient.DICE, GameManager.stringsAndRockNRoll(player.getPlayersDice()));
+            case ROLL -> serverOutput.send(CommandsServerToClient.DICE, GameManager.stringsAndRockNRoll());
+            case SAVE -> {
+                GameManager.saveDice(input[1]);
+                serverOutput.send(CommandsServerToClient.BRCT, "Dice successfully saved");
+            }
+
             default -> System.out.println("unknown command received from client " + message);
 
         }

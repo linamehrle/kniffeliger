@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
+    /*public static void main(String[] args) throws Exception {
         // initializes players
         Player lina = new Player("lina", 007);
         Player riccardo = new Player("riccardo", 002);
@@ -82,5 +82,5 @@ public class Main {
             }
             // action dice
         }
-    }
+    }*/
 }

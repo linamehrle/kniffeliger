@@ -14,7 +14,7 @@ import java.net.Socket;
  * The constructor starts all necessary threads and prints a welcome message in the console for the user.
  * The class also contains a disconnect method which closes all threads when the client disconnects.
  */
-public class GameManager {
+public class Client {
 
     private Socket socket;
     private ConsoleInput consoleInput;
@@ -29,7 +29,7 @@ public class GameManager {
      * @param hostName
      * @param port
      */
-    public GameManager(String hostName, int port, String username) {
+    public Client(String hostName, int port, String username) {
 
         //TODO handle username given as input parameter
 

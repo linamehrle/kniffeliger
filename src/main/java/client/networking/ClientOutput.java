@@ -46,6 +46,7 @@ public class ClientOutput {
                 case "\\changeUsername" -> sendToServer("CHNA " + input[1]);
                 case "\\chat" -> sendToServer("CHAT " + input[1]);
                 case "\\whisper" -> sendToServer("WHSP " + input[1]);
+                case "\\save" -> sendToServer("SAVE " + input[1]);
                 default -> System.out.println("Invalid command or message entered: command " + input[0] + " message " + input[1]);
             }
         }

@@ -4,6 +4,10 @@ import java.util.Arrays;
 
 
 public class GameManager {
+
+    // initializes new dice set for players to roll.
+    private static Dice[] playersDice = new Dice[]{new Dice(), new Dice(), new Dice(), new Dice(), new Dice()};
+
     /*
      * #################################################################################################################
      * ROLLS AND PRINTS DICE
@@ -13,10 +17,9 @@ public class GameManager {
      * Rolls 5 dice using the rollDice() method from class Dice. This class already checks if player is allowed to roll the
      * dice, so it has not been saved and if it has less than 3 rolls. Saves dice automatically if it has been rolled 3 times.
      *
-     * @param playersDice dice client hands to server
      * @return new rolled dice
      */
-    public static Dice[] rollDice(Dice[] playersDice) {
+    public static Dice[] rollDice() {
         // handle NullPointerException if Dice array has only values null
         for (Dice dice : playersDice){
             /* rollDice() already checks if dice has been saved or if it has been rolled 3 times already (because then dice
@@ -28,6 +31,19 @@ public class GameManager {
             }
         }
         return playersDice;
+    }
+
+    /**
+     * Saves dice so player cannot roll them anymore.
+     *
+     * @param savedDice get dice saved by player as String
+     */
+    public static void saveDice(String savedDice){
+        String[] splitStr = savedDice.split("\\s+");
+        for (String s : splitStr){
+            int i = Integer.parseInt(s);
+            playersDice[i-1].saveDice();
+        }
     }
 
     /**
@@ -59,14 +75,12 @@ public class GameManager {
 
     /**
      * Prints dice values.
-     *
-     * @param playersDice
      */
-    public static String stringsAndRockNRoll(Dice[] playersDice){
+    public static String stringsAndRockNRoll(){
         String res = "";
-        GameManager.rollDice(playersDice);
+        GameManager.rollDice();
         for (Dice dice : playersDice){
-            res = dice.getDiceValue() + "\n";
+            res = res + dice.getDiceValue() + " ";
         }
         return res;
     }
