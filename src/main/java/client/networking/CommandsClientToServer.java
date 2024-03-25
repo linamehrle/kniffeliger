@@ -36,6 +36,16 @@ public enum CommandsClientToServer {
     /**
      *  used to disconnect a client, send message to server that a client has disconnected
      */
-    QUIT
+    QUIT,
+
+    /**
+     * Requests a list of all existing lobbies from the server to print in the console
+     */
+    LOLI,
+
+    /**
+     * Used to create a new Lobby with a given name, name must be unique
+     */
+    CRLO
 
 }

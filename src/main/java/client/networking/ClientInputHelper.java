@@ -1,6 +1,7 @@
 package client.networking;
 
 import client.Client;
+import client.Print;
 import server.networking.CommandsServerToClient;
 
 /**
@@ -50,6 +51,7 @@ public class ClientInputHelper implements Runnable {
             case PONG -> pong.updatePong(input[1]);
             case CHAT -> System.out.println(input[1]);
             case BRCT-> System.out.println("Alfred: " + input[1]);
+            case LOLI -> Print.printLobbies(input[1]);
             default -> System.out.println("unknown command received from server " + message);
         }
 

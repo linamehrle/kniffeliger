@@ -13,7 +13,10 @@ public class Server {
 
     private ServerSocket serverSocket;
 
+    //TODO listen in eigene Klasse?
     private static ArrayList<Player> playerList = new ArrayList<>();
+
+    private static ArrayList<Lobby> lobbyList = new ArrayList<>();
 
     /**
      * Waits for new connections and constructs a new Player object.
@@ -36,5 +39,26 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String returnLobbyList() {
+        String output = "";
+        for (Lobby lobby : lobbyList) {
+            output = output + lobby.getName() + "(" + lobby.getStatus() + ") ";
+        }
+        return output;
+    }
+
+    public static boolean lobbyNameIsTaken(String name) {
+        for (Lobby lobby : lobbyList) {
+            if (lobby.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static ArrayList<Lobby> getLobbyList() {
+        return lobbyList;
     }
 }

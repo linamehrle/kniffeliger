@@ -1,7 +1,10 @@
 package server.networking;
 
 import java.util.ArrayList;
+
+import server.Lobby;
 import server.Player;
+import server.Server;
 
 /**
  * This class contains all necessary methods for communication between clients and from server to client.
@@ -86,7 +89,14 @@ public class Communication {
      * @param message
      */
     public static void sendToLobby(Player player, String message) {
-        //TODO
+        Lobby lobby = player.getLobby();
+        ArrayList<Player> playersInLobby = lobby.getPlayersInLobby();
+        for (Player playerInList : playersInLobby) {
+            if (!playerInList.equals(player)) {
+                ServerOutput serverOutput = playerInList.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
+                serverOutput.send(CommandsServerToClient.CHAT, player.getUsername() + "to Lobby : " + message);
+            }
+        }
     }
 
 }

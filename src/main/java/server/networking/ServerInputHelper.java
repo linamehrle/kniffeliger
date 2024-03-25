@@ -1,7 +1,9 @@
 package server.networking;
 
 import client.networking.CommandsClientToServer;
+import server.Lobby;
 import server.Player;
+import server.Server;
 
 /**
  * This class handles the input read by the ServerInput class and processes it accordingly.
@@ -60,6 +62,16 @@ public class ServerInputHelper implements Runnable {
             case PING -> serverOutput.send(CommandsServerToClient.PONG, input[1]);
             case CHAT -> Communication.sendChat(player, input[1]);
             case WHSP -> Communication.sendWhisper(player, input[1]);
+            case LOLI -> serverOutput.send(CommandsServerToClient.LOLI, Server.returnLobbyList());
+            case CRLO -> {
+                if (Server.lobbyNameIsTaken(input[1])) {
+                    serverOutput.send(CommandsServerToClient.BRCT, "Name is already taken");
+                } else {
+                    Server.getLobbyList().add(new Lobby(input[1]));
+                    System.out.println("Player " + player.getUsername() + " created a new lobby: " + input[1]);
+                    //TODO broadcast that a new lobby has been created?
+                }
+            }
             default -> System.out.println("unknown command received from client " + message);
 
         }

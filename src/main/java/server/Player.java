@@ -20,6 +20,7 @@ public class Player {
     private String username;
     private ClientThread playerThreadManager;
     private ArrayList<Player> playerList;
+    private Lobby lobby;
 
     //potenziell felder für lobbyzugehörigkeit, aktivität etc?
 
@@ -85,6 +86,8 @@ public class Player {
         return false;
     }
 
+    //TODO remove player from lobby when disconnecting? how to handle possible reconnect?
+
     /**
      * Getter for the username.
      * @return
@@ -115,5 +118,13 @@ public class Player {
      */
     public ClientThread getPlayerThreadManager() {
         return playerThreadManager;
+    }
+
+    public Lobby getLobby() {
+        return lobby;
+    }
+
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
     }
 }

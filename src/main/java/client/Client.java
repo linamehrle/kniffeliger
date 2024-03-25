@@ -71,6 +71,8 @@ public class Client {
                 "\\changeUsername <new username> to change your username\n" +
                 "\\chat <message> to send a chat message to all other players\n" +
                 "\\whisper <username> <message> to send a chat to only one other player\n" +
+                "\\newLobby <name> to create a new lobby with the given name\n" +
+                "\\showLobbies to get a list of all existing lobbies\n" +
                 "\\quit to leave the game\n" +
                 "======================================================================\n";
         System.out.println(welcomeText);
