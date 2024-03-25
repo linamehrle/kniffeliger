@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import client.GameManager;
+import client.Client;
 
 /**
  * This is the thread that reads input from the server.
@@ -16,14 +16,14 @@ public class ClientInput implements Runnable {
      */
     private boolean stop = false;
     private Socket socket;
-    private GameManager gameManager;
+    private Client gameManager;
 
     /**
      * Constructor for ClientInput
      * @param socket
      * @param gameManager
      */
-    public ClientInput(Socket socket, GameManager gameManager) {
+    public ClientInput(Socket socket, Client gameManager) {
         this.socket = socket;
         this.gameManager = gameManager;
     }

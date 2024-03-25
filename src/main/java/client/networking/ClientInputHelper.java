@@ -1,13 +1,13 @@
 package client.networking;
 
-import client.GameManager;
+import client.Client;
 import server.networking.CommandsServerToClient;
 
 /**
  * This class handles the input read by the ClientInput class and processes it accordingly.
  */
 public class ClientInputHelper implements Runnable {
-    GameManager gameManager;
+    Client gameManager;
     String message;
     Pong pong;
     ClientOutput clientOutput;
@@ -17,7 +17,7 @@ public class ClientInputHelper implements Runnable {
      * @param gameManager
      * @param message the input that was read by the ClientInput coming from the server
      */
-    public ClientInputHelper(GameManager gameManager, String message) {
+    public ClientInputHelper(Client gameManager, String message) {
         this.gameManager = gameManager;
         this.message = message;
         this.pong = gameManager.getPong();

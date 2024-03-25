@@ -1,6 +1,6 @@
 package client.networking;
 
-import client.GameManager;
+import client.Client;
 
 /**
  * This class handles the thread which sends a ping to the server in set intervals. It also handles a timeout.
@@ -17,13 +17,13 @@ public class Pong implements Runnable {
      */
     private long lastReceivedPing;
     private ClientOutput clientOutput;
-    private GameManager gameManager;
+    private Client gameManager;
 
     /**
      * The constructor for Pong.
      * @param gameManager
      */
-    public Pong(GameManager gameManager) {
+    public Pong(Client gameManager) {
         this.gameManager = gameManager;
         this.clientOutput = gameManager.getClientOutput();
     }
