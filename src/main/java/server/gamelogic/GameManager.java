@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 
 public class GameManager {
+
     /*
      * #################################################################################################################
      * ROLLS AND PRINTS DICE
@@ -58,15 +59,29 @@ public class GameManager {
     }
 
     /**
-     * Prints dice values.
+     * Rolls players dice and returns them as String, so we can print it in console.
+     * This is only for playing the game in the console.
+     *
+     * @param playersDice dice the player has and rolled
+     */
+    public static String stringsAndRockNRoll(Dice[] playersDice){
+        String res = "";
+        GameManager.rollDice(playersDice);
+        for (Dice dice : playersDice){
+            res = dice.getDiceValue() + "\n";
+        }
+        return res;
+    }
+
+    /**
+     * Prints values of all dice.
      *
      * @param playersDice
      */
     public static void printDice(Dice[] playersDice){
-        for (Dice dice : playersDice){
-            System.out.println(dice.getDiceValue() + " ");
+        for (Dice d : playersDice) {
+            System.out.println(d.getDiceValue() + " ");
         }
     }
-
 
 }
