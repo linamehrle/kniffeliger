@@ -3,34 +3,38 @@ package server.gamelogic;
 import java.util.Arrays;
 
 public class EntrySheet {
-    // TODO: NullpointerException handling
+    // entry sheet length
+    private static final int ENTRY_SHEET_LENGTH = 13;
 
     // value with which every Entry starts with
-    private final int defaultValue = 0;
+    private final int DEFAULT_VALUE = 0;
 
     // player that is associated with entry sheet
     private Player player;
 
-    // username of player
-    private String username;
+    // round counter
+    private int rounds;
 
     // total points per default 0
     private int totalPoints = 0;
 
+    // username of player
+    private String username;
+
     // entries used for a full entry sheet array
-    private Entry ones = new Entry("ones", defaultValue);
-    private Entry twos = new Entry("twos", defaultValue);
-    private Entry threes = new Entry("threes", defaultValue);
-    private Entry fours = new Entry("fours", defaultValue);
-    private Entry fives = new Entry("fives", defaultValue);
-    private Entry sixes = new Entry("sixes", defaultValue);
-    private Entry threeOfAKind = new Entry("threeOfAKind", defaultValue);
-    private Entry fourOfAKind = new Entry("fourOfAKind", defaultValue);
-    private Entry fullHouse = new Entry("fullHouse", defaultValue);
-    private Entry smallStraight = new Entry("smallStraight", defaultValue);
-    private Entry largeStraight = new Entry("largeStraight", defaultValue);
-    private Entry kniffeliger = new Entry("kniffeliger", defaultValue);
-    private Entry chance = new Entry("chance", defaultValue);
+    private Entry ones = new Entry("ones", DEFAULT_VALUE);
+    private Entry twos = new Entry("twos", DEFAULT_VALUE);
+    private Entry threes = new Entry("threes", DEFAULT_VALUE);
+    private Entry fours = new Entry("fours", DEFAULT_VALUE);
+    private Entry fives = new Entry("fives", DEFAULT_VALUE);
+    private Entry sixes = new Entry("sixes", DEFAULT_VALUE);
+    private Entry threeOfAKind = new Entry("threeOfAKind", DEFAULT_VALUE);
+    private Entry fourOfAKind = new Entry("fourOfAKind", DEFAULT_VALUE);
+    private Entry fullHouse = new Entry("fullHouse", DEFAULT_VALUE);
+    private Entry smallStraight = new Entry("smallStraight", DEFAULT_VALUE);
+    private Entry largeStraight = new Entry("largeStraight", DEFAULT_VALUE);
+    private Entry kniffeliger = new Entry("kniffeliger", DEFAULT_VALUE);
+    private Entry chance = new Entry("chance", DEFAULT_VALUE);
 
     // entry sheet as an Entry-array
     private Entry[] entrySheet = new Entry[]{ones, twos, threes, fours, fives, sixes, threeOfAKind, fourOfAKind, fullHouse, smallStraight, largeStraight, kniffeliger, chance};
@@ -53,142 +57,25 @@ public class EntrySheet {
      */
 
     /**
-     * Access username which is also name of entry sheet.
+     * Access official length of an entry sheet, which is 13.
      *
-     * @return username
+     * @return length of entry sheet, which is 13.
      */
-    public String getUsername() {
-        return username;
+    public static int getEntrySheetLength() {
+        return ENTRY_SHEET_LENGTH;
     }
-
-    /**
-     * Access total points of entry sheet
-     *
-     * @return all the points of the entry sheet added together
-     */
-    public int getTotalPoints() {
-        return totalPoints;
-    }
-
-    /**
-     * Access entry sheet as an array.
-     *
-     * @return entry sheet array
-     */
-    public Entry[] getEntrySheetAsArray() {
-        return entrySheet;
-    }
-
-    /**
-     * Extracts point of entry sheet into an array.
-     *
-     * @return array with points of entries as values
-     */
-    public int[] getEntryValues(){
-        int[] entryValues = new int[entrySheet.length];
-        for (int i = 0; i < entrySheet.length; i++) {
-            entryValues[i] = entrySheet[i].getValue();
-        }
-        return entryValues;
-    }
-
-    /**
-     * Extracts names of entry sheet into an array. Does not change names but copies them into an array.
-     *
-     * @return array with names of entries as values
-     */
-    public String[] getEntryNames(){
-        String[] entryNames = new String[entrySheet.length];
-        for (int i = 0; i < entrySheet.length; i++) {
-            entryNames[i] = entrySheet[i].getName();
-        }
-        return entryNames;
-    }
-
-    /**
-     * Adds the new value for an entry at the right position of the entry sheet array. Total points get updated by the added value.
-     *
-     * @param newEntry contains the name we can compare and the new entry value
-     */
-    public void addEntry(Entry newEntry) throws Exception {
-        // makes sure that we can throw an exception, if the entry does not appear in entrySheet array
-        int notAppearedCounter = 0;
-        for (Entry entry : entrySheet) {
-            // if the correct entry has been detected, so if the names are the same, the value of this entry on entrySheet can be changed
-            if (entry.getName().equals(newEntry.getName())) {
-                entry.setValue(newEntry.getValue());
-                totalPoints = totalPoints + entry.getValue();
-            } else {
-                notAppearedCounter = notAppearedCounter + 1;
-            }
-        }
-        // throws exception if the entry name could not be detected in the entrySheet array because then the given entry is not valid
-        if (notAppearedCounter == entrySheet.length) {
-            throw new Exception("Your entry has no match in the entry sheet. You must have gotten the wrong name.");
-        }
-    }
-
-    /**
-     * Detects entry from sheet and deletes it.
-     *
-     * @param deletedEntry gives us name of entry that needs to be deleted
-     * @throws Exception when the deletedEntry parameter does not appear in entry sheet
-     */
-    public void deleteEntry(Entry deletedEntry) throws Exception {
-        // makes sure that we can throw an exception, if the entry does not appear in entrySheet array
-        int notAppearedCounter = 0;
-        for (Entry entry : entrySheet) {
-            // if the correct entry has been detected, so if the names are the same, delete value from total points and set the value of this entry on entrySheet to 0
-            if (entry.getName().equals(deletedEntry.getName())) {
-                totalPoints = totalPoints - entry.getValue();
-                entry.setValue(0);
-            } else {
-                notAppearedCounter = notAppearedCounter + 1;
-            }
-        }
-        // throws exception if the entry name could not be detected in the entrySheet array because then the given entry is not valid
-        if (notAppearedCounter == entrySheet.length) {
-            throw new Exception("Your entry has no match in the entry sheet. You must have gotten the wrong name.");
-        }
-    }
-
-    /**
-     * Sets all entries on entry sheet to starting value 0.
-     */
-    public void resetEntrySheet() {
-        for (Entry entry : entrySheet) {
-            entry.setValue(defaultValue);
-        }
-        totalPoints = 0;
-    }
-
-    public void printEntrySheet(){
-        System.out.println("##############################");
-        System.out.println("Your Entry Sheet");
-        System.out.println("Name" + username);
-        System.out.println("##############################");
-        for (Entry e : entrySheet) {
-            System.out.println(e.getName() + ": " + e.getValue());
-        }
-    }
-
-    /*
-     * ##################################################################################################################
-     * METHODS THAT HANDLES NEW ENTRIES
-     * ##################################################################################################################
-     */
 
     /**
      * Sees if entry is valid and adds it to entry sheet
      *
-     * @param nameOfEntry entry name which player wants to save the dice/points for.
+     * @param nameOfEntry     entry name which player wants to save the dice/points for.
      * @param finalDiceValues the dice values after the player is done rolling.
      * @throws Exception if entry cannot be found in sheet
      */
-    public static void entryValidation (EntrySheet entrySheet, String nameOfEntry, Dice[] finalDiceValues) throws Exception {
+    public static void entryValidation(EntrySheet entrySheet, String nameOfEntry, Dice[] finalDiceValues) throws Exception {
         // checks if all dice have been saved, if one is not, then save them
-        for (Dice d : finalDiceValues){
-            if (d.getSavingStatus() == false){
+        for (Dice d : finalDiceValues) {
+            if (d.getSavingStatus() == false) {
                 d.saveDice();
             }
         }
@@ -206,7 +93,7 @@ public class EntrySheet {
                 }
                 break;
             case "twos":
-                try{
+                try {
                     Entry twos = new Entry("twos", singleValueRolls(finalDiceInt, 2));
                     entrySheet.addEntry(twos);
                 } catch (Exception e) {
@@ -366,7 +253,7 @@ public class EntrySheet {
      * @param rolledDice are the dice that have been rolled and saved
      * @return returns value of four same dice
      */
-    public static int fourOfAKind(int[] rolledDice)  {
+    public static int fourOfAKind(int[] rolledDice) {
 
         // sorts rolled dice first
         Arrays.sort(rolledDice);
@@ -515,6 +402,144 @@ public class EntrySheet {
             sum = sum + d;
         }
         return sum;
+    }
+
+    /**
+     * Access username which is also name of entry sheet.
+     *
+     * @return username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /*
+     * ##################################################################################################################
+     * METHODS THAT HANDLE NEW ENTRIES
+     * ##################################################################################################################
+     */
+
+    /**
+     * Access total points of entry sheet
+     *
+     * @return all the points of the entry sheet added together
+     */
+    public int getTotalPoints() {
+        return totalPoints;
+    }
+
+    /**
+     * Access entry sheet as an array.
+     *
+     * @return entry sheet array
+     */
+    public Entry[] getAsArray() {
+        return entrySheet;
+    }
+
+    /**
+     * Extracts point of entry sheet into an array.
+     *
+     * @return array with points of entries as values
+     */
+    public int[] getEntryValues() {
+        int[] entryValues = new int[entrySheet.length];
+        for (int i = 0; i < entrySheet.length; i++) {
+            entryValues[i] = entrySheet[i].getValue();
+        }
+        return entryValues;
+    }
+
+    /**
+     * Extracts names of entry sheet into an array. Does not change names but copies them into an array.
+     *
+     * @return array with names of entries as values
+     */
+    public String[] getEntryNames() {
+        String[] entryNames = new String[entrySheet.length];
+        for (int i = 0; i < entrySheet.length; i++) {
+            entryNames[i] = entrySheet[i].getName();
+        }
+        return entryNames;
+    }
+
+    /**
+     * Access rounds of an entry sheet/player.
+     *
+     * @return rounds that player currently is in.
+     */
+    public int getRounds() {
+        return rounds;
+    }
+
+    /**
+     * Adds the new value for an entry at the right position of the entry sheet array. Total points get updated by the added value.
+     *
+     * @param newEntry contains the name we can compare and the new entry value
+     */
+    public void addEntry(Entry newEntry) {
+        // makes sure that we can throw an exception, if the entry does not appear in entrySheet array
+        int notAppearedCounter = 0;
+        for (Entry entry : entrySheet) {
+            // if the correct entry has been detected, so if the names are the same, the value of this entry on entrySheet can be changed
+            if (entry.getName().equals(newEntry.getName())) {
+                entry.setValue(newEntry.getValue());
+                totalPoints = totalPoints + entry.getValue();
+            } else {
+                notAppearedCounter = notAppearedCounter + 1;
+            }
+        }
+        // throws exception if the entry name could not be detected in the entrySheet array because then the given entry is not valid
+        if (notAppearedCounter == entrySheet.length) {
+            System.out.print("Your entry did not appear. Please try again.");
+        }
+    }
+
+    /**
+     * Detects entry from sheet and deletes it.
+     *
+     * @param deletedEntry gives us name of entry that needs to be deleted
+     * @throws Exception when the deletedEntry parameter does not appear in entry sheet
+     */
+    public void deleteEntry(Entry deletedEntry) throws Exception {
+        // makes sure that we can throw an exception, if the entry does not appear in entrySheet array
+        int notAppearedCounter = 0;
+        for (Entry entry : entrySheet) {
+            // if the correct entry has been detected, so if the names are the same, delete value from total points and set the value of this entry on entrySheet to 0
+            if (entry.getName().equals(deletedEntry.getName())) {
+                totalPoints = totalPoints - entry.getValue();
+                entry.setValue(0);
+            } else {
+                notAppearedCounter = notAppearedCounter + 1;
+            }
+        }
+        // throws exception if the entry name could not be detected in the entrySheet array because then the given entry is not valid
+        if (notAppearedCounter == entrySheet.length) {
+            throw new Exception("Your entry has no match in the entry sheet. You must have gotten the wrong name.");
+        }
+    }
+
+    /**
+     * Sets all entries on entry sheet to starting value 0.
+     */
+    public void resetEntrySheet() {
+        for (Entry entry : entrySheet) {
+            entry.setValue(DEFAULT_VALUE);
+        }
+        totalPoints = 0;
+    }
+
+    /**
+     * Method to print entry sheet (only used to play it in console).
+     */
+    public void printEntrySheet() {
+        System.out.println("##############################");
+        System.out.println("Your Entry Sheet");
+        System.out.println("Name" + username);
+        System.out.println("##############################");
+        for (Entry e : entrySheet) {
+            System.out.println(e.getName() + ": " + e.getValue());
+        }
     }
 
 }
