@@ -25,36 +25,52 @@ public class ActionDice {
     /*
      * #################################################################################################################
      * ACTION DICE
+     * ATTENTION: METHODS RETURN MOSTLY STRINGS SO WE CAN PLAY IT IN CONSOLE
      * #################################################################################################################
      */
     /**
-     * Lets you steal an entry from another player.
+     * METHOD RETURNS STRING SO WE CAN PLAY IT IN CONSOLE ##############################################################
+     * Lets you steal an entry from another player. Returns String with message, if entry could be stolen.
      *
-     * @param entrySheetThief person you
-     * @param entrySheetVictim
-     * @param stolenEntry
+     * @param entrySheetThief player that steals entry
+     * @param entrySheetVictim player that entry is stolen from
+     * @param stolenEntry entry that thief wants to steal
      */
-    public static void steal (EntrySheet entrySheetThief, EntrySheet entrySheetVictim, Entry stolenEntry) {
-        Entry newEntry = stolenEntry;
-        for (Entry entry : entrySheetVictim.getEntrySheetAsArray()) {
-            if (entry.getName().equals(stolenEntry.getName())) {
-                newEntry = entry;
-                try {
-                    entrySheetVictim.deleteEntry(stolenEntry);
-                } catch (Exception e) {
-                    e.getMessage();
-                }
+    public static String steal (EntrySheet entrySheetThief, EntrySheet entrySheetVictim, Entry stolenEntry) {
+        String message = entrySheetThief.getUsername() + ", ";
+        for (int i = 0; i < EntrySheet.getEntrySheetLength(); i++){
+            if (entrySheetVictim.getAsArray()[i].getName().equals(stolenEntry.getName())){
+                entrySheetThief.addEntry(stolenEntry);
+                message = "you successfully stole the entry " + stolenEntry.getName() + " from " + entrySheetThief.getUsername() + ".";
+            } else {
+                message = "this is not a valid entry.";
             }
         }
-        for (Entry entry : entrySheetThief.getEntrySheetAsArray()){
-            if (entry.getName().equals(stolenEntry.getName())) {
-                try {
-                    entrySheetThief.addEntry(newEntry);
-                } catch (Exception e) {
-                    e.getMessage();
-                }
-            }
-        }
+        return message;
     }
+
+    /**
+     * METHOD RETURNS STRING SO WE CAN PLAY IT IN CONSOLE ##############################################################
+     * Freezes (aka blocks) a player from choosing a specific combination as an entry. If, for example, the full house
+     * gets frozen, the victim cannot choose this entry for next round.
+     *
+     * @return String message if entry is successfully blocked
+     */
+    public static String freeze (EntrySheet entrySheetVictim, Entry frozenEntry){
+        String message = "";
+        for (Entry entry : entrySheetVictim.getAsArray()){
+            if (entry.getName().equals(frozenEntry.getName())){
+                entry.setFrozenStatus(true);
+                message = message + "The entry of " + entrySheetVictim.toString() + " has successfully been frozen.";
+            } else {
+                message = message + "Invalid entry.";
+            }
+        }
+        return message;
+        // TODO: unfreeze after it has been frozen once
+    }
+
+    // TODO: shift, switch, cross out, all of the above
+
 
 }
