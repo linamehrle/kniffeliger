@@ -2,9 +2,14 @@ package server.gamelogic;
 
 public class Entry {
 
+    // name of an entry
     private final String name;
+
+    // value of entry
     private int value;
-    private boolean frozenStatus;
+
+    // entry is by default not frozen
+    private boolean frozenStatus = false;
 
     public Entry(String name, int value) {
         this.name = name;
@@ -30,6 +35,15 @@ public class Entry {
     }
 
     /**
+     * Sets entry to frozen or not frozen.
+     *
+     * @param newFrozenStatus is true, if the entry should be frozen and false if not
+     */
+    public void setFrozenStatus(boolean newFrozenStatus) {
+        frozenStatus = newFrozenStatus;
+    }
+
+    /**
      * Access value of entry.
      *
      * @return value of entry
@@ -45,14 +59,5 @@ public class Entry {
      */
     public void setValue(int newValue) {
         value = newValue;
-    }
-
-    /**
-     * Sets entry to frozen or not frozen.
-     *
-     * @param newFrozenStatus is true, if the entry should be frozen and false if not
-     */
-    public void setFrozenStatus(boolean newFrozenStatus) {
-        frozenStatus = newFrozenStatus;
     }
 }
