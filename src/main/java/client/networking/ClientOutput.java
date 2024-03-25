@@ -33,6 +33,7 @@ public class ClientOutput {
 
             switch (input[0]) {
 
+                case "\\roll" -> sendToServer("ROLL player rolled the dice");
                 case "\\quit" -> sendToServer("QUIT goodbye!");
                 default -> System.out.println("Invalid input entered");
 

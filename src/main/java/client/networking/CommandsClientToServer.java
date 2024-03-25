@@ -36,6 +36,11 @@ public enum CommandsClientToServer {
     /**
      *  used to disconnect a client, send message to server that a client has disconnected
      */
-    QUIT
+    QUIT,
+
+    /**
+     *  Communicates to the server that a player wants to roll all dice that are not saved
+     */
+    ROLL
 
 }

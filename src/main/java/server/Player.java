@@ -2,6 +2,8 @@ package server;
 
 import java.net.Socket;
 import java.util.ArrayList;
+
+import server.gamelogic.Dice;
 import server.networking.ClientThread;
 import server.networking.CommandsServerToClient;
 import server.networking.Communication;
@@ -18,6 +20,8 @@ public class Player {
     private static int counter = 0;
     private int id;
     private String username;
+
+    private Dice[] playersDice;
     private ClientThread playerThreadManager;
     private ArrayList<Player> playerList;
 
@@ -33,6 +37,7 @@ public class Player {
         this.id = counter;
         this.username = "user_" + id;
         this.playerList = playerList;
+        playersDice = new Dice[]{new Dice(), new Dice(), new Dice(), new Dice(), new Dice()};
         playerThreadManager = new ClientThread(socket, this);
         Thread playerThread = new Thread(playerThreadManager);
         playerThread.start();
@@ -115,5 +120,9 @@ public class Player {
      */
     public ClientThread getPlayerThreadManager() {
         return playerThreadManager;
+    }
+
+    public Dice[] getPlayersDice() {
+        return playersDice;
     }
 }

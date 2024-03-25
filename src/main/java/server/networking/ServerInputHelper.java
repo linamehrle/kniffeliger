@@ -2,6 +2,7 @@ package server.networking;
 
 import client.networking.CommandsClientToServer;
 import server.Player;
+import server.gamelogic.GameManager;
 
 /**
  * This class handles the input read by the ServerInput class and processes it accordingly.
@@ -60,6 +61,7 @@ public class ServerInputHelper implements Runnable {
             case PING -> serverOutput.send(CommandsServerToClient.PONG, input[1]);
             case CHAT -> Communication.sendChat(player, input[1]);
             case WHSP -> Communication.sendWhisper(player, input[1]);
+            case ROLL -> serverOutput.send(CommandsServerToClient.DICE, GameManager.stringsAndRockNRoll(player.getPlayersDice()));
             default -> System.out.println("unknown command received from client " + message);
 
         }

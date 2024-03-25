@@ -34,6 +34,11 @@ public enum CommandsServerToClient {
     /**
      * Used to send chat messages to other clients.
      */
-    CHAT
+    CHAT,
+
+    /**
+     * Returns the rolled dice to the player
+     */
+    DICE
 
 }

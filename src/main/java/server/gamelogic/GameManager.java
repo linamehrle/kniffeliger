@@ -62,10 +62,13 @@ public class GameManager {
      *
      * @param playersDice
      */
-    public static void printDice(Dice[] playersDice){
+    public static String stringsAndRockNRoll(Dice[] playersDice){
+        String res = "";
+        GameManager.rollDice(playersDice);
         for (Dice dice : playersDice){
-            System.out.println(dice.getDiceValue() + " ");
+            res = dice.getDiceValue() + "\n";
         }
+        return res;
     }
 
 

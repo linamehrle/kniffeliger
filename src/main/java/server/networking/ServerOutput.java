@@ -42,6 +42,7 @@ public class ServerOutput {
             case PONG -> sendToClient("PONG " + message);
             case CHAT -> sendToClient("CHAT " + message);
             case BRCT -> sendToClient("BRCT " + message);
+            case DICE -> sendToClient("DICE " + message);
             default -> System.out.println("unknown command to send from server to client " + message);
 
         }
