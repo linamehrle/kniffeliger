@@ -59,15 +59,7 @@ public class ClientOutput {
      * @param message
      */
     public synchronized void send(CommandsClientToServer cmd, String message) {
-
-        switch (cmd) {
-
-            case CHNA -> sendToServer("CHNA " + message);
-            case PONG -> sendToServer("PONG " + message);
-            case PING -> sendToServer("PING " + message);
-            default -> System.out.println("unknown command to send from client to server " + message);
-
-        }
+        sendToServer(cmd.toString() + " " + message);
     }
 
     /**

@@ -33,19 +33,7 @@ public class ServerOutput {
      * @param message
      */
     public synchronized void send(CommandsServerToClient cmd, String message) {
-
-        switch (cmd) {
-
-            case CHNA -> sendToClient("CHNA " + message);
-            case QUIT -> sendToClient("QUIT " + message);
-            case PING -> sendToClient("PING " + message);
-            case PONG -> sendToClient("PONG " + message);
-            case CHAT -> sendToClient("CHAT " + message);
-            case BRCT -> sendToClient("BRCT " + message);
-            case LOLI -> sendToClient("LOLI " + message);
-            default -> System.out.println("unknown command to send from server to client " + message);
-
-        }
+        sendToClient(cmd.toString() + " " + message);
     }
 
     /**
