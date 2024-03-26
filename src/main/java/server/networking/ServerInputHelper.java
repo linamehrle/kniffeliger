@@ -69,12 +69,21 @@ public class ServerInputHelper implements Runnable {
                 } else {
                     Server.getLobbyList().add(new Lobby(input[1]));
                     System.out.println("Player " + player.getUsername() + " created a new lobby: " + input[1]);
+                    serverOutput.send(CommandsServerToClient.BRCT, "You successfully created the lobby " + input[1]);
+                    Communication.broadcast(player, "Player " + player.getUsername() + " created a new lobby " + input[1]);
                     //TODO broadcast that a new lobby has been created?
                 }
             }
             case ENLO -> {
                 if(Server.lobbyExists(input[1])) {
                     Server.getLobbyFromList(input[1]).enterLobby(player);
+                } else {
+                    serverOutput.send(CommandsServerToClient.BRCT, "There is no lobby with this name");
+                }
+            }
+            case LELO -> {
+                if(Server.lobbyExists(input[1])) {
+                    Server.getLobbyFromList(input[1]).leaveLobby(player);
                 } else {
                     serverOutput.send(CommandsServerToClient.BRCT, "There is no lobby with this name");
                 }

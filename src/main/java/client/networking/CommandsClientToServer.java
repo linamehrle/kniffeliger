@@ -51,6 +51,11 @@ public enum CommandsClientToServer {
     /**
      * Used ba the client to enter a lobby of a given name
      */
-    ENLO
+    ENLO,
+
+    /**
+     *  Used by the client to leave a Lobby of a given name
+     */
+    LELO
 
 }

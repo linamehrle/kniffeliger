@@ -1,7 +1,6 @@
 package server;
 
 import java.util.ArrayList;
-
 import server.networking.CommandsServerToClient;
 import server.networking.ServerOutput;
 
@@ -28,6 +27,9 @@ public class Lobby {
     }
 
     public void enterLobby(Player player) {
+
+        //TODO can a player enter multiple lobbies??
+
         ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
 
         for (Player playerInList : playersInLobby) {
@@ -65,9 +67,25 @@ public class Lobby {
     }
 
     public void leaveLobby(Player player) {
+        ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
+
+        boolean playerIsInLobby = false;
+
+        for (Player playerInLobby : playersInLobby) {
+            if (playerInLobby.equals(player)) {
+                playerIsInLobby = true;
+            }
+        }
+
+        if(!playerIsInLobby) {
+            serverOutput.send(CommandsServerToClient.BRCT, "You are not in this lobby");
+            return;
+        }
+
         if (!status.equals("ongoing game")) {
             playersInLobby.remove(player);
             numbOfPlayers--;
+            serverOutput.send(CommandsServerToClient.BRCT, "You successfully left the lobby " + name);
             if (status.equals("full")) {
                 status = "open";
             }

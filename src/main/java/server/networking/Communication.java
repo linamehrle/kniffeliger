@@ -16,7 +16,7 @@ public class Communication {
      * @param message
      */
     public static void broadcastToAll(ArrayList<Player> playerList, String message) {
-        //TODO
+        //TODO, do we even need this?
     }
 
     /**
