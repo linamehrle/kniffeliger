@@ -3,7 +3,6 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 /**
  * This is the main class for the server. It contains a list of all connected clients. When it is constucted,
@@ -12,8 +11,6 @@ import java.util.ArrayList;
 public class Server {
 
     private ServerSocket serverSocket;
-
-    private static ArrayList<Player> playerList = new ArrayList<>();
 
     /**
      * Waits for new connections and constructs a new Player object.
@@ -30,8 +27,8 @@ public class Server {
             while(true) {
                 // wait for connections and create new player
                 Socket clientSocket = serverSocket.accept();
-                Player player = new Player(clientSocket, playerList);
-                playerList.add(player);
+                Player player = new Player(clientSocket, ListManager.getPlayerList());
+                ListManager.addPlayer(player);
             }
         } catch (IOException e) {
             e.printStackTrace();

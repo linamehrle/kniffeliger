@@ -39,6 +39,11 @@ public enum CommandsServerToClient {
     /**
      * Returns the rolled dice to the player
      */
-    DICE
+    DICE,
+
+    /**
+     * Returns a list of all lobbies to the client
+     */
+    LOLI
 
 }

@@ -1,6 +1,7 @@
 package server.networking;
 
 import client.networking.CommandsClientToServer;
+import server.ListManager;
 import server.Player;
 import server.gamelogic.GameManager;
 
@@ -61,6 +62,11 @@ public class ServerInputHelper implements Runnable {
             case PING -> serverOutput.send(CommandsServerToClient.PONG, input[1]);
             case CHAT -> Communication.sendChat(player, input[1]);
             case WHSP -> Communication.sendWhisper(player, input[1]);
+            case LOLI -> serverOutput.send(CommandsServerToClient.LOLI, ListManager.returnLobbyListAsString());
+            case CRLO -> ListManager.createNewLobby(player, input[1]);
+            case ENLO -> player.enterLobby(input[1]);
+            case LELO -> player.leaveLobby();
+            case LOCH -> Communication.sendToLobby(player, input[1]);
             case ROLL -> serverOutput.send(CommandsServerToClient.DICE, GameManager.stringsAndRockNRoll());
             case SAVE -> {
                 GameManager.saveDice(input[1]);

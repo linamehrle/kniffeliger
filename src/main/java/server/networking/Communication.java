@@ -1,6 +1,7 @@
 package server.networking;
 
 import java.util.ArrayList;
+import server.Lobby;
 import server.Player;
 
 /**
@@ -13,7 +14,7 @@ public class Communication {
      * @param message
      */
     public static void broadcastToAll(ArrayList<Player> playerList, String message) {
-        //TODO
+        //TODO, do we even need this?
     }
 
     /**
@@ -86,7 +87,22 @@ public class Communication {
      * @param message
      */
     public static void sendToLobby(Player player, String message) {
-        //TODO
+
+        //checks if a player is in a lobby
+        if(player.getLobby() == null) {
+            ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
+            serverOutput.send(CommandsServerToClient.BRCT, "You are not in a lobby");
+        }
+
+        //sends the message to all other players in the lobby
+        Lobby lobby = player.getLobby();
+        ArrayList<Player> playersInLobby = lobby.getPlayersInLobby();
+        for (Player playerInList : playersInLobby) {
+            if (!playerInList.equals(player)) {
+                ServerOutput serverOutput = playerInList.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
+                serverOutput.send(CommandsServerToClient.CHAT, player.getUsername() + " to Lobby : " + message);
+            }
+        }
     }
 
 }

@@ -35,6 +35,8 @@ public class ClientOutput {
 
                 case "\\roll" -> sendToServer("ROLL player rolled the dice");
                 case "\\quit" -> sendToServer("QUIT goodbye!");
+                case "\\showLobbies" -> sendToServer("LOLI show me all lobbies");
+                case "\\leaveLobby" -> sendToServer("LELO byebye");
                 default -> System.out.println("Invalid input entered");
 
             }
@@ -47,6 +49,9 @@ public class ClientOutput {
                 case "\\chat" -> sendToServer("CHAT " + input[1]);
                 case "\\whisper" -> sendToServer("WHSP " + input[1]);
                 case "\\save" -> sendToServer("SAVE " + input[1]);
+                case "\\newLobby" -> sendToServer("CRLO " + input[1]);
+                case "\\enterLobby" -> sendToServer("ENLO " + input[1]);
+                case "\\lobbyChat" -> sendToServer("LOCH " + input[1]);
                 default -> System.out.println("Invalid command or message entered: command " + input[0] + " message " + input[1]);
             }
         }
@@ -59,15 +64,7 @@ public class ClientOutput {
      * @param message
      */
     public synchronized void send(CommandsClientToServer cmd, String message) {
-
-        switch (cmd) {
-
-            case CHNA -> sendToServer("CHNA " + message);
-            case PONG -> sendToServer("PONG " + message);
-            case PING -> sendToServer("PING " + message);
-            default -> System.out.println("unknown command to send from client to server " + message);
-
-        }
+        sendToServer(cmd.toString() + " " + message);
     }
 
     /**

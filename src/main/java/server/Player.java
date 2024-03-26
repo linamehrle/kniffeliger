@@ -24,8 +24,9 @@ public class Player {
     private Dice[] playersDice;
     private ClientThread playerThreadManager;
     private ArrayList<Player> playerList;
+    private Lobby lobby;
 
-    //potenziell felder für lobbyzugehörigkeit, aktivität etc?
+    //potenziell felder für aktivität etc?
 
     /**
      * The constructor for the Player class. It starts a new ClientThread per Player.
@@ -91,6 +92,29 @@ public class Player {
     }
 
     /**
+     * Used by the player to leave the lobby they are in
+     */
+    public void leaveLobby() {
+        lobby.leaveLobby(this);
+    }
+
+    /**
+     * Used by the player to enter a lobby by giving its name. The method also checks if a lobby with the given name
+     * exists.
+     * @param name
+     */
+    public void enterLobby(String name) {
+        if(ListManager.lobbyExists(name)) {
+            Lobby lobbyByName = ListManager.getLobbyByName(name);
+            lobbyByName.enterLobby(this);
+        } else {
+            playerThreadManager.getServerOutput().send(CommandsServerToClient.BRCT, "There is no lobby with this name");
+        }
+    }
+
+    //TODO remove player from lobby when disconnecting? how to handle possible reconnect?
+
+    /**
      * Getter for the username.
      * @return
      */
@@ -124,5 +148,21 @@ public class Player {
 
     public Dice[] getPlayersDice() {
         return playersDice;
+    }
+
+    /**
+     * Getter for the lobby
+     * @return
+     */
+    public Lobby getLobby() {
+        return lobby;
+    }
+
+    /**
+     * Setter for the lobby
+     * @param lobby
+     */
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
     }
 }
