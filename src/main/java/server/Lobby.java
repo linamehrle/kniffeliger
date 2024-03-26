@@ -29,6 +29,14 @@ public class Lobby {
 
     public void enterLobby(Player player) {
         ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
+
+        for (Player playerInList : playersInLobby) {
+            if (playerInList.equals(player)) {
+                serverOutput.send(CommandsServerToClient.BRCT, "You are already in this lobby");
+                return;
+            }
+        }
+
         if (status.equals("full")) {
             serverOutput.send(CommandsServerToClient.BRCT, "Lobby " + name + " is already full");
         } else if (status.equals("ongoing game")) {
@@ -40,6 +48,7 @@ public class Lobby {
             if (numbOfPlayers == 4) {
                 status = "full";
             }
+            serverOutput.send(CommandsServerToClient.BRCT, "You successfully entered the lobby " + name);
         }
     }
 

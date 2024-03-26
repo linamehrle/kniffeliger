@@ -72,6 +72,13 @@ public class ServerInputHelper implements Runnable {
                     //TODO broadcast that a new lobby has been created?
                 }
             }
+            case ENLO -> {
+                if(Server.lobbyExists(input[1])) {
+                    Server.getLobbyFromList(input[1]).enterLobby(player);
+                } else {
+                    serverOutput.send(CommandsServerToClient.BRCT, "There is no lobby with this name");
+                }
+            }
             default -> System.out.println("unknown command received from client " + message);
 
         }

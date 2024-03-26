@@ -58,6 +58,35 @@ public class Server {
         return false;
     }
 
+    /**
+     * Checks if a lobby with a given name exists in the list of all lobbies
+     * @param name
+     * @return
+     */
+    public static boolean lobbyExists(String name) {
+        for (Lobby lobby : lobbyList) {
+            if (lobby.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns a lobby from the list of all lobbies given the unique name of the lobby
+     * @param name
+     * @return
+     */
+    public static Lobby getLobbyFromList(String name) {
+        for (Lobby lobbyInList : lobbyList) {
+            if (lobbyInList.getName().equals(name)) {
+                return lobbyInList;
+            }
+        }
+        Lobby lobby = new Lobby("default");
+        return lobby;
+    }
+
     public static ArrayList<Lobby> getLobbyList() {
         return lobbyList;
     }

@@ -46,6 +46,11 @@ public enum CommandsClientToServer {
     /**
      * Used to create a new Lobby with a given name, name must be unique
      */
-    CRLO
+    CRLO,
+
+    /**
+     * Used ba the client to enter a lobby of a given name
+     */
+    ENLO
 
 }

@@ -73,12 +73,13 @@ public class Client {
                 "\\whisper <username> <message> to send a chat to only one other player\n" +
                 "\\newLobby <name> to create a new lobby with the given name\n" +
                 "\\showLobbies to get a list of all existing lobbies\n" +
+                "\\enterLobby <name> to enter a lobby of a given name\n" +
                 "\\quit to leave the game\n" +
                 "======================================================================\n";
         System.out.println(welcomeText);
 
         if (username.equals("default")) {
-            String systemUsername = System.getenv("USERNAME");
+            String systemUsername = System.getProperty("user.name");
             clientOutput.send(CommandsClientToServer.CHNA, systemUsername);
         } else {
             clientOutput.send(CommandsClientToServer.CHNA, username);
