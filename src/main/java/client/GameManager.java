@@ -75,7 +75,7 @@ public class GameManager {
                 "======================================================================\n";
         System.out.println(welcomeText);
 
-        String systemUsername = System.getenv("USERNAME");
+        String systemUsername = System.getProperty("user.name");
         clientOutput.send(CommandsClientToServer.CHNA, systemUsername);
 
         // start game
