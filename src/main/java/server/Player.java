@@ -90,6 +90,15 @@ public class Player {
         lobby.leaveLobby(this);
     }
 
+    public void enterLobby(String name) {
+        if(ListManager.lobbyExists(name)) {
+            Lobby lobbyByName = ListManager.getLobbyByName(name);
+            lobbyByName.enterLobby(this);
+        } else {
+            playerThreadManager.getServerOutput().send(CommandsServerToClient.BRCT, "There is no lobby with this name");
+        }
+    }
+
     //TODO remove player from lobby when disconnecting? how to handle possible reconnect?
 
     /**

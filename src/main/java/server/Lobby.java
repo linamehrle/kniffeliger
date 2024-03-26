@@ -30,14 +30,12 @@ public class Lobby {
 
         ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
 
-        if(player.getLobby() != null)  {
-            serverOutput.send(CommandsServerToClient.BRCT, "You can not be in two lobbies at the same time");
-            return;
-        }
-
-        for (Player playerInList : playersInLobby) {
-            if (playerInList.equals(player)) {
+        if (player.getLobby() != null) {
+            if (player.getLobby().equals(this)) {
                 serverOutput.send(CommandsServerToClient.BRCT, "You are already in this lobby");
+                return;
+            } else {
+                serverOutput.send(CommandsServerToClient.BRCT, "You can not be in two lobbies at the same time");
                 return;
             }
         }

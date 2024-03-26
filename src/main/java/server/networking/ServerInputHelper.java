@@ -1,9 +1,8 @@
 package server.networking;
 
 import client.networking.CommandsClientToServer;
-import server.Lobby;
+import server.ListManager;
 import server.Player;
-import server.Server;
 
 /**
  * This class handles the input read by the ServerInput class and processes it accordingly.
@@ -62,25 +61,9 @@ public class ServerInputHelper implements Runnable {
             case PING -> serverOutput.send(CommandsServerToClient.PONG, input[1]);
             case CHAT -> Communication.sendChat(player, input[1]);
             case WHSP -> Communication.sendWhisper(player, input[1]);
-            case LOLI -> serverOutput.send(CommandsServerToClient.LOLI, Server.returnLobbyList());
-            //TODO put the methods in the server?
-            case CRLO -> {
-                if (Server.lobbyNameIsTaken(input[1])) {
-                    serverOutput.send(CommandsServerToClient.BRCT, "Name is already taken");
-                } else {
-                    Server.getLobbyList().add(new Lobby(input[1]));
-                    System.out.println("Player " + player.getUsername() + " created a new lobby: " + input[1]);
-                    serverOutput.send(CommandsServerToClient.BRCT, "You successfully created the lobby " + input[1]); //to the player
-                    Communication.broadcast(player, "Player " + player.getUsername() + " created a new lobby " + input[1]); //to all other players
-                }
-            }
-            case ENLO -> {
-                if(Server.lobbyExists(input[1])) {
-                    Server.getLobbyFromList(input[1]).enterLobby(player);
-                } else {
-                    serverOutput.send(CommandsServerToClient.BRCT, "There is no lobby with this name");
-                }
-            }
+            case LOLI -> serverOutput.send(CommandsServerToClient.LOLI, ListManager.returnLobbyListAsString());
+            case CRLO -> ListManager.createNewLobby(player, input[1]);
+            case ENLO -> player.enterLobby(input[1]);
             case LELO -> player.leaveLobby();
             case LOCH -> Communication.sendToLobby(player, input[1]);
             default -> System.out.println("unknown command received from client " + message);
