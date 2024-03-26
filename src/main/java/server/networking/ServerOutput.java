@@ -28,7 +28,7 @@ public class ServerOutput {
     }
 
     /**
-     * This message handles the different commands according to the network protocol.
+     * This message sends a command with message to the client
      * @param cmd
      * @param message
      */

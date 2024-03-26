@@ -4,8 +4,14 @@ import java.util.ArrayList;
 import server.networking.CommandsServerToClient;
 import server.networking.ServerOutput;
 
+/**
+ * This class represents a lobby in the game
+ */
 public class Lobby {
 
+    /**
+     * The name of the lobby, it is unique
+     */
     private String name;
 
     private int numbOfPlayers = 0;
@@ -21,11 +27,20 @@ public class Lobby {
 
     //private boolean gameIsRunning = false; needed?
 
+    /**
+     * Constructor for the lobby, the initial status is open
+     * @param name
+     */
     public Lobby(String name) {
         this.name = name;
         this.status = "open";
     }
 
+    /**
+     * Used by a player to enter a lobby. This is only possible if the status is open, not if the lobby is full
+     * or a game is currently running
+     * @param player
+     */
     public void enterLobby(Player player) {
 
         ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
@@ -55,6 +70,11 @@ public class Lobby {
         }
     }
 
+    /**
+     * This method starts the game if enough players are in the lobby. Only a player that is in the lobby can start a
+     * game in the lobby
+     * @param player
+     */
     public void startGame(Player player) {
         ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
         if (!playersInLobby.contains(player)) {
@@ -67,6 +87,10 @@ public class Lobby {
         }
     }
 
+    /**
+     * Used by a player to leave the lobby.
+     * @param player
+     */
     public void leaveLobby(Player player) {
         ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
 
@@ -89,14 +113,26 @@ public class Lobby {
 
     //TODO should you be able to rename a lobby?
 
+    /**
+     * Getter for the list of players that are in the lobby
+     * @return
+     */
     public ArrayList<Player> getPlayersInLobby() {
         return playersInLobby;
     }
 
+    /**
+     * Getter for the name of the lobby
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Getter for the status of the lobby
+     * @return
+     */
     public String getStatus() {
         return status;
     }

@@ -88,11 +88,13 @@ public class Communication {
      */
     public static void sendToLobby(Player player, String message) {
 
+        //checks if a player is in a lobby
         if(player.getLobby() == null) {
             ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
             serverOutput.send(CommandsServerToClient.BRCT, "You are not in a lobby");
         }
 
+        //sends the message to all other players in the lobby
         Lobby lobby = player.getLobby();
         ArrayList<Player> playersInLobby = lobby.getPlayersInLobby();
         for (Player playerInList : playersInLobby) {
