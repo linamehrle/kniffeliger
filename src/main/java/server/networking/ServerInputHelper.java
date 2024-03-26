@@ -63,15 +63,15 @@ public class ServerInputHelper implements Runnable {
             case CHAT -> Communication.sendChat(player, input[1]);
             case WHSP -> Communication.sendWhisper(player, input[1]);
             case LOLI -> serverOutput.send(CommandsServerToClient.LOLI, Server.returnLobbyList());
+            //TODO put the methods in the server?
             case CRLO -> {
                 if (Server.lobbyNameIsTaken(input[1])) {
                     serverOutput.send(CommandsServerToClient.BRCT, "Name is already taken");
                 } else {
                     Server.getLobbyList().add(new Lobby(input[1]));
                     System.out.println("Player " + player.getUsername() + " created a new lobby: " + input[1]);
-                    serverOutput.send(CommandsServerToClient.BRCT, "You successfully created the lobby " + input[1]);
-                    Communication.broadcast(player, "Player " + player.getUsername() + " created a new lobby " + input[1]);
-                    //TODO broadcast that a new lobby has been created?
+                    serverOutput.send(CommandsServerToClient.BRCT, "You successfully created the lobby " + input[1]); //to the player
+                    Communication.broadcast(player, "Player " + player.getUsername() + " created a new lobby " + input[1]); //to all other players
                 }
             }
             case ENLO -> {
@@ -81,13 +81,8 @@ public class ServerInputHelper implements Runnable {
                     serverOutput.send(CommandsServerToClient.BRCT, "There is no lobby with this name");
                 }
             }
-            case LELO -> {
-                if(Server.lobbyExists(input[1])) {
-                    Server.getLobbyFromList(input[1]).leaveLobby(player);
-                } else {
-                    serverOutput.send(CommandsServerToClient.BRCT, "There is no lobby with this name");
-                }
-            }
+            case LELO -> player.leaveLobby();
+            case LOCH -> Communication.sendToLobby(player, input[1]);
             default -> System.out.println("unknown command received from client " + message);
 
         }

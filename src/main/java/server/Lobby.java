@@ -28,9 +28,12 @@ public class Lobby {
 
     public void enterLobby(Player player) {
 
-        //TODO can a player enter multiple lobbies??
-
         ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
+
+        if(player.getLobby() != null)  {
+            serverOutput.send(CommandsServerToClient.BRCT, "You can not be in two lobbies at the same time");
+            return;
+        }
 
         for (Player playerInList : playersInLobby) {
             if (playerInList.equals(player)) {
@@ -69,15 +72,7 @@ public class Lobby {
     public void leaveLobby(Player player) {
         ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
 
-        boolean playerIsInLobby = false;
-
-        for (Player playerInLobby : playersInLobby) {
-            if (playerInLobby.equals(player)) {
-                playerIsInLobby = true;
-            }
-        }
-
-        if(!playerIsInLobby) {
+        if(!player.getLobby().equals(this)) {
             serverOutput.send(CommandsServerToClient.BRCT, "You are not in this lobby");
             return;
         }
@@ -85,6 +80,7 @@ public class Lobby {
         if (!status.equals("ongoing game")) {
             playersInLobby.remove(player);
             numbOfPlayers--;
+            player.setLobby(null);
             serverOutput.send(CommandsServerToClient.BRCT, "You successfully left the lobby " + name);
             if (status.equals("full")) {
                 status = "open";

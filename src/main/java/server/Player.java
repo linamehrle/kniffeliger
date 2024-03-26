@@ -86,6 +86,10 @@ public class Player {
         return false;
     }
 
+    public void leaveLobby() {
+        lobby.leaveLobby(this);
+    }
+
     //TODO remove player from lobby when disconnecting? how to handle possible reconnect?
 
     /**

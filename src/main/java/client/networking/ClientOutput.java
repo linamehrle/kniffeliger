@@ -35,6 +35,7 @@ public class ClientOutput {
 
                 case "\\quit" -> sendToServer("QUIT goodbye!");
                 case "\\showLobbies" -> sendToServer("LOLI show me all lobbies");
+                case "\\leaveLobby" -> sendToServer("LELO byebye");
                 default -> System.out.println("Invalid input entered");
 
             }
@@ -48,7 +49,7 @@ public class ClientOutput {
                 case "\\whisper" -> sendToServer("WHSP " + input[1]);
                 case "\\newLobby" -> sendToServer("CRLO " + input[1]);
                 case "\\enterLobby" -> sendToServer("ENLO " + input[1]);
-                case "\\leaveLobby" -> sendToServer("LELO " + input[1]);
+                case "\\lobbyChat" -> sendToServer("LOCH " + input[1]);
                 default -> System.out.println("Invalid command or message entered: command " + input[0] + " message " + input[1]);
             }
         }

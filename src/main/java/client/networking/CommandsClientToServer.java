@@ -54,8 +54,13 @@ public enum CommandsClientToServer {
     ENLO,
 
     /**
-     *  Used by the client to leave a Lobby of a given name
+     *  Used by the client to leave the lobby that they are in
      */
-    LELO
+    LELO,
+
+    /**
+     * Used to send a chat message only to players in the same lobby
+     */
+    LOCH
 
 }
