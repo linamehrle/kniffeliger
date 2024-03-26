@@ -74,6 +74,9 @@ public class Client {
                 "\\newLobby <name> to create a new lobby with the given name\n" +
                 "\\showLobbies to get a list of all existing lobbies\n" +
                 "\\enterLobby <name> to enter a lobby of a given name\n" +
+                "\\start to start a game in a lobby\n" +
+                "\\roll to roll the dice\n" +
+                "\\save <number of the dices> to save dices before rerolling\n" +
                 "\\quit to leave the game\n" +
                 "======================================================================\n";
         System.out.println(welcomeText);

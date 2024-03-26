@@ -71,6 +71,11 @@ public enum CommandsClientToServer {
     /**
      * Used to send a chat message only to players in the same lobby
      */
-    LOCH
+    LOCH,
+
+    /**
+     * Used to start a game in a lobby
+     */
+    STRT
 
 }

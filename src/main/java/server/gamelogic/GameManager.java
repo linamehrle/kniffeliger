@@ -1,7 +1,9 @@
 package server.gamelogic;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
+import server.Player;
 
 public class GameManager {
 
@@ -85,5 +87,8 @@ public class GameManager {
         return res;
     }
 
+    public static void start(ArrayList<Player> playerList) {
+        //TODO Anisja <3
+    }
 
 }

@@ -37,6 +37,7 @@ public class ClientOutput {
                 case "\\quit" -> sendToServer("QUIT goodbye!");
                 case "\\showLobbies" -> sendToServer("LOLI show me all lobbies");
                 case "\\leaveLobby" -> sendToServer("LELO byebye");
+                case "\\start" -> sendToServer("STRT start a game");
                 default -> System.out.println("Invalid input entered");
 
             }
