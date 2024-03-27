@@ -1,5 +1,7 @@
 package client;
 
+import server.gamelogic.Entry;
+
 /**
  * This class contains useful methods to print information from the server to the console
  * of the client
@@ -22,6 +24,21 @@ public class Print {
         System.out.println("The existing Lobbies are:");
         for (int i = 0; i < splitLobbie.length; i++) {
             System.out.println(splitLobbie[i]);
+        }
+    }
+
+    /**
+     * Prints the current entry sheet of a Player
+     * @param entrySheet must have the form "Name username, EntryName: points,EntryName: points, ... "
+     */
+    public void printEntrySheet(String entrySheet){
+        String[] splitEntrySheet = entrySheet.split(",");
+        System.out.println("##############################");
+        System.out.println("Your Entry Sheet");
+        System.out.println(splitEntrySheet[0]);
+        System.out.println("##############################");
+        for (int i = 1; i < splitEntrySheet.length; i++) {
+            System.out.println(splitEntrySheet[i]);
         }
     }
 }
