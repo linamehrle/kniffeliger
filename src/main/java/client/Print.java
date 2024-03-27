@@ -1,7 +1,5 @@
 package client;
 
-import server.gamelogic.Entry;
-
 /**
  * This class contains useful methods to print information from the server to the console
  * of the client
@@ -29,9 +27,9 @@ public class Print {
 
     /**
      * Prints the current entry sheet of a Player
-     * @param entrySheet must have the form "Name username, EntryName: points,EntryName: points, ... "
+     * @param entrySheet must have the form "Name username,EntryName: points,EntryName: points, ... "
      */
-    public void printEntrySheet(String entrySheet){
+    public static void printEntrySheet(String entrySheet){
         String[] splitEntrySheet = entrySheet.split(",");
         System.out.println("##############################");
         System.out.println("Your Entry Sheet");
@@ -39,6 +37,17 @@ public class Print {
         System.out.println("##############################");
         for (int i = 1; i < splitEntrySheet.length; i++) {
             System.out.println(splitEntrySheet[i]);
+        }
+    }
+
+    /**
+     * Prints the current actions the player has acquired to the terminal
+     * @param actions must have the form "ActionName: number, ActionName: number, ... "
+     */
+    public static void printActions(String actions) {
+        String[] splitActions = actions.split(",");
+        for (int i = 0; i < splitActions.length; i++) {
+            System.out.println(splitActions[i]);
         }
     }
 }

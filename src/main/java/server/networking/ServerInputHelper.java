@@ -3,6 +3,7 @@ package server.networking;
 import client.networking.CommandsClientToServer;
 import server.ListManager;
 import server.Player;
+import server.gamelogic.EntrySheet;
 import server.gamelogic.GameManager;
 
 /**
@@ -39,11 +40,11 @@ public class ServerInputHelper implements Runnable {
         String[] input = message.split(" ", 2);
         CommandsClientToServer cmd;
 
-        if (input.length != 2) {
+        /*if (input.length != 2) {
             System.out.println("Invalid message to server");
             serverOutput.send(CommandsServerToClient.BRCT, "Invalid message: try again.");
             return;
-        }
+        }*/
 
         try {
             cmd = CommandsClientToServer.valueOf(input[0].toUpperCase());
@@ -74,6 +75,16 @@ public class ServerInputHelper implements Runnable {
                 serverOutput.send(CommandsServerToClient.BRCT, "Dice successfully saved");
             }
 
+            //case SHES -> serverOutput.send(CommandsServerToClient.SHES, function to get entry sheet as string by username);
+            //function by anisja
+            //if (input[1].equals(myOwnSheet)) { print the own sheet of the player }
+
+            //case SHAC -> serverOutput.send(CommandsServerToClient.SHAC, function to get actions as one string);
+            //function by anisja or in the player?
+
+            //case PLAC -> give the action to the game manager, handles by anisja
+
+            //case ENCO -> give the comb name to the game manager to enter the dice in the entry sheet, handled by anisja
             default -> System.out.println("unknown command received from client " + message);
 
         }

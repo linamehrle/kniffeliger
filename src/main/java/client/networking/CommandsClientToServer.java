@@ -76,6 +76,26 @@ public enum CommandsClientToServer {
     /**
      * Used to start a game in a lobby
      */
-    STRT
+    STRT,
+
+    /**
+     * Requests the current entry sheet of a player from the server
+     */
+    SHES,
+
+    /**
+     * Requests a list od all special actions the player has acquired from the server
+     */
+    SHAC,
+
+    /**
+     * Indicates to the server that a player wants to play a special action with a given name
+     */
+    PLAC,
+
+    /**
+     * Used by a player to enter their dice in a field in the entry sheet
+     */
+    ENCO
 
 }

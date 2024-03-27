@@ -76,7 +76,11 @@ public class Client {
                 "\\enterLobby <name> to enter a lobby of a given name\n" +
                 "\\start to start a game in a lobby\n" +
                 "\\roll to roll the dice\n" +
-                "\\save <number of the dices> to save dices before rerolling\n" +
+                "\\save <numbers of the dices> to save dices before re rolling\n" +
+                "\\enterCombination <name> to enter the dice in the given entry of the entry sheet\n" +
+                "\\showEntrySheet or \\showEntrySheet <name> to see you own or another players entry sheet\n" +
+                "\\showActions to see your special actions\n" +
+                "\\playAction <name> to play a special action\n" +
                 "\\quit to leave the game\n" +
                 "======================================================================\n";
         System.out.println(welcomeText);

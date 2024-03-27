@@ -44,6 +44,16 @@ public enum CommandsServerToClient {
     /**
      * Returns a list of all lobbies to the client
      */
-    LOLI
+    LOLI,
+
+    /**
+     * Sends the current entry sheet to the player to print out in the console
+     */
+    SHES,
+
+    /**
+     * Gives a list of special action the player has to the client to print out
+     */
+    SHAC
 
 }

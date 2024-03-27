@@ -105,4 +105,8 @@ public class Communication {
         }
     }
 
+    //TODO eigene funktion um vom server nur an einen player zu senden?
+
+    //TODO broadcast to lobby needed for game?
+
 }
