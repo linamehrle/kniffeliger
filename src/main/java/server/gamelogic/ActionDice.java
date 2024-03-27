@@ -8,6 +8,15 @@ public class ActionDice {
     // saves action dice per default
     private boolean savingStatus;
 
+    /**
+     * Constructor that builds action dice with specific name. Name is later important to play the right dice/method.
+     *
+     * @param actionName takes specific action name that is important for action to be played
+     */
+    public ActionDice(String actionName) {
+        this.actionName = actionName;
+    }
+
     /*
      * #################################################################################################################
      * HANDLES ACTION DICE METHODS
@@ -33,13 +42,16 @@ public class ActionDice {
      * @param stolenEntry entry that thief wants to steal
      */
     public static String steal (EntrySheet entrySheetThief, EntrySheet entrySheetVictim, Entry stolenEntry) {
+        // assigns entry sheets to victim and thief
+        Entry[] entriesThief = entrySheetVictim.getAsArray();
+        Entry[] entriesVictim = entrySheetVictim.getAsArray();
         String message = entrySheetThief.getUsername() + ", ";
         for (int i = 0; i < EntrySheet.getEntrySheetLength(); i++){
-            if (entrySheetVictim.getAsArray()[i].getName().equals(stolenEntry.getName())){
+            if (entriesVictim[i].getName().equals(stolenEntry.getName()) && !(entriesThief[i].getIsFinal())){
                 entrySheetThief.addEntry(stolenEntry);
                 message = "you successfully stole the entry " + stolenEntry.getName() + " from " + entrySheetThief.getUsername() + ".";
             } else {
-                message = "this is not a valid entry.";
+                message = "this is not a valid entry or your entry is already final/taken/crossed out.";
             }
         }
         return message;
@@ -63,11 +75,7 @@ public class ActionDice {
             }
         }
         return message;
-        // TODO: unfreeze after it has been frozen once in GameManager
-        // TODO: unfreeze all entries after a player finished his round
     }
-
-    // TODO: all of the above
 
     /**
      * METHOD RETURNS STRING SO WE CAN PLAY IT IN CONSOLE ##############################################################
