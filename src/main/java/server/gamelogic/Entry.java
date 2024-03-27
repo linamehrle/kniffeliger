@@ -47,6 +47,13 @@ public class Entry {
     }
 
     /**
+     * Makes entry final, so it cannot be changed anymore.
+     */
+    public void setFinal(){
+        isFinal = true;
+    }
+
+    /**
      * Sets entry to frozen or not frozen.
      *
      * @param newFrozenStatus is true, if the entry should be frozen and false if not
