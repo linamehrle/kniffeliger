@@ -2,14 +2,17 @@ package server.gamelogic;
 
 public class Entry {
 
+    // keeps in track if entry is final of not
+    private boolean isFinal = false;
+
+    // keeps in track if entry is frozen
+    private boolean frozenStatus = false;
+
     // name of an entry
     private final String name;
 
     // value of entry
     private int value;
-
-    // keeps in track if entry is final of not
-    private boolean isFinal = false;
 
     public Entry(String name, int value) {
         this.name = name;
