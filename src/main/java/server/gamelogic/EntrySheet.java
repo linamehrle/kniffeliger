@@ -159,7 +159,6 @@ public class EntrySheet {
      * Detects entry from sheet and deletes it.
      *
      * @param deletedEntry gives us name of entry that needs to be deleted
-     * @throws Exception when the deletedEntry parameter does not appear in entry sheet
      */
     public void deleteEntry(Entry deletedEntry){
         for (Entry entry : entrySheet) {
