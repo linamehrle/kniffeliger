@@ -8,12 +8,21 @@ public class Entry {
     // value of entry
     private int value;
 
-    // entry is by default not frozen
-    private boolean frozenStatus = false;
+    // keeps in track if entry is final of not
+    private boolean isFinal = false;
 
     public Entry(String name, int value) {
         this.name = name;
         this.value = value;
+    }
+
+    /**
+     * Access if entry is already final. It is false per default.
+     *
+     * @return true if it is final, false if not.
+     */
+    public boolean getIsFinal() {
+        return isFinal;
     }
 
     /**
@@ -26,12 +35,12 @@ public class Entry {
     }
 
     /**
-     * Access if an entry is frozen or not.
+     * Access value of entry.
      *
-     * @return true f frozen, false if not.
+     * @return value of entry
      */
-    public boolean getFrozenStatus() {
-        return frozenStatus;
+    public int getValue() {
+        return value;
     }
 
     /**
@@ -41,15 +50,6 @@ public class Entry {
      */
     public void setFrozenStatus(boolean newFrozenStatus) {
         frozenStatus = newFrozenStatus;
-    }
-
-    /**
-     * Access value of entry.
-     *
-     * @return value of entry
-     */
-    public int getValue() {
-        return value;
     }
 
     /**
