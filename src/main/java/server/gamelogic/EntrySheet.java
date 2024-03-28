@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class EntrySheet {
     // entry sheet length
-    private static final int ENTRY_SHEET_LENGTH = 13;
+    private static final int ENTRY_SHEET_LENGTH = 14;
 
     // value with which every Entry starts with
     private static final int DEFAULT_VALUE = 0;
@@ -32,9 +32,10 @@ public class EntrySheet {
     private Entry largeStraight = new Entry("largeStraight", DEFAULT_VALUE);
     private Entry kniffeliger = new Entry("kniffeliger", DEFAULT_VALUE);
     private Entry chance = new Entry("chance", DEFAULT_VALUE);
+    private Entry pi = new Entry("pi", DEFAULT_VALUE);
 
     // entry sheet as an Entry-array
-    private Entry[] entrySheet = new Entry[]{ones, twos, threes, fours, fives, sixes, threeOfAKind, fourOfAKind, fullHouse, smallStraight, largeStraight, kniffeliger, chance};
+    private Entry[] entrySheet = new Entry[]{ones, twos, threes, fours, fives, sixes, threeOfAKind, fourOfAKind, fullHouse, smallStraight, largeStraight, kniffeliger, chance, pi};
 
     /**
      * Constructor that builds new entry sheet with unique player (that has unique username and id) which is handed to
@@ -60,6 +61,22 @@ public class EntrySheet {
      */
     public Entry[] getAsArray() {
         return entrySheet;
+    }
+
+    /**
+     * Gets an entry of a sheet by name.
+     *
+     * @param entryName name of entry that should be found in sheet
+     * @return entry which is associated with given name
+     */
+    public Entry getEntryByName(String entryName) {
+        Entry result = null;
+        for (Entry e : entrySheet) {
+            if (e.equals(entryName)){
+                result = e;
+            }
+        }
+        return result;
     }
 
     /**
@@ -156,7 +173,7 @@ public class EntrySheet {
     }
 
     /**
-     * Detects entry from sheet and deletes it.
+     * Detects entry from sheet and deletes it. Sets entry as final since the value should not change now.
      *
      * @param deletedEntry gives us name of entry that needs to be deleted
      */
@@ -166,6 +183,7 @@ public class EntrySheet {
             if (entry.getName().equals(deletedEntry.getName())) {
                 totalPoints = totalPoints - entry.getValue();
                 entry.setValue(0);
+                entry.setFinal();
             }
         }
     }
@@ -219,109 +237,61 @@ public class EntrySheet {
 
         switch (nameOfEntry) {
             case "ones":
-                try {
-                    Entry ones = new Entry("ones", singleValueRolls(finalDiceInt, 1));
-                    entrySheet.addEntry(ones);
-                } catch (Exception e) {
-                    e.getMessage();
-                }
+                Entry ones = new Entry("ones", singleValueRolls(finalDiceInt, 1));
+                entrySheet.addEntry(ones);
                 break;
             case "twos":
-                try {
-                    Entry twos = new Entry("twos", singleValueRolls(finalDiceInt, 2));
-                    entrySheet.addEntry(twos);
-                } catch (Exception e) {
-                    e.getMessage();
-                }
+                Entry twos = new Entry("twos", singleValueRolls(finalDiceInt, 2));
+                entrySheet.addEntry(twos);
                 break;
             case "threes":
-                try {
-                    Entry threes = new Entry("threes", singleValueRolls(finalDiceInt, 3));
-                    entrySheet.addEntry(threes);
-                } catch (Exception e) {
-                    e.getMessage();
-                }
+                Entry threes = new Entry("threes", singleValueRolls(finalDiceInt, 3));
+                entrySheet.addEntry(threes);
                 break;
             case "fours":
-                try {
-                    Entry fours = new Entry("fours", singleValueRolls(finalDiceInt, 4));
-                    entrySheet.addEntry(fours);
-                } catch (Exception e) {
-                    e.getMessage();
-                }
+                Entry fours = new Entry("fours", singleValueRolls(finalDiceInt, 4));
+                entrySheet.addEntry(fours);
                 break;
             case "fives":
-                try {
-                    Entry fives = new Entry("fives", singleValueRolls(finalDiceInt, 5));
-                    entrySheet.addEntry(fives);
-                } catch (Exception e) {
-                    e.getMessage();
-                }
+                Entry fives = new Entry("fives", singleValueRolls(finalDiceInt, 5));
+                entrySheet.addEntry(fives);
                 break;
             case "sixes":
-                try {
-                    Entry sixes = new Entry("sixes", singleValueRolls(finalDiceInt, 6));
-                    entrySheet.addEntry(sixes);
-                } catch (Exception e) {
-                    e.getMessage();
-                }
+                Entry sixes = new Entry("sixes", singleValueRolls(finalDiceInt, 6));
+                entrySheet.addEntry(sixes);
                 break;
             case "threeOfAKind":
-                try {
-                    Entry threeOfAKind = new Entry("threeOfAKind", threeOfAKind(finalDiceInt));
-                    entrySheet.addEntry(threeOfAKind);
-                } catch (Exception e) {
-                    e.getMessage();
-                }
+                Entry threeOfAKind = new Entry("threeOfAKind", threeOfAKind(finalDiceInt));
+                entrySheet.addEntry(threeOfAKind);
                 break;
             case "fourOfAKind":
-                try {
-                    Entry fourOfAKind = new Entry("fourOfAKind", fourOfAKind(finalDiceInt));
-                    entrySheet.addEntry(fourOfAKind);
-                } catch (Exception e) {
-                    e.getMessage();
-                }
+                Entry fourOfAKind = new Entry("fourOfAKind", fourOfAKind(finalDiceInt));
+                entrySheet.addEntry(fourOfAKind);
                 break;
             case "fullHouse":
-                try {
-                    Entry fullHouse = new Entry("fullHouse", fullHouse(finalDiceInt));
-                    entrySheet.addEntry(fullHouse);
-                } catch (Exception e) {
-                    e.getMessage();
-                }
+                Entry fullHouse = new Entry("fullHouse", fullHouse(finalDiceInt));
+                entrySheet.addEntry(fullHouse);
                 break;
             case "smallStraight":
-                try {
-                    Entry smallStraight = new Entry("smallStraight", smallStraight(finalDiceInt));
-                    entrySheet.addEntry(smallStraight);
-                } catch (Exception e) {
-                    e.getMessage();
-                }
+                Entry smallStraight = new Entry("smallStraight", smallStraight(finalDiceInt));
+                entrySheet.addEntry(smallStraight);
                 break;
             case "largeStraight":
-                try {
-                    Entry largeStraight = new Entry("largeStraight", largeStraight(finalDiceInt));
-                    entrySheet.addEntry(largeStraight);
-                } catch (Exception e) {
-                    e.getMessage();
-                }
+                Entry largeStraight = new Entry("largeStraight", largeStraight(finalDiceInt));
+                entrySheet.addEntry(largeStraight);
                 largeStraight(finalDiceInt);
                 break;
             case "kniffeliger":
-                try {
-                    Entry kniffeliger = new Entry("kniffeliger", kniffeliger(finalDiceInt));
-                    entrySheet.addEntry(kniffeliger);
-                } catch (Exception e) {
-                    e.getMessage();
-                }
+                Entry kniffeliger = new Entry("kniffeliger", kniffeliger(finalDiceInt));
+                entrySheet.addEntry(kniffeliger);
                 break;
             case "chance":
-                try {
-                    Entry chance = new Entry("chance", chance(finalDiceInt));
-                    entrySheet.addEntry(chance);
-                } catch (Exception e) {
-                    e.getMessage();
-                }
+                Entry chance = new Entry("chance", chance(finalDiceInt));
+                entrySheet.addEntry(chance);
+                break;
+            case "pi":
+                Entry pi = new Entry("pi", pi(finalDiceInt));
+                entrySheet.addEntry(pi);
                 break;
             /*
             default:
@@ -510,7 +480,7 @@ public class EntrySheet {
      * Attention: rolledDice array is sorted after applying this method.
      *
      * @param rolledDice are the dice that have been rolled and saved
-     * @return returns 50 if it is a Kniffeliger/Yathzee, 0 otherwise
+     * @return 50 if it is a Kniffeliger/Yathzee, 0 otherwise
      */
     public static int kniffeliger(int[] rolledDice) {
 
@@ -536,6 +506,25 @@ public class EntrySheet {
             sum = sum + d;
         }
         return sum;
+    }
+
+    /**
+     * Checks for pi (or rather first digits of pi) in dice. First the five dice get sorted, then check the
+     * second to fifth entry of array for numbers.
+     *
+     * @param rolledDice are the dice that have been rolled and saved
+     * @return 31, if it is pi, 0 otherwise
+     */
+    //TODO: write unit test for method
+    public static int pi(int[] rolledDice){
+        int res = 0;
+        // sorts rolled dice in ascending order, so we can loop over it and check conditions for a large straight.
+        Arrays.sort(rolledDice);
+        // checks if array is {1,1,3,4,5}
+        if (rolledDice[1] == 1 && rolledDice[2] == 3 && rolledDice[3] == 4 && rolledDice[4] == 5) {
+            res = 31;
+        }
+        return res;
     }
 
 }
