@@ -101,9 +101,9 @@ public class GameManager {
                                 // and the methods in ActionDice-class)
                                 switch (nameOfAction) {
                                     case "freeze":
-                                        ActionDice.freeze(sheetOfVictim, sheetOfVictim.getEntryByName(nameOfEntry));
+                                        ActionDice.freeze(sheetOfVictim, nameOfEntry);
                                     case "crossOut":
-                                        ActionDice.crossOut(sheetOfVictim, sheetOfVictim.getEntryByName(nameOfEntry));
+                                        ActionDice.crossOut(sheetOfVictim, nameOfEntry);
                                 }
                                 allTimePlayableActions = allTimePlayableActions - 1;
 
@@ -142,7 +142,7 @@ public class GameManager {
                                 typo = !Helper.checkPlayerName(players, nameOfVictim) && !Helper.checkEntryName(nameOfEntry);
                             }
                             EntrySheet sheetOfVictim = Helper.getEntrySheetByName(allEntrySheets, nameOfVictim);
-                            ActionDice.steal(currentEntrySheet, sheetOfVictim, sheetOfVictim.getEntryByName(nameOfEntry));
+                            ActionDice.steal(currentEntrySheet, sheetOfVictim, nameOfEntry);
 
                             // roll dice
                         } else if (scanner.nextLine().equals("roll")) {

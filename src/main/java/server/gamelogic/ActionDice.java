@@ -41,15 +41,15 @@ public class ActionDice {
      * @param entrySheetVictim player that entry is stolen from
      * @param stolenEntry entry that thief wants to steal
      */
-    public static String steal (EntrySheet entrySheetVillain, EntrySheet entrySheetVictim, Entry stolenEntry) {
+    public static String steal (EntrySheet entrySheetVillain, EntrySheet entrySheetVictim, String stolenEntry) {
         // assigns entry sheets to victim and thief
         Entry[] entriesThief = entrySheetVictim.getAsArray();
         Entry[] entriesVictim = entrySheetVictim.getAsArray();
         String message = entrySheetVillain.getUsername() + ", ";
         for (int i = 0; i < EntrySheet.getEntrySheetLength(); i++){
-            if (entriesVictim[i].getName().equals(stolenEntry.getName()) && !(entriesThief[i].getIsFinal())){
-                entrySheetVillain.addEntry(stolenEntry);
-                message = "you successfully stole the entry " + stolenEntry.getName() + " from " + entrySheetVillain.getUsername() + ".";
+            if (entriesVictim[i].getName().equals(stolenEntry) && !(entriesThief[i].getIsFinal())){
+                entrySheetVillain.addEntry(entriesVictim[i]);
+                message = "you successfully stole the entry " + entriesVictim[i].getName() + " from " + entrySheetVillain.getUsername() + ".";
             } else {
                 message = "this is not a valid entry or your entry is already final/taken/crossed out.";
             }
@@ -64,10 +64,10 @@ public class ActionDice {
      *
      * @return message for game in console
      */
-    public static String freeze (EntrySheet entrySheetVictim, Entry frozenEntry){
+    public static String freeze (EntrySheet entrySheetVictim, String frozenEntry){
         String message = "";
         for (Entry entry : entrySheetVictim.getAsArray()){
-            if (entry.getName().equals(frozenEntry.getName())){
+            if (entry.getName().equals(frozenEntry)){
                 entry.setFrozenStatus(true);
                 message = message + "The entry of " + entrySheetVictim.toString() + " has successfully been frozen.";
             } else {
@@ -85,9 +85,9 @@ public class ActionDice {
      * @param crossedOutEntry entry to be deleted
      * @return message for game in console
      */
-    public static String crossOut(EntrySheet entrySheetVictim, Entry crossedOutEntry) {
-        entrySheetVictim.deleteEntry(crossedOutEntry);
-        return "You crossed out " + crossedOutEntry.getName() + " in " + entrySheetVictim.getUsername() + "'s entry sheet.";
+    public static String crossOut(EntrySheet entrySheetVictim, String crossedOutEntry) {
+        entrySheetVictim.deleteEntry(entrySheetVictim.getEntryByName(crossedOutEntry));
+        return "You crossed out " + crossedOutEntry + " in " + entrySheetVictim.getUsername() + "'s entry sheet.";
     }
 
     /**
