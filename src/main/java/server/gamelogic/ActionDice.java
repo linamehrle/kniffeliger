@@ -86,7 +86,7 @@ public class ActionDice {
      * @return message for game in console
      */
     public static String crossOut(EntrySheet entrySheetVictim, String crossedOutEntry) {
-        entrySheetVictim.deleteEntry(entrySheetVictim.getEntryByName(crossedOutEntry));
+        entrySheetVictim.deleteEntry(crossedOutEntry);
         return "You crossed out " + crossedOutEntry + " in " + entrySheetVictim.getUsername() + "'s entry sheet.";
     }
 

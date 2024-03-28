@@ -20,6 +20,15 @@ public class Entry {
     }
 
     /**
+     * Access frozen status of entry.
+     *
+     * @return true, if frozen, false otherwise
+     */
+    public boolean getFrozenStatus() {
+        return frozenStatus;
+    }
+
+    /**
      * Access if entry is already final. It is false per default.
      *
      * @return true if it is final, false if not.
