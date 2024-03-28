@@ -49,12 +49,12 @@ public class GameManager {
                 boolean blockingDicePlayed = false;
 
                 // variable that checks if action has been stolen
-                boolean stealingDicePlayerd = false;
+                boolean stealingDicePlayed = false;
 
                 // resets all dice before rolling
                 resetDice(allDice);
 
-                while (!allDiceSaved && !blockingDicePlayed && !stealingDicePlayerd) {
+                while (!allDiceSaved && !blockingDicePlayed && !stealingDicePlayed) {
                     /*
                      * #1: check if player has action dice that is all time playable and ask if they want to roll or if they want to play an action
                      */
@@ -115,6 +115,7 @@ public class GameManager {
                             }
                             blockingDicePlayed = true;
                         }
+                    }
                         /*
                          * #2: roll dice or use steal dice
                          */
@@ -143,6 +144,7 @@ public class GameManager {
                             }
                             EntrySheet sheetOfVictim = Helper.getEntrySheetByName(allEntrySheets, nameOfVictim);
                             ActionDice.steal(currentEntrySheet, sheetOfVictim, nameOfEntry);
+                            stealingDicePlayed = true;
 
                             // roll dice
                         } else if (scanner.nextLine().equals("roll")) {
@@ -194,7 +196,6 @@ public class GameManager {
                                 }
                             }
                         }
-                    }
                 }
             }
             //TODO: check if someone wants to play shift or switchEntries
