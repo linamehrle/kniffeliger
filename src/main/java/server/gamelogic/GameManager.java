@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class GameManager {
     // fixed number of rounds
-    private static final int ROUNDS  = 13;
+    private static final int ROUNDS = EntrySheet.getEntrySheetLength();
 
     /*
      * #################################################################################################################
@@ -31,11 +31,12 @@ public class GameManager {
         System.out.println("############ LET THE GAME BEGIN ############");
         System.out.println("############################################");
 
-        // starting 13 rounds
+        // starting 14 rounds
         for (int round = 0; round < ROUNDS; round++) {
 
             // for each round we go through a player
             for (EntrySheet currentEntrySheet : allEntrySheets) {
+                System.out.println(currentEntrySheet.getUsername() + " it is your turn!");
 
                 // current player of the entry sheet with its action dice
                 Player currentPlayer = currentEntrySheet.getPlayer();
@@ -82,7 +83,7 @@ public class GameManager {
                                 String nameOfVictim = "";
                                 String nameOfEntry = "";
                                 // if player wants to play action, then we check the input String for typos
-                                // if there are none, then we split input-string and assign the values to an action, victim and an entry
+                                // if there are none, then we split input-string and assign the values to an action, victim and an entry to variables
                                 while (typo) {
                                     System.out.println("Choose your action with the following command:\n'freeze'/'crossOut' <username victim> <entry name>).");
                                     String input = scanner.nextLine();
@@ -108,115 +109,95 @@ public class GameManager {
 
                                 // asks player if more action dice should be played
                                 System.out.println("Do you want to play more action dice? Answer with 'yes' or 'no'.");
-                                if(scanner.nextLine().equals("no")){
+                                if (scanner.nextLine().equals("no")) {
                                     allTimePlayableActions = 0;
                                 }
                             }
                             blockingDicePlayed = true;
                         }
                         /*
-                         * #1.2: handles action dice "steal"
+                         * #2: roll dice or use steal dice
                          */
+                        // handle stealing dice
                         System.out.println("Do you want to steal an entry or do you want to roll the dice? Answer 'steal' or 'roll'.");
-                        if(scanner.nextLine().equals("steal")){
+                        if (scanner.nextLine().equals("steal")) {
                             System.out.println("Who do you want to steal from and what entry? Answer with:<username> <entry name>.");
                             String decision = scanner.nextLine();
                             String[] splitString = decision.split("\\s+");
 
-
-                            //TODO:
+                            // checks for typo
                             boolean typo = true;
-                            String nameOfAction = "";
                             String nameOfVictim = "";
                             String nameOfEntry = "";
                             // if player wants to play action, then we check the input String for typos
-                            // if there are none, then we split input-string and assign the values to an action, victim and an entry
+                            // if there are none, then we split input-string and assign the values to victim and an entry to variables
                             while (typo) {
                                 System.out.println("Choose your action with the following command:\n'freeze'/'crossOut' <username victim> <entry name>).");
                                 String input = scanner.nextLine();
                                 String[] splitStr = input.split("\\s+");
 
                                 // checks if there are typos in input of player
-                                nameOfAction = splitStr[0];
-                                nameOfVictim = splitStr[1];
-                                nameOfEntry = splitStr[2];
-                                typo = !Helper.checkActionName(nameOfAction) && !Helper.checkPlayerName(players, nameOfVictim) && !Helper.checkEntryName(nameOfEntry);
+                                nameOfVictim = splitStr[0];
+                                nameOfEntry = splitStr[1];
+                                typo = !Helper.checkPlayerName(players, nameOfVictim) && !Helper.checkEntryName(nameOfEntry);
                             }
                             EntrySheet sheetOfVictim = Helper.getEntrySheetByName(allEntrySheets, nameOfVictim);
+                            ActionDice.steal(currentEntrySheet, sheetOfVictim, sheetOfVictim.getEntryByName(nameOfEntry));
 
+                            // roll dice
                         } else if (scanner.nextLine().equals("roll")) {
+                            while (!allDiceSaved) {
+                                System.out.print("Please roll the rice again.");
+                                if (scanner.nextLine().equals("roll")) {
+                                    // rolls all dice
+                                    GameManager.rollDice(allDice);
 
-                        }
+                                    // prints all rolled dice
+                                    System.out.println("Your dice: ");
+                                    for (int i = 0; i < allDice.length - 1; i++) {
+                                        System.out.print(allDice[i].getDiceValue() + " ");
+                                    }
+                                    System.out.print(allDice[4]);
 
-
-
-                        /*
-                         * #2: roll dice
-                         */
-
-
-
-
-
-
-
-
-
-
-
-                        // rolls dice
-                        String input = "";
-                        if (input.equals("roll") == true) {
-                            GameManager.rollDice(allDice);
-                            System.out.println("Your dice:");
-
-                            // saves dice
-                            System.out.println("Which dice do you want to keep? Write with a space in between the number of the dice you want to save: \n dice 1: 1 \n dice 2: 2 \n dice 3: 3 \n dice 4: 4 \n dice 5: 5 \n dice 6: 6");
-                            String savedDice = "";
-                            String[] splitStr = savedDice.split("\\s+");
-                            for (String s : splitStr) {
-                                int i = Integer.parseInt(s);
-                                allDice[i - 1].saveDice();
-                            }
-                            // System.out.println("You saved the dice:");
-                            for (Dice d : allDice) {
-                                if (d.getSavingStatus()) {
-                                    // System.out.println(d.getDiceValue());
+                                    // saves dice player wants to save
+                                    System.out.println("Which dice do you want to keep? Write with a space in between the number of the dice you want to save.");
+                                    String savedDice = scanner.nextLine();
+                                    String[] splitStr = savedDice.split("\\s+");
+                                    int[] diceToBeSaved = new int[savedDice.length()];
+                                    // turn string array to int array
+                                    for (int i = 0; i < diceToBeSaved.length; i++) {
+                                        diceToBeSaved[i] = Integer.parseInt(splitStr[i]);
+                                    }
+                                    // saves all dice if they have one of the value typed in
+                                    for (int i = 0; i < diceToBeSaved.length; i++) {
+                                        int value = diceToBeSaved[i];
+                                        for (Dice d : allDice) {
+                                            if (d.getDiceValue() == value) {
+                                                d.saveDice();
+                                            }
+                                        }
+                                    }
+                                    // shows player the saved dice
+                                    System.out.println("You saved the dice:");
+                                    for (Dice d : allDice) {
+                                        if (d.getSavingStatus()) {
+                                            System.out.println(d.getDiceValue());
+                                        }
+                                    }
+                                    // checks if any unsaved dice is available to roll
+                                    allDiceSaved = true;
+                                    for (Dice d : allDice) {
+                                        if (!d.getSavingStatus()) {
+                                            allDiceSaved = false;
+                                        }
+                                    }
                                 }
                             }
                         }
-
-                        // checks if any unsaved dice is available to roll
-                        allDiceSaved = true;
-                        for (Dice d : allDice) {
-                            if (!d.getSavingStatus()) {
-                                allDiceSaved = false;
-                            }
-                        }
-
-                        // checks for action dice
-                        if (allDiceSaved) {
-
-                        }
                     }
-
-                    // choosing entry
-                    System.out.println("You saved all your dice, now choose an entry:\nones: 'ones'\ntwos: 'twos'\nthrees: 'threes'\nfours: 'fours'\nfives: 'fives'\nsixes: 'sixes'\nthree of a kind: 'threeOfAKind'\nfour of a kind: 'fourOfAKind'\nfull house: 'fullHouse'\nsmall straight: 'smallStraight'\nlarge straight: 'largeStraight'\nkniffeliger: 'kniffeliger'\nchance: 'chance'");
-                    boolean entryChoiceValid = false;
-                    while (entryChoiceValid == false) {
-                        String entryChoice = "input";
-                        try {
-                            EntrySheet.entryValidation(currentEntrySheet, entryChoice, allDice);
-                            entryChoiceValid = true;
-                        } catch (Exception e) {
-                            System.out.println("Try another entry please!");
-                        }
-                    }
-
-                    System.out.println("This is your entry sheet:");
-                    currentEntrySheet.printEntrySheet();
                 }
             }
+            //TODO: check if someone wants to play shift or switchEntries
         }
     }
 
@@ -225,6 +206,29 @@ public class GameManager {
      * ROLLS AND PRINTS DICE
      * #################################################################################################################
      */
+
+    /**
+     * Prints values of all dice.
+     *
+     * @param playersDice plays all dice
+     */
+    public static void printDice(Dice[] playersDice){
+        for (Dice d : playersDice) {
+            System.out.println(d.getDiceValue() + " ");
+        }
+    }
+
+    /**
+     * Resets all the five dice.
+     *
+     * @param playersDice the five dice a player can roll
+     */
+    public static void resetDice(Dice[] playersDice) {
+        for (Dice dice : playersDice){
+            dice.resetDice();
+        }
+    }
+
     /**
      * Rolls 5 dice using the rollDice() method from class Dice. This class already checks if player is allowed to roll the
      * dice, so it has not been saved and if it has less than 3 rolls. Saves dice automatically if it has been rolled 3 times.
@@ -245,17 +249,6 @@ public class GameManager {
     }
 
     /**
-     * Resets all the five dice.
-     *
-     * @param playersDice the five dice a player can roll
-     */
-    public static void resetDice(Dice[] playersDice) {
-        for (Dice dice : playersDice){
-            dice.resetDice();
-        }
-    }
-
-    /**
      * Rolls players dice and returns them as String, so we can print it in console.
      * This is only for playing the game in the console.
      *
@@ -268,17 +261,6 @@ public class GameManager {
             res = dice.getDiceValue() + "\n";
         }
         return res;
-    }
-
-    /**
-     * Prints values of all dice.
-     *
-     * @param playersDice plays all dice
-     */
-    public static void printDice(Dice[] playersDice){
-        for (Dice d : playersDice) {
-            System.out.println(d.getDiceValue() + " ");
-        }
     }
 
     /*
@@ -354,6 +336,8 @@ public class GameManager {
                     newActionDice[newActionDice.length - 2] = new ActionDice("shift");
                     newActionDice[newActionDice.length - 1] = new ActionDice("switch");
             }
+            // add action dice to the array and replace associated action dice array of player with new action dice array
+            player.setActionDices(newActionDice);
         }
         return sum % 5 == 0;
     }
