@@ -37,19 +37,19 @@ public class ActionDice {
      * METHOD RETURNS STRING SO WE CAN PLAY IT IN CONSOLE ##############################################################
      * Lets you steal an entry from another player. Returns String with message, if entry could be stolen.
      *
-     * @param entrySheetThief player that steals entry
+     * @param entrySheetVillain player that steals entry
      * @param entrySheetVictim player that entry is stolen from
      * @param stolenEntry entry that thief wants to steal
      */
-    public static String steal (EntrySheet entrySheetThief, EntrySheet entrySheetVictim, Entry stolenEntry) {
+    public static String steal (EntrySheet entrySheetVillain, EntrySheet entrySheetVictim, Entry stolenEntry) {
         // assigns entry sheets to victim and thief
         Entry[] entriesThief = entrySheetVictim.getAsArray();
         Entry[] entriesVictim = entrySheetVictim.getAsArray();
-        String message = entrySheetThief.getUsername() + ", ";
+        String message = entrySheetVillain.getUsername() + ", ";
         for (int i = 0; i < EntrySheet.getEntrySheetLength(); i++){
             if (entriesVictim[i].getName().equals(stolenEntry.getName()) && !(entriesThief[i].getIsFinal())){
-                entrySheetThief.addEntry(stolenEntry);
-                message = "you successfully stole the entry " + stolenEntry.getName() + " from " + entrySheetThief.getUsername() + ".";
+                entrySheetVillain.addEntry(stolenEntry);
+                message = "you successfully stole the entry " + stolenEntry.getName() + " from " + entrySheetVillain.getUsername() + ".";
             } else {
                 message = "this is not a valid entry or your entry is already final/taken/crossed out.";
             }
@@ -110,15 +110,15 @@ public class ActionDice {
      * METHOD RETURNS STRING SO WE CAN PLAY IT IN CONSOLE ##############################################################
      * Switches entry sheets of two players
      *
-     * @param entrySheetThief entry sheet of player who steals the entry.
+     * @param entrySheetVillain entry sheet of player who steals the entry.
      * @param entrySheetVictim entry sheet that gets stolen
      * @return message for game in console
      */
-    public static String switchEntries(EntrySheet entrySheetThief, EntrySheet entrySheetVictim){
-        Player helper = entrySheetThief.getPlayer();
-        entrySheetThief.setPlayer(entrySheetVictim.getPlayer());
+    public static String switchEntries(EntrySheet entrySheetVillain, EntrySheet entrySheetVictim){
+        Player helper = entrySheetVillain.getPlayer();
+        entrySheetVillain.setPlayer(entrySheetVictim.getPlayer());
         entrySheetVictim.setPlayer(helper);
-        return entrySheetThief.getUsername() + ", yu successfully switched your entry sheets with " + entrySheetVictim.getUsername();
+        return entrySheetVillain.getUsername() + ", yu successfully switched your entry sheets with " + entrySheetVictim.getUsername();
     }
 
 }
