@@ -3,7 +3,7 @@ package server.gamelogic;
 public class ActionDice {
 
     // name of action player can perform
-    private String actionName;
+    private final String actionName;
 
     // saves action dice per default
     private boolean savingStatus;
@@ -69,7 +69,7 @@ public class ActionDice {
         for (Entry entry : entrySheetVictim.getAsArray()){
             if (entry.getName().equals(frozenEntry)){
                 entry.setFrozenStatus(true);
-                message = message + "The entry of " + entrySheetVictim.toString() + " has successfully been frozen.";
+                message = message + "The entry of " + entrySheetVictim.getUsername() + " has successfully been frozen.";
             } else {
                 message = message + "Invalid entry. Try again.";
             }
