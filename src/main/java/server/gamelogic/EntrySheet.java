@@ -511,6 +511,7 @@ public class EntrySheet {
     /**
      * Checks for pi (or rather first digits of pi) in dice. First the five dice get sorted, then check the
      * second to fifth entry of array for numbers.
+     * Attention: rolledDice array is sorted after applying this method.
      *
      * @param rolledDice are the dice that have been rolled and saved
      * @return 31, if it is pi, 0 otherwise
