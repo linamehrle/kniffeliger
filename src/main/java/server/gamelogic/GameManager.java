@@ -58,7 +58,7 @@ public class GameManager {
                     /*
                      * #1: check if player has action dice that is all time playable and ask if they want to roll or if they want to play an action
                      */
-                    if (currentActionDice.length != 0) {
+                    if (currentActionDice != null && currentActionDice.length != 0) {
                         // counts actions that can be played at any time, if there is at least one, then player gets asked if it should be played
                         int allTimePlayableActions = 0;
                         boolean existsStealingDice = false;
