@@ -122,6 +122,28 @@ public class EntrySheet {
     public Player getPlayer() { return player;  }
 
     /**
+     * Changes values of entries in entrySheet (Entry[]-array) to values given in the int-array.
+     *
+     * @param valuesEntries int-array with new values for entry sheet
+     */
+    public void setEntrySheet(int[] valuesEntries) {
+        // change values in entry sheet to those in int-array
+        for (int i = 0; i < entrySheet.length; i++){
+            entrySheet[i].setValue(valuesEntries[i]);
+        }
+    }
+
+    /**
+     * Changes player associated with entry sheet.
+     *
+     * @param newPlayer new owner of sheet
+     */
+    public void setPlayer(Player newPlayer) {
+        player = newPlayer;
+        username = newPlayer.getUsername();
+    }
+
+    /**
      * Access total points of entry sheet
      *
      * @return all the points of the entry sheet added together
@@ -137,16 +159,6 @@ public class EntrySheet {
      */
     public String getUsername() {
         return username;
-    }
-
-    /**
-     * Changes player associated with entry sheet.
-     *
-     * @param newPlayer new owner of sheet
-     */
-    public void setPlayer(Player newPlayer) {
-        player = newPlayer;
-        username = newPlayer.getUsername();
     }
 
     /**
@@ -177,10 +189,10 @@ public class EntrySheet {
      *
      * @param deletedEntry gives us name of entry that needs to be deleted
      */
-    public void deleteEntry(Entry deletedEntry){
+    public void deleteEntry(String deletedEntry){
         for (Entry entry : entrySheet) {
             // if the correct entry has been detected, so if the names are the same, delete value from total points and set the value of this entry on entrySheet to 0
-            if (entry.getName().equals(deletedEntry.getName())) {
+            if (entry.getName().equals(deletedEntry)) {
                 totalPoints = totalPoints - entry.getValue();
                 entry.setValue(0);
                 entry.setFinal();
@@ -313,12 +325,12 @@ public class EntrySheet {
      */
     public static int singleValueRolls(int[] rolledDice, int value) throws Exception {
         // checks if we inserted a valid value for dice
-        if (!(value >= 1 && value <= 6)) {
-            throw new Exception("Only the values 1 to 6 can be checked.");
-        }
-
         int sum = 0;
         for (int d : rolledDice) {
+            // if values of dice are not between 1 and 6 an Exception is thrown
+            if (!(d >= 1 && d <= 6)) {
+                throw new Exception("Only the values 1 to 6 can be checked.");
+            }
             if (d == value) {
                 sum = sum + d;
             }
