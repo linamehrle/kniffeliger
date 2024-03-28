@@ -73,7 +73,6 @@ public class Helper {
      * @param entrySheets list of all entry sheets
      * @param playerName name of player whose entry sheet we want from
      * @return entry sheet of player with name playerName
-     * @throws Exception
      */
     public static EntrySheet getEntrySheetByName (EntrySheet[] entrySheets, String playerName) {
         EntrySheet playersEntrySheet = null;
