@@ -217,7 +217,6 @@ Until next time!
 
 ########################################################################################################################
 
-
 THU, 21.3.24 (Anisja)
 
 Dear Diary
@@ -240,5 +239,36 @@ Until next time!
 
 
 ** or not
+
+########################################################################################################################
+
+TUE, 26.3.24 (Anisja)
+
+Dear Diary
+
+Today we had the milestone 2 exercise lesson. I think it went well. Lina was very excited to show her amazing code and
+the tutors also agreed that she did a very good job. It is so cool and almost magic, that the computers can now
+communicate! Later, she went on to build the lobby and I continued on the game logic. I already have the game logic
+of "kniffel" done, but the "iger" part is missing - aka the action dice. I tested it with unit tests and a main
+method, and we played it on the console.
+
+I am very excited for the feedback on milestone 2, but honestly: nothing can go wrong with Lina as our networking pro!
+
+Until next time!
+
+########################################################################################################################
+
+WED, 27.3.24 (Anisja)
+
+Dear Diary
+
+We code, we test, we stress,
+until all tutors are impressed.
+Yahtzee alone is a little lame
+it would be a boring game.
+That's why we add an action dice,
+it will make the game really nice.
+
+Until next time!
 
 ########################################################################################################################
