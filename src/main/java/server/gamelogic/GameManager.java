@@ -147,7 +147,7 @@ public class GameManager {
                         // roll dice
                     } else if (answer.equals("want to roll")) {
                         while (!allDiceSaved) {
-                            System.out.println("Please roll the dice.");
+                            System.out.println("\nPlease roll the dice.");
                             if (scanner.nextLine().equals("roll")) {
                                 // rolls all dice
                                 GameManager.rollDice(allDice);
@@ -165,36 +165,17 @@ public class GameManager {
                                 String savedDice = scanner.nextLine();
                                 String[] splitStr = savedDice.split("\\s+");
                                 // turn string array to int array
-                                int[] diceToBeSaved = new int[splitStr.length];
-                                for (int i = 0; i < diceToBeSaved.length; i++) {
-                                    diceToBeSaved[i] = Integer.parseInt(splitStr[i]);
-                                }
-                                for (int i = 1; i < diceToBeSaved.length; i++){
-                                    if (allDice[i - 1].getDiceValue() == diceToBeSaved[i] - 1){
-                                        allDice[i - 1].saveDice();
-                                    }
+
+                                for (String s : splitStr) {
+                                    int i = Integer.parseInt(s);
+                                    allDice[i - 1].saveDice();
                                 }
 
-//                                int[] diceToBeSaved = new int[savedDice.length()];
-//                                // turn string array to int array
-//                                for (int i = 0; i < diceToBeSaved.length; i++) {
-//                                    diceToBeSaved[i] = Integer.parseInt(splitStr[i]);
-//                                }
-//                                // saves all dice if they have one of the value typed in
-//                                for (int i = 0; i < diceToBeSaved.length; i++) {
-//                                    // TODO: rewrite dice saving method
-//                                    int value = diceToBeSaved[i];
-//                                    for (Dice d : allDice) {
-//                                        if (d.getDiceValue() == value) {
-//                                            d.saveDice();
-//                                        }
-//                                    }
-//                                }
                                 // shows player the saved dice
                                 System.out.println("You saved the dice:");
                                 for (Dice d : allDice) {
                                     if (d.getSavingStatus()) {
-                                        System.out.println(d.getDiceValue());
+                                        System.out.print(d.getDiceValue() + " ");
                                     }
                                 }
                                 // checks if any unsaved dice is available to roll
@@ -206,6 +187,7 @@ public class GameManager {
                                 }
                             }
                         }
+                        //TODO: choose entry method
                     }
                 }
             }
