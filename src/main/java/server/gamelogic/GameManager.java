@@ -120,6 +120,7 @@ public class GameManager {
                      * #2: roll dice or use steal dice
                      */
                     // handle stealing dice
+                    //TODO check if stealing dice exists
                     System.out.println("Do you want to steal an entry or do you want to roll the dice? Answer 'want to steal' or 'want to roll'.");
                     String answer = scanner.nextLine();
                     if (answer.equals("want to steal")) {
@@ -142,6 +143,8 @@ public class GameManager {
                         }
                         EntrySheet sheetOfVictim = Helper.getEntrySheetByName(allEntrySheets, nameOfVictim);
                         ActionDice.steal(currentEntrySheet, sheetOfVictim, nameOfEntry);
+                        System.out.println(currentEntrySheet.printEntrySheet());
+                        System.out.println(sheetOfVictim.printEntrySheet());
                         stealingDicePlayed = true;
 
                         // roll dice
@@ -188,6 +191,22 @@ public class GameManager {
                             }
                         }
                         //TODO: choose entry method
+
+                        // choosing entry
+                        System.out.println("You saved all your dice, now choose an entry:\nones: 'ones'\ntwos: 'twos'\nthrees: 'threes'\nfours: 'fours'\nfives: 'fives'\nsixes: 'sixes'\nthree of a kind: 'threeOfAKind'\nfour of a kind: 'fourOfAKind'\nfull house: 'fullHouse'\nsmall straight: 'smallStraight'\nlarge straight: 'largeStraight'\nkniffeliger: 'kniffeliger'\nchance: 'chance'");
+                        boolean entryChoiceValid = false;
+                        while (entryChoiceValid == false) {
+                            String entryChoice = scanner.nextLine();
+                            try{
+                                EntrySheet.entryValidation(currentEntrySheet, entryChoice, allDice);
+                                entryChoiceValid = true;
+                            } catch (Exception e) {
+                                System.out.println("Try another entry please!");
+                            }
+                        }
+
+                        System.out.println("This is your entry sheet:");
+                        System.out.println(currentEntrySheet.printEntrySheet());
                     }
                 }
             }
