@@ -1,4 +1,8 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import server.Server;
+
+import java.util.Arrays;
 
 /**
  * This class is the starter class for our game "Kniffeliger". It is designed to contain the main method to decide given
@@ -6,16 +10,50 @@ import server.Server;
  */
 public class Starter {
     /**
+     *  In
+     */
+    public static Logger logger;
+
+
+    /**
      * The main method.
-     * @param args In args we have that args[0] should be either "client" or "server". The subsequent parameters are then
-     *             for client &lt;hostadress&gt;:&lt;port&gt; [&lt;username&gt;] and for server &lt;port&gt;.
+     * @param args In args we have that args[0] should be either "client" or "server".<br>
+     *             The subsequent parameters are then
+     *             <ul>
+     *                  <li>client &lt;hostadress&gt;:&lt;port&gt; [&lt;username&gt;] {loggerName}</li>
+     *                  <li>server &lt;port&gt; {logger}</li>
+     *             </ul>
+     *             For the optional parameter logger (default: TRACE_FILE_LOGGER) there are several opportunities:
+     *             <ul>
+     *                  <li>DEBUG_CONSOLE_LOGGER: level is DEBUG and output is only on console.</li>
+     *                  <li>DEBUG_CONSOLE_AND_FILE_LOGGER: level is DEBUG and output is on console and in log file.</li>
+     *                  <li>TRACE_FILE_LOGGER: level is TRACE and output is in log file.</li>
+     *                  <li>TRACE_CONSOLE_AND_FILE_LOGGER: level is TRACE and output is on console and in log file.</li>
+     *             </ul>
      */
     public static void main(String[] args) {
         try {
+            // fetch logger parameter if available
+            String loggingParam = args[args.length - 1];
+            boolean loggerSpecified = false;
+
+            if (loggingParam.contains("{") && loggingParam.contains("}")) {
+                loggerSpecified = true;
+
+                // set logger
+                logger = LogManager.getLogger(loggingParam.substring(1, loggingParam.length() - 1));
+            } else if (loggingParam.contains("{") || loggingParam.contains("}")) {
+                throw new Exception("Invalid logger parameter.");
+            } else {
+                logger = LogManager.getLogger("TRACE_FILE_LOGGER");
+            }
+
+            logger.info("Start parameter were: " + Arrays.toString(args));
+
             // evaluate what to start
             String toStart = args[0];
             if(toStart.equalsIgnoreCase("client")) {
-                startClient(args);
+                startClient(args, loggerSpecified);
             } else if(toStart.equalsIgnoreCase("server")) {
                 startServer(args);
             } else {
@@ -26,8 +64,8 @@ public class Starter {
             // print the correct syntax if an exception was thrown
             String errMsg = """
                     ERROR: Please consider the following syntax:
-                          client <hostadress>:<port> [<yourUsername>]
-                          server <port>
+                          client <hostadress>:<port> [<yourUsername>] {logger}
+                          server <port> {logger}
                     Please try again with the correct syntax.""";
 
 
@@ -39,8 +77,11 @@ public class Starter {
     /**
      * This method start the client and is called by the main method if "client" was entered.
      * @param args The input data the user has provided to start the jar. Look at main for the correct syntax.
+     * @param loggerSpecified Set true if the logger was specified
      */
-    private static void startClient(String[] args) throws Exception {
+    private static void startClient(String[] args, boolean loggerSpecified) throws Exception {
+        logger.trace("startClient()");
+
         // get host address and port
         String[] firstInput = args[1].split(":");
 
@@ -56,7 +97,7 @@ public class Starter {
         String username = "default";
 
         // allow additional syntax
-        if(args.length != 2) {
+        if(args.length != 2 && !loggerSpecified) {
             // get username
             int startIdx = args[2].indexOf('[') + 1;
             int endIdx = args[2].indexOf(']');
@@ -79,6 +120,8 @@ public class Starter {
      * @param args The input data the user has provided to start the jar. Look at main for the correct syntax.
      */
     private static void startServer(String[] args) throws Exception {
+        logger.trace("startServer()");
+
         // get port
         int port = Integer.parseInt(args[1]);
 
