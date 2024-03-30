@@ -1,14 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="INFO">
+<Configuration status="WARN">
+    <Properties>
+        <Property name="filename">./logs</Property>
+    </Properties>
     <Appenders>
+        <RollingFile name="rollingFile"
+                     fileName="${filename}/logdemo.log"
+                     filePattern="${filename}/test-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="1 KB" />
+            </Policies>
+        </RollingFile>
         <Console name="console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
         </Console>
     </Appenders>
 
     <Loggers>
-        <Root level="trace">
-            <AppenderRef ref="console" />
+        <Logger name="DEBUG_CONSOLE_LOGGER" level="debug" additivity="false">
+            <AppenderRef ref="console"/>
+        </Logger>
+        <Logger name="TRACE_CONSOLE_AND_FILE_LOGGER" level="trace" additivity="false">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="rollingFile"/>
+        </Logger>
+        <Logger name="TRACE_FILE_LOGGER" level="trace" additivity="false">
+            <AppenderRef ref="rollingFile"/>
+        </Logger>
+        <Root level="fatal">
+            <AppenderRef ref="console"/>
         </Root>
     </Loggers>
 </Configuration>
