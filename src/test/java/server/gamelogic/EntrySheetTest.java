@@ -40,11 +40,11 @@ class EntrySheetTest {
     void getTest() {
         entrySheet2.addEntry(new Entry("ones", 1));
 
-        assertAll(() -> assertTrue(Arrays.equals(defaultEntrySheetNames, entrySheet1.getEntryNames())),
-                () -> assertTrue(Arrays.equals(defaultEntrySheetValues, entrySheet1.getEntryValues())),
+        assertAll(() -> assertArrayEquals(defaultEntrySheetNames, entrySheet1.getEntryNames()),
+                () -> assertArrayEquals(defaultEntrySheetValues, entrySheet1.getEntryValues()),
                 () -> assertEquals("uniqueName001", entrySheet1.getUsername()),
                 () -> assertEquals("uniqueName002", entrySheet2.getUsername()),
-                () -> assertFalse("username".equals(entrySheet1.getUsername())),
+                () -> assertNotEquals("username", entrySheet1.getUsername()),
                 () -> assertEquals(1, entrySheet2.getEntryValues()[0]),
                 () -> assertEquals(0, entrySheet1.getTotalPoints()),
                 () -> assertEquals(1, entrySheet2.getTotalPoints())
@@ -52,21 +52,21 @@ class EntrySheetTest {
 
         // resets entrySheet2 to default
         entrySheet2.resetEntrySheet();
-        assertAll(() -> assertTrue(Arrays.equals(defaultEntrySheetNames, entrySheet2.getEntryNames())),
+        assertAll(() -> assertArrayEquals(defaultEntrySheetNames, entrySheet2.getEntryNames()),
                 () -> assertEquals(0, entrySheet2.getTotalPoints())
         );
 
         try {
             entrySheet2.addEntry(new Entry("twos", 6));
         } catch (Exception e){
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
         try {
             entrySheet2.deleteEntry("twos");
         } catch (Exception e){
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
-        assertAll(() -> assertTrue(Arrays.equals(defaultEntrySheetNames, entrySheet2.getEntryNames())),
+        assertAll(() -> assertArrayEquals(defaultEntrySheetNames, entrySheet2.getEntryNames()),
                 () -> assertEquals(0, entrySheet2.getTotalPoints())
         );
     }
