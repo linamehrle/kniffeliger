@@ -93,6 +93,24 @@ public class EntrySheet {
     }
 
     /**
+     * Gets the entry sheet associated with a players unique name. If no player with this name is in entry sheet list
+     * then it returns a default player entry sheet with name 'default player' and ID '001'.
+     *
+     * @param allEntrySheets list to look through
+     * @param playerName entry sheet that is looked for in list
+     * @return entry sheet associated with playerName
+     */
+    public static EntrySheet getEntrySheetByName(EntrySheet[] allEntrySheets, String playerName){
+        EntrySheet playersEntrySheet = new EntrySheet(new Player("default player", 001));
+        for(EntrySheet e : allEntrySheets){
+            if (e.getUsername().equals(playerName)){
+                playersEntrySheet = e;
+            }
+        }
+        return playersEntrySheet;
+    }
+
+    /**
      * Access official length of an entry sheet, which is 13.
      *
      * @return length of entry sheet, which is 13.
@@ -305,12 +323,8 @@ public class EntrySheet {
                 Entry pi = new Entry("pi", pi(finalDiceInt));
                 entrySheet.addEntry(pi);
                 break;
-            /*
             default:
-                new Exception("Your entry choice is not valid.");
-             */
-
-
+                entryValidation(entrySheet, nameOfEntry, finalDiceValues);
         }
     }
 
