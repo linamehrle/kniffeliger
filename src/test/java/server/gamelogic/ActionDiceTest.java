@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ActionDiceTest {
 
     /**
-     * Helper method to initiate random entry sheets with random values from 5 to 50
+     * Helper method to initiate random entry sheets with random values from 5 to 50.
      *
      * @param player
      * @return
@@ -144,7 +144,7 @@ class ActionDiceTest {
         riccardosHelpersEntrySheet.setEntrySheet(riccardosEntrySheet.getEntryValues());
 
         int randomIndex = (int) Math.floor(Math.random() * 13 + 0);
-        ActionDice.switchEntries(linasEntrySheet, riccardosEntrySheet);
+        ActionDice.swap(linasEntrySheet, riccardosEntrySheet);
         assertAll(() -> assertEquals(riccardosHelpersEntrySheet.getEntryValues()[randomIndex], linasEntrySheet.getEntryValues()[randomIndex]),
                 () -> assertEquals(linasHelpersEntrySheet.getEntryValues()[randomIndex], riccardosEntrySheet.getEntryValues()[randomIndex])
         );
