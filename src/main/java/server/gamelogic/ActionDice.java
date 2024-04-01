@@ -108,17 +108,36 @@ public class ActionDice {
 
     /**
      * METHOD RETURNS STRING SO WE CAN PLAY IT IN CONSOLE ##############################################################
-     * Switches entry sheets of two players
+     * Swaps entry sheets of two players
      *
      * @param entrySheetVillain entry sheet of player who steals the entry.
      * @param entrySheetVictim entry sheet that gets stolen
      * @return message for game in console
      */
-    public static String switchEntries(EntrySheet entrySheetVillain, EntrySheet entrySheetVictim){
+    public static String swap(EntrySheet entrySheetVillain, EntrySheet entrySheetVictim){
         Player helper = entrySheetVillain.getPlayer();
         entrySheetVillain.setPlayer(entrySheetVictim.getPlayer());
         entrySheetVictim.setPlayer(helper);
-        return entrySheetVillain.getUsername() + ", yu successfully switched your entry sheets with " + entrySheetVictim.getUsername();
+        return entrySheetVillain.getUsername() + ", you successfully swap your entry sheets with " + entrySheetVictim.getUsername();
+    }
+
+    /**
+     * METHOD RETURNS STRING SO WE CAN PLAY IT IN CONSOLE ##############################################################
+     * Prints the action dice array as String.
+     *
+     * @param actionDice to be printed
+     * @return String to display array
+     */
+    public static String printActionDice(ActionDice[] actionDice){
+        String result = "Your action dice is/are: ";
+        if (actionDice == null) {
+            result = result + "[]";
+            return result;
+        }
+        for (ActionDice ad : actionDice){
+            result = result + " " + ad.getActionName();
+        }
+        return result;
     }
 
 }
