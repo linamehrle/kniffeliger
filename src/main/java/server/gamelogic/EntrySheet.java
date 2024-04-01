@@ -73,7 +73,7 @@ public class EntrySheet {
     public Entry getEntryByName(String entryName) {
         Entry result = null;
         for (Entry e : entrySheet) {
-            if (e.equals(entryName)){
+            if (e.getName().equals(entryName)){
                 result = e;
             }
         }
@@ -269,79 +269,73 @@ public class EntrySheet {
         // when entry player want to make is not final then add it to entry sheet
         // else: aks for different entry
         if (!entrySheet.getEntryByName(nameOfEntry).getIsFinal()) {
-            switch (nameOfEntry) {
-                case "ones":
-                    Entry ones = new Entry("ones", singleValueRolls(finalDiceInt, 1));
-                    entrySheet.addEntry(ones);
-                    break;
-                case "twos":
-                    Entry twos = new Entry("twos", singleValueRolls(finalDiceInt, 2));
-                    entrySheet.addEntry(twos);
-                    break;
-                case "threes":
-                    Entry threes = new Entry("threes", singleValueRolls(finalDiceInt, 3));
-                    entrySheet.addEntry(threes);
-                    break;
-                case "fours":
-                    Entry fours = new Entry("fours", singleValueRolls(finalDiceInt, 4));
-                    entrySheet.addEntry(fours);
-                    break;
-                case "fives":
-                    Entry fives = new Entry("fives", singleValueRolls(finalDiceInt, 5));
-                    entrySheet.addEntry(fives);
-                    break;
-                case "sixes":
-                    Entry sixes = new Entry("sixes", singleValueRolls(finalDiceInt, 6));
-                    entrySheet.addEntry(sixes);
-                    break;
-                case "threeOfAKind":
-                    Entry threeOfAKind = new Entry("threeOfAKind", threeOfAKind(finalDiceInt));
-                    entrySheet.addEntry(threeOfAKind);
-                    break;
-                case "fourOfAKind":
-                    Entry fourOfAKind = new Entry("fourOfAKind", fourOfAKind(finalDiceInt));
-                    entrySheet.addEntry(fourOfAKind);
-                    break;
-                case "fullHouse":
-                    Entry fullHouse = new Entry("fullHouse", fullHouse(finalDiceInt));
-                    entrySheet.addEntry(fullHouse);
-                    break;
-                case "smallStraight":
-                    Entry smallStraight = new Entry("smallStraight", smallStraight(finalDiceInt));
-                    entrySheet.addEntry(smallStraight);
-                    break;
-                case "largeStraight":
-                    Entry largeStraight = new Entry("largeStraight", largeStraight(finalDiceInt));
-                    entrySheet.addEntry(largeStraight);
-                    largeStraight(finalDiceInt);
-                    break;
-                case "kniffeliger":
-                    Entry kniffeliger = new Entry("kniffeliger", kniffeliger(finalDiceInt));
-                    entrySheet.addEntry(kniffeliger);
-                    break;
-                case "chance":
-                    Entry chance = new Entry("chance", chance(finalDiceInt));
-                    entrySheet.addEntry(chance);
-                    break;
-                case "pi":
-                    Entry pi = new Entry("pi", pi(finalDiceInt));
-                    entrySheet.addEntry(pi);
-                    break;
-                default:
-                    // TODO: ACHTUNG, ÄNDERE DAS FÜR SPIEL AUSSERHALB DER KONSOLE
-                    Scanner scanner = new Scanner(System.in);
-                    System.out.println("Your entry name is wrong. Please try again.");
-                    String entryName = scanner.nextLine();
-                    entryValidation(entrySheet, entryName, finalDiceValues);
-            }
-        } else {
-            // TODO: ACHTUNG, ÄNDERE DAS FÜR SPIEL AUSSERHALB DER KONSOLE
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Your entry name is wrong. Please try again.");
-            String entryName = scanner.nextLine();
-            entryValidation(entrySheet, entryName, finalDiceValues);
+            // TODO Nullpointerexception in getEntryByName
         }
-
+        switch (nameOfEntry) {
+            case "ones":
+                Entry ones = new Entry("ones", singleValueRolls(finalDiceInt, 1));
+                entrySheet.addEntry(ones);
+                break;
+            case "twos":
+                Entry twos = new Entry("twos", singleValueRolls(finalDiceInt, 2));
+                entrySheet.addEntry(twos);
+                break;
+            case "threes":
+                Entry threes = new Entry("threes", singleValueRolls(finalDiceInt, 3));
+                entrySheet.addEntry(threes);
+                break;
+            case "fours":
+                Entry fours = new Entry("fours", singleValueRolls(finalDiceInt, 4));
+                entrySheet.addEntry(fours);
+                break;
+            case "fives":
+                Entry fives = new Entry("fives", singleValueRolls(finalDiceInt, 5));
+                entrySheet.addEntry(fives);
+                break;
+            case "sixes":
+                Entry sixes = new Entry("sixes", singleValueRolls(finalDiceInt, 6));
+                entrySheet.addEntry(sixes);
+                break;
+            case "threeOfAKind":
+                Entry threeOfAKind = new Entry("threeOfAKind", threeOfAKind(finalDiceInt));
+                entrySheet.addEntry(threeOfAKind);
+                break;
+            case "fourOfAKind":
+                Entry fourOfAKind = new Entry("fourOfAKind", fourOfAKind(finalDiceInt));
+                entrySheet.addEntry(fourOfAKind);
+                break;
+            case "fullHouse":
+                Entry fullHouse = new Entry("fullHouse", fullHouse(finalDiceInt));
+                entrySheet.addEntry(fullHouse);
+                break;
+            case "smallStraight":
+                Entry smallStraight = new Entry("smallStraight", smallStraight(finalDiceInt));
+                entrySheet.addEntry(smallStraight);
+                break;
+            case "largeStraight":
+                Entry largeStraight = new Entry("largeStraight", largeStraight(finalDiceInt));
+                entrySheet.addEntry(largeStraight);
+                largeStraight(finalDiceInt);
+                break;
+            case "kniffeliger":
+                Entry kniffeliger = new Entry("kniffeliger", kniffeliger(finalDiceInt));
+                entrySheet.addEntry(kniffeliger);
+                break;
+            case "chance":
+                Entry chance = new Entry("chance", chance(finalDiceInt));
+                entrySheet.addEntry(chance);
+                break;
+            case "pi":
+                Entry pi = new Entry("pi", pi(finalDiceInt));
+                entrySheet.addEntry(pi);
+                break;
+            default:
+                // TODO: ACHTUND, ÄNDERE DAS FÜR SPIEL AUSSERHALB DER KONSOLE
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Your entry name is wrong. Please try again.");
+                String entryName = scanner.nextLine();
+                entryValidation(entrySheet, entryName, finalDiceValues);
+        }
     }
 
     /**
@@ -469,8 +463,8 @@ public class EntrySheet {
          * one. Also, we check if the next value is the previous vale + 1. If so, if continues the loop (else) and if
          * not, it returns 0. If it made it through the loop without return then we have a small straight and return 30.
          */
-        if ((rolledDice[1] == rolledDice[0] + 1) || (rolledDice[4] == rolledDice[3] + 1)) {
-            for (int i = 0; i < rolledDice.length - 1; i++) {
+        if (rolledDice[1] == rolledDice[0] + 1) {
+            for (int i = 0; i < rolledDice.length - 2; i++) {
                 if (rolledDice[i + 1] == rolledDice[i] && repetitionCounter < 1) {
                     repetitionCounter = repetitionCounter + 1;
                 } else if (rolledDice[i + 1] != rolledDice[i] + 1) {
@@ -478,6 +472,14 @@ public class EntrySheet {
                 } //else: continue loop
             }
             // if it made it through the loop without returning 0, then we have a small straight
+        } else if (rolledDice[4] == rolledDice[3] + 1) {
+            for (int i = 1; i < rolledDice.length - 1; i++) {
+                if (rolledDice[i + 1] == rolledDice[i] && repetitionCounter < 1) {
+                    repetitionCounter = repetitionCounter + 1;
+                } else if (rolledDice[i + 1] != rolledDice[i] + 1) {
+                    return 0;
+                } //else: continue loop
+            }
         } else {
             return 0;
         }

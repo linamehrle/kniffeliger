@@ -90,6 +90,7 @@ class EntrySheetTest {
     int[] smallStraight1 = {1, 2, 3, 4, 1};
     int[] smallStraight2 = {2, 3, 3, 5, 4};
     int[] smallStraight3 = {4, 4, 3, 2, 1};
+    int[] smallStraight4 = {1, 6, 3, 4, 5};
     int[] largeStraight1 = {1, 2, 3, 4, 5};
     int[] largeStraight2 = {2, 3, 4, 5, 6};
 
@@ -133,6 +134,7 @@ class EntrySheetTest {
         assertAll(() -> assertEquals(30, EntrySheet.smallStraight(smallStraight1)),
                 () -> assertEquals(30, EntrySheet.smallStraight(smallStraight2)),
                 () -> assertEquals(30, EntrySheet.smallStraight(smallStraight3)),
+                () -> assertEquals(30, EntrySheet.smallStraight(smallStraight4)),
                 () -> assertEquals(0, EntrySheet.smallStraight(threes)),
                 () -> assertEquals(30, EntrySheet.smallStraight(largeStraight1)),
                 () -> assertEquals(30, EntrySheet.smallStraight(largeStraight2))
