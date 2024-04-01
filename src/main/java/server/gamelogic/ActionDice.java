@@ -49,6 +49,7 @@ public class ActionDice {
         for (int i = 0; i < EntrySheet.getEntrySheetLength(); i++){
             if (entriesVictim[i].getName().equals(stolenEntry) && !(entriesThief[i].getIsFinal())){
                 entrySheetVillain.addEntry(entriesVictim[i]);
+                entrySheetVictim.deleteEntry(stolenEntry);
                 message = "you successfully stole the entry " + entriesVictim[i].getName() + " from " + entrySheetVillain.getUsername() + ".";
             } else {
                 message = "this is not a valid entry or your entry is already final/taken/crossed out.";
@@ -133,11 +134,16 @@ public class ActionDice {
         if (actionDice == null) {
             result = result + "[]";
             return result;
+        } else {
+            for (ActionDice ad : actionDice){
+                if (ad != null) {
+                    result = result + " " + ad.getActionName();
+                } else {
+                    System.out.println("none");
+                }
+            }
+            return result;
         }
-        for (ActionDice ad : actionDice){
-            result = result + " " + ad.getActionName();
-        }
-        return result;
     }
 
 }

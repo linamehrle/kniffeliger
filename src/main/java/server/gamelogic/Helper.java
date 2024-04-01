@@ -15,7 +15,7 @@ public class Helper {
      * @param playerName playerName of the player that is assumed to be in the players list
      * @return true, if player exists and false, if not
      */
-    public static boolean checkPlayerName(Player[] players, String playerName){
+    public static boolean checkPlayerName (Player[] players, String playerName){
         boolean playerNameChecker = false;
         for (Player p : players){
             if (p.getUsername().equals(playerName)){
@@ -31,7 +31,7 @@ public class Helper {
      * @param entryName name of the entry that is assumed to be in an entry sheet
      * @return true, if entry with this name exists, false if not
      */
-    public static boolean checkEntryName(String entryName){
+    public static boolean checkEntryName (String entryName){
         boolean entryNameChecker = false;
         // default entry sheet that is only used to check the entry names
         EntrySheet entrySheet = new EntrySheet(new Player("Default Dan", 0));
@@ -49,7 +49,7 @@ public class Helper {
      * @param actionName name that is assumed to be an action
      * @return true, if name is an existing action, false if not
      */
-    public static boolean checkActionName(String actionName){
+    public static boolean checkActionName (String actionName){
         boolean actionNameChecker = false;
         boolean isSteal = actionName.equalsIgnoreCase("steal");
         boolean isFreeze = actionName.equalsIgnoreCase("freeze");
@@ -83,5 +83,12 @@ public class Helper {
         }
         return playersEntrySheet;
     }
+
+    /*
+     * #################################################################################################################
+     * HELPER METHODS FOR STARTER METHOD
+     * #################################################################################################################
+     */
+
 
 }
