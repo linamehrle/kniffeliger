@@ -101,11 +101,15 @@ public class GameManager {
                                 String input = scanner.nextLine();
                                 String[] splitStr = input.split("\\s+");
 
-                                // checks if there are typos in input of player
-                                nameOfAction = splitStr[0];
-                                nameOfVictim = splitStr[1];
-                                nameOfEntry = splitStr[2];
-                                typo = !Helper.checkActionName(nameOfAction) && !Helper.checkPlayerName(players, nameOfVictim) && !Helper.checkEntryName(nameOfEntry);
+                                if (splitStr.length > 1) {
+                                    nameOfAction = splitStr[0];
+                                    nameOfVictim = splitStr[1];
+                                    nameOfEntry = splitStr[2];
+                                    // checks if there are typos in input of player
+                                    typo = !Helper.checkActionName(nameOfAction) && !Helper.checkPlayerName(players, nameOfVictim) && !Helper.checkEntryName(nameOfEntry);
+                                } else if (input.equals("none")) {
+                                    typo = false;
+                                }
                             }
                             EntrySheet sheetOfVictim = Helper.getEntrySheetByName(allEntrySheets, nameOfVictim);
 
@@ -167,8 +171,8 @@ public class GameManager {
 
                         // roll dice
                     } else if (answer.equals("want to roll")) {
+                        System.out.println("Please roll the dice.");
                         while (!allDiceSaved) {
-                            System.out.println("Please roll the dice.");
                             if (scanner.nextLine().equals("roll")) {
                                 // rolls all dice
                                 GameManager.rollDice(allDice);
