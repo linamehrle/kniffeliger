@@ -9,9 +9,6 @@ import java.util.Arrays;
  * the main parameters to start either the client or the server.
  */
 public class Starter {
-    /**
-     *  In
-     */
     public static Logger logger;
 
 
@@ -20,7 +17,7 @@ public class Starter {
      * @param args In args we have that args[0] should be either "client" or "server".<br>
      *             The subsequent parameters are then
      *             <ul>
-     *                  <li>client &lt;hostadress&gt;:&lt;port&gt; [&lt;username&gt;] {loggerName}</li>
+     *                  <li>client &lt;hostadress&gt;:&lt;port&gt; [&lt;username&gt;] {logger}</li>
      *                  <li>server &lt;port&gt; {logger}</li>
      *             </ul>
      *             For the optional parameter logger (default: TRACE_FILE_LOGGER) there are several opportunities:
