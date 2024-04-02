@@ -308,7 +308,7 @@ I hope you had a good Easter weekend! Mine was pretty sleepy and stressful. I ha
 implementation and boy was that a "gnusch"*. It really took longer than I thought. Even our police officer
 agreed that it is quite the pain to implement the starter method, and he is wayyyyyy better in maths and coding and more
 structured than I am (that is why he is the police officer...also because the gingers should definitely NOT be in
-charge because Lina would also be smart and structured enough).
+charge even though Lina would also be smart and structured enough).
 Anywhoooo, like my students always say: 'Omagawd!!!' - I just finished fixing the bug in the delete method of my
 GameManager, so I CAN MERGE Lina's and my code today!! Woop woop! I've always wondered what a child between Lina and I
 will look like, and today we will finally find out! I bet our codes match as well as Lina and I do *wink at Lina*.
