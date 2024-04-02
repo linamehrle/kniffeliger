@@ -2,6 +2,24 @@ package server.gamelogic;
 
 import java.util.Scanner;
 
+// TODO javadoc for class
+public class Main {
+
+    public static void main(String[] args) {
+        // initializes players
+        Player lina = new Player("LINA", 007);
+        Player riccardo = new Player("RICCARDO", 002);
+
+        Player[] allPlayer = new Player[]{lina, riccardo};
+
+        GameManager.starter(allPlayer);
+    }
+}
+
+/*package server.gamelogic;
+
+import java.util.Scanner;
+
 public class Main {
 
     public static void main(String[] args) throws Exception {
@@ -83,4 +101,4 @@ public class Main {
             // action dice
         }
     }
-}
+}*/

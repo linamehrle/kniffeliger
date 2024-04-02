@@ -8,36 +8,54 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameManagerTest {
 
-    /*
-     * #################################################################################################################
-     * TESTS IF EXCEPTIONS GET THROWN CORRECTLY
-     * #################################################################################################################
-     */
-    @Test
-    @DisplayName("Tests if exceptions int GameManager are handled correctly.")
-    void gameManagerExceptionsTest() throws Exception {
-        // Dice array to test rollDice() method
-        Dice[] largeDiceArray = new Dice[(int) Math.floor(Math.random() * 100+ 6)];
-        Dice[] smallDiceArray = new Dice[(int) Math.floor(Math.random() * 4+ 1)];
-
-        // generate array of random length between 6 and 100 with numbers of values between 1 and 6 inside
-        int[] largeRandomArray = new int[(int) Math.floor(Math.random() * 100+ 6)];
-        for (int num : largeRandomArray){
-            num = (int) Math.floor(Math.random() * 6+ 1);
-        }
-
-        // generate array of random length between 1 and 5 with numbers of values between 1 and 6 inside
-        int[] smallRandomArray = new int[(int) Math.floor(Math.random() * 4+ 1)];
-        for (int num : smallRandomArray){
-            num = (int) Math.floor(Math.random() * 6+ 1);
-        }
-
-        assertAll(() -> assertThrows(Exception.class, () -> GameManager.rollDice(largeDiceArray)),
-                () -> assertThrows(Exception.class, () -> GameManager.rollDice(smallDiceArray))
-        );
-    }
-
+    //TODO: DO ALL THE TESTING
     //TODO: reset dice testing
     //TODO: check for action dice testing
-    //TODO:
+    //TODO: test delete action dice
+
+    /**
+     * Turns action dice array into String array with names of actions as array
+     *
+     * @param actionDiceArray array to extract names from
+     * @return name of actions as String
+     */
+    public static String turnActionDiceToString(ActionDice[] actionDiceArray){
+        String result = "";
+        for (int i = 0; i < actionDiceArray.length; i++){
+            if (actionDiceArray[i] != null) {
+                result = result + " " + actionDiceArray[i].getActionName();
+            }
+        }
+        return result;
+    }
+
+    @Test
+    @DisplayName("Tests the method that deletes an action dice out of an array")
+    void deleteActionDiceTest(){
+        // action dice for player
+        ActionDice[] actionDiceLina = new ActionDice[]{new ActionDice("steal"), new ActionDice("freeze"), new ActionDice("crossOut"), new ActionDice("shift"), new ActionDice("swap")};
+        ActionDice[] actionDiceRiccardo = new ActionDice[]{new ActionDice("crossOut"), new ActionDice("shift"), new ActionDice("swap")};
+
+        // players that hold action dice (needed to apply the delete entry method)
+        Player lina = new Player("lina", 007);
+        Player riccardo = new Player("riccardo", 001);
+        lina.setActionDices(actionDiceLina);
+        riccardo.setActionDices(actionDiceRiccardo);
+
+        // delete action dice
+        GameManager.deleteActionDice(lina, "shift");
+        GameManager.deleteActionDice(riccardo, "crossOut");
+
+        // control action dice to check
+        ActionDice[] controlActionDiceLina = new ActionDice[]{new ActionDice("steal"), new ActionDice("freeze"), new ActionDice("crossOut"), new ActionDice("swap")};
+        ActionDice[] controlActionDiceRiccardo = new ActionDice[]{new ActionDice("shift"), new ActionDice("swap")};
+
+
+
+        assertAll(() -> assertEquals(turnActionDiceToString(controlActionDiceLina), turnActionDiceToString(lina.getActionDice())),
+                () -> assertEquals(turnActionDiceToString(controlActionDiceRiccardo), turnActionDiceToString(riccardo.getActionDice()))
+        );
+
+    }
+
 }

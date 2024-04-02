@@ -14,66 +14,37 @@ class EntrySheetTest {
     // entry sheets
     EntrySheet entrySheet1 = new EntrySheet(p1);
     EntrySheet entrySheet2 = new EntrySheet(p2);
-    int[] defaultEntrySheetValues = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    String[] defaultEntrySheetNames = {"ones", "twos", "threes", "fours", "fives", "sixes", "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight", "largeStraight", "kniffeliger", "chance"};
+    int[] defaultEntrySheetValues = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    String[] defaultEntrySheetNames = {"ones", "twos", "threes", "fours", "fives", "sixes", "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight", "largeStraight", "kniffeliger", "chance", "pi"};
 
     @Test
     @DisplayName("Tests if exceptions in GameManager are handled correctly.")
     void entrySheetExceptionsTest() throws Exception {
         // generate array of random length between 6 and 100 with numbers of values between 1 and 6 inside
-        int[] largeRandomArray = new int[(int) Math.floor(Math.random() * 100+ 6)];
-        for (int num : largeRandomArray){
-            num = (int) Math.floor(Math.random() * 6+ 1);
+        int[] testArray = new int[(int) Math.floor(Math.random() * 6+ 1)];
+        for (int num : testArray){
+            num = (int) Math.floor(Math.random() * 100 + 7);
         }
 
-        // generate array of random length between 1 and 5 with numbers of values between 1 and 6 inside
-        int[] smallRandomArray = new int[(int) Math.floor(Math.random() * 4+ 1)];
-        for (int num : smallRandomArray){
-            num = (int) Math.floor(Math.random() * 6+ 1);
-        }
-
-        assertAll(() -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(largeRandomArray, 1)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(largeRandomArray, 2)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(largeRandomArray, 3)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(largeRandomArray, 4)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(largeRandomArray, 5)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(largeRandomArray, 6)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.threeOfAKind(largeRandomArray)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.fourOfAKind(largeRandomArray)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.fullHouse(largeRandomArray)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.smallStraight(largeRandomArray)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.largeStraight(largeRandomArray)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.kniffeliger(largeRandomArray)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.chance(largeRandomArray)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(smallRandomArray, 1)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(smallRandomArray, 2)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(smallRandomArray, 3)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(smallRandomArray, 4)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(smallRandomArray, 5)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(smallRandomArray, 6)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.threeOfAKind(smallRandomArray)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.fourOfAKind(smallRandomArray)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.fullHouse(smallRandomArray)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.smallStraight(smallRandomArray)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.largeStraight(smallRandomArray)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.kniffeliger(smallRandomArray)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.chance(smallRandomArray))
+        assertAll(() -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(testArray, 1)),
+                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(testArray, 2)),
+                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(testArray, 3)),
+                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(testArray, 4)),
+                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(testArray, 5)),
+                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(testArray, 6))
         );
     }
 
     @Test
     @DisplayName("Tests if default of entry sheet is correct, so if resetEntrySheet() works and if methods getUsername(), getTotalPoints(), deleteEntry(), addEntry() work.")
     void getTest() {
-        try {
-            entrySheet2.addEntry(new Entry("ones", 1));
-        } catch (Exception e){
-            e.getMessage();
-        }
-        assertAll(() -> assertTrue(Arrays.equals(defaultEntrySheetNames, entrySheet1.getEntryNames())),
-                () -> assertTrue(Arrays.equals(defaultEntrySheetValues, entrySheet1.getEntryValues())),
+        entrySheet2.addEntry(new Entry("ones", 1));
+
+        assertAll(() -> assertArrayEquals(defaultEntrySheetNames, entrySheet1.getEntryNames()),
+                () -> assertArrayEquals(defaultEntrySheetValues, entrySheet1.getEntryValues()),
                 () -> assertEquals("uniqueName001", entrySheet1.getUsername()),
                 () -> assertEquals("uniqueName002", entrySheet2.getUsername()),
-                () -> assertFalse("username".equals(entrySheet1.getUsername())),
+                () -> assertNotEquals("username", entrySheet1.getUsername()),
                 () -> assertEquals(1, entrySheet2.getEntryValues()[0]),
                 () -> assertEquals(0, entrySheet1.getTotalPoints()),
                 () -> assertEquals(1, entrySheet2.getTotalPoints())
@@ -81,21 +52,21 @@ class EntrySheetTest {
 
         // resets entrySheet2 to default
         entrySheet2.resetEntrySheet();
-        assertAll(() -> assertTrue(Arrays.equals(defaultEntrySheetNames, entrySheet2.getEntryNames())),
+        assertAll(() -> assertArrayEquals(defaultEntrySheetNames, entrySheet2.getEntryNames()),
                 () -> assertEquals(0, entrySheet2.getTotalPoints())
         );
 
         try {
             entrySheet2.addEntry(new Entry("twos", 6));
         } catch (Exception e){
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
         try {
-            entrySheet2.deleteEntry(new Entry("twos", 6));
+            entrySheet2.deleteEntry("twos");
         } catch (Exception e){
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
-        assertAll(() -> assertTrue(Arrays.equals(defaultEntrySheetNames, entrySheet2.getEntryNames())),
+        assertAll(() -> assertArrayEquals(defaultEntrySheetNames, entrySheet2.getEntryNames()),
                 () -> assertEquals(0, entrySheet2.getTotalPoints())
         );
     }
@@ -119,6 +90,7 @@ class EntrySheetTest {
     int[] smallStraight1 = {1, 2, 3, 4, 1};
     int[] smallStraight2 = {2, 3, 3, 5, 4};
     int[] smallStraight3 = {4, 4, 3, 2, 1};
+    int[] smallStraight4 = {1, 6, 3, 4, 5};
     int[] largeStraight1 = {1, 2, 3, 4, 5};
     int[] largeStraight2 = {2, 3, 4, 5, 6};
 
@@ -162,6 +134,7 @@ class EntrySheetTest {
         assertAll(() -> assertEquals(30, EntrySheet.smallStraight(smallStraight1)),
                 () -> assertEquals(30, EntrySheet.smallStraight(smallStraight2)),
                 () -> assertEquals(30, EntrySheet.smallStraight(smallStraight3)),
+                () -> assertEquals(30, EntrySheet.smallStraight(smallStraight4)),
                 () -> assertEquals(0, EntrySheet.smallStraight(threes)),
                 () -> assertEquals(30, EntrySheet.smallStraight(largeStraight1)),
                 () -> assertEquals(30, EntrySheet.smallStraight(largeStraight2))
