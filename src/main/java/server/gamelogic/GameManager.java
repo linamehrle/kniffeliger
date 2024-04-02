@@ -1,5 +1,7 @@
 package server.gamelogic;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import java.util.Scanner;
 
@@ -337,6 +339,7 @@ public class GameManager {
      * dice, so it has not been saved and if it has less than 3 rolls. Saves dice automatically if it has been rolled 3 times.
      *
      * @param playersDice dice client hands to server
+     * @return new rolled dice
      */
     public static void rollDice(Dice[] playersDice) {
         // handle NullPointerException if Dice array has only values null
@@ -348,6 +351,19 @@ public class GameManager {
             if (!dice.getSavingStatus()) {
                 dice.rollSingleDice();
             }
+        }
+    }
+
+    /**
+     * Saves dice so player cannot roll them anymore.
+     *
+     * @param savedDice get dice saved by player as String
+     */
+    public static void saveDice(String savedDice){
+        String[] splitStr = savedDice.split("\\s+");
+        for (String s : splitStr){
+            int i = Integer.parseInt(s);
+            playersDice[i-1].saveDice();
         }
     }
 

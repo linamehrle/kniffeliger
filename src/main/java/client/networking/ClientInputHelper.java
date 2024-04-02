@@ -1,13 +1,14 @@
 package client.networking;
 
-import client.GameManager;
+import client.Client;
+import client.Print;
 import server.networking.CommandsServerToClient;
 
 /**
  * This class handles the input read by the ClientInput class and processes it accordingly.
  */
 public class ClientInputHelper implements Runnable {
-    GameManager gameManager;
+    Client gameManager;
     String message;
     Pong pong;
     ClientOutput clientOutput;
@@ -17,7 +18,7 @@ public class ClientInputHelper implements Runnable {
      * @param gameManager
      * @param message the input that was read by the ClientInput coming from the server
      */
-    public ClientInputHelper(GameManager gameManager, String message) {
+    public ClientInputHelper(Client gameManager, String message) {
         this.gameManager = gameManager;
         this.message = message;
         this.pong = gameManager.getPong();
@@ -49,7 +50,11 @@ public class ClientInputHelper implements Runnable {
             case PING -> clientOutput.send(CommandsClientToServer.PONG, input[1]);
             case PONG -> pong.updatePong(input[1]);
             case CHAT -> System.out.println(input[1]);
-            case BRCT-> System.out.println("Alfred: " + input[1]);
+            case BRCT -> System.out.println("Alfred: " + input[1]);
+            case LOLI -> Print.printLobbies(input[1]);
+            case DICE -> System.out.println("Your dice are: " + input[1]);
+            case SHES -> Print.printEntrySheet(input[1]);
+            case SHAC -> Print.printActions(input[1]);
             default -> System.out.println("unknown command received from server " + message);
         }
 

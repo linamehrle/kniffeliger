@@ -2,6 +2,8 @@ package server;
 
 import java.net.Socket;
 import java.util.ArrayList;
+
+import server.gamelogic.Dice;
 import server.networking.ClientThread;
 import server.networking.CommandsServerToClient;
 import server.networking.Communication;
@@ -18,10 +20,13 @@ public class Player {
     private static int counter = 0;
     private int id;
     private String username;
+
+    private Dice[] playersDice;
     private ClientThread playerThreadManager;
     private ArrayList<Player> playerList;
+    private Lobby lobby;
 
-    //potenziell felder für lobbyzugehörigkeit, aktivität etc?
+    //potenziell felder für aktivität etc?
 
     /**
      * The constructor for the Player class. It starts a new ClientThread per Player.
@@ -33,6 +38,7 @@ public class Player {
         this.id = counter;
         this.username = "user_" + id;
         this.playerList = playerList;
+        playersDice = new Dice[]{new Dice(), new Dice(), new Dice(), new Dice(), new Dice()};
         playerThreadManager = new ClientThread(socket, this);
         Thread playerThread = new Thread(playerThreadManager);
         playerThread.start();
@@ -86,6 +92,29 @@ public class Player {
     }
 
     /**
+     * Used by the player to leave the lobby they are in
+     */
+    public void leaveLobby() {
+        lobby.leaveLobby(this);
+    }
+
+    /**
+     * Used by the player to enter a lobby by giving its name. The method also checks if a lobby with the given name
+     * exists.
+     * @param name
+     */
+    public void enterLobby(String name) {
+        if(ListManager.lobbyExists(name)) {
+            Lobby lobbyByName = ListManager.getLobbyByName(name);
+            lobbyByName.enterLobby(this);
+        } else {
+            playerThreadManager.getServerOutput().send(CommandsServerToClient.BRCT, "There is no lobby with this name");
+        }
+    }
+
+    //TODO remove player from lobby when disconnecting? how to handle possible reconnect?
+
+    /**
      * Getter for the username.
      * @return
      */
@@ -115,5 +144,25 @@ public class Player {
      */
     public ClientThread getPlayerThreadManager() {
         return playerThreadManager;
+    }
+
+    public Dice[] getPlayersDice() {
+        return playersDice;
+    }
+
+    /**
+     * Getter for the lobby
+     * @return
+     */
+    public Lobby getLobby() {
+        return lobby;
+    }
+
+    /**
+     * Setter for the lobby
+     * @param lobby
+     */
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
     }
 }

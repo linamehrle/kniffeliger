@@ -14,7 +14,7 @@ import java.net.Socket;
  * The constructor starts all necessary threads and prints a welcome message in the console for the user.
  * The class also contains a disconnect method which closes all threads when the client disconnects.
  */
-public class GameManager {
+public class Client {
 
     private Socket socket;
     private ConsoleInput consoleInput;
@@ -29,7 +29,7 @@ public class GameManager {
      * @param hostName
      * @param port
      */
-    public GameManager(String hostName, int port, String username) {
+    public Client(String hostName, int port, String username) {
 
         //TODO handle username given as input parameter
 
@@ -71,13 +71,26 @@ public class GameManager {
                 "\\changeUsername <new username> to change your username\n" +
                 "\\chat <message> to send a chat message to all other players\n" +
                 "\\whisper <username> <message> to send a chat to only one other player\n" +
+                "\\newLobby <name> to create a new lobby with the given name\n" +
+                "\\showLobbies to get a list of all existing lobbies\n" +
+                "\\enterLobby <name> to enter a lobby of a given name\n" +
+                "\\start to start a game in a lobby\n" +
+                "\\roll to roll the dice\n" +
+                "\\save <numbers of the dices> to save dices before re rolling\n" +
+                "\\enterCombination <name> to enter the dice in the given entry of the entry sheet\n" +
+                "\\showEntrySheet or \\showEntrySheet <name> to see you own or another players entry sheet\n" +
+                "\\showActions to see your special actions\n" +
+                "\\playAction <name> to play a special action\n" +
                 "\\quit to leave the game\n" +
                 "======================================================================\n";
         System.out.println(welcomeText);
 
-        String systemUsername = System.getenv("USERNAME");
-        clientOutput.send(CommandsClientToServer.CHNA, systemUsername);
-
+        if (username.equals("default")) {
+            String systemUsername = System.getProperty("user.name");
+            clientOutput.send(CommandsClientToServer.CHNA, systemUsername);
+        } else {
+            clientOutput.send(CommandsClientToServer.CHNA, username);
+        }
         // start game
         this.start();
     }
