@@ -318,3 +318,25 @@ Until next time!
 * that is Swiss German for "chaos"
 
 ########################################################################################################################
+
+TUE, 2.4.24 (Team meeting)
+
+Dear Diary
+
+Today was big meeting day and 'omagawd!!', it was the first meeting where we were all in person here! Lina kind of was
+the sexy, bad cop today and warned Dominique not to be late again.
+
+Lina continued with a proposition for milestone 5 which we loved! (This is secret and surprise hehe :).)
+Riccardo https://www.youtube.com/watch?v=vCadcBR95oU the logger and showed us how to use it.
+
+Milestone 3:
+- Anisja: 1. get a baby with Lina, 2. cheat code: roll sqrt2 to jump to last round, 3. write manual, 4. gantt
+- Dominique: 1. finish chat GUI with javaFx and scene builder
+- Lina: 1. get a baby with Anisja, 2. adjustments networking, 3. presentation, 4. GUI lobbies
+- Riccardo: 1. he https://www.youtube.com/watch?v=vCadcBR95oU the logger, 2. update QA concept
+
+We gotta work now, byeeeee.
+
+Until next time!
+
+########################################################################################################################
