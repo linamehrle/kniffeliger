@@ -355,19 +355,6 @@ public class GameManager {
     }
 
     /**
-     * Saves dice so player cannot roll them anymore.
-     *
-     * @param savedDice get dice saved by player as String
-     */
-    public static void saveDice(String savedDice){
-        String[] splitStr = savedDice.split("\\s+");
-        for (String s : splitStr){
-            int i = Integer.parseInt(s);
-            playersDice[i-1].saveDice();
-        }
-    }
-
-    /**
      * Rolls players dice and returns them as String, so we can print it in console.
      * This is only for playing the game in the console.
      *
