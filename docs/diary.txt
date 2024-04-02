@@ -333,7 +333,7 @@ Milestone 3:
 - Anisja: 1. get a baby with Lina, 2. cheat code: roll sqrt2 to jump to last round, 3. write manual, 4. gantt
 - Dominique: 1. finish chat GUI with javaFx and scene builder
 - Lina: 1. get a baby with Anisja, 2. adjustments networking, 3. presentation, 4. GUI lobbies
-- Riccardo: 1. he https://www.youtube.com/watch?v=vCadcBR95oU the logger, 2. update QA concept
+- Riccardo: 1. he https://www.youtube.com/watch?v=vCadcBR95oU the logger, 2. update QA concept, 3. game window GUI
 
 We gotta work now, byeeeee.
 
