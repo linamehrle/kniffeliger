@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="filename">./logs</Property>
+    </Properties>
+    <Appenders>
+        <RollingFile name="rollingFile"
+                     fileName="${filename}/kniffeliger_log.log"
+                     filePattern="${filename}/kniffeliger_log_%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+        </RollingFile>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level - %msg%n" />
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="DEBUG_CONSOLE_LOGGER" level="debug" additivity="false">
+            <AppenderRef ref="console"/>
+        </Logger>
+        <Logger name="DEBUG_CONSOLE_AND_FILE_LOGGER" level="debug" additivity="false">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="rollingFile"/>
+        </Logger>
+
+        <Logger name="TRACE_CONSOLE_AND_FILE_LOGGER" level="trace" additivity="false">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="rollingFile"/>
+        </Logger>
+        <Logger name="TRACE_FILE_LOGGER" level="trace" additivity="false">
+            <AppenderRef ref="rollingFile"/>
+        </Logger>
+
+        <Root level="fatal">
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+</Configuration>

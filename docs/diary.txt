@@ -217,7 +217,6 @@ Until next time!
 
 ########################################################################################################################
 
-
 THU, 21.3.24 (Anisja)
 
 Dear Diary
@@ -240,5 +239,82 @@ Until next time!
 
 
 ** or not
+
+########################################################################################################################
+
+TUE, 26.3.24 (Anisja)
+
+Dear Diary
+
+Today we had the milestone 2 exercise lesson. I think it went well. Lina was very excited to show her amazing code and
+the tutors also agreed that she did a very good job. It is so cool and almost magic, that the computers can now
+communicate! Later, she went on to build the lobby and I continued on the game logic. I already have the game logic
+of "kniffel" done, but the "iger" part is missing - aka the action dice. I tested it with unit tests and a main
+method, and we played it on the console.
+
+I am very excited for the feedback on milestone 2, but honestly: nothing can go wrong with Lina as our networking pro!
+
+Until next time!
+
+########################################################################################################################
+
+WED, 27.3.24 (Anisja)
+
+Dear Diary
+
+We code, we test, we stress,
+until all tutors are impressed.
+Yahtzee alone is a little lame
+it would be a boring game.
+That's why we add an action dice,
+it will make the game really nice.
+
+Until next time!
+
+########################################################################################################################
+
+TUE, 02.4.24 (Lina)
+
+Dear Diary
+
+I decided that I just had to do an entry too for once. And I just wanted to say how good of a job Anisja is doing with you!
+The entries are always so funny and creative (you´re the best gooorl <3).
+So here is a poem just for her (sorry in advance):
+
+I think that everyone can see
+that Anisja is the real MVP
+She´s not only funny and nice
+but also gives the best advice
+Always the smartest girl in the room
+protects this project from certain doom
+She always brings a smile to the face
+and makes this world a better place
+
+On a different note: we just had another exercise lesson and talked about the next milestone requirements. Beni was
+amazing and very helpful as always! We got some good pointers for the next projects, and I am excited to continue
+working.
+Next Up: Team meeting later today to plan Milestone 3 and 4 and just get an update on what everyone has been doing in
+general.
+
+Until next time!
+
+########################################################################################################################
+
+TUE, 2.4.24 (Anisja)
+
+Dear Diary
+
+I hope you had a good Easter weekend! Mine was pretty sleepy and stressful. I had to finish the action dice
+implementation and boy was that a "gnusch"*. It really took longer than I thought. Even our police officer
+agreed that it is quite the pain to implement the starter method, and he is wayyyyyy better in maths and coding and more
+structured than I am (that is why he is the police officer...also because the gingers should definitely NOT be in
+charge even though Lina would also be smart and structured enough).
+Anywhoooo, like my students always say: 'Omagawd!!!' - I just finished fixing the bug in the delete method of my
+GameManager, so I CAN MERGE Lina's and my code today!! Woop woop! I've always wondered what a child between Lina and I
+will look like, and today we will finally find out! I bet our codes match as well as Lina and I do *wink at Lina*.
+
+Until next time!
+
+* that is Swiss German for "chaos"
 
 ########################################################################################################################
