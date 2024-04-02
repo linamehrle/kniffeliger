@@ -48,7 +48,7 @@ class GameManagerTest {
 
         // control action dice to check
         ActionDice[] controlActionDiceLina = new ActionDice[]{new ActionDice("steal"), new ActionDice("freeze"), new ActionDice("crossOut"), new ActionDice("swap")};
-        ActionDice[] controlActionDiceRiccardo = new ActionDice[]{new ActionDice("crossOut"), new ActionDice("shift"), new ActionDice("swap")};
+        ActionDice[] controlActionDiceRiccardo = new ActionDice[]{new ActionDice("shift"), new ActionDice("swap")};
 
 
 

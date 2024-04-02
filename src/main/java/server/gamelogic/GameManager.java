@@ -492,14 +492,17 @@ public class GameManager {
     public static void deleteActionDice(Player player, String deletedActionDice) {
         ActionDice[] playersActionDice = player.getActionDice();
         if (playersActionDice != null) {
+            // initiate new action dice array
             ActionDice[] newPlayersActionDice = new ActionDice[playersActionDice.length - 1];
             // variable that checks if only one entry gets deleted
             boolean deleteOnce = false;
+            // index of new array
             int newIndex = 0;
             for (int i = 0; i < playersActionDice.length; i++) {
-                if (!(playersActionDice[i].getActionName().equals(deletedActionDice)) && !deleteOnce) {
-                    newPlayersActionDice[newIndex] = playersActionDice[i];
+                if (!(playersActionDice[i].getActionName().equals(deletedActionDice)) || deleteOnce) {
+                    newPlayersActionDice[newIndex] = new ActionDice(playersActionDice[i].getActionName());
                     newIndex = newIndex + 1;
+                } else {
                     deleteOnce = true;
                 }
             }
