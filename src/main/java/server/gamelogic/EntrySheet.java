@@ -3,6 +3,7 @@ package server.gamelogic;
 import java.util.Arrays;
 import java.util.Scanner;
 
+// TODO javadoc for class
 public class EntrySheet {
     // entry sheet length
     private static final int ENTRY_SHEET_LENGTH = 14;

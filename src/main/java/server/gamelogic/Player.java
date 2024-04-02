@@ -1,5 +1,6 @@
 package server.gamelogic;
 
+// TODO javadoc for class
 public class Player {
     private String username;
     private int id;

@@ -1,5 +1,6 @@
 package server.gamelogic;
 
+// TODO javadoc for class
 public class Dice {
 
     private boolean savingStatus;

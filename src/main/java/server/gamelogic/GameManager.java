@@ -3,6 +3,7 @@ package server.gamelogic;
 
 import java.util.Scanner;
 
+// TODO javadoc for class
 public class GameManager {
     // fixed number of rounds
     private static final int ROUNDS = EntrySheet.getEntrySheetLength();
@@ -35,6 +36,9 @@ public class GameManager {
 
         // starting 14 rounds
         for (int round = 0; round < ROUNDS; round++) {
+            System.out.println("############################################");
+            System.out.println("################# ROUND " + (round + 1)  +  " ##################");
+            System.out.println("############################################");
 
             // for each round we go through a player
             for (EntrySheet currentEntrySheet : allEntrySheets) {
@@ -227,6 +231,7 @@ public class GameManager {
                 }
                 addActionDice(allDice, currentPlayer);
             }
+            System.out.println("##################### ALL ENTRY SHEETS #####################");
             for (EntrySheet e : allEntrySheets) {
                 System.out.println(e.getUsername() + "---- " + e.printEntrySheet());
             }
@@ -291,9 +296,6 @@ public class GameManager {
                             continueShiftsAndSwaps = false;
                         }
                     }
-                }
-                for (EntrySheet e : allEntrySheets) {
-                    System.out.println(e.getUsername() + "---- " + e.printEntrySheet());
                 }
             }
         }
@@ -495,12 +497,10 @@ public class GameManager {
             boolean deleteOnce = false;
             int newIndex = 0;
             for (int i = 0; i < playersActionDice.length; i++) {
-                if(playersActionDice[i] != null) {
-                    if (!(playersActionDice[i].getActionName().equals(deletedActionDice)) && !deleteOnce) {
-                        newPlayersActionDice[newIndex] = playersActionDice[i];
-                        newIndex = newIndex + 1;
-                        deleteOnce = true;
-                    }
+                if (!(playersActionDice[i].getActionName().equals(deletedActionDice)) && !deleteOnce) {
+                    newPlayersActionDice[newIndex] = playersActionDice[i];
+                    newIndex = newIndex + 1;
+                    deleteOnce = true;
                 }
             }
             player.setActionDices(newPlayersActionDice);

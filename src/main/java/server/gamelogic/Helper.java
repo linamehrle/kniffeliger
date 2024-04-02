@@ -1,5 +1,5 @@
 package server.gamelogic;
-
+// TODO javadoc for class
 public class Helper {
 
     /*

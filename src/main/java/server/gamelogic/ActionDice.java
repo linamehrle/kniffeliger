@@ -1,5 +1,6 @@
 package server.gamelogic;
 
+// TODO javadoc for class
 public class ActionDice {
 
     // name of action player can perform

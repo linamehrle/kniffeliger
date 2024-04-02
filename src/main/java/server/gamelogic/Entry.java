@@ -1,5 +1,6 @@
 package server.gamelogic;
 
+// TODO javadoc for class
 public class Entry {
 
     // keeps in track if entry is final of not
