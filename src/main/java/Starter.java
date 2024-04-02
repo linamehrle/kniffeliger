@@ -11,9 +11,9 @@ import java.util.Arrays;
 public class Starter {
     public static Logger logger;
 
-
     /**
      * The main method.
+     *
      * @param args In args we have that args[0] should be either "client" or "server".<br>
      *             The subsequent parameters are then
      *             <ul>
@@ -49,22 +49,21 @@ public class Starter {
 
             // evaluate what to start
             String toStart = args[0];
-            if(toStart.equalsIgnoreCase("client")) {
+            if (toStart.equalsIgnoreCase("client")) {
                 startClient(args, loggerSpecified);
-            } else if(toStart.equalsIgnoreCase("server")) {
+            } else if (toStart.equalsIgnoreCase("server")) {
                 startServer(args);
             } else {
                 throw new Exception("Neither client nor server was entered.");
             }
-
-        } catch(Exception e) {
+        } catch (
+                Exception e) {
             // print the correct syntax if an exception was thrown
             String errMsg = """
                     ERROR: Please consider the following syntax:
                           client <hostadress>:<port> [<yourUsername>] {logger}
                           server <port> {logger}
                     Please try again with the correct syntax.""";
-
 
             System.out.println(e.getMessage());
             System.out.println(errMsg);
@@ -73,7 +72,8 @@ public class Starter {
 
     /**
      * This method start the client and is called by the main method if "client" was entered.
-     * @param args The input data the user has provided to start the jar. Look at main for the correct syntax.
+     *
+     * @param args            The input data the user has provided to start the jar. Look at main for the correct syntax.
      * @param loggerSpecified Set true if the logger was specified
      */
     private static void startClient(String[] args, boolean loggerSpecified) throws Exception {
@@ -83,7 +83,7 @@ public class Starter {
         String[] firstInput = args[1].split(":");
 
         // assure syntax
-        if(firstInput.length != 2) {
+        if (firstInput.length != 2) {
             throw new Exception("Incorrect syntax in " + args[1]);
         }
 
@@ -94,13 +94,13 @@ public class Starter {
         String username = "default";
 
         // allow additional syntax
-        if(args.length != 2 && !loggerSpecified) {
+        if (args.length != 2 && !loggerSpecified) {
             // get username
             int startIdx = args[2].indexOf('[') + 1;
             int endIdx = args[2].indexOf(']');
 
             // assure user entered something
-            if(startIdx >= endIdx || startIdx <= 0) {
+            if (startIdx >= endIdx || startIdx <= 0) {
                 throw new Exception("Incorrect syntax in username " + args[2] +
                         ".\nPlease enter a nonempty username with correct syntax.");
             }
@@ -114,6 +114,7 @@ public class Starter {
 
     /**
      * This method start the client and is called by the main method if "server" was entered.
+     *
      * @param args The input data the user has provided to start the jar. Look at main for the correct syntax.
      */
     private static void startServer(String[] args) throws Exception {
