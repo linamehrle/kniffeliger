@@ -24,6 +24,8 @@ public class GameManager {
      */
     public static void starter(ArrayList<server.Player> playerArraysList) {
         // TODO: make a player array so it can function like coded
+        // TODO: merge Player classes
+        // TODO: use Communication class to print to client
         Player[] players = null;
         // preparing the game: initialize five dice and give every player an entry sheet
 
