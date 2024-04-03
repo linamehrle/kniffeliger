@@ -6,9 +6,6 @@ public class ActionDice {
     // name of action player can perform
     private final String actionName;
 
-    // saves action dice per default
-    private boolean savingStatus;
-
     /**
      * Constructor that builds action dice with specific name. Name is later important to play the right dice/method.
      *
