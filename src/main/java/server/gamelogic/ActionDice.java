@@ -48,7 +48,7 @@ public class ActionDice {
         Entry[] entriesVictim = entrySheetVictim.getAsArray();
         String message = entrySheetVillain.getUsername() + ", ";
         for (int i = 0; i < EntrySheet.getEntrySheetLength(); i++){
-            if (entriesVictim[i].getName().equals(stolenEntry) && !(entriesThief[i].getIsFinal())){
+            if (entriesVictim[i].getName().equals(stolenEntry) && entriesThief[i].getIsFinal()){
                 entrySheetVillain.addEntry(entriesVictim[i]);
                 entrySheetVictim.deleteEntry(stolenEntry);
                 message = "you successfully stole the entry " + entriesVictim[i].getName() + " from " + entrySheetVillain.getUsername() + ".";
