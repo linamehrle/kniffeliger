@@ -142,6 +142,15 @@ public class EntrySheet {
     public Player getPlayer() { return player;  }
 
     /**
+     * Access username which is also name of entry sheet.
+     *
+     * @return username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
      * Changes values of entries in entrySheet (Entry[]-array) to values given in the int-array.
      *
      * @param valuesEntries int-array with new values for entry sheet
@@ -170,15 +179,6 @@ public class EntrySheet {
      */
     public int getTotalPoints() {
         return totalPoints;
-    }
-
-    /**
-     * Access username which is also name of entry sheet.
-     *
-     * @return username
-     */
-    public String getUsername() {
-        return username;
     }
 
     /**
