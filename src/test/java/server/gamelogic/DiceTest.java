@@ -1,5 +1,6 @@
 package server.gamelogic;
 
+import application.server.gamelogic.Dice;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
