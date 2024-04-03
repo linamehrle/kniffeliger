@@ -96,6 +96,11 @@ public enum CommandsClientToServer {
     /**
      * Used by a player to enter their dice in a field in the entry sheet
      */
-    ENCO
+    ENCO,
+
+    /**
+     * Gives all game related information to the GameManager on the server
+     */
+    GAME
 
 }

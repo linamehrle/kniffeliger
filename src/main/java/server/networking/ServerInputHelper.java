@@ -70,17 +70,18 @@ public class ServerInputHelper implements Runnable {
             case LOCH -> Communication.sendToLobby(player, input[1]);
             case STRT -> player.getLobby().startGame(player);
             case ROLL -> serverOutput.send(CommandsServerToClient.DICE, GameManager.stringsAndRockNRoll());
-            case SAVE -> {
+            case GAME -> GameManager.getAnswer(input[1]);
+            /*case SAVE -> {
                 //GameManager.saveDice(input[1]);
                 serverOutput.send(CommandsServerToClient.BRCT, "Dice successfully saved");
-            }
+            }*/
 
             //case SHES -> serverOutput.send(CommandsServerToClient.SHES, function to get entry sheet as string by username);
             //function by anisja
             //if (input[1].equals(myOwnSheet)) { print the own sheet of the player }
 
             //case SHAC -> serverOutput.send(CommandsServerToClient.SHAC, function to get actions as one string);
-            //function by anisja or in the player?
+            //function by anisja or in the player? only in the gui?
 
             //case PLAC -> give the action to the game manager, handles by anisja
 

@@ -39,7 +39,7 @@ public class ClientOutput {
                 case "\\leaveLobby" -> sendToServer("LELO byebye");
                 case "\\start" -> sendToServer("STRT start a game");
                 case "\\showEntrySheet" -> sendToServer("SHES myOwnSheet"); //without parameter your own entry sheet is shown
-                case "\\showActions" -> sendToServer("SHAC all my actions");
+                //case "\\showActions" -> sendToServer("SHAC all my actions"); only in the gui??
                 default -> System.out.println("Invalid input entered");
 
             }
@@ -55,9 +55,10 @@ public class ClientOutput {
                 case "\\newLobby" -> sendToServer("CRLO " + input[1]);
                 case "\\enterLobby" -> sendToServer("ENLO " + input[1]);
                 case "\\lobbyChat" -> sendToServer("LOCH " + input[1]);
-                case "\\showEntrySheet" -> sendToServer("SHES " + input[1]); //entry sheet of another player
-                case "\\playAction" -> sendToServer("PLAC " + input[1]);
-                case "\\enterCombination" -> sendToServer("ENCO " + input[1]);
+                case "\\gameAction" -> sendToServer("GAME " + input[1]);
+                //case "\\showEntrySheet" -> sendToServer("SHES " + input[1]); //entry sheet of another player
+                //case "\\playAction" -> sendToServer("PLAC " + input[1]);
+                //case "\\enterCombination" -> sendToServer("ENCO " + input[1]);
                 default -> System.out.println("Invalid command or message entered: command " + input[0] + " message " + input[1]);
             }
         }
