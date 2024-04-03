@@ -18,11 +18,11 @@ public class Communication {
     }
 
     /**
-     * sends a message from the server to all connected clients but the specified player
+     * sends a message from the server to all clients in the list but the single specified player
      * @param player
      * @param message
      */
-    public static void broadcast(Player player, String message) {
+    public static void broadcast(ArrayList<Player> listOfPlayers, Player player, String message) {
         ArrayList<Player> playerList = player.getPlayerList();
         for (Player playerInList : playerList) {
             if (!playerInList.equals(player)) {
@@ -103,6 +103,15 @@ public class Communication {
                 serverOutput.send(CommandsServerToClient.CHAT, player.getUsername() + " to Lobby : " + message);
             }
         }
+    }
+
+    /**
+     * Sends the message to the specified player
+     * @param player
+     * @param message
+     */
+    public static void sendToPlayer(Player player, String message) {
+        //TODO
     }
 
     //TODO eigene funktion um vom server nur an einen player zu senden?

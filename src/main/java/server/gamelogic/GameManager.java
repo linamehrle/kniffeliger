@@ -521,4 +521,8 @@ public class GameManager {
         }
     }
 
+    public static void getAnswer(String string) {
+        //TODO
+    }
+
 }
