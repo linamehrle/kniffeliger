@@ -12,15 +12,20 @@ public class GameManager {
     // number which all the dice should be dividable by so person gets the action dice
     private static final int DIVIDABLE_BY = 1;
 
+    // initialize exactly 5 dice in a Dice-array
+    private static Dice[] allDice = new Dice[]{new Dice(), new Dice(), new Dice(), new Dice(), new Dice()};
+
+
+
     /*
      * #################################################################################################################
      * STARTER METHOD
      * #################################################################################################################
      */
-    public static void starter(Player[] players) {
+    public static void starter(ArrayList<server.Player> playerArraysList) {
+        // TODO: make a player array so it can function like coded
+        Player[] players;
         // preparing the game: initialize five dice and give every player an entry sheet
-        // initialize exactly 5 dice in a Dice-array
-        Dice[] allDice = new Dice[]{new Dice(), new Dice(), new Dice(), new Dice(), new Dice()};
 
         // initializes entry sheets for each player and saves all in an array
         EntrySheet[] allEntrySheets = new EntrySheet[players.length];
@@ -305,6 +310,7 @@ public class GameManager {
                 }
             }
         }
+        // TODO: ranking mit player.getTotalPoints()
     }
 
     /*
@@ -325,11 +331,9 @@ public class GameManager {
 
     /**
      * Resets all the five dice.
-     *
-     * @param playersDice the five dice a player can roll
      */
-    public static void resetDice(Dice[] playersDice) {
-        for (Dice dice : playersDice) {
+    public static void resetDice() {
+        for (Dice dice : allDice) {
             dice.resetDice();
         }
     }
@@ -357,13 +361,11 @@ public class GameManager {
     /**
      * Rolls players dice and returns them as String, so we can print it in console.
      * This is only for playing the game in the console.
-     *
-     * @param playersDice dice the player has and rolled
      */
-    public static String stringsAndRockNRoll(Dice[] playersDice) {
+    public static String stringsAndRockNRoll() {
         String res = "";
-        GameManager.rollDice(playersDice);
-        for (Dice dice : playersDice) {
+        GameManager.rollDice(allDice);
+        for (Dice dice : allDice) {
             res = dice.getDiceValue() + "\n";
         }
         return res;

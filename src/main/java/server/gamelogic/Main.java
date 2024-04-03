@@ -1,4 +1,4 @@
-package server.gamelogic;
+/*package server.gamelogic;
 
 import java.util.Scanner;
 
@@ -15,6 +15,7 @@ public class Main {
         GameManager.starter(allPlayer);
     }
 }
+*/
 
 /*package server.gamelogic;
 

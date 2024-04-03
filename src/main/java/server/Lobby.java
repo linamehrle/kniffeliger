@@ -85,7 +85,7 @@ public class Lobby {
             serverOutput.send(CommandsServerToClient.BRCT, "There are not enough players in this lobby to start a game");
         } else {
             status = "ongoing game";
-            GameManager.start(playersInLobby);
+            GameManager.starter(playersInLobby);
             // TODO how to handle starting a game in the GameManger?
         }
     }

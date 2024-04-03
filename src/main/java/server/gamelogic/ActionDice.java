@@ -1,6 +1,10 @@
 package server.gamelogic;
 
 // TODO javadoc for class
+
+/**
+ * Class that contains
+ */
 public class ActionDice {
 
     // name of action player can perform
