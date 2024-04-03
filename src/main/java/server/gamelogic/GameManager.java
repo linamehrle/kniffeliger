@@ -24,7 +24,7 @@ public class GameManager {
      */
     public static void starter(ArrayList<server.Player> playerArraysList) {
         // TODO: make a player array so it can function like coded
-        Player[] players;
+        Player[] players = null;
         // preparing the game: initialize five dice and give every player an entry sheet
 
         // initializes entry sheets for each player and saves all in an array
@@ -66,7 +66,7 @@ public class GameManager {
                 boolean stealingDicePlayed = false;
 
                 // resets all dice before rolling
-                resetDice(allDice);
+                resetDice();
 
                 while (!allDiceSaved && !blockingDicePlayed && !stealingDicePlayed) {
                     /*
