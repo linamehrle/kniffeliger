@@ -68,7 +68,10 @@ public class ServerInputHelper implements Runnable {
             case ENLO -> player.enterLobby(input[1]);
             case LELO -> player.leaveLobby();
             case LOCH -> Communication.sendToLobby(player, input[1]);
-            case STRT -> player.getLobby().startGame(player);
+            case STRT -> {
+                player.getLobby().startGame(player);
+                //TODO let the games begin printout for all clients in the game
+            }
             case ROLL -> serverOutput.send(CommandsServerToClient.DICE, GameManager.stringsAndRockNRoll());
             case GAME -> GameManager.getAnswer(input[1]);
             /*case SAVE -> {

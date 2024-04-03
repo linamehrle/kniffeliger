@@ -70,7 +70,7 @@ public class Player {
         //informs the players about the name changes.
         setUsername(username);
         playerThreadManager.sendToServerOutput(CommandsServerToClient.BRCT, "Your username is now " + username);
-        Communication.broadcast(this, "Player " + savedUsername + " has changed their name to " + username);
+        Communication.broadcast(this.getPlayerList(), this, "Player " + savedUsername + " has changed their name to " + username);
 
         System.out.println("Player " + savedUsername + " has changed their name to " + username);
 
