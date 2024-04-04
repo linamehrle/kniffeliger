@@ -1,6 +1,7 @@
 package server.gamelogic;
 
 import server.Player;
+import server.networking.Communication;
 
 import java.util.ArrayList;
 
@@ -16,16 +17,12 @@ public class GameManager {
     // initialize exactly 5 dice in a Dice-array
     private static Dice[] allDice = new Dice[]{new Dice(), new Dice(), new Dice(), new Dice(), new Dice()};
 
-
-
     /*
      * #################################################################################################################
      * STARTER METHOD
      * #################################################################################################################
      */
     public static void starter(ArrayList<Player> playerArraysList) {
-        // TODO: make a player array so it can function like coded
-        // TODO: merge Player classes
         // TODO: use Communication class to print to client
         Player[] players = new Player[playerArraysList.size()];
         for (int i = 0; i < playerArraysList.size(); i++){
@@ -43,6 +40,7 @@ public class GameManager {
         Scanner scanner = new Scanner(System.in);
 
         // starting the game
+        // Communication.sendToLobby();
         System.out.println("############################################");
         System.out.println("############ LET THE GAME BEGIN ############");
         System.out.println("############################################");
