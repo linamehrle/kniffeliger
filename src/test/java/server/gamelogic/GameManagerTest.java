@@ -1,8 +1,5 @@
 package server.gamelogic;
 
-import application.server.gamelogic.ActionDice;
-import application.server.gamelogic.GameManager;
-import application.server.gamelogic.Player;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

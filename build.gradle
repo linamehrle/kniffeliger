@@ -10,9 +10,9 @@ plugins {
  * set important variables/settings as sourceSet and the name of the main class.
  */
 version 0.2
-mainClassName = 'application.Starter'
+mainClassName = 'starter.Starter'
 
-group 'application'
+group 'starter'
 version '1.0-SNAPSHOT'
 
 repositories {
@@ -31,8 +31,8 @@ tasks.withType(JavaCompile) {
 }
 
 application {
-    mainModule = 'application'
-    mainClass = 'application.Starter'
+    mainModule = 'starter'
+    mainClass = 'starter.Starter'
 }
 
 javafx {
