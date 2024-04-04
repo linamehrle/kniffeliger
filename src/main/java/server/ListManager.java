@@ -90,13 +90,12 @@ public class ListManager {
      * @param name
      */
     public static void createNewLobby(Player player, String name) {
-        ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
         if (lobbyExists(name)) {
-            serverOutput.send(CommandsServerToClient.BRCT, "Name is already taken");
+            Communication.sendToPlayer(player, "Name is already taken");
         } else {
             getLobbyList().add(new Lobby(name));
             System.out.println("Player " + player.getUsername() + " created a new lobby: " + name);
-            serverOutput.send(CommandsServerToClient.BRCT, "You successfully created the lobby " + name); //to the player
+            Communication.sendToPlayer(player, "You successfully created the lobby " + name); //to the player
             Communication.broadcast(playerList, player, "Player " + player.getUsername() + " created a new lobby " + name); //to all other players
         }
     }

@@ -3,7 +3,7 @@ package server;
 import java.util.ArrayList;
 
 import server.gamelogic.GameManager;
-import server.networking.CommandsServerToClient;
+import server.networking.Communication;
 import server.networking.ServerOutput;
 
 /**
@@ -45,22 +45,20 @@ public class Lobby {
      */
     public void enterLobby(Player player) {
 
-        ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
-
         if (player.getLobby() != null) {
             if (player.getLobby().equals(this)) {
-                serverOutput.send(CommandsServerToClient.BRCT, "You are already in this lobby");
+                Communication.sendToPlayer(player, "You are already in this lobby");
                 return;
             } else {
-                serverOutput.send(CommandsServerToClient.BRCT, "You can not be in two lobbies at the same time");
+                Communication.sendToPlayer(player, "You can not be in two lobbies at the same time");
                 return;
             }
         }
 
         if (status.equals("full")) {
-            serverOutput.send(CommandsServerToClient.BRCT, "Lobby " + name + " is already full");
+            Communication.sendToPlayer(player, "Lobby " + name + " is already full");
         } else if (status.equals("ongoing game")) {
-            serverOutput.send(CommandsServerToClient.BRCT, "You can not enter a Lobby when a game is running!");
+            Communication.sendToPlayer(player, "You can not enter a Lobby when a game is running!");
         } else {
             numbOfPlayers++;
             playersInLobby.add(player);
@@ -68,7 +66,7 @@ public class Lobby {
             if (numbOfPlayers == 4) {
                 status = "full";
             }
-            serverOutput.send(CommandsServerToClient.BRCT, "You successfully entered the lobby " + name);
+            Communication.sendToPlayer(player, "You successfully entered the lobby " + name);
         }
     }
 
@@ -78,15 +76,13 @@ public class Lobby {
      * @param player
      */
     public void startGame(Player player) {
-        ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
         if (!playersInLobby.contains(player)) {
-            serverOutput.send(CommandsServerToClient.BRCT, "You are not in this lobby, please enter before starting a game!");
+            Communication.sendToPlayer(player, "You are not in this lobby, please enter before starting a game!");
         } else if (numbOfPlayers < 2) {
-            serverOutput.send(CommandsServerToClient.BRCT, "There are not enough players in this lobby to start a game");
+            Communication.sendToPlayer(player, "There are not enough players in this lobby to start a game");
         } else {
             status = "ongoing game";
             GameManager.starter(playersInLobby);
-            // TODO how to handle starting a game in the GameManger?
         }
     }
 
@@ -98,7 +94,7 @@ public class Lobby {
         ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
 
         if(!player.getLobby().equals(this)) {
-            serverOutput.send(CommandsServerToClient.BRCT, "You are not in this lobby");
+            Communication.sendToPlayer(player, "You are not in this lobby");
             return;
         }
 
@@ -106,7 +102,7 @@ public class Lobby {
             playersInLobby.remove(player);
             numbOfPlayers--;
             player.setLobby(null);
-            serverOutput.send(CommandsServerToClient.BRCT, "You successfully left the lobby " + name);
+            Communication.sendToPlayer(player, "You successfully left the lobby " + name);
             if (status.equals("full")) {
                 status = "open";
             }
@@ -115,6 +111,14 @@ public class Lobby {
     }
 
     //TODO should you be able to rename a lobby?
+
+    public void gameEnded() {
+        if(playersInLobby.size() == 4) {
+            status = "full";
+        } else {
+            status = "open";
+        }
+    }
 
     /**
      * Getter for the list of players that are in the lobby
