@@ -2,6 +2,7 @@ package server.gamelogic;
 
 import java.util.Arrays;
 import java.util.Scanner;
+import server.Player;
 
 // TODO javadoc for class
 public class EntrySheet {
@@ -10,6 +11,24 @@ public class EntrySheet {
 
     // value with which every Entry starts with
     private static final int DEFAULT_VALUE = 0;
+
+    // default entry sheet as Entry-array
+    private static Entry defaultOnes = new Entry("ones", DEFAULT_VALUE);
+    private static Entry defaultTwos = new Entry("twos", DEFAULT_VALUE);
+    private static Entry defaultThrees = new Entry("threes", DEFAULT_VALUE);
+    private static Entry defaultFours = new Entry("fours", DEFAULT_VALUE);
+    private static Entry defaultFives = new Entry("fives", DEFAULT_VALUE);
+    private static Entry defaultSixes = new Entry("sixes", DEFAULT_VALUE);
+    private static Entry defaultThreeOfAKind = new Entry("threeOfAKind", DEFAULT_VALUE);
+    private static Entry defaultFourOfAKind = new Entry("fourOfAKind", DEFAULT_VALUE);
+    private static Entry defaultFullHouse = new Entry("fullHouse", DEFAULT_VALUE);
+    private static Entry defaultSmallStraight = new Entry("smallStraight", DEFAULT_VALUE);
+    private static Entry defaultLargeStraight = new Entry("largeStraight", DEFAULT_VALUE);
+    private static Entry defaultKniffeliger = new Entry("kniffeliger", DEFAULT_VALUE);
+    private static Entry defaultChance = new Entry("chance", DEFAULT_VALUE);
+    private static Entry defaultPi = new Entry("pi", DEFAULT_VALUE);
+    private static Entry[] defaultEntrySheet = new Entry[]{defaultOnes, defaultTwos, defaultThrees, defaultFours, defaultFives, defaultSixes, defaultThreeOfAKind, defaultFourOfAKind, defaultFullHouse, defaultSmallStraight, defaultLargeStraight, defaultKniffeliger, defaultChance, defaultPi};
+
 
     // player that is associated with entry sheet
     private Player player;
@@ -39,6 +58,7 @@ public class EntrySheet {
     // entry sheet as an Entry-array
     private Entry[] entrySheet = new Entry[]{ones, twos, threes, fours, fives, sixes, threeOfAKind, fourOfAKind, fullHouse, smallStraight, largeStraight, kniffeliger, chance, pi};
 
+
     /**
      * Constructor that builds new entry sheet with unique player (that has unique username and id) which is handed to
      * it as a parameter.
@@ -52,7 +72,7 @@ public class EntrySheet {
 
     /*
      * ##################################################################################################################
-     * METHODS THAT HANDLE NEW ENTRIES
+     * METHODS THAT HANDLE THE ENTRY SHEET AND NEW ENTRIES
      * ##################################################################################################################
      */
 
@@ -63,6 +83,15 @@ public class EntrySheet {
      */
     public Entry[] getAsArray() {
         return entrySheet;
+    }
+
+    /**
+     * Access a default entry sheet to loop through and check parameters.
+     *
+     * @return default entry sheet with all entry names and default value 0 for all entries
+     */
+    public static Entry[] getDefaultEntrySheet(){
+        return defaultEntrySheet;
     }
 
     /**
@@ -103,13 +132,12 @@ public class EntrySheet {
      * @return entry sheet associated with playerName
      */
     public static EntrySheet getEntrySheetByName(EntrySheet[] allEntrySheets, String playerName){
-        EntrySheet playersEntrySheet = new EntrySheet(new Player("default player", 001));
         for(EntrySheet e : allEntrySheets){
             if (e.getUsername().equals(playerName)){
-                playersEntrySheet = e;
+                return e;
             }
         }
-        return playersEntrySheet;
+        return null;
     }
 
     /**

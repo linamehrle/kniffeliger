@@ -3,7 +3,7 @@ package server;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import server.gamelogic.Dice;
+import server.gamelogic.ActionDice;
 import server.networking.ClientThread;
 import server.networking.CommandsServerToClient;
 import server.networking.Communication;
@@ -20,8 +20,7 @@ public class Player {
     private static int counter = 0;
     private int id;
     private String username;
-
-    private Dice[] playersDice;
+    private ActionDice[] actionDice;
     private ClientThread playerThreadManager;
     private ArrayList<Player> playerList;
     private Lobby lobby;
@@ -38,7 +37,6 @@ public class Player {
         this.id = counter;
         this.username = "user_" + id;
         this.playerList = playerList;
-        playersDice = new Dice[]{new Dice(), new Dice(), new Dice(), new Dice(), new Dice()};
         playerThreadManager = new ClientThread(socket, this);
         Thread playerThread = new Thread(playerThreadManager);
         playerThread.start();
@@ -131,6 +129,24 @@ public class Player {
     }
 
     /**
+     * Get the action dice of player.
+     *
+     * @return all action dice of player saved in array.
+     */
+    public ActionDice[] getActionDice() {
+        return actionDice;
+    }
+
+    /**
+     * Set a new set of action dice.
+     *
+     * @param newActionDice new array of action dice a player can use.
+     */
+    public void setActionDices(ActionDice[] newActionDice) {
+        actionDice = newActionDice;
+    }
+
+    /**
      * Getter for the player list which is given by the server on construction.
      * @return
      */
@@ -144,10 +160,6 @@ public class Player {
      */
     public ClientThread getPlayerThreadManager() {
         return playerThreadManager;
-    }
-
-    public Dice[] getPlayersDice() {
-        return playersDice;
     }
 
     /**

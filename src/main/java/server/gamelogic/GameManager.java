@@ -1,7 +1,9 @@
 package server.gamelogic;
 
+import server.Player;
+import server.networking.Communication;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import java.util.Scanner;
 
@@ -15,16 +17,17 @@ public class GameManager {
     // initialize exactly 5 dice in a Dice-array
     private static Dice[] allDice = new Dice[]{new Dice(), new Dice(), new Dice(), new Dice(), new Dice()};
 
-
-
     /*
      * #################################################################################################################
      * STARTER METHOD
      * #################################################################################################################
      */
-    public static void starter(ArrayList<server.Player> playerArraysList) {
-        // TODO: make a player array so it can function like coded
-        Player[] players = null;
+    public static void starter(ArrayList<Player> playerArraysList) {
+        // TODO: use Communication class to print to client
+        Player[] players = new Player[playerArraysList.size()];
+        for (int i = 0; i < playerArraysList.size(); i++){
+            players[i] = playerArraysList.get(i);
+        }
         // preparing the game: initialize five dice and give every player an entry sheet
 
         // initializes entry sheets for each player and saves all in an array
@@ -37,9 +40,12 @@ public class GameManager {
         Scanner scanner = new Scanner(System.in);
 
         // starting the game
+        // Communication.sendToLobby();
         System.out.println("############################################");
         System.out.println("############ LET THE GAME BEGIN ############");
         System.out.println("############################################");
+
+
 
         // starting 14 rounds
         for (int round = 0; round < ROUNDS; round++) {

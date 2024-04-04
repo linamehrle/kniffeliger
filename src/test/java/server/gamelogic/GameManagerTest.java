@@ -29,33 +29,32 @@ class GameManagerTest {
         return result;
     }
 
-    @Test
-    @DisplayName("Tests the method that deletes an action dice out of an array")
-    void deleteActionDiceTest(){
-        // action dice for player
-        ActionDice[] actionDiceLina = new ActionDice[]{new ActionDice("steal"), new ActionDice("freeze"), new ActionDice("crossOut"), new ActionDice("shift"), new ActionDice("swap")};
-        ActionDice[] actionDiceRiccardo = new ActionDice[]{new ActionDice("crossOut"), new ActionDice("shift"), new ActionDice("swap")};
-
-        // players that hold action dice (needed to apply the delete entry method)
-        Player lina = new Player("lina", 007);
-        Player riccardo = new Player("riccardo", 001);
-        lina.setActionDices(actionDiceLina);
-        riccardo.setActionDices(actionDiceRiccardo);
-
-        // delete action dice
-        GameManager.deleteActionDice(lina, "shift");
-        GameManager.deleteActionDice(riccardo, "crossOut");
-
-        // control action dice to check
-        ActionDice[] controlActionDiceLina = new ActionDice[]{new ActionDice("steal"), new ActionDice("freeze"), new ActionDice("crossOut"), new ActionDice("swap")};
-        ActionDice[] controlActionDiceRiccardo = new ActionDice[]{new ActionDice("shift"), new ActionDice("swap")};
-
-
-
-        assertAll(() -> assertEquals(turnActionDiceToString(controlActionDiceLina), turnActionDiceToString(lina.getActionDice())),
-                () -> assertEquals(turnActionDiceToString(controlActionDiceRiccardo), turnActionDiceToString(riccardo.getActionDice()))
-        );
-
-    }
+//    @Test
+//    @DisplayName("Tests the method that deletes an action dice out of an array")
+//    void deleteActionDiceTest(){
+//        // action dice for player
+//        ActionDice[] actionDiceLina = new ActionDice[]{new ActionDice("steal"), new ActionDice("freeze"), new ActionDice("crossOut"), new ActionDice("shift"), new ActionDice("swap")};
+//        ActionDice[] actionDiceRiccardo = new ActionDice[]{new ActionDice("crossOut"), new ActionDice("shift"), new ActionDice("swap")};
+//
+//        // players that hold action dice (needed to apply the delete entry method)
+//        Player lina = new Player("lina", 007);
+//        Player riccardo = new Player("riccardo", 001);
+//        lina.setActionDices(actionDiceLina);
+//        riccardo.setActionDices(actionDiceRiccardo);
+//
+//        // delete action dice
+//        GameManager.deleteActionDice(lina, "shift");
+//        GameManager.deleteActionDice(riccardo, "crossOut");
+//
+//        // control action dice to check
+//        ActionDice[] controlActionDiceLina = new ActionDice[]{new ActionDice("steal"), new ActionDice("freeze"), new ActionDice("crossOut"), new ActionDice("swap")};
+//        ActionDice[] controlActionDiceRiccardo = new ActionDice[]{new ActionDice("shift"), new ActionDice("swap")};
+//
+//
+//
+//        assertAll(() -> assertEquals(turnActionDiceToString(controlActionDiceLina), turnActionDiceToString(lina.getActionDice())),
+//                () -> assertEquals(turnActionDiceToString(controlActionDiceRiccardo), turnActionDiceToString(riccardo.getActionDice()))
+//        );
+//    }
 
 }

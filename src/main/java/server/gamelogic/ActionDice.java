@@ -1,4 +1,5 @@
 package server.gamelogic;
+import server.Player;
 
 // TODO javadoc for class
 

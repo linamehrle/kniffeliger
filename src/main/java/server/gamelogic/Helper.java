@@ -1,4 +1,6 @@
 package server.gamelogic;
+
+import server.Player;
 // TODO javadoc for class
 public class Helper {
 
@@ -34,8 +36,8 @@ public class Helper {
     public static boolean checkEntryName (String entryName){
         boolean entryNameChecker = false;
         // default entry sheet that is only used to check the entry names
-        EntrySheet entrySheet = new EntrySheet(new Player("Default Dan", 0));
-        for (Entry e : entrySheet.getAsArray()){
+        Entry[] defaultEntrySheet = EntrySheet.getDefaultEntrySheet();
+        for (Entry e : defaultEntrySheet){
             if (e.getName().equals(entryName)){
                 entryNameChecker = true;
             }
@@ -83,12 +85,5 @@ public class Helper {
         }
         return playersEntrySheet;
     }
-
-    /*
-     * #################################################################################################################
-     * HELPER METHODS FOR STARTER METHOD
-     * #################################################################################################################
-     */
-
 
 }
