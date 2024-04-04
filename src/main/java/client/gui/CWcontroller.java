@@ -16,11 +16,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 
 import java.io.IOException;
@@ -59,8 +62,11 @@ public class CWcontroller implements Initializable {
                 sendButtonAction();
         }
     });
+        //this enables the ENTER key to fire SEND button (not good method for complex GUIs)
+        buttonSend.setDefaultButton(true);
 
     }
+
     public void sendButtonAction() {
         //read message from input text field
         String messageToSend = msgAcceptor.getText();
@@ -88,6 +94,7 @@ public class CWcontroller implements Initializable {
 
             msgAcceptor.clear();
         }
+
     }
 
     private class getClickID implements EventHandler<Event>{
