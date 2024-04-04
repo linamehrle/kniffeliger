@@ -3,7 +3,6 @@ package server.networking;
 import client.networking.CommandsClientToServer;
 import server.ListManager;
 import server.Player;
-import server.gamelogic.EntrySheet;
 import server.gamelogic.GameManager;
 
 /**
@@ -70,7 +69,7 @@ public class ServerInputHelper implements Runnable {
             case LOCH -> Communication.sendToLobby(player, input[1]);
             case STRT -> {
                 player.getLobby().startGame(player);
-                //TODO let the games begin printout for all clients in the game
+                Communication.broadcastToAll(player.getLobby().getPlayersInLobby(), "Let the games begin!");
             }
             //case ROLL -> serverOutput.send(CommandsServerToClient.DICE, GameManager.stringsAndRockNRoll());
             case GAME -> GameManager.getAnswer(input[1]);

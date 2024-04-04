@@ -23,9 +23,9 @@ public class Lobby {
      * Players can only join if the lobby is open and no game is running.
      * The variable can only be "open", "full" or "ongoing game".
      */
-    private static String status;
+    private String status;
 
-    private static ArrayList<Player> playersInLobby = new ArrayList<>();
+    private ArrayList<Player> playersInLobby = new ArrayList<>();
 
     //private boolean gameIsRunning = false; needed?
 
@@ -112,7 +112,7 @@ public class Lobby {
 
     //TODO should you be able to rename a lobby?
 
-    public static void gameEnded() {
+    public void gameEnded() {
         if(playersInLobby.size() == 4) {
             status = "full";
         } else {
