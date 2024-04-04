@@ -41,7 +41,6 @@ public class Lobby {
     public Lobby(String name) {
         this.name = name;
         this.status = "open";
-        this.gameManager =
     }
 
     /**
