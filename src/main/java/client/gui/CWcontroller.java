@@ -13,6 +13,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -34,17 +35,22 @@ import java.util.ResourceBundle;
 public class CWcontroller implements Initializable {
     @FXML
     private Button buttonSend;
+    //text field where message can be entered
     @FXML
     private TextField msgAcceptor;
     @FXML
     VBox msgDisplayAll;
+    //choice box to chose recipient
+    @FXML
+    private ChoiceBox recID;
 
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        ChatWindow.setCWcontroller(this);
+        //ChatWindow.setCWcontroller(this);
+        recID.getItems().addAll("all", "usr1", "usr2");
 
         //set up send button TODO: add exception handling
         buttonSend.setOnAction(new EventHandler<ActionEvent>() {
@@ -113,5 +119,9 @@ public class CWcontroller implements Initializable {
                 displayLocation.getChildren().add(hBox);
             }
         });
+    }
+
+    public static void sendMsgtoServer(String messageToServer){
+
     }
 }

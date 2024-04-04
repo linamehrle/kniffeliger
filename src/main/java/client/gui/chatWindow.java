@@ -29,7 +29,9 @@ public class ChatWindow extends Application {
             //this.port = Integer.parseInt(super.getParameters().getRaw().get(1));
             // Specify scene, here scene is loaded from FXML (TODO: add file not found error handling)
             URL url = new File("src/main/resources/chatwindow.fxml").toURI().toURL();
-            Parent root = FXMLLoader.load(url);//(getClass().getResource("src/main/resources/chatwindow.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/chatwindow.fxml"));
+            Parent root = (Parent)loader.load();//(getClass().getResource("src/main/resources/chatwindow.fxml"));
+            CWcontroller cwController = (CWcontroller)loader.getController();
             Scene scene = new Scene(root, 600, 300, Color.BLACK);
 
             // Add stylesheet, will be used later (TODO: add file not found error handling)
