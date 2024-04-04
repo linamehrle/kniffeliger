@@ -21,7 +21,7 @@ public class Lobby {
     /**
      * Game Manager used for lobby.
      */
-    // private GameManager gameManager;
+    private GameManager gameManager;
 
     /**
      * Indicates whether a lobby is open to new players, already full or even has an ongoing game.
@@ -41,6 +41,7 @@ public class Lobby {
     public Lobby(String name) {
         this.name = name;
         this.status = "open";
+        this.gameManager = new GameManager();
     }
 
     /**
@@ -87,7 +88,12 @@ public class Lobby {
             Communication.sendToPlayer(player, "There are not enough players in this lobby to start a game");
         } else {
             status = "ongoing game";
-            GameManager.starter(playersInLobby);
+            // sets the player in the lobby
+            gameManager.setPlayers(playersInLobby);
+
+            // starts the game
+            Thread gameThread = new Thread(gameManager);
+            gameThread.start();
         }
     }
 
@@ -147,5 +153,9 @@ public class Lobby {
      */
     public String getStatus() {
         return status;
+    }
+
+    public GameManager getGameManager() {
+        return gameManager;
     }
 }

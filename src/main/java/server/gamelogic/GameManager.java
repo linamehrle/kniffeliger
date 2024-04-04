@@ -8,24 +8,45 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 // TODO javadoc for class
-public class GameManager {
+public class GameManager implements Runnable {
     // fixed number of rounds
-    private static final int ROUNDS = EntrySheet.getEntrySheetLength();
+    private final int ROUNDS = EntrySheet.getEntrySheetLength();
     // number which all the dice should be dividable by so person gets the action dice
-    private static final int DIVIDABLE_BY = 1;
+    private final int DIVIDABLE_BY = 1;
 
     // answer of user during game
-    private static String answer;
+    private String input;
 
     // initialize exactly 5 dice in a Dice-array
-    private static Dice[] allDice = new Dice[]{new Dice(), new Dice(), new Dice(), new Dice(), new Dice()};
+    private Dice[] allDice;
+
+    // list of all player in game/lobby
+    private ArrayList<Player> playerArraysList;
+
+
+    /**
+     * Game gets constructed; dices get initiated in constructor.
+     */
+    public GameManager() {
+        allDice = new Dice[]{new Dice(), new Dice(), new Dice(), new Dice(), new Dice()};
+    }
+
+    @Override
+    // starts the game thread
+    public void run() {
+        try {
+            starter();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /*
      * #################################################################################################################
      * STARTER METHOD
      * #################################################################################################################
      */
-    public static void starter(ArrayList<Player> playerArraysList) {
+    public void starter() throws InterruptedException {
         // TODO: use Communication class to print to client
         Player[] players = new Player[playerArraysList.size()];
         for (int i = 0; i < playerArraysList.size(); i++){
@@ -38,9 +59,6 @@ public class GameManager {
         for (int i = 0; i < players.length; i++) {
             allEntrySheets[i] = new EntrySheet(players[i]);
         }
-
-        //TODO: GET DIFFERENT INPUT FROM USER WITH LINA
-        Scanner scanner = new Scanner(System.in);
 
         // starting the game and sending all players in lobby a message
         Communication.broadcastToAll(playerArraysList, "############################################## LET THE GAME BEGIN ##############################################");
@@ -106,9 +124,11 @@ public class GameManager {
                     while (allTimePlayableActions != 0) {
                         // ask player if they want to play the action dice
                         Communication.sendToPlayer(currentPlayer, "Do you want to play an all-time playable action dice (aka freeze/crossOut)? Answer with 'yes' or 'no'.");
-                        // TODO get input from Lina
-                        String answer = scanner.nextLine();
-                        if (answer.equals("yes")) {
+
+                        // wait for input
+                        wait();
+
+                        if (input.equals("yes")) {
                             boolean typo = true;
                             String nameOfAction = "";
                             String nameOfVictim = "";
@@ -118,8 +138,8 @@ public class GameManager {
                             Communication.sendToPlayer(currentPlayer, "These are your action dice: " + ActionDice.printActionDice(currentActionDice));
                             while (typo) {
                                 Communication.sendToPlayer(currentPlayer, "Choose your action with the following command:\n'freeze'/'crossOut' <username victim> <entry name> or 'none'.");
-                                // TODO get input from Lina
-                                String input = scanner.nextLine();
+
+                                wait();
                                 String[] splitStr = input.split("\\s+");
 
                                 if (splitStr.length > 1) {
@@ -151,8 +171,8 @@ public class GameManager {
 
                             // asks player if more action dice should be played
                             Communication.sendToLobby(currentPlayer, "Do you want to play more action dice? Answer with 'yes' or 'no'.");
-                            // TODO get input from Lina
-                            if (scanner.nextLine().equals("no")) {
+                            wait();
+                            if (input.equals("no")) {
                                 allTimePlayableActions = 0;
                             }
                         }
@@ -165,13 +185,12 @@ public class GameManager {
                      */
                     // handle stealing dice
                     Communication.sendToPlayer(currentPlayer, "Do you want to steal an entry or do you want to roll the dice? Answer 'want to steal' or 'want to roll'.");
-                    // TODO get input from Lina
-                    String answer = scanner.nextLine();
-                    if (answer.equals("want to steal") && existsStealingDice) {
+                    wait();
+                    if (input.equals("want to steal") && existsStealingDice) {
                         Communication.sendToPlayer(currentPlayer, "Who do you want to steal from and what entry? Answer with:<username> <entry name>.");
-                        // TODO get input from Lina
-                        String decision = scanner.nextLine();
-                        String[] splitString = decision.split("\\s+");
+
+                        wait();
+                        String[] splitString = input.split("\\s+");
 
                         // checks for typo
                         boolean typo = true;
@@ -194,13 +213,14 @@ public class GameManager {
                         stealingDicePlayed = true;
 
                         // roll dice
-                    } else if (answer.equals("want to roll")) {
+                    } else if (input.equals("want to roll")) {
                         Communication.sendToPlayer(currentPlayer, "Please roll the dice.");
                         while (!allDiceSaved) {
-                            // TODO get input from Lina
-                            if (scanner.nextLine().equals("roll")) {
+
+                            wait();
+                            if (input.equals("roll")) {
                                 // rolls all dice
-                                GameManager.rollDice(allDice);
+                                rollDice(allDice);
 
                                 // prints all rolled dice
                                 String rolledDiceAsString = "";
@@ -214,13 +234,13 @@ public class GameManager {
 
                                 // saves dice player wants to save
                                 Communication.sendToPlayer(currentPlayer, "Which dice do you want to keep? Write with a space in between the name/number of the dice you want to save.");
-                                // TODO get input from Lina
-                                String savedDice = scanner.nextLine();
+                                
+                                wait();
 
-                                if (savedDice.equals("none")){
+                                if (input.equals("none")){
                                     // do nothing
                                 } else {
-                                    String[] splitStr = savedDice.split("\\s+");
+                                    String[] splitStr = input.split("\\s+");
                                     // turn string array to int array
                                     for (String s : splitStr) {
                                         int i = Integer.parseInt(s);
@@ -250,10 +270,10 @@ public class GameManager {
                         Communication.sendToPlayer(currentPlayer, "You saved all your dice, now choose an entry: 'ones', 'twos', 'threes', 'fours', 'fives', 'sixes', 'threeOfAKind', 'fourOfAKind', 'fullHouse', 'smallStraight', 'largeStraight', 'kniffeliger', 'chance', 'pi'");
                         boolean entryChoiceValid = false;
                         while (entryChoiceValid == false) {
-                            // TODO get input from Lina
-                            String entryChoice = scanner.nextLine();
+                            wait();
+
                             try {
-                                EntrySheet.entryValidation(currentEntrySheet, entryChoice, allDice);
+                                EntrySheet.entryValidation(currentEntrySheet, input, allDice);
                                 entryChoiceValid = true;
                             } catch (Exception e) {
                                 e.getMessage();
@@ -300,27 +320,28 @@ public class GameManager {
                 } else {
                     while ((numberOfShifts > 0 || numberOfSwaps > 0) && continueShiftsAndSwaps) {
                         Communication.sendToPlayer(player, player.getUsername() + ", do you want to shift or swap entry sheets? Answer 'want to shift', 'want to swap' or 'none'.");
-                        //TODO: get input from Lina
-                        String answer = scanner.nextLine();
-                        if (answer.equals("want to shift")) {
+
+                        wait();
+
+                        if (input.equals("want to shift")) {
                             if (numberOfShifts > 0) {
                                 ActionDice.shift(allEntrySheets);
                                 deleteActionDice(player, "shift");
                                 numberOfShifts = numberOfShifts - 1;
                             }
-                        } else if (answer.equals("want to swap")) {
+                        } else if (input.equals("want to swap")) {
                             if (numberOfSwaps > 0) {
                                 Communication.sendToPlayer(player, "Who do you want to swap with? Answer with the username.");
-                                // TODO: get input from Lina
-                                String victim = scanner.nextLine();
-                                while (!Helper.checkPlayerName(players, victim)) {
-                                    Communication.sendToPlayer(player, "This is an invalid username. Please try again.");
-                                    //TODO: get input from Lina
 
-                                    victim = scanner.nextLine();
+                                wait();
+
+                                while (!Helper.checkPlayerName(players, input)) {
+                                    Communication.sendToPlayer(player, "This is an invalid username. Please try again.");
+
+                                    wait();
                                 }
                                 // gets entry sheet of victim
-                                EntrySheet victimsEntrySheet = EntrySheet.getEntrySheetByName(allEntrySheets, victim);
+                                EntrySheet victimsEntrySheet = EntrySheet.getEntrySheetByName(allEntrySheets, input);
                                 // gets entry sheet of villain
                                 EntrySheet villainsEntrySheet = EntrySheet.getEntrySheetByName(allEntrySheets, player.getUsername());
                                 // swap entry sheets
@@ -328,7 +349,7 @@ public class GameManager {
                                 deleteActionDice(player, "swap");
                                 numberOfSwaps = numberOfSwaps - 1;
                             }
-                        } else if (answer.equals("none")) {
+                        } else if (input.equals("none")) {
                             continueShiftsAndSwaps = false;
                         }
                         // stops loop of player does not want to play shifts or swaps
@@ -353,7 +374,7 @@ public class GameManager {
      *
      * @param playersDice plays all dice
      */
-    public static void printDice(Dice[] playersDice) {
+    public void printDice(Dice[] playersDice) {
         for (Dice d : playersDice) {
             System.out.println(d.getDiceValue() + " ");
         }
@@ -362,7 +383,7 @@ public class GameManager {
     /**
      * Resets all the five dice.
      */
-    public static void resetDice() {
+    public void resetDice() {
         for (Dice dice : allDice) {
             dice.resetDice();
         }
@@ -375,7 +396,7 @@ public class GameManager {
      * @param playersDice dice client hands to server
      * @return new rolled dice
      */
-    public static void rollDice(Dice[] playersDice) {
+    public void rollDice(Dice[] playersDice) {
         // handle NullPointerException if Dice array has only values null
         for (Dice dice : playersDice) {
             /* rollDice() already checks if dice has been saved or if it has been rolled 3 times already (because then dice
@@ -392,9 +413,9 @@ public class GameManager {
      * Rolls players dice and returns them as String, so we can print it in console.
      * This is only for playing the game in the console.
      */
-    public static String stringsAndRockNRoll() {
+    public String stringsAndRockNRoll() {
         String res = "";
-        GameManager.rollDice(allDice);
+        rollDice(allDice);
         for (Dice dice : allDice) {
             res = dice.getDiceValue() + "\n";
         }
@@ -413,7 +434,7 @@ public class GameManager {
      * @param playerDice final dice value of a player
      * @return true, if player gets action dice, false, if not
      */
-    public static boolean addActionDice(Dice[] playerDice, Player player) {
+    public boolean addActionDice(Dice[] playerDice, Player player) {
         int sum = 0;
         for (Dice dice : playerDice) {
             sum = sum + dice.getDiceValue();
@@ -528,7 +549,7 @@ public class GameManager {
      * @param player            player whose dice we delete
      * @param deletedActionDice dice that needs to be deleted
      */
-    public static void deleteActionDice(Player player, String deletedActionDice) {
+    public void deleteActionDice(Player player, String deletedActionDice) {
         ActionDice[] playersActionDice = player.getActionDice();
         if (playersActionDice != null) {
             // initiate new action dice array
@@ -552,12 +573,23 @@ public class GameManager {
     /**
      * Gets answer as String and saves it in answer field, so it can be accessed in starter-method.
      *
-     * @param string answer of player
+     * @param input answer of player
      */
-    public static String getAnswer(String string) {
-        answer = string;
-        return answer;
+    public synchronized void getAnswer(String input) {
+        this.input = input;
+        notify();
     }
+
+    /**
+     * Adds the connected players to the lobby to the game.
+     *
+     * @param players connected players
+     */
+    public void setPlayers(ArrayList<Player> players) {
+        playerArraysList = players;
+    }
+
+
 //
 //    public void setAnswer(String string){
 //        answer = string;

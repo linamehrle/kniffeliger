@@ -72,7 +72,7 @@ public class ServerInputHelper implements Runnable {
                 Communication.broadcastToAll(player.getLobby().getPlayersInLobby(), "Let the games begin!");
             }
             //case ROLL -> serverOutput.send(CommandsServerToClient.DICE, GameManager.stringsAndRockNRoll());
-            case GAME -> GameManager.getAnswer(input[1]);
+            case GAME -> player.getLobby().getGameManager().getAnswer(input[1]);
             /*case SAVE -> {
                 //GameManager.saveDice(input[1]);
                 serverOutput.send(CommandsServerToClient.BRCT, "Dice successfully saved");
