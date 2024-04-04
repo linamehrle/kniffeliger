@@ -17,29 +17,30 @@ import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
 import client.networking.ConsoleInput;
 import java.io.IOException;
+import client.GameManager;
 
 /**
- * This class implements the GUI for the chat functions (WHISPER, CHAT)
+ * This class implements and launches the framework of the GUI for the chat functions (WHISPER, CHAT)
+ * The actions are implemented in the class CWcontroller
  */
 public class ChatWindow extends Application {
     Stage window;
     String address;
     int port;
-    public static void main(String[] args) {
-        launch(args);
-    }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws IOException {
 
         this.window = primaryStage;
+        this.address = super.getParameters().getRaw().get(0);
+        this.port = Integer.parseInt(super.getParameters().getRaw().get(1));
 
-
-        // Specify scene
-        Parent root = FXMLLoader.load(getClass().getResource("chatwindow.fxml"));
+        // Specify scene, here scene is loaded from FXML (TODO: add file not found error handling)
+        Parent root = FXMLLoader.load(getClass().getResource("/main/resources/chatwindow.fxml"));
         Scene scene = new Scene(root, 300, 300, Color.BLACK);
-        // Add stylesheet
-        scene.getStylesheets().add("styles/chatWindow.css");
+
+        // Add stylesheet, will be used later (TODO: add file not found error handling)
+        //scene.getStylesheets().add("/main/resources/styles/chatWindow.css");
 
         // Show Window
         this.window.setTitle("Chat");
@@ -48,5 +49,9 @@ public class ChatWindow extends Application {
 
 
 
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }
