@@ -14,6 +14,9 @@ public class GameManager {
     // number which all the dice should be dividable by so person gets the action dice
     private static final int DIVIDABLE_BY = 1;
 
+    // answer of user during game
+    private static String answer;
+
     // initialize exactly 5 dice in a Dice-array
     private static Dice[] allDice = new Dice[]{new Dice(), new Dice(), new Dice(), new Dice(), new Dice()};
 
@@ -39,28 +42,31 @@ public class GameManager {
         //TODO: GET DIFFERENT INPUT FROM USER WITH LINA
         Scanner scanner = new Scanner(System.in);
 
-        // starting the game
-        // Communication.sendToLobby();
-        System.out.println("############################################");
-        System.out.println("############ LET THE GAME BEGIN ############");
-        System.out.println("############################################");
-
-
+        // starting the game and sending all players in lobby a message
+        Communication.broadcastToAll(playerArraysList, "############################################## LET THE GAME BEGIN ##############################################");
 
         // starting 14 rounds
         for (int round = 0; round < ROUNDS; round++) {
-            System.out.println("############################################");
-            System.out.println("################# ROUND " + (round + 1)  +  " ##################");
-            System.out.println("############################################");
+            Communication.broadcastToAll(playerArraysList, "################################################### ROUND " + (round + 1) + " ###################################################");
 
             // for each round we go through a player
             for (EntrySheet currentEntrySheet : allEntrySheets) {
-                System.out.println(currentEntrySheet.getUsername() + " it is your turn!");
-                System.out.println("Your action dice: " + ActionDice.printActionDice(currentEntrySheet.getPlayer().getActionDice()));
 
                 // current player of the entry sheet with its action dice
                 Player currentPlayer = currentEntrySheet.getPlayer();
                 ActionDice[] currentActionDice = currentPlayer.getActionDice();
+
+                // helper Players ArrayList to broadcast to all players but the current one
+                ArrayList<Player> helpersPlayersArrayList = new ArrayList<Player>();
+                for (Player p : playerArraysList){
+                    if (!(p.getUsername().equals(currentPlayer.getUsername()))){
+                        helpersPlayersArrayList.add(p);
+                    }
+                }
+
+                // prints whose current turn it is
+                Communication.broadcastToAll(helpersPlayersArrayList, "It is " + currentPlayer.getUsername() + " turn!");
+                Communication.sendToPlayer(currentPlayer, "It is your turn! Your action dice are/is: " + ActionDice.printActionDice(currentEntrySheet.getPlayer().getActionDice()));
 
                 // variable that checks at very end if all dice are saved
                 boolean allDiceSaved = false;
@@ -99,7 +105,8 @@ public class GameManager {
                     // if it exists an all-time playable action, then the player can choose to play it
                     while (allTimePlayableActions != 0) {
                         // ask player if they want to play the action dice
-                        System.out.println("Do you want to play an action dice? Answer with 'yes' or 'no'.");
+                        Communication.sendToPlayer(currentPlayer, "Do you want to play an all-time playable action dice (aka freeze/crossOut)? Answer with 'yes' or 'no'.");
+                        // TODO get input from Lina
                         String answer = scanner.nextLine();
                         if (answer.equals("yes")) {
                             boolean typo = true;
@@ -108,9 +115,10 @@ public class GameManager {
                             String nameOfEntry = "";
                             // if player wants to play action, then we check the input String for typos
                             // if there are none, then we split input-string and assign the values to an action, victim and an entry to variables
-                            System.out.println("These are your action dice: " + ActionDice.printActionDice(currentActionDice));
+                            Communication.sendToPlayer(currentPlayer, "These are your action dice: " + ActionDice.printActionDice(currentActionDice));
                             while (typo) {
-                                System.out.println("Choose your action with the following command:\n'freeze'/'crossOut' <username victim> <entry name> or 'none'.");
+                                Communication.sendToPlayer(currentPlayer, "Choose your action with the following command:\n'freeze'/'crossOut' <username victim> <entry name> or 'none'.");
+                                // TODO get input from Lina
                                 String input = scanner.nextLine();
                                 String[] splitStr = input.split("\\s+");
 
@@ -142,7 +150,8 @@ public class GameManager {
                             allTimePlayableActions = allTimePlayableActions - 1;
 
                             // asks player if more action dice should be played
-                            System.out.println("Do you want to play more action dice? Answer with 'yes' or 'no'.");
+                            Communication.sendToLobby(currentPlayer, "Do you want to play more action dice? Answer with 'yes' or 'no'.");
+                            // TODO get input from Lina
                             if (scanner.nextLine().equals("no")) {
                                 allTimePlayableActions = 0;
                             }
@@ -155,10 +164,12 @@ public class GameManager {
                      * #2: roll dice or use steal dice
                      */
                     // handle stealing dice
-                    System.out.println("Do you want to steal an entry or do you want to roll the dice? Answer 'want to steal' or 'want to roll'.");
+                    Communication.sendToPlayer(currentPlayer, "Do you want to steal an entry or do you want to roll the dice? Answer 'want to steal' or 'want to roll'.");
+                    // TODO get input from Lina
                     String answer = scanner.nextLine();
                     if (answer.equals("want to steal") && existsStealingDice) {
-                        System.out.println("Who do you want to steal from and what entry? Answer with:<username> <entry name>.");
+                        Communication.sendToPlayer(currentPlayer, "Who do you want to steal from and what entry? Answer with:<username> <entry name>.");
+                        // TODO get input from Lina
                         String decision = scanner.nextLine();
                         String[] splitString = decision.split("\\s+");
 
@@ -177,29 +188,33 @@ public class GameManager {
                         }
                         EntrySheet sheetOfVictim = Helper.getEntrySheetByName(allEntrySheets, nameOfVictim);
                         ActionDice.steal(currentEntrySheet, sheetOfVictim, nameOfEntry);
-                        System.out.println(currentEntrySheet.printEntrySheet());
-                        System.out.println(sheetOfVictim.printEntrySheet());
+                        Communication.sendToPlayer(currentPlayer, "You just stole " + nameOfEntry + " from " + nameOfVictim);
+                        Communication.broadcastToAll(helpersPlayersArrayList, currentPlayer.getUsername() + " just stole the entry '" + nameOfEntry + "' from " + nameOfVictim);
                         deleteActionDice(currentPlayer, "steal");
                         stealingDicePlayed = true;
 
                         // roll dice
                     } else if (answer.equals("want to roll")) {
-                        System.out.println("Please roll the dice.");
+                        Communication.sendToPlayer(currentPlayer, "Please roll the dice.");
                         while (!allDiceSaved) {
+                            // TODO get input from Lina
                             if (scanner.nextLine().equals("roll")) {
                                 // rolls all dice
                                 GameManager.rollDice(allDice);
 
                                 // prints all rolled dice
-                                System.out.println("Your dice: ");
+                                String rolledDiceAsString = "";
                                 for (int i = 0; i < allDice.length - 1; i++) {
                                     int diceNumber = i + 1;
-                                    System.out.println("Dice " + diceNumber + ": " + allDice[i].getDiceValue() + " ");
+                                    rolledDiceAsString = "Dice " + diceNumber + ": " + allDice[i].getDiceValue() + " ";
                                 }
-                                System.out.println("Dice " + 5 + ": " + allDice[4].getDiceValue());
+                                rolledDiceAsString = rolledDiceAsString + "Dice " + 5 + ": " + allDice[4].getDiceValue();
+                                Communication.sendToPlayer(currentPlayer, "Your dice: " + rolledDiceAsString);
+                                Communication.broadcastToAll(helpersPlayersArrayList, currentPlayer.getUsername() + " rolled: " + rolledDiceAsString);
 
                                 // saves dice player wants to save
-                                System.out.println("Which dice do you want to keep? Write with a space in between the name/number of the dice you want to save (for example to save dice 1, write '1').");
+                                Communication.sendToPlayer(currentPlayer, "Which dice do you want to keep? Write with a space in between the name/number of the dice you want to save.");
+                                // TODO get input from Lina
                                 String savedDice = scanner.nextLine();
 
                                 if (savedDice.equals("none")){
@@ -214,12 +229,14 @@ public class GameManager {
                                 }
 
                                 // shows player the saved dice
-                                System.out.println("You saved the dice:");
+                                String savedDiceAsString = "";
                                 for (Dice d : allDice) {
                                     if (d.getSavingStatus()) {
-                                        System.out.print(d.getDiceValue() + " ");
+                                        savedDiceAsString = savedDiceAsString + d.getDiceValue() + " ";
                                     }
                                 }
+                                Communication.sendToPlayer(currentPlayer, "You saved the dice: " + savedDiceAsString);
+                                Communication.broadcastToAll(helpersPlayersArrayList, currentPlayer.getUsername() + " saved: " + savedDiceAsString);
                                 // checks if any unsaved dice is available to roll
                                 allDiceSaved = true;
                                 for (Dice d : allDice) {
@@ -230,9 +247,10 @@ public class GameManager {
                             }
                         }
                         // choosing entry
-                        System.out.println("You saved all your dice, now choose an entry:\nones: 'ones'\ntwos: 'twos'\nthrees: 'threes'\nfours: 'fours'\nfives: 'fives'\nsixes: 'sixes'\nthree of a kind: 'threeOfAKind'\nfour of a kind: 'fourOfAKind'\nfull house: 'fullHouse'\nsmall straight: 'smallStraight'\nlarge straight: 'largeStraight'\nkniffeliger: 'kniffeliger'\nchance: 'chance'\npi: 'pi'");
+                        Communication.sendToPlayer(currentPlayer, "You saved all your dice, now choose an entry: 'ones', 'twos', 'threes', 'fours', 'fives', 'sixes', 'threeOfAKind', 'fourOfAKind', 'fullHouse', 'smallStraight', 'largeStraight', 'kniffeliger', 'chance', 'pi'");
                         boolean entryChoiceValid = false;
                         while (entryChoiceValid == false) {
+                            // TODO get input from Lina
                             String entryChoice = scanner.nextLine();
                             try {
                                 EntrySheet.entryValidation(currentEntrySheet, entryChoice, allDice);
@@ -242,22 +260,23 @@ public class GameManager {
                             }
 
                         }
-                        System.out.println("This is your entry sheet:");
-                        System.out.println(currentEntrySheet.printEntrySheet());
+                        Communication.sendToPlayer(currentPlayer, "This is your entry sheet:" + currentEntrySheet.printEntrySheet());
+                        Communication.broadcastToAll(helpersPlayersArrayList, currentPlayer.getUsername() + "'s entry sheet: " + currentEntrySheet.printEntrySheet());
                     }
                 }
                 addActionDice(allDice, currentPlayer);
             }
-            System.out.println("##################### ALL ENTRY SHEETS #####################");
+            Communication.broadcastToAll(playerArraysList, "############################################## ALL ENTRY SHEETS ##############################################");
             for (EntrySheet e : allEntrySheets) {
-                System.out.println(e.getUsername() + "---- " + e.printEntrySheet());
+                Communication.broadcastToAll(playerArraysList, e.getUsername() + "-------------------" + e.printEntrySheet());
             }
 
             /*
              * #3: Asking all player if they want to shift and/or swap entry sheets.
              */
             for (Player player : players) {
-                System.out.println(player.getUsername() + ", your action dice: " + ActionDice.printActionDice(player.getActionDice()));
+                Communication.sendToPlayer(player, player.getUsername() + ", your action dice: " + ActionDice.printActionDice(player.getActionDice()));
+
                 // check for swaps and shifts
                 int numberOfSwaps = 0;
                 int numberOfShifts = 0;
@@ -280,7 +299,8 @@ public class GameManager {
                     continueShiftsAndSwaps = false;
                 } else {
                     while ((numberOfShifts > 0 || numberOfSwaps > 0) && continueShiftsAndSwaps) {
-                        System.out.println(player.getUsername() + ", do you want to shift or swap entry sheets? Answer 'want to shift', 'want to swap' or 'none'.");
+                        Communication.sendToPlayer(player, player.getUsername() + ", do you want to shift or swap entry sheets? Answer 'want to shift', 'want to swap' or 'none'.");
+                        //TODO: get input from Lina
                         String answer = scanner.nextLine();
                         if (answer.equals("want to shift")) {
                             if (numberOfShifts > 0) {
@@ -290,10 +310,13 @@ public class GameManager {
                             }
                         } else if (answer.equals("want to swap")) {
                             if (numberOfSwaps > 0) {
-                                System.out.println("Who do you want to swap with? Answer with the username.");
+                                Communication.sendToPlayer(player, "Who do you want to swap with? Answer with the username.");
+                                // TODO: get input from Lina
                                 String victim = scanner.nextLine();
                                 while (!Helper.checkPlayerName(players, victim)) {
-                                    System.out.println("This is an invalid username. Please try again.");
+                                    Communication.sendToPlayer(player, "This is an invalid username. Please try again.");
+                                    //TODO: get input from Lina
+
                                     victim = scanner.nextLine();
                                 }
                                 // gets entry sheet of victim
@@ -317,6 +340,7 @@ public class GameManager {
             }
         }
         // TODO: ranking mit player.getTotalPoints()
+
     }
 
     /*
@@ -525,8 +549,18 @@ public class GameManager {
         }
     }
 
-    public static void getAnswer(String string) {
-        //TODO
+    /**
+     * Gets answer as String and saves it in answer field, so it can be accessed in starter-method.
+     *
+     * @param string answer of player
+     */
+    public static String getAnswer(String string) {
+        answer = string;
+        return answer;
     }
+//
+//    public void setAnswer(String string){
+//        answer = string;
+//    }
 
 }

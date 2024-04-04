@@ -19,6 +19,11 @@ public class Lobby {
     private int numbOfPlayers = 0;
 
     /**
+     * Game Manager used for lobby.
+     */
+    // private GameManager gameManager;
+
+    /**
      * Indicates whether a lobby is open to new players, already full or even has an ongoing game.
      * Players can only join if the lobby is open and no game is running.
      * The variable can only be "open", "full" or "ongoing game".
@@ -36,6 +41,7 @@ public class Lobby {
     public Lobby(String name) {
         this.name = name;
         this.status = "open";
+        this.gameManager =
     }
 
     /**
