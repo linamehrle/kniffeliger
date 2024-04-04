@@ -31,9 +31,9 @@ public class LobbyWindowController implements Initializable {
     private String selectedLobby = null;
 
     public void createLobbyAction(){
-        //TreeItem<String> test = new TreeItem<>("test");
-        //lobbyList.getRoot().getChildren().add(test);
-        ClientOutput.send(CommandsClientToServer.CRLO, "test");
+        String lobbyName = lobbyTextField.getText();
+        ClientOutput.send(CommandsClientToServer.CRLO, lobbyName);
+        createLobbyButton.setDisable(true);
     }
 
     public void enterLobbyAction() {
@@ -78,8 +78,6 @@ public class LobbyWindowController implements Initializable {
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 if(lobbyTextField.isFocused()){
                     createLobbyButton.setDisable(false);
-                } else {
-                    createLobbyButton.setDisable(true);
                 }
             }
         });
@@ -90,4 +88,8 @@ public class LobbyWindowController implements Initializable {
 
     //TODO only lobbies, not players can be selected
     //TODO button enterLobby is deactivated when no list item is selected
+    //TODO popUps when something is not done right
+    //TODO lobby only works when one already exists?
+    //TODO lobby status
+    //TODO show players in lobby
 }
