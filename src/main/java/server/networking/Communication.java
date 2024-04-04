@@ -14,7 +14,10 @@ public class Communication {
      * @param message
      */
     public static void broadcastToAll(ArrayList<Player> playerList, String message) {
-        //TODO, do we even need this?
+        for (Player playerInList : playerList) {
+            ServerOutput serverOutput = playerInList.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
+            serverOutput.send(CommandsServerToClient.BRCT, message);
+        }
     }
 
     /**
@@ -23,8 +26,7 @@ public class Communication {
      * @param message
      */
     public static void broadcast(ArrayList<Player> listOfPlayers, Player player, String message) {
-        ArrayList<Player> playerList = player.getPlayerList();
-        for (Player playerInList : playerList) {
+        for (Player playerInList : listOfPlayers) {
             if (!playerInList.equals(player)) {
                 ServerOutput serverOutput = playerInList.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
                 serverOutput.send(CommandsServerToClient.BRCT, message);
@@ -33,7 +35,17 @@ public class Communication {
     }
 
     /**
-     * sends a chat message to all other clients (later: in the same lobby?)
+     * Sends a message from the server to the specified player
+     * @param player
+     * @param message
+     */
+    public static void sendToPlayer(Player player, String message) {
+        ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
+        serverOutput.send(CommandsServerToClient.BRCT, message);
+    }
+
+    /**
+     * sends a chat message to all other clients
      * @param player the player which is sending the message
      * @param message
      */
@@ -82,7 +94,7 @@ public class Communication {
     }
 
     /**
-     * send the message to all other players in the same lobby
+     * sends a chat message to all other players in the same lobby
      * @param player the sender
      * @param message
      */
@@ -104,18 +116,5 @@ public class Communication {
             }
         }
     }
-
-    /**
-     * Sends the message to the specified player
-     * @param player
-     * @param message
-     */
-    public static void sendToPlayer(Player player, String message) {
-        //TODO
-    }
-
-    //TODO eigene funktion um vom server nur an einen player zu senden?
-
-    //TODO broadcast to lobby needed for game?
 
 }
