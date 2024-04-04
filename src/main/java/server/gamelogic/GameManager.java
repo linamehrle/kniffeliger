@@ -1,7 +1,8 @@
 package server.gamelogic;
 
+import server.Player;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import java.util.Scanner;
 
@@ -22,11 +23,14 @@ public class GameManager {
      * STARTER METHOD
      * #################################################################################################################
      */
-    public static void starter(ArrayList<server.Player> playerArraysList) {
+    public static void starter(ArrayList<Player> playerArraysList) {
         // TODO: make a player array so it can function like coded
         // TODO: merge Player classes
         // TODO: use Communication class to print to client
-        Player[] players = null;
+        Player[] players = new Player[playerArraysList.size()];
+        for (int i = 0; i < playerArraysList.size(); i++){
+            players[i] = playerArraysList.get(i);
+        }
         // preparing the game: initialize five dice and give every player an entry sheet
 
         // initializes entry sheets for each player and saves all in an array
@@ -42,6 +46,8 @@ public class GameManager {
         System.out.println("############################################");
         System.out.println("############ LET THE GAME BEGIN ############");
         System.out.println("############################################");
+
+
 
         // starting 14 rounds
         for (int round = 0; round < ROUNDS; round++) {

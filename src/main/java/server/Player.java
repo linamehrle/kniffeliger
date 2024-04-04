@@ -4,7 +4,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import server.gamelogic.ActionDice;
-import server.gamelogic.Dice;
 import server.networking.ClientThread;
 import server.networking.CommandsServerToClient;
 import server.networking.Communication;
