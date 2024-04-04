@@ -29,7 +29,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * This class handles the actions for the chatwindow GUI
+ * This class implements the controller for the chatwindow GUI
  * the names for the @FXML variables can be found in the corresponding FXML file under fx:id
  */
 public class CWcontroller implements Initializable {
@@ -49,7 +49,7 @@ public class CWcontroller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        //ChatWindow.setCWcontroller(this);
+        // will be used later to select user for whisper
         recID.getItems().addAll("all", "usr1", "usr2");
 
         //set up send button TODO: add exception handling

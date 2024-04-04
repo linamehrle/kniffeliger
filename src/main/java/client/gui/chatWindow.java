@@ -14,6 +14,7 @@ import java.net.URL;
 /**
  * This class implements and launches the framework of the GUI for the chat functions (WHISPER, CHAT)
  * The actions are implemented in the class CWcontroller
+ * the controller is specified in the FXML and an instance of the class CWcontroller is created when loading
  */
 public class ChatWindow extends Application {
     Stage window;
@@ -27,7 +28,7 @@ public class ChatWindow extends Application {
             this.window = primaryStage;
             //this.address = super.getParameters().getRaw().get(0);
             //this.port = Integer.parseInt(super.getParameters().getRaw().get(1));
-            // Specify scene, here scene is loaded from FXML (TODO: add file not found error handling)
+            // Specify scene, here scene is loaded from FXML
             URL url = new File("src/main/resources/chatwindow.fxml").toURI().toURL();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/chatwindow.fxml"));
             Parent root = (Parent)loader.load();//(getClass().getResource("src/main/resources/chatwindow.fxml"));
