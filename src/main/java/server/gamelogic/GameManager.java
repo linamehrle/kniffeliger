@@ -137,7 +137,7 @@ public class GameManager implements Runnable {
                             // if there are none, then we split input-string and assign the values to an action, victim and an entry to variables
                             Communication.sendToPlayer(currentPlayer, "These are your action dice: " + ActionDice.printActionDice(currentActionDice));
                             while (typo) {
-                                Communication.sendToPlayer(currentPlayer, "Choose your action with the following command:\n'freeze'/'crossOut' <username victim> <entry name> or 'none'.");
+                                Communication.sendToPlayer(currentPlayer, "Choose your action with the following command: 'freeze'/'crossOut' <username victim> <entry name> or 'none'.");
 
                                 wait();
                                 String[] splitStr = input.split("\\s+");
@@ -284,7 +284,11 @@ public class GameManager implements Runnable {
                         Communication.broadcastToAll(helpersPlayersArrayList, currentPlayer.getUsername() + "'s entry sheet: " + currentEntrySheet.printEntrySheet());
                     }
                 }
+                // hand player the action dice
                 addActionDice(allDice, currentPlayer);
+                if (addActionDice(allDice, currentPlayer)) {
+                    Communication.sendToPlayer(currentPlayer, "Your action dice is/are now: " + ActionDice.printActionDice(currentEntrySheet.getPlayer().getActionDice()));
+                }
             }
             Communication.broadcastToAll(playerArraysList, "############################################## ALL ENTRY SHEETS ##############################################");
             for (EntrySheet e : allEntrySheets) {
