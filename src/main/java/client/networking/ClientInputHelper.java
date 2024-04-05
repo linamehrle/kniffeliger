@@ -68,6 +68,10 @@ public class ClientInputHelper implements Runnable {
                 System.out.println("Lobby was send to the gui");
             }
             case ENLO -> Main.addNewPlayer(input[1]);
+            case LELO -> {
+                Main.removePlayer(input[1]);
+                System.out.println("LELO received with message: " + input[1]);
+            }
             default -> System.out.println("unknown command received from server " + message);
         }
 

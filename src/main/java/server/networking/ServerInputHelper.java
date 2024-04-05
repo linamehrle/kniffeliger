@@ -74,7 +74,11 @@ public class ServerInputHelper implements Runnable {
                 Communication.broadcastToAll(CommandsServerToClient.ENLO, input[1] + " (" +
                         ListManager.getLobbyByName(input[1]).getStatus() + "):" + player.getUsername()); //make this pretty?
             }
-            case LELO -> player.leaveLobby(); //update list in gui
+            case LELO -> {
+                Communication.broadcastToAll(CommandsServerToClient.LELO,
+                        player.getLobby().getName() + " ("+ player.getLobby().getStatus() + "):" + player.getUsername());
+                player.leaveLobby();
+            }
             case LOCH -> Communication.sendToLobby(player, input[1]);
             case STRT -> player.getLobby().startGame(player);
             //case ROLL -> serverOutput.send(CommandsServerToClient.DICE, GameManager.stringsAndRockNRoll()); method does not work

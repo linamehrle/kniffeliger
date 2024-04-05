@@ -42,6 +42,7 @@ public class LobbyWindowController implements Initializable {
     public void enterLobbyAction() {
         String[] splitLobbyAndStatus = selectedLobby.split(" ");
         ClientOutput.send(CommandsClientToServer.ENLO, splitLobbyAndStatus[0]);
+        enterLobbyButton.setDisable(true); //TODO deactivate button also when list is not selected?
     }
 
     public void leaveGame() {
@@ -102,6 +103,26 @@ public class LobbyWindowController implements Initializable {
         }
     }
 
+    public void removePlayerFromList(String lobbyAndPlayerName) {
+        String[] splitInLobbyAndPlayer = lobbyAndPlayerName.split(":");
+        System.out.println("lobby: " + splitInLobbyAndPlayer[0]);
+
+        for (TreeItem<String> treeItem : lobbyList.getRoot().getChildren()) {
+            System.out.println("Tree item found, " + treeItem.getValue());
+            if(treeItem.getValue().equals(splitInLobbyAndPlayer[0])) {
+                System.out.println("lobby found");
+                for (TreeItem<String> playerInLobby : treeItem.getChildren()) {
+                    if (playerInLobby.getValue().equals(splitInLobbyAndPlayer[1])) {
+                        System.out.println("player found");
+                        playerInLobby.getParent().getChildren().remove(playerInLobby);
+                        return;
+                    }
+                }
+            }
+        }
+
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -127,7 +148,6 @@ public class LobbyWindowController implements Initializable {
     }
 
     //TODO only lobbies, not players can be selected
-    //TODO button enterLobby is deactivated when no list item is selected
     //TODO popUps when something is not done right
     //TODO show players in lobby
 }

@@ -41,6 +41,11 @@ public class Main extends Application {
         lobbyWindowController.initializeLobbyList(lobbies);
     }
 
+    public static void removePlayer(String lobbyAndPlayerName) {
+        lobbyWindowController.removePlayerFromList(lobbyAndPlayerName);
+        System.out.println("We are in main now");
+    }
+
 
     public static void setLobbyWindowController(LobbyWindowController lobbyWindowController) {
         Main.lobbyWindowController = lobbyWindowController;
