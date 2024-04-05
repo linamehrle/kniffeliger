@@ -36,6 +36,7 @@ public class LobbyWindowController implements Initializable {
         String lobbyName = lobbyTextField.getText();
         ClientOutput.send(CommandsClientToServer.CRLO, lobbyName);
         createLobbyButton.setDisable(true);
+        lobbyTextField.clear();
     }
 
     public void enterLobbyAction() {
