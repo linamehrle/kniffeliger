@@ -40,7 +40,8 @@ public class LobbyWindowController implements Initializable {
     }
 
     public void enterLobbyAction() {
-        ClientOutput.send(CommandsClientToServer.ENLO, selectedLobby);
+        String[] splitLobbyAndStatus = selectedLobby.split(" ");
+        ClientOutput.send(CommandsClientToServer.ENLO, splitLobbyAndStatus[0]);
     }
 
     public void leaveGame() {
@@ -50,7 +51,7 @@ public class LobbyWindowController implements Initializable {
     public void selectLobby() {
         TreeItem<String> currentItem = lobbyList.getSelectionModel().getSelectedItem();
 
-        if (!currentItem.equals(null)) {
+        if (currentItem != null) {
             selectedLobby = currentItem.getValue();
         }
 
