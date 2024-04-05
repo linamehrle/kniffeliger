@@ -2,12 +2,18 @@ package client.gui;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TreeItem;
 
 import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
@@ -47,15 +53,26 @@ public class GameWindowController implements Initializable {
     private CheckBox die5Checkbox;
 
     @FXML
-    private TableView<String> entrySheet;
+    private ListView<String> entrySheet;
     @FXML
-    private TableView<String> dice;
+    private ListView<String> dice;
+
+    private static ObservableList<String> entryList = FXCollections.observableArrayList();
+    private static ObservableList<String> diceList = FXCollections.observableArrayList();
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        //hier einträge im entry sheet
+        //einträge im entry sheet
+        entryList.addAll("ones", "twos", "threes", "fours", "fives", "sixes",
+                "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight", "largeStraight",
+                "kniffeliger", "chance", "pi");
+        entrySheet.setItems(entryList);
+
+        //würfel am anfang auf null
+        diceList.addAll("0", "0", "0", "0", "0");
+        dice.setItems(diceList);
 
         entrySheet.setDisable(true);
         dice.setDisable(true);
