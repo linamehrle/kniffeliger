@@ -103,7 +103,6 @@ task "build-cs108"(type: GradleBuild) {
     tasks = ['Jar']
 }
 
-/*
 // The following block adds both compile and runtime dependencies to the jar
 jar {
     manifest {
@@ -117,7 +116,4 @@ jar {
     }
     duplicatesStrategy(DuplicatesStrategy.INCLUDE)
 }
-
-
- */
 

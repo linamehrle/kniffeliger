@@ -1,4 +1,4 @@
-module application.client.gui {
+module client.gui {
     requires javafx.controls;
     requires javafx.fxml;
 
