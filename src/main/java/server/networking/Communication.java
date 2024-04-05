@@ -1,6 +1,8 @@
 package server.networking;
 
 import java.util.ArrayList;
+
+import server.ListManager;
 import server.Lobby;
 import server.Player;
 
@@ -13,8 +15,12 @@ public class Communication {
      * sends a message from the server to all connected clients
      * @param message
      */
-    public static void broadcastToAll(ArrayList<Player> playerList, String message) {
-        //TODO, do we even need this?
+    public static void broadcastToAll(CommandsServerToClient cmd, String message) {
+        ArrayList<Player> playerList = ListManager.getPlayerList();
+        for (Player player : playerList) {
+            ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
+            serverOutput.send(cmd, message);
+        }
     }
 
     /**
@@ -103,12 +109,6 @@ public class Communication {
                 serverOutput.send(CommandsServerToClient.CHAT, player.getUsername() + " to Lobby : " + message);
             }
         }
-    }
-
-    //TODO only one method send to all with the command??
-    public static void sendToGui(CommandsServerToClient cmd, String message, Player player) {
-        ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
-        serverOutput.send(cmd, message);
     }
 
     //TODO eigene funktion um vom server nur an einen player zu senden?

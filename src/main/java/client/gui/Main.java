@@ -33,6 +33,14 @@ public class Main extends Application {
         lobbyWindowController.addLobby(name);
     }
 
+    public static void addNewPlayer(String lobbyAndPlayer) {
+        lobbyWindowController.addPlayerToLobby(lobbyAndPlayer);
+    }
+
+    public static void lobbyList(String lobbies) {
+        lobbyWindowController.initializeLobbyList(lobbies);
+    }
+
 
     public static void setLobbyWindowController(LobbyWindowController lobbyWindowController) {
         Main.lobbyWindowController = lobbyWindowController;

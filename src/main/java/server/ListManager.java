@@ -59,14 +59,19 @@ public class ListManager {
     }
 
     /**
-     * Returns a string with all existing lobbies and their current status in the form of
-     * "lobby(status) lobby(status) ..."
+     * Returns a string with all existing lobbies, their current status and their players in the form of
+     * "lobby(status):player:player,lobby(status):player:player ..."
      * @return
      */
     public static String returnLobbyListAsString() {
         String output = "";
         for (Lobby lobby : lobbyList) {
-            output = output + lobby.getName() + "(" + lobby.getStatus() + ") ";
+            output = output + lobby.getName() + " (" + lobby.getStatus() + "):";
+            ArrayList<Player> playersInLobby = lobby.getPlayersInLobby();
+            for (Player player : playersInLobby) {
+                output = output + player.getUsername() + ":";
+            }
+            output = output + ",";
         }
         return output;
     }

@@ -56,7 +56,10 @@ public class ClientInputHelper implements Runnable {
             case PONG -> pong.updatePong(input[1]);
             case CHAT -> System.out.println(input[1]);
             case BRCT -> System.out.println("Alfred: " + input[1]);
-            case LOLI -> Print.printLobbies(input[1]);
+            case LOLI -> {
+                Print.printLobbies(input[1]);
+                Main.lobbyList(input[1]);
+            }
             case DICE -> System.out.println("Your dice are: " + input[1]);
             case SHES -> Print.printEntrySheet(input[1]);
             case SHAC -> Print.printActions(input[1]);
@@ -64,6 +67,7 @@ public class ClientInputHelper implements Runnable {
                 Main.addNewLobby(input[1]);
                 System.out.println("Lobby was send to the gui");
             }
+            case ENLO -> Main.addNewPlayer(input[1]);
             default -> System.out.println("unknown command received from server " + message);
         }
 

@@ -30,6 +30,8 @@ public class LobbyWindowController implements Initializable {
 
     private String selectedLobby = null;
 
+    private int lobbyCounter = 0;
+
     public void createLobbyAction(){
         String lobbyName = lobbyTextField.getText();
         ClientOutput.send(CommandsClientToServer.CRLO, lobbyName);
@@ -54,10 +56,48 @@ public class LobbyWindowController implements Initializable {
         enterLobbyButton.setDisable(false);
     }
 
+    public void initializeLobbyList(String lobbies) {
+        TreeItem<String> dummyRoot = new TreeItem<>();
+
+        lobbyList.setRoot(dummyRoot);
+        lobbyList.setShowRoot(false);
+
+        System.out.println("Lobbies: " + lobbies);
+
+        if(lobbies.equals("")) {
+            return;
+        }
+
+        String[] splitForLobbies = lobbies.split(",");
+        for (int i = 0; i < splitForLobbies.length; i++) {
+            String[] splitForPlayers = splitForLobbies[i].split(":");
+            TreeItem<String> newLobby = new TreeItem<>(splitForPlayers[0]);
+            lobbyList.getRoot().getChildren().add(newLobby);
+            lobbyCounter++;
+            for (int j = 1; j < splitForPlayers.length; j++) {
+                TreeItem<String> newPlayer = new TreeItem<>(splitForPlayers[j]);
+                newLobby.getChildren().add(newPlayer);
+            }
+        }
+    }
+
     public void addLobby(String name) {
-        System.out.println("Lobby received: " + name);
         TreeItem<String> newLobby = new TreeItem<>(name);
         lobbyList.getRoot().getChildren().add(newLobby);
+        lobbyCounter++;
+    }
+
+    public void addPlayerToLobby(String lobbyAndPlayerName) {
+        String[] splitInLobbyAndPlayer = lobbyAndPlayerName.split(":");
+
+        for (int i = 0; i < lobbyCounter; i++) {
+            if(lobbyList.getTreeItem(i).getValue().equals(splitInLobbyAndPlayer[0])) {
+                System.out.println("Lobby found");
+                TreeItem<String> newPlayer = new TreeItem<>(splitInLobbyAndPlayer[1]);
+                lobbyList.getTreeItem(i).getChildren().add(newPlayer);
+                return;
+            }
+        }
     }
 
     @Override
@@ -65,10 +105,8 @@ public class LobbyWindowController implements Initializable {
 
         Main.setLobbyWindowController(this);
 
-        TreeItem<String> dummyRoot = new TreeItem<>();
-
-        lobbyList.setRoot(dummyRoot);
-        lobbyList.setShowRoot(false);
+        //on return from the server, the method initializeLobbyList will be called
+        ClientOutput.send(CommandsClientToServer.LOLI, "get an initial lobby list");
 
         createLobbyButton.setDisable(true);
         enterLobbyButton.setDisable(true);
@@ -89,7 +127,5 @@ public class LobbyWindowController implements Initializable {
     //TODO only lobbies, not players can be selected
     //TODO button enterLobby is deactivated when no list item is selected
     //TODO popUps when something is not done right
-    //TODO lobby only works when one already exists?
-    //TODO lobby status
     //TODO show players in lobby
 }

@@ -2,6 +2,7 @@ package server.networking;
 
 import client.networking.CommandsClientToServer;
 import server.ListManager;
+import server.Lobby;
 import server.Player;
 import server.gamelogic.GameManager;
 
@@ -65,10 +66,15 @@ public class ServerInputHelper implements Runnable {
             case LOLI -> serverOutput.send(CommandsServerToClient.LOLI, ListManager.returnLobbyListAsString());
             case CRLO -> {
                 ListManager.createNewLobby(player, input[1]);
-                Communication.sendToGui(CommandsServerToClient.CRLO, input[1], player);
+                Communication.broadcastToAll(CommandsServerToClient.CRLO, input[1]+ " (" +
+                        ListManager.getLobbyByName(input[1]).getStatus() + ")");
             }
-            case ENLO -> player.enterLobby(input[1]);
-            case LELO -> player.leaveLobby();
+            case ENLO -> {
+                player.enterLobby(input[1]);
+                Communication.broadcastToAll(CommandsServerToClient.ENLO, input[1] + " (" +
+                        ListManager.getLobbyByName(input[1]).getStatus() + "):" + player.getUsername()); //make this pretty?
+            }
+            case LELO -> player.leaveLobby(); //update list in gui
             case LOCH -> Communication.sendToLobby(player, input[1]);
             case STRT -> player.getLobby().startGame(player);
             //case ROLL -> serverOutput.send(CommandsServerToClient.DICE, GameManager.stringsAndRockNRoll()); method does not work

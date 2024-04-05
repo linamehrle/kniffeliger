@@ -59,6 +59,11 @@ public enum CommandsServerToClient {
     /**
      * Used to tell the gui that a new lobby has been created
      */
-    CRLO
+    CRLO,
+
+    /**
+     * Used to tell the gui that a player has entered a lobby
+     */
+    ENLO
 
 }
