@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -39,10 +40,11 @@ public class LobbyWindowController implements Initializable {
         lobbyTextField.clear();
     }
 
-    public void enterLobbyAction() {
+    public void enterLobbyAction(ActionEvent event) {
         String[] splitLobbyAndStatus = selectedLobby.split(" ");
         ClientOutput.send(CommandsClientToServer.ENLO, splitLobbyAndStatus[0]);
         enterLobbyButton.setDisable(true); //TODO deactivate button also when list is not selected?
+        SceneController.switchToGameWindow(event);
     }
 
     public void leaveGame() {
