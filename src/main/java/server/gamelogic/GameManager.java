@@ -336,7 +336,6 @@ public class GameManager {
      * dice, so it has not been saved and if it has less than 3 rolls. Saves dice automatically if it has been rolled 3 times.
      *
      * @param playersDice dice client hands to server
-     * @return new rolled dice
      */
     public static void rollDice(Dice[] playersDice) {
         // handle NullPointerException if Dice array has only values null
