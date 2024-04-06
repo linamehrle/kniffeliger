@@ -3,6 +3,8 @@ package client.gui;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,6 +13,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+
 import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
 
@@ -27,26 +31,15 @@ public class GameWindowController implements Initializable {
     @FXML
     private Button deleteButton;
     @FXML
-    private Button startButton;
-    @FXML
-    private Button leaveGameButton;
-    @FXML
-    private Button leaveLobbyButton;
-    @FXML
     private Button rollButton;
     @FXML
     private Button enterButton;
 
     @FXML
-    private CheckBox die1Checkbox;
+    TextField diceTextField;
+
     @FXML
-    private CheckBox die2Checkbox;
-    @FXML
-    private CheckBox die3Checkbox;
-    @FXML
-    private CheckBox die4Checkbox;
-    @FXML
-    private CheckBox die5Checkbox;
+    Button saveDiceButton;
 
     @FXML
     private ListView<String> entrySheet;
@@ -72,12 +65,7 @@ public class GameWindowController implements Initializable {
 
         entrySheet.setDisable(true);
         dice.setDisable(true);
-
-        die1Checkbox.setDisable(true);
-        die2Checkbox.setDisable(true);
-        die3Checkbox.setDisable(true);
-        die4Checkbox.setDisable(true);
-        die5Checkbox.setDisable(true);
+        //diceTextField.setDisable(true);
 
         stealButton.setDisable(true);
         freezeButton.setDisable(true);
@@ -87,24 +75,19 @@ public class GameWindowController implements Initializable {
         deleteButton.setDisable(true);
         rollButton.setDisable(true);
         enterButton.setDisable(true);
+        saveDiceButton.setDisable(true);
+
+        diceTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(diceTextField.isFocused()){
+                    saveDiceButton.setDisable(false);
+                }
+            }
+        });
 
 
     }
 
-    public void saveDie1(ActionEvent event) {
-    }
-
-    public void saveDie2(ActionEvent event) {
-    }
-
-    public void saveDie3(ActionEvent event) {
-    }
-
-    public void saveDie4(ActionEvent event) {
-    }
-
-    public void saveDie5(ActionEvent event) {
-    }
 
     public void stealEntryAction(ActionEvent event) {
     }
@@ -135,5 +118,8 @@ public class GameWindowController implements Initializable {
     }
 
     public void enterToEntrySheetAction(ActionEvent event) {
+    }
+
+    public void saveDiceAction(ActionEvent event) {
     }
 }

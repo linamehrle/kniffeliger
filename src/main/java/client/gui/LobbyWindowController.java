@@ -150,5 +150,4 @@ public class LobbyWindowController implements Initializable {
     //TODO only lobbies, not players can be selected
     //TODO popUps when something is not done right
     //TODO status of lobby is correct
-    //TODO leave action
 }

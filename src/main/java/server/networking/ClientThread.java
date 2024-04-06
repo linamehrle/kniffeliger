@@ -101,6 +101,7 @@ public class ClientThread implements Runnable{
             Communication.broadcast(player, "Player " + player.getUsername() + " has disconnected");
             ArrayList<Player> playerList = player.getPlayerList();
             playerList.remove(player);
+            player.getLobby().leaveLobby(player);
             ping.stop();
             serverInput.stop();
             serverOutput.stop();
