@@ -5,6 +5,8 @@ import server.networking.Communication;
 
 import java.util.ArrayList;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Scanner;
 
 // TODO javadoc for class
@@ -15,7 +17,7 @@ public class GameManager implements Runnable {
     private final int DIVIDABLE_BY = 1;
 
     // answer of user during game
-    private String input;
+    private volatile String input;
 
     // initialize exactly 5 dice in a Dice-array
     private Dice[] allDice;
@@ -27,6 +29,7 @@ public class GameManager implements Runnable {
     /**
      * Game gets constructed; dices get initiated in constructor.
      */
+    // TODO hand over playerArrayList??
     public GameManager() {
         allDice = new Dice[]{new Dice(), new Dice(), new Dice(), new Dice(), new Dice()};
     }
@@ -284,10 +287,11 @@ public class GameManager implements Runnable {
                         Communication.broadcastToAll(helpersPlayersArrayList, currentPlayer.getUsername() + "'s entry sheet: " + currentEntrySheet.printEntrySheet());
                     }
                 }
-                // hand player the action dice
-                addActionDice(allDice, currentPlayer);
-                if (addActionDice(allDice, currentPlayer)) {
+                // hand player the action dice and let player know the action dice (everybody else just knows that they got an action dice but not what kind)
+                boolean getActionDice = addActionDice(allDice, currentPlayer);
+                if (getActionDice) {
                     Communication.sendToPlayer(currentPlayer, "Your action dice is/are now: " + ActionDice.printActionDice(currentEntrySheet.getPlayer().getActionDice()));
+                    Communication.broadcastToAll(helpersPlayersArrayList, currentPlayer.getUsername() + " got an action dice.");
                 }
             }
             Communication.broadcastToAll(playerArraysList, "############################################## ALL ENTRY SHEETS ##############################################");
@@ -364,7 +368,12 @@ public class GameManager implements Runnable {
                 }
             }
         }
-        // TODO: ranking mit player.getTotalPoints()
+        Player[] rankedPlayer = ranking(allEntrySheets);
+        String ranking = "";
+        for (int i = 0; i < rankedPlayer.length; i++) {
+            ranking = ranking + "Number " + (i + 1)+ " is " + rankedPlayer[i].getUsername() + ".";
+        }
+        System.out.println(ranking);
 
     }
 
@@ -574,7 +583,7 @@ public class GameManager implements Runnable {
         }
     }
 
-    /**
+    /**addActionDice(allDice, currentPlayer
      * Gets answer as String and saves it in answer field, so it can be accessed in starter-method.
      *
      * @param input answer of player
@@ -593,10 +602,26 @@ public class GameManager implements Runnable {
         playerArraysList = players;
     }
 
+    /*
+     * #################################################################################################################
+     * HANDLES ACTION DICE
+     * #################################################################################################################
+     */
+    /**
+     * Ranks the winners.
+     *
+     * @param allEntrySheets final entry sheets of the players
+     * @return Player-array with the ranked players
+     */
+    public Player[] ranking(EntrySheet[] allEntrySheets) {
+        Player[] rankedPlayer = new Player[allEntrySheets.length];
+        Arrays.sort(allEntrySheets, Comparator.comparing(EntrySheet::getTotalPoints));
+        for (int i = 0; i < rankedPlayer.length; i++){
+            rankedPlayer[i] = allEntrySheets[allEntrySheets.length - i - 1].getPlayer();
+        }
+        return rankedPlayer;
+    }
 
-//
-//    public void setAnswer(String string){
-//        answer = string;
-//    }
+
 
 }
