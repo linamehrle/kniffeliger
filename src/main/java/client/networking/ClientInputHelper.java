@@ -75,5 +75,7 @@ public class ClientInputHelper implements Runnable {
             default -> System.out.println("unknown command received from server " + message);
         }
 
+        //TODO put the methods in the classes
+
     }
 }

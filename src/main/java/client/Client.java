@@ -11,6 +11,9 @@ import client.networking.Pong;
 import java.io.IOException;
 import java.net.Socket;
 
+import javafx.application.Application;
+import javafx.application.Platform;
+
 /**
  * This is the main class for the client. It contains the input thread for the console and from the server and the
  * output stream to the server as well as a separate thread for the ping.
@@ -65,8 +68,9 @@ public class Client {
         }
 
         //start the gui
-        Thread guiThread = new Thread(() -> Main.main(new String[0]));
-        guiThread.start();
+        //guiThread = new Thread(() -> Main.main(new String[0]));
+        //guiThread.start();
+        Application.launch(Main.class);
 
         // print welcome text
         String welcomeText = "======================================================================\n" +
@@ -111,7 +115,8 @@ public class Client {
             pong.stop();
             socket.close();
             clientOutput.stop();
-            //how to stop the gui thread?
+            //TODO how to stop the gui thread
+            //Platform.exit();
             System.out.println("Goodbye!");
         } catch (IOException e) {
             e.printStackTrace();

@@ -8,6 +8,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import client.networking.ClientOutput;
+import client.networking.CommandsClientToServer;
+
 public class Main extends Application {
 
     private static LobbyWindowController lobbyWindowController;
@@ -17,6 +20,10 @@ public class Main extends Application {
         try {
             URL url = new File("src/main/resources/LobbyWindow.fxml").toURI().toURL();
             Parent root = FXMLLoader.load(url);
+            stage.setOnCloseRequest(e -> {
+                e.consume();
+                exit();
+            });
             stage.setScene(new Scene(root, 600, 400));
             stage.show();
         } catch (Exception e) {
@@ -43,12 +50,15 @@ public class Main extends Application {
 
     public static void removePlayer(String lobbyAndPlayerName) {
         lobbyWindowController.removePlayerFromList(lobbyAndPlayerName);
-        System.out.println("We are in main now");
     }
 
 
     public static void setLobbyWindowController(LobbyWindowController lobbyWindowController) {
         Main.lobbyWindowController = lobbyWindowController;
+    }
+
+    public static void exit() {
+        ClientOutput.send(CommandsClientToServer.QUIT, "leaving now");
     }
 }
 

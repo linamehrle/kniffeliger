@@ -48,7 +48,7 @@ public class LobbyWindowController implements Initializable {
     }
 
     public void leaveGame() {
-        //TODO
+        Main.exit();
     }
 
     public void selectLobby() {

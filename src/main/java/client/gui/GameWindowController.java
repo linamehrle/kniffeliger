@@ -11,10 +11,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TreeItem;
-
 import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
 
@@ -130,6 +126,7 @@ public class GameWindowController implements Initializable {
     }
 
     public void leaveGameAction(ActionEvent event) {
+        Main.exit();
     }
 
     public void leaveLobbyAction(ActionEvent event) {
