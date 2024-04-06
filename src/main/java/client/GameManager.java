@@ -1,5 +1,6 @@
 package client;
 
+import client.gui.CWLauncher;
 import client.gui.ChatWindow;
 import client.networking.ClientInput;
 import client.networking.ClientOutput;
@@ -22,6 +23,7 @@ public class GameManager {
     private ClientInput clientInput;
     private ClientOutput clientOutput;
     private Pong pong;
+    private CWLauncher chatWindow;
 
     //private ChatWindow chatWindow;
 
@@ -72,8 +74,9 @@ public class GameManager {
         }
 
         //start chatwindow
-        Thread guiThread = new Thread(() -> ChatWindow.main(new String[0]));
-        guiThread.start();
+        //Thread guiThread = new Thread(() -> ChatWindow.main(new String[0]));
+        //guiThread.start();
+        chatWindow = new CWLauncher(clientOutput);
 
 
         // print welcome text

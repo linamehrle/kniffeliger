@@ -1,5 +1,6 @@
 package client.gui;
 
+import client.networking.ClientOutput;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
@@ -16,16 +17,16 @@ import java.net.URL;
  * The actions are implemented in the class CWcontroller
  * the controller is specified in the FXML and an instance of the class CWcontroller is created when loading
  */
-public class ChatWindow extends Application {
+public class ChatWindow extends Application  implements Runnable {
     Stage window;
-    private static CWcontroller chatController;
-    String address;
-    int port;
+    private static ClientOutput networkManager;
+    CWcontroller controller;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
         try {
             this.window = primaryStage;
+
             //this.address = super.getParameters().getRaw().get(0);
             //this.port = Integer.parseInt(super.getParameters().getRaw().get(1));
             // Specify scene, here scene is loaded from FXML
@@ -35,6 +36,10 @@ public class ChatWindow extends Application {
             CWcontroller cwController = (CWcontroller)loader.getController();
             Scene scene = new Scene(root, 600, 300, Color.BLACK);
 
+            //set controller
+            this.controller = loader.getController();
+            System.out.println("Controller established");
+
             // Add stylesheet, will be used later (TODO: add file not found error handling)
             //scene.getStylesheets().add("src/main/resources/styles/chatWindow.css");
 
@@ -42,6 +47,10 @@ public class ChatWindow extends Application {
             this.window.setTitle("Chat");
             this.window.setScene(scene);
             this.window.show();
+            System.out.println("Chat window started");
+            System.out.println(this.networkManager);
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,8 +63,21 @@ public class ChatWindow extends Application {
         launch(args);
     }
 
-    public static void setCWcontroller(CWcontroller cwController) {
-        ChatWindow.chatController = cwController;
-
+    @Override
+    public void run(){
+        launch();
     }
+
+    public static void setNetworkManager(ClientOutput clientOutput){
+        ChatWindow.networkManager = clientOutput;
+        System.out.println("Network Manager set: " + (ChatWindow.networkManager).toString());
+    }
+
+    public static ClientOutput getNetworkManager(){
+        return networkManager;
+    }
+
+
+
+
 }
