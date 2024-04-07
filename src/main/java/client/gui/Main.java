@@ -1,6 +1,4 @@
 package client.gui;
-import java.io.File;
-import java.net.URL;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,13 +6,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
 import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
 
 public class Main extends Application {
 
     private static LobbyWindowController lobbyWindowController;
+    private static CWcontroller cWcontroller;
     Stage mainWidow;
     Stage chatWindow;
 
@@ -76,6 +74,14 @@ public class Main extends Application {
 
     public static void setLobbyWindowController(LobbyWindowController lobbyWindowController) {
         Main.lobbyWindowController = lobbyWindowController;
+    }
+
+    public static void setcWcontroller(CWcontroller cWcontroller) {
+        Main.cWcontroller = cWcontroller;
+    }
+
+    public static void sendToChatWindow(String message) {
+        Main.cWcontroller.displayReceivedMessage(message);
     }
 
     public static void exit() {

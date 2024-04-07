@@ -79,13 +79,6 @@ public class Client {
         //CWLauncher chatWindow = new CWLauncher();
         //new Thread(() -> Application.launch(ChatWindow.class)).start();
 
-
-        //start the gui
-        //guiThread = new Thread(() -> Main.main(new String[0]));
-        //guiThread.start();
-        System.out.println("before Main launch");
-        Application.launch(Main.class);
-
         // print welcome text
         String welcomeText = "======================================================================\n" +
                 "====                        Kniffeliger                           ====\n" +
@@ -111,6 +104,12 @@ public class Client {
         } else {
             clientOutput.send(CommandsClientToServer.CHNA, username);
         }
+
+        //start the gui
+        //guiThread = new Thread(() -> Main.main(new String[0]));
+        //guiThread.start();
+        System.out.println("before Main launch");
+        Application.launch(Main.class);
     }
 
     /**

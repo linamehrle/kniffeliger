@@ -61,6 +61,8 @@ public class CWcontroller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        Main.setcWcontroller(this);
+
         //TODO: replace by real usernames, maybe use dictionary structure with userID as key, such that username can be changed without changing display order and colour
         //will be used later to select user for whisper chat
         String[] userList = {"all", "usr1", "usr2", "usr3"};
@@ -171,21 +173,26 @@ public class CWcontroller implements Initializable {
 
     /**
      * method to send messages to server, this is the standard method to send messages over the chatwindow
-     * @param messageBody message to send (without commands to server and without username)
+     * @param message message to send, contains @all, @lobby or @username at the beginning followed by a space
      */
-    public void sendMsgtoServer(String messageBody){
-        String receiver = getRecipient();
+    public void sendMsgtoServer(String message){
+        //String receiver = getRecipient();
         //assemble message to server, use command CHAT if 'all' or '' is selected in ChoiceBox
         //TODO: add error handling for unkown user names (although this should never occur)
+
+        String[] splitMessage = message.split(" ");
+        String receiver = splitMessage[0];
+        String messageBody = splitMessage[1];
+
         switch(receiver) {
-            case "":
-                ClientOutput.sendToServer("CHAT " + messageBody);
+            case "@lobby":
+                ClientOutput.sendToServer("LOCH " + messageBody);
                 break;
-            case "all":
+            case "@all":
                 ClientOutput.sendToServer("CHAT " + messageBody);
                 break;
             default:
-                ClientOutput.sendToServer("WHSP " + receiver + " " + messageBody);
+                ClientOutput.sendToServer("WHSP " + receiver.substring(1) + " " + messageBody);
         }
 
     }
@@ -207,4 +214,9 @@ public class CWcontroller implements Initializable {
     //public void setNetworkManager(ClientOutput clientOutput){
         //this.networkManager = clientOutput;
     //}
+
+    public void displayReceivedMessage(String message) {
+        //display this in the chat window, message is "username: message"
+        System.out.println("GUI received: " + message);
+    }
 }
