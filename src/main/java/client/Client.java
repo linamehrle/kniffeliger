@@ -77,7 +77,7 @@ public class Client {
         //Thread guiThread = new Thread(() -> ChatWindow.main(new String[0]));
         //guiThread.start();
         //CWLauncher chatWindow = new CWLauncher();
-        new Thread(() -> Application.launch(ChatWindow.class)).start();
+        //new Thread(() -> Application.launch(ChatWindow.class)).start();
 
 
         //start the gui
@@ -111,15 +111,6 @@ public class Client {
         } else {
             clientOutput.send(CommandsClientToServer.CHNA, username);
         }
-        // start game
-        this.start();
-    }
-
-    /**
-     * This function starts the game.
-     */
-    private void start() {
-        //do we need this later?
     }
 
     /**

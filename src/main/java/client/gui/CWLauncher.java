@@ -9,7 +9,7 @@ public class CWLauncher {
     public CWLauncher(ClientOutput clientOutput) {
         ChatWindow application = new ChatWindow();
         //ChatWindow.setNetworkManager(clientOutput);
-        new Thread(application).start();
+        //new Thread(application).start();
     }
 
 

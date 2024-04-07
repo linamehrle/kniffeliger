@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import client.networking.ClientOutput;
@@ -15,6 +16,7 @@ public class Main extends Application {
 
     private static LobbyWindowController lobbyWindowController;
     Stage mainWidow;
+    Stage chatWindow;
 
     @Override
     public void start(Stage stage) {
@@ -30,11 +32,21 @@ public class Main extends Application {
             Parent root = loader.load();
 
             mainWidow.setOnCloseRequest(e -> {
-                e.consume();
+                //e.consume();
                 exit();
             });
             mainWidow.setScene(new Scene(root, 600, 400));
             mainWidow.show();
+
+            chatWindow = new Stage();
+            //Dominique, aus class ChatWindow
+            FXMLLoader loaderChat = new FXMLLoader(getClass().getResource("/chatwindow.fxml"));
+            Parent rootChat = (Parent)loaderChat.load();
+            Scene scene = new Scene(rootChat, 600, 300, Color.BLACK);
+
+            this.chatWindow.setScene(scene);
+            this.chatWindow.show();
+            System.out.println("ChatWindow launched");
         } catch (Exception e) {
             e.printStackTrace();
         }
