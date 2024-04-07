@@ -81,6 +81,7 @@ public class ServerInputHelper implements Runnable {
             }
             case LOCH -> Communication.sendToLobby(player, input[1]);
             case STRT -> player.getLobby().startGame(player);
+            case GAME -> player.getLobby().getGameManager().getAnswer(input[1]);
             //case ROLL -> serverOutput.send(CommandsServerToClient.DICE, GameManager.stringsAndRockNRoll()); method does not work
             /*case SAVE -> {
                 GameManager.saveDice(input[1]);

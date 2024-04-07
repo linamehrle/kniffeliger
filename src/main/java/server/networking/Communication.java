@@ -19,7 +19,6 @@ public class Communication {
         for (Player player : playerList) {
             ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
             serverOutput.send(cmd, message);
-            System.out.println("broadcast to all: message send");
         }
     }
 

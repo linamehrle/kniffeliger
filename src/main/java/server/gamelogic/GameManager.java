@@ -87,7 +87,7 @@ public class GameManager implements Runnable {
                 }
 
                 // prints whose current turn it is
-                Communication.broadcastToAll(CommandsServerToClient.BRCT,helpersPlayersArrayList, "It is " + currentPlayer.getUsername() + " turn!");
+                Communication.broadcastToAll(CommandsServerToClient.BRCT,helpersPlayersArrayList, "It is " + currentPlayer.getUsername() + "'s turn!");
                 Communication.sendToPlayer(currentPlayer, "It is your turn! Your action dice are/is: " + ActionDice.printActionDice(currentEntrySheet.getPlayer().getActionDice()));
 
                 // variable that checks at very end if all dice are saved
@@ -589,6 +589,7 @@ public class GameManager implements Runnable {
      * @param input answer of player
      */
     public synchronized void getAnswer(String input) {
+        System.out.println("The Game received the message: " + input);
         this.input = input;
         notify();
     }
