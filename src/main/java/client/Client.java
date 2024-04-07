@@ -1,5 +1,7 @@
 package client;
 
+import client.gui.CWLauncher;
+import client.gui.ChatWindow;
 import client.networking.ClientInput;
 import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
@@ -21,6 +23,10 @@ public class Client {
     private ClientInput clientInput;
     private ClientOutput clientOutput;
     private Pong pong;
+    private CWLauncher chatWindow;
+
+    //private ChatWindow chatWindow;
+
 
     //private GameLogicManager logicManager; for later
 
@@ -54,12 +60,24 @@ public class Client {
             Thread pongThread = new Thread(pong);
             pongThread.start();
 
+            //start the thread for the chat-GUI
+            //chatWindow = new ChatWindow();
+            //Thread chatwindowThread = new Thread(chatWindow);
+            //chatwindowThread.start();
+
+
             //logicManager = new GameLogicManager(); for later
         } catch (IOException e) {
             System.out.println("no server found\ngoodbye!");
             //e.printStackTrace();
             return;
         }
+
+        //start chatwindow
+        //Thread guiThread = new Thread(() -> ChatWindow.main(new String[0]));
+        //guiThread.start();
+        chatWindow = new CWLauncher(clientOutput);
+
 
         // print welcome text
         String welcomeText = "======================================================================\n" +

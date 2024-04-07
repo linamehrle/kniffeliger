@@ -78,7 +78,7 @@ public class ClientOutput {
      * This method writes the message to the server on the out-stream
      * @param message has to contain a command first, then a blank followed by a non-empty message
      */
-    private synchronized void sendToServer(String message) {
+    public synchronized void sendToServer(String message) {
         try {
             out.write(message);
             out.newLine();
