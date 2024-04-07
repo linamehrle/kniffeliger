@@ -28,7 +28,6 @@ public class Client {
     private ClientInput clientInput;
     private ClientOutput clientOutput;
     private Pong pong;
-    private CWLauncher chatWindow;
 
     //private ChatWindow chatWindow;
 
@@ -65,10 +64,6 @@ public class Client {
             Thread pongThread = new Thread(pong);
             pongThread.start();
 
-            //start the thread for the chat-GUI
-            //chatWindow = new ChatWindow();
-            //Thread chatwindowThread = new Thread(chatWindow);
-            //chatwindowThread.start();
 
 
             //logicManager = new GameLogicManager(); for later
@@ -81,12 +76,14 @@ public class Client {
         //start chatwindow
         //Thread guiThread = new Thread(() -> ChatWindow.main(new String[0]));
         //guiThread.start();
-        chatWindow = new CWLauncher(clientOutput);
+        //CWLauncher chatWindow = new CWLauncher();
+        new Thread(() -> Application.launch(ChatWindow.class)).start();
 
 
         //start the gui
         //guiThread = new Thread(() -> Main.main(new String[0]));
         //guiThread.start();
+        System.out.println("before Main launch");
         Application.launch(Main.class);
 
         // print welcome text
