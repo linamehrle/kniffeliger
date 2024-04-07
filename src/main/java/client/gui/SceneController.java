@@ -13,15 +13,21 @@ import javafx.stage.Stage;
 
 public class SceneController {
 
-    private static Stage stage;
+    private static Stage stage = new Stage();
     private static Scene scene;
     private static Parent root;
 
     public static void switchToGameWindow(ActionEvent event) {
         try {
-            URL url = new File("src/main/resources/GameWindow.fxml").toURI().toURL();
+            /*URL url = new File("src/main/resources/GameWindow.fxml").toURI().toURL();
             root = FXMLLoader.load(url);
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+             */
+
+            //von dominique:
+            FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/GameWindow.fxml"));
+            root = loader.load();
+
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
@@ -32,14 +38,22 @@ public class SceneController {
 
     public static void switchToLobbyWindow(ActionEvent event) {
         try {
-            URL url = new File("src/main/resources/LobbyWindow.fxml").toURI().toURL();
-            root = FXMLLoader.load(url);
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            //URL url = new File("src/main/resources/LobbyWindow.fxml").toURI().toURL();
+            //root = FXMLLoader.load(url);
+            //stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+            //von dominique:
+            FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/LobbyWindow.fxml"));
+            root = loader.load();
+
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        } catch (IOException e){
+        } catch (
+                IOException e) {
             e.printStackTrace();
         }
     }
+
+    //TODO why does it open a second window now when switching scenes??
 }

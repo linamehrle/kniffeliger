@@ -18,8 +18,14 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         try {
-            URL url = new File("src/main/resources/LobbyWindow.fxml").toURI().toURL();
+            /*URL url = new File("src/main/resources/LobbyWindow.fxml").toURI().toURL();
             Parent root = FXMLLoader.load(url);
+             */
+
+            //von dominique:
+            FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/LobbyWindow.fxml"));
+            Parent root = loader.load();
+
             stage.setOnCloseRequest(e -> {
                 e.consume();
                 exit();

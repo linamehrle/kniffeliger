@@ -1,5 +1,3 @@
-package starter;
-
 import client.Client;
 import server.Server;
 
