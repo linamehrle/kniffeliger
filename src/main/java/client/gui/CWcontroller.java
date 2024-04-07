@@ -93,8 +93,9 @@ public class CWcontroller implements Initializable {
             //this enables the ENTER key to fire SEND button (not good method for complex GUIs)
         buttonSend.setDefaultButton(true);
 
-        System.out.println("CW controller initialized");
     }
+
+
 
     /** Method which handles the addition of text to chat window
      *  and sends message to server when send button is fired
@@ -148,7 +149,7 @@ public class CWcontroller implements Initializable {
      * @param displayLocation VBox where message is displayed (usually main VBox)
      */
     //display message from server TODO: display messages from different users in different ways
-    public static void addMsgReceived(String messageFromServer, VBox displayLocation){
+    public void addMsgReceived(String messageFromServer, VBox displayLocation){
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER_LEFT);
         hBox.setPadding(new Insets(5, 5, 5, 10));
@@ -169,7 +170,10 @@ public class CWcontroller implements Initializable {
                 displayLocation.getChildren().add(hBox);
             }
         });
+
     }
+
+
 
     /**
      * method to send messages to server, this is the standard method to send messages over the chatwindow
