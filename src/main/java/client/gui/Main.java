@@ -14,9 +14,12 @@ import client.networking.CommandsClientToServer;
 public class Main extends Application {
 
     private static LobbyWindowController lobbyWindowController;
+    Stage mainWidow;
 
     @Override
     public void start(Stage stage) {
+        mainWidow = stage;
+        SceneController.setMainWindow(mainWidow);
         try {
             /*URL url = new File("src/main/resources/LobbyWindow.fxml").toURI().toURL();
             Parent root = FXMLLoader.load(url);
@@ -26,12 +29,12 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/LobbyWindow.fxml"));
             Parent root = loader.load();
 
-            stage.setOnCloseRequest(e -> {
+            mainWidow.setOnCloseRequest(e -> {
                 e.consume();
                 exit();
             });
-            stage.setScene(new Scene(root, 600, 400));
-            stage.show();
+            mainWidow.setScene(new Scene(root, 600, 400));
+            mainWidow.show();
         } catch (Exception e) {
             e.printStackTrace();
         }

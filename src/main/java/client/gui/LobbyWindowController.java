@@ -33,6 +33,8 @@ public class LobbyWindowController implements Initializable {
 
     private int lobbyCounter = 0;
 
+    private boolean hasBeenInitialized = false;
+
     public void createLobbyAction(){
         String lobbyName = lobbyTextField.getText();
         ClientOutput.send(CommandsClientToServer.CRLO, lobbyName);
@@ -62,12 +64,6 @@ public class LobbyWindowController implements Initializable {
     }
 
     public void initializeLobbyList(String lobbies) {
-        TreeItem<String> dummyRoot = new TreeItem<>();
-
-        lobbyList.setRoot(dummyRoot);
-        lobbyList.setShowRoot(false);
-
-        System.out.println("Lobbies: " + lobbies);
 
         if(lobbies.equals("")) {
             return;
@@ -130,6 +126,13 @@ public class LobbyWindowController implements Initializable {
 
         Main.setLobbyWindowController(this);
 
+        if (!hasBeenInitialized) {
+            TreeItem<String> dummyRoot = new TreeItem<>();
+
+            lobbyList.setRoot(dummyRoot);
+            lobbyList.setShowRoot(false);
+        }
+
         //on return from the server, the method initializeLobbyList will be called
         ClientOutput.send(CommandsClientToServer.LOLI, "get an initial lobby list");
 
@@ -145,6 +148,7 @@ public class LobbyWindowController implements Initializable {
             }
         });
 
+        hasBeenInitialized = true;
     }
 
     //TODO only lobbies, not players can be selected

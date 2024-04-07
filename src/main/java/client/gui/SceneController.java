@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 public class SceneController {
 
-    private static Stage stage = new Stage();
+    private static Stage mainWindow;
     private static Scene scene;
     private static Parent root;
 
@@ -29,8 +29,8 @@ public class SceneController {
             root = loader.load();
 
             scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            mainWindow.setScene(scene);
+            mainWindow.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,13 +47,15 @@ public class SceneController {
             root = loader.load();
 
             scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            mainWindow.setScene(scene);
+            mainWindow.show();
         } catch (
                 IOException e) {
             e.printStackTrace();
         }
     }
 
-    //TODO why does it open a second window now when switching scenes??
+    public static void setMainWindow(Stage mainWindow) {
+        SceneController.mainWindow = mainWindow;
+    }
 }
