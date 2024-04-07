@@ -148,7 +148,7 @@ public class CWcontroller implements Initializable {
      * @param displayLocation VBox where message is displayed (usually main VBox)
      */
     //display message from server TODO: display messages from different users in different ways
-    public static void addText(String messageFromServer, VBox displayLocation){
+    public static void addMsgReceived(String messageFromServer, VBox displayLocation){
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER_LEFT);
         hBox.setPadding(new Insets(5, 5, 5, 10));
@@ -217,6 +217,7 @@ public class CWcontroller implements Initializable {
 
     public void displayReceivedMessage(String message) {
         //display this in the chat window, message is "username: message"
+        addMsgReceived(message, msgDisplayAll);
         System.out.println("GUI received: " + message);
     }
 }
