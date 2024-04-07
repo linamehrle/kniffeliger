@@ -37,8 +37,6 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
-import static server.networking.Communication.sendWhisper;
-
 /**
  * This class implements the controller for the chatwindow GUI
  * the names for the @FXML variables can be found in the corresponding FXML file under fx:id
@@ -121,7 +119,6 @@ public class CWcontroller implements Initializable {
             hBox.getChildren().add(textFlow);
             msgDisplayAll.getChildren().add(hBox);
 
-            //TODO: sendMsgtoServer(, getRecipient(), messageToSend);
             sendMsgtoServer(messageToSend);
 
             msgAcceptor.clear();
@@ -137,12 +134,11 @@ public class CWcontroller implements Initializable {
         this.recipient = recipient;
     }
 
-    private class getClickID implements EventHandler<Event>{
-        @Override
-        public void handle(Event evt) {
-            System.out.println(((Control)evt.getSource()).getId());
-        }
-    }
+    //private class getClickID implements EventHandler<Event>{
+        //@Override
+        //public void handle(Event evt) {
+            //}
+    //}
 
     /**
      * This method adds text to a VBox. It is used to display received messages

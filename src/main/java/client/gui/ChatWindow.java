@@ -29,11 +29,10 @@ public class ChatWindow extends Application {
 
             //this.address = super.getParameters().getRaw().get(0);
             //this.port = Integer.parseInt(super.getParameters().getRaw().get(1));
-            // Specify scene, here scene is loaded from FXML
-            URL url = new File("src/main/resources/chatwindow.fxml").toURI().toURL();
+            //Specify scene, here scene is loaded from FXML
+            //URL url = new File("src/main/resources/chatwindow.fxml").toURI().toURL();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/chatwindow.fxml"));
-            Parent root = (Parent)loader.load();//(getClass().getResource("src/main/resources/chatwindow.fxml"));
-            CWcontroller cwController = (CWcontroller)loader.getController();
+            Parent root = (Parent)loader.load();
             Scene scene = new Scene(root, 600, 300, Color.BLACK);
 
             //set controller
