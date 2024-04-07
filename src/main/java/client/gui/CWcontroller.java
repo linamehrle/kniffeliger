@@ -55,7 +55,7 @@ public class CWcontroller implements Initializable {
     private String recipient;
     private List<String> userNameList;
     ArrayList<Player> playerList;
-    private ClientOutput networkManager;
+    //private ClientOutput networkManager;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -87,7 +87,7 @@ public class CWcontroller implements Initializable {
         });
             //this enables the ENTER key to fire SEND button (not good method for complex GUIs)
         buttonSend.setDefaultButton(true);
-        networkManager = ChatWindow.getNetworkManager();
+        //networkManager = ChatWindow.getNetworkManager();
     }
 
     /** Method which handles the addition of text to chat window
@@ -170,13 +170,20 @@ public class CWcontroller implements Initializable {
     /**
      * method to send messages to server, this is the standard method to send messages over the chatwindow
      * TODO: infer command from choice in choicebox (i.e. CHAT if 'all' is selected, WHSP if 'user' is selected
-     * @param messageToSend
+     * @param messageBody message to send (without commands to server and without username)
      */
-    public void sendMsgtoServer(String messageToSend){
-        //String messageCombined = receiver.getUsername() + messageToSend;
-        //sendWhisper(sender, messageCombined);
-        this.networkManager.sendToServer(messageToSend);
-        System.out.println(messageToSend);
+    public void sendMsgtoServer(String messageBody){
+        String receiver = getRecipient();
+        //assemble message to server, use command CHAT if 'all' or '' is selected in ChoiceBox
+        //TODO: add error handling for unkown user names (although this should never occur)
+        switch(receiver) {
+            case "":
+                ClientOutput.sendToServer("CHAT" + messageBody);
+            case "all":
+                ClientOutput.sendToServer("CHAT" + messageBody);
+            default:
+                ClientOutput.sendToServer("WHSP " + receiver + " " + messageBody);
+        }
     }
 
 
@@ -191,7 +198,7 @@ public class CWcontroller implements Initializable {
     public static void setChoiceBox(ChoiceBox choiceBox, Object[] values){
         choiceBox.getItems().addAll(values);
     }
-    public void setNetworkManager(ClientOutput clientOutput){
-        this.networkManager = clientOutput;
-    }
+    //public void setNetworkManager(ClientOutput clientOutput){
+        //this.networkManager = clientOutput;
+    //}
 }

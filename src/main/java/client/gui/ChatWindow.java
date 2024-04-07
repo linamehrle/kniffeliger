@@ -19,7 +19,7 @@ import java.net.URL;
  */
 public class ChatWindow extends Application  implements Runnable {
     Stage window;
-    private static ClientOutput networkManager;
+    //private static ClientOutput networkManager;
     CWcontroller controller;
 
     @Override
@@ -38,7 +38,6 @@ public class ChatWindow extends Application  implements Runnable {
 
             //set controller
             this.controller = loader.getController();
-            System.out.println("Controller established");
 
             // Add stylesheet, will be used later (TODO: add file not found error handling)
             //scene.getStylesheets().add("src/main/resources/styles/chatWindow.css");
@@ -47,8 +46,7 @@ public class ChatWindow extends Application  implements Runnable {
             this.window.setTitle("Chat");
             this.window.setScene(scene);
             this.window.show();
-            System.out.println("Chat window started");
-            System.out.println(this.networkManager);
+
 
 
 
@@ -68,14 +66,14 @@ public class ChatWindow extends Application  implements Runnable {
         launch();
     }
 
-    public static void setNetworkManager(ClientOutput clientOutput){
-        ChatWindow.networkManager = clientOutput;
-        System.out.println("Network Manager set: " + (ChatWindow.networkManager).toString());
-    }
+    //public static void setNetworkManager(ClientOutput clientOutput){
+        //ChatWindow.networkManager = clientOutput;
+        //System.out.println("Network Manager set: " + (ChatWindow.networkManager).toString());
+    //}
 
-    public static ClientOutput getNetworkManager(){
-        return networkManager;
-    }
+    //public static ClientOutput getNetworkManager(){
+        //return networkManager;
+    //}
 
 
 

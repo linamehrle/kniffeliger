@@ -8,7 +8,7 @@ import client.networking.ClientOutput;
 public class CWLauncher {
     public CWLauncher(ClientOutput clientOutput) {
         ChatWindow application = new ChatWindow();
-        ChatWindow.setNetworkManager(clientOutput);
+        //ChatWindow.setNetworkManager(clientOutput);
         new Thread(application).start();
     }
 
