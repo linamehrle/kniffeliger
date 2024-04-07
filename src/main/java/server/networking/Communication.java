@@ -1,6 +1,8 @@
 package server.networking;
 
 import java.util.ArrayList;
+
+import server.ListManager;
 import server.Lobby;
 import server.Player;
 
@@ -13,12 +15,16 @@ public class Communication {
      * sends a message from the server to all connected clients
      * @param message
      */
-    public static void broadcastToAll(ArrayList<Player> playerList, String message) {
-        for (Player playerInList : playerList) {
-            ServerOutput serverOutput = playerInList.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
-            serverOutput.send(CommandsServerToClient.BRCT, message);
+    public static void broadcastToAll(CommandsServerToClient cmd, String message) {
+        ArrayList<Player> playerList = ListManager.getPlayerList();
+        for (Player player : playerList) {
+            ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
+            serverOutput.send(cmd, message);
+            System.out.println("broadcast to all: message send");
         }
     }
+
+    //TODO added command as parameter, fix in use cases
 
     /**
      * sends a message from the server to all clients in the list but the single specified player
@@ -116,5 +122,9 @@ public class Communication {
             }
         }
     }
+
+    //TODO eigene funktion um vom server nur an einen player zu senden?
+
+    //TODO broadcast to lobby needed for game?
 
 }

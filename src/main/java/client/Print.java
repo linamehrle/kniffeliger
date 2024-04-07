@@ -10,9 +10,9 @@ public class Print {
      * This method prints a list of alle existing Lobbies and their status to the console
      * @param lobbies A string with lobby(status) lobby(status) ... from the server
      */
-    public static void printLobbies(String lobbies) {
+    public static void printLobbies(String lobbies) { //TODO anpassen für die player!!!
 
-        if(lobbies.equals("")) {
+        /*if(lobbies.equals("")) {
             System.out.println("There are no lobbies yet");
             return;
         }
@@ -22,7 +22,9 @@ public class Print {
         System.out.println("The existing Lobbies are:");
         for (int i = 0; i < splitLobbie.length; i++) {
             System.out.println(splitLobbie[i]);
-        }
+        }*/
+
+        System.out.println(lobbies);
     }
 
     /**

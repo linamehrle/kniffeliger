@@ -2,6 +2,7 @@ package server.networking;
 
 import client.networking.CommandsClientToServer;
 import server.ListManager;
+import server.Lobby;
 import server.Player;
 import server.gamelogic.GameManager;
 
@@ -63,18 +64,26 @@ public class ServerInputHelper implements Runnable {
             case CHAT -> Communication.sendChat(player, input[1]);
             case WHSP -> Communication.sendWhisper(player, input[1]);
             case LOLI -> serverOutput.send(CommandsServerToClient.LOLI, ListManager.returnLobbyListAsString());
-            case CRLO -> ListManager.createNewLobby(player, input[1]);
-            case ENLO -> player.enterLobby(input[1]);
-            case LELO -> player.leaveLobby();
-            case LOCH -> Communication.sendToLobby(player, input[1]);
-            case STRT -> {
-                player.getLobby().startGame(player);
-                Communication.broadcastToAll(player.getLobby().getPlayersInLobby(), "Let the games begin!");
+            case CRLO -> {
+                ListManager.createNewLobby(player, input[1]);
+                Communication.broadcastToAll(CommandsServerToClient.CRLO, input[1]+ " (" +
+                        ListManager.getLobbyByName(input[1]).getStatus() + ")");
             }
-            //case ROLL -> serverOutput.send(CommandsServerToClient.DICE, GameManager.stringsAndRockNRoll());
-            case GAME -> player.getLobby().getGameManager().getAnswer(input[1]);
+            case ENLO -> {
+                player.enterLobby(input[1]);
+                Communication.broadcastToAll(CommandsServerToClient.ENLO, input[1] + " (" +
+                        ListManager.getLobbyByName(input[1]).getStatus() + "):" + player.getUsername()); //make this pretty?
+            }
+            case LELO -> {
+                Communication.broadcastToAll(CommandsServerToClient.LELO,
+                        player.getLobby().getName() + " ("+ player.getLobby().getStatus() + "):" + player.getUsername());
+                player.leaveLobby();
+            }
+            case LOCH -> Communication.sendToLobby(player, input[1]);
+            case STRT -> player.getLobby().startGame(player);
+            //case ROLL -> serverOutput.send(CommandsServerToClient.DICE, GameManager.stringsAndRockNRoll()); method does not work
             /*case SAVE -> {
-                //GameManager.saveDice(input[1]);
+                GameManager.saveDice(input[1]);
                 serverOutput.send(CommandsServerToClient.BRCT, "Dice successfully saved");
             }*/
 

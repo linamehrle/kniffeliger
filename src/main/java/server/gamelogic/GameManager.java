@@ -237,7 +237,7 @@ public class GameManager implements Runnable {
 
                                 // saves dice player wants to save
                                 Communication.sendToPlayer(currentPlayer, "Which dice do you want to keep? Write with a space in between the name/number of the dice you want to save.");
-                                
+
                                 wait();
 
                                 if (input.equals("none")){
@@ -407,7 +407,6 @@ public class GameManager implements Runnable {
      * dice, so it has not been saved and if it has less than 3 rolls. Saves dice automatically if it has been rolled 3 times.
      *
      * @param playersDice dice client hands to server
-     * @return new rolled dice
      */
     public void rollDice(Dice[] playersDice) {
         // handle NullPointerException if Dice array has only values null

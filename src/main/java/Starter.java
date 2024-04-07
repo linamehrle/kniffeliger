@@ -84,6 +84,6 @@ public class Starter {
         int port = Integer.parseInt(args[1]);
 
         // start server
-        server.Server server = new Server(port);
+        Server server = new Server(port);
     }
 }

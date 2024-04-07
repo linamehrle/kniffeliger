@@ -54,6 +54,21 @@ public enum CommandsServerToClient {
     /**
      * Gives a list of special action the player has to the client to print out
      */
-    SHAC
+    SHAC,
+
+    /**
+     * Used to tell the gui that a new lobby has been created
+     */
+    CRLO,
+
+    /**
+     * Used to tell the gui that a player has entered a lobby
+     */
+    ENLO,
+
+    /**
+     * Used to tell the gui that a player has left a lobby
+     */
+    LELO
 
 }

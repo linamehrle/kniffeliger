@@ -1,7 +1,5 @@
 /*package server.gamelogic;
 
-import java.util.Scanner;
-
 // TODO javadoc for class
 public class Main {
 

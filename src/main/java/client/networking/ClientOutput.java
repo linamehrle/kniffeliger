@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
  * This class handles outgoing commands and messages from client to server.
  */
 public class ClientOutput {
-    private BufferedWriter out;
+    private static BufferedWriter out;
 
     /**
      * The constructor for ClientOutput, it starts the output stream to the server.
@@ -70,7 +70,7 @@ public class ClientOutput {
      * @param cmd command as defined by the network protocol
      * @param message
      */
-    public synchronized void send(CommandsClientToServer cmd, String message) {
+    public static synchronized void send(CommandsClientToServer cmd, String message) {
         sendToServer(cmd.toString() + " " + message);
     }
 
@@ -78,7 +78,7 @@ public class ClientOutput {
      * This method writes the message to the server on the out-stream
      * @param message has to contain a command first, then a blank followed by a non-empty message
      */
-    public synchronized void sendToServer(String message) {
+    public static synchronized void sendToServer(String message) {
         try {
             out.write(message);
             out.newLine();

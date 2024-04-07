@@ -2,6 +2,8 @@ package client;
 
 import client.gui.CWLauncher;
 import client.gui.ChatWindow;
+import client.gui.Main;
+
 import client.networking.ClientInput;
 import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
@@ -9,6 +11,9 @@ import client.networking.ConsoleInput;
 import client.networking.Pong;
 import java.io.IOException;
 import java.net.Socket;
+
+import javafx.application.Application;
+import javafx.application.Platform;
 
 /**
  * This is the main class for the client. It contains the input thread for the console and from the server and the
@@ -79,6 +84,11 @@ public class Client {
         chatWindow = new CWLauncher(clientOutput);
 
 
+        //start the gui
+        //guiThread = new Thread(() -> Main.main(new String[0]));
+        //guiThread.start();
+        Application.launch(Main.class);
+
         // print welcome text
         String welcomeText = "======================================================================\n" +
                 "====                        Kniffeliger                           ====\n" +
@@ -125,6 +135,8 @@ public class Client {
             pong.stop();
             socket.close();
             clientOutput.stop();
+            //TODO how to stop the gui thread
+            //Platform.exit();
             System.out.println("Goodbye!");
         } catch (IOException e) {
             e.printStackTrace();
