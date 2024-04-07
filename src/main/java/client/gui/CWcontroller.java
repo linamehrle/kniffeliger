@@ -8,6 +8,9 @@ import client.networking.ClientOutput;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.Event;
@@ -50,23 +53,25 @@ public class CWcontroller implements Initializable {
     VBox msgDisplayAll;
     //choice box to chose recipient
     @FXML
-    private ChoiceBox recID;
+    private ChoiceBox<String> recID;
     private Player player;
     private String recipient;
-    private List<String> userNameList;
-    ArrayList<Player> playerList;
+    //private List<String> userNameList;
+    //ArrayList<Player> playerList;
     //private ClientOutput networkManager;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        //this.networkManager = ;
-        // will be used later to select user for whisper chat TODO: replace by real usernames
+        //TODO: replace by real usernames, maybe use dictionary structure with userID as key, such that username can be changed without changing display order and colour
+        //will be used later to select user for whisper chat
         String[] userList = {"all", "usr1", "usr2", "usr3"};
+
+
         //playerList .getPlayerList();
         //userNameList = makeUsernameList(playerList);
         //cast String[] to Object[] to remove warning when compiling
-        setChoiceBox(recID, (Object[])userList);
+        setChoiceBox(recID, userList);
 
         //set default recipient to all (corresponds to \chat in console)
         setRecipient("all");
@@ -87,7 +92,8 @@ public class CWcontroller implements Initializable {
         });
             //this enables the ENTER key to fire SEND button (not good method for complex GUIs)
         buttonSend.setDefaultButton(true);
-        //networkManager = ChatWindow.getNetworkManager();
+
+        System.out.println("CW controller initialized");
     }
 
     /** Method which handles the addition of text to chat window
@@ -169,7 +175,6 @@ public class CWcontroller implements Initializable {
 
     /**
      * method to send messages to server, this is the standard method to send messages over the chatwindow
-     * TODO: infer command from choice in choicebox (i.e. CHAT if 'all' is selected, WHSP if 'user' is selected
      * @param messageBody message to send (without commands to server and without username)
      */
     public void sendMsgtoServer(String messageBody){
@@ -178,12 +183,15 @@ public class CWcontroller implements Initializable {
         //TODO: add error handling for unkown user names (although this should never occur)
         switch(receiver) {
             case "":
-                ClientOutput.sendToServer("CHAT" + messageBody);
+                ClientOutput.sendToServer("CHAT " + messageBody);
+                break;
             case "all":
-                ClientOutput.sendToServer("CHAT" + messageBody);
+                ClientOutput.sendToServer("CHAT " + messageBody);
+                break;
             default:
                 ClientOutput.sendToServer("WHSP " + receiver + " " + messageBody);
         }
+
     }
 
 
@@ -195,8 +203,10 @@ public class CWcontroller implements Initializable {
         return userNameList;
     }
 
-    public static void setChoiceBox(ChoiceBox choiceBox, Object[] values){
-        choiceBox.getItems().addAll(values);
+    public static void setChoiceBox(ChoiceBox<String> choiceBox, String[] values) {
+        ObservableList<String> userNameList = FXCollections.observableArrayList();
+        choiceBox.setItems(userNameList);
+        userNameList.addAll(values);
     }
     //public void setNetworkManager(ClientOutput clientOutput){
         //this.networkManager = clientOutput;
