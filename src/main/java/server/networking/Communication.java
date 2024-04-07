@@ -15,8 +15,7 @@ public class Communication {
      * sends a message from the server to all connected clients
      * @param message
      */
-    public static void broadcastToAll(CommandsServerToClient cmd, String message) {
-        ArrayList<Player> playerList = ListManager.getPlayerList();
+    public static void broadcastToAll(CommandsServerToClient cmd, ArrayList<Player> playerList, String message) {
         for (Player player : playerList) {
             ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
             serverOutput.send(cmd, message);

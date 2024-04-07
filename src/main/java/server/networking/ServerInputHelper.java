@@ -66,16 +66,16 @@ public class ServerInputHelper implements Runnable {
             case LOLI -> serverOutput.send(CommandsServerToClient.LOLI, ListManager.returnLobbyListAsString());
             case CRLO -> {
                 ListManager.createNewLobby(player, input[1]);
-                Communication.broadcastToAll(CommandsServerToClient.CRLO, input[1]+ " (" +
+                Communication.broadcastToAll(CommandsServerToClient.CRLO,ListManager.getPlayerList(), input[1]+ " (" +
                         ListManager.getLobbyByName(input[1]).getStatus() + ")");
             }
             case ENLO -> {
                 player.enterLobby(input[1]);
-                Communication.broadcastToAll(CommandsServerToClient.ENLO, input[1] + " (" +
+                Communication.broadcastToAll( CommandsServerToClient.ENLO,ListManager.getPlayerList(), input[1] + " (" +
                         ListManager.getLobbyByName(input[1]).getStatus() + "):" + player.getUsername()); //make this pretty?
             }
             case LELO -> {
-                Communication.broadcastToAll(CommandsServerToClient.LELO,
+                Communication.broadcastToAll(CommandsServerToClient.LELO,ListManager.getPlayerList(),
                         player.getLobby().getName() + " ("+ player.getLobby().getStatus() + "):" + player.getUsername());
                 player.leaveLobby();
             }

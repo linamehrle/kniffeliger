@@ -1,6 +1,7 @@
 package server.gamelogic;
 
 import server.Player;
+import server.networking.CommandsServerToClient;
 import server.networking.Communication;
 
 import java.util.ArrayList;
@@ -64,11 +65,11 @@ public class GameManager implements Runnable {
         }
 
         // starting the game and sending all players in lobby a message
-        Communication.broadcastToAll(playerArraysList, "############################################## LET THE GAME BEGIN ##############################################");
+        Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "############################################## LET THE GAME BEGIN ##############################################");
 
         // starting 14 rounds
         for (int round = 0; round < ROUNDS; round++) {
-            Communication.broadcastToAll(playerArraysList, "################################################### ROUND " + (round + 1) + " ###################################################");
+            Communication.broadcastToAll(CommandsServerToClient.BRCT,playerArraysList, "################################################### ROUND " + (round + 1) + " ###################################################");
 
             // for each round we go through a player
             for (EntrySheet currentEntrySheet : allEntrySheets) {
@@ -86,7 +87,7 @@ public class GameManager implements Runnable {
                 }
 
                 // prints whose current turn it is
-                Communication.broadcastToAll(helpersPlayersArrayList, "It is " + currentPlayer.getUsername() + " turn!");
+                Communication.broadcastToAll(CommandsServerToClient.BRCT,helpersPlayersArrayList, "It is " + currentPlayer.getUsername() + " turn!");
                 Communication.sendToPlayer(currentPlayer, "It is your turn! Your action dice are/is: " + ActionDice.printActionDice(currentEntrySheet.getPlayer().getActionDice()));
 
                 // variable that checks at very end if all dice are saved
@@ -211,7 +212,7 @@ public class GameManager implements Runnable {
                         EntrySheet sheetOfVictim = Helper.getEntrySheetByName(allEntrySheets, nameOfVictim);
                         ActionDice.steal(currentEntrySheet, sheetOfVictim, nameOfEntry);
                         Communication.sendToPlayer(currentPlayer, "You just stole " + nameOfEntry + " from " + nameOfVictim);
-                        Communication.broadcastToAll(helpersPlayersArrayList, currentPlayer.getUsername() + " just stole the entry '" + nameOfEntry + "' from " + nameOfVictim);
+                        Communication.broadcastToAll(CommandsServerToClient.BRCT,helpersPlayersArrayList, currentPlayer.getUsername() + " just stole the entry '" + nameOfEntry + "' from " + nameOfVictim);
                         deleteActionDice(currentPlayer, "steal");
                         stealingDicePlayed = true;
 
@@ -233,7 +234,7 @@ public class GameManager implements Runnable {
                                 }
                                 rolledDiceAsString = rolledDiceAsString + "Dice " + 5 + ": " + allDice[4].getDiceValue();
                                 Communication.sendToPlayer(currentPlayer, "Your dice: " + rolledDiceAsString);
-                                Communication.broadcastToAll(helpersPlayersArrayList, currentPlayer.getUsername() + " rolled: " + rolledDiceAsString);
+                                Communication.broadcastToAll(CommandsServerToClient.BRCT,helpersPlayersArrayList, currentPlayer.getUsername() + " rolled: " + rolledDiceAsString);
 
                                 // saves dice player wants to save
                                 Communication.sendToPlayer(currentPlayer, "Which dice do you want to keep? Write with a space in between the name/number of the dice you want to save.");
@@ -259,7 +260,7 @@ public class GameManager implements Runnable {
                                     }
                                 }
                                 Communication.sendToPlayer(currentPlayer, "You saved the dice: " + savedDiceAsString);
-                                Communication.broadcastToAll(helpersPlayersArrayList, currentPlayer.getUsername() + " saved: " + savedDiceAsString);
+                                Communication.broadcastToAll(CommandsServerToClient.BRCT,helpersPlayersArrayList, currentPlayer.getUsername() + " saved: " + savedDiceAsString);
                                 // checks if any unsaved dice is available to roll
                                 allDiceSaved = true;
                                 for (Dice d : allDice) {
@@ -284,19 +285,19 @@ public class GameManager implements Runnable {
 
                         }
                         Communication.sendToPlayer(currentPlayer, "This is your entry sheet:" + currentEntrySheet.printEntrySheet());
-                        Communication.broadcastToAll(helpersPlayersArrayList, currentPlayer.getUsername() + "'s entry sheet: " + currentEntrySheet.printEntrySheet());
+                        Communication.broadcastToAll(CommandsServerToClient.BRCT,helpersPlayersArrayList, currentPlayer.getUsername() + "'s entry sheet: " + currentEntrySheet.printEntrySheet());
                     }
                 }
                 // hand player the action dice and let player know the action dice (everybody else just knows that they got an action dice but not what kind)
                 boolean getActionDice = addActionDice(allDice, currentPlayer);
                 if (getActionDice) {
                     Communication.sendToPlayer(currentPlayer, "Your action dice is/are now: " + ActionDice.printActionDice(currentEntrySheet.getPlayer().getActionDice()));
-                    Communication.broadcastToAll(helpersPlayersArrayList, currentPlayer.getUsername() + " got an action dice.");
+                    Communication.broadcastToAll(CommandsServerToClient.BRCT,helpersPlayersArrayList, currentPlayer.getUsername() + " got an action dice.");
                 }
             }
-            Communication.broadcastToAll(playerArraysList, "############################################## ALL ENTRY SHEETS ##############################################");
+            Communication.broadcastToAll(CommandsServerToClient.BRCT,playerArraysList, "############################################## ALL ENTRY SHEETS ##############################################");
             for (EntrySheet e : allEntrySheets) {
-                Communication.broadcastToAll(playerArraysList, e.getUsername() + "-------------------" + e.printEntrySheet());
+                Communication.broadcastToAll(CommandsServerToClient.BRCT,playerArraysList, e.getUsername() + "-------------------" + e.printEntrySheet());
             }
 
             /*
