@@ -5,11 +5,14 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import org.apache.logging.log4j.Logger;
+import starter.Starter;
 
 /**
  * This class handles outgoing commands and messages from client to server.
  */
 public class ClientOutput {
+    private Logger logger = Starter.logger;
     private static BufferedWriter out;
 
     /**
@@ -38,9 +41,7 @@ public class ClientOutput {
                 case "\\showLobbies" -> sendToServer("LOLI show me all lobbies");
                 case "\\leaveLobby" -> sendToServer("LELO byebye");
                 case "\\start" -> sendToServer("STRT start a game");
-                case "\\showEntrySheet" -> sendToServer("SHES myOwnSheet"); //without parameter your own entry sheet is shown
-                //case "\\showActions" -> sendToServer("SHAC all my actions"); only in the gui??
-                default -> System.out.println("Invalid input entered");
+                default -> logger.info("Invalid input entered");
 
             }
 
@@ -56,10 +57,8 @@ public class ClientOutput {
                 case "\\enterLobby" -> sendToServer("ENLO " + input[1]);
                 case "\\lobbyChat" -> sendToServer("LOCH " + input[1]);
                 case "\\gameAction" -> sendToServer("GAME " + input[1]);
-                //case "\\showEntrySheet" -> sendToServer("SHES " + input[1]); //entry sheet of another player
-                //case "\\playAction" -> sendToServer("PLAC " + input[1]);
-                //case "\\enterCombination" -> sendToServer("ENCO " + input[1]);
-                default -> System.out.println("Invalid command or message entered: command " + input[0] + " message " + input[1]);
+                //TODO get list of players
+                default -> logger.info("Invalid command or message entered: command " + input[0] + " message " + input[1]);
             }
         }
 

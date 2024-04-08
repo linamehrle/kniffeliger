@@ -5,10 +5,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
+import org.apache.logging.log4j.Logger;
+import starter.Starter;
+
 /**
  * This is the thread that reads input from the console.
  */
 public class ConsoleInput implements Runnable {
+    Logger logger = Starter.logger;
 
     /**
      * This variable indicates whether the thread is running. It will be set true when the client disconnects.
@@ -35,12 +39,11 @@ public class ConsoleInput implements Runnable {
             while (!stop) {
                 if(in.ready()) {
                     String message = in.readLine();
-                    //System.out.println("read the following message: " + message);
                     clientOutput.sendFromConsoleIn(message);
                 }
             }
         } catch(IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 

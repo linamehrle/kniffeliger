@@ -1,7 +1,8 @@
 package server.networking;
 
+import org.apache.logging.log4j.Logger;
 import server.Player;
-
+import starter.Starter;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
  * the client and a separate thread for the ping.
  */
 public class ClientThread implements Runnable{
+
+    Logger logger = Starter.logger;
 
     private Player player;
     private Socket socket;
@@ -41,7 +44,7 @@ public class ClientThread implements Runnable{
         thread.start();
 
         // connection
-        System.out.println("Connection with " + player.getUsername() + " established");
+        logger.info("Connection with " + player.getUsername() + " established");
 
         serverOutput.send(CommandsServerToClient.BRCT, "Connection to server established");
         Communication.broadcast(player.getPlayerList(), player, "Player " + player.getUsername() + " connected to the server");
@@ -108,7 +111,7 @@ public class ClientThread implements Runnable{
             serverOutput.stop();
             socket.close();
 
-            System.out.println(player.getUsername() + " has successfully disconnected");
+            logger.info(player.getUsername() + " has successfully disconnected");
         } catch (IOException e) {
             e.printStackTrace();
         }

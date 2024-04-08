@@ -2,7 +2,6 @@ package client.gui;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -14,8 +13,15 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+/**
+ * This is the controller class for the LobbyWindow, which lets the player create or enter a lobby.
+ * It implements Initializable
+ */
 public class LobbyWindowController implements Initializable {
+    private Logger logger = LogManager.getLogger(LobbyWindowController.class);
 
     @FXML
     private TreeView<String> lobbyList = new TreeView<>();
@@ -35,6 +41,9 @@ public class LobbyWindowController implements Initializable {
 
     private boolean hasBeenInitialized = false;
 
+    /**
+     * Handles when the button createLobby is pressed, sends the request to create a new lobby to the server
+     */
     public void createLobbyAction(){
         String lobbyName = lobbyTextField.getText();
         ClientOutput.send(CommandsClientToServer.CRLO, lobbyName);
@@ -42,6 +51,10 @@ public class LobbyWindowController implements Initializable {
         lobbyTextField.clear();
     }
 
+    /**
+     * Handles when the button enterLobby is pressed, sends the request to enter a lobby to the server
+     * @param event
+     */
     public void enterLobbyAction(ActionEvent event) {
         String[] splitLobbyAndStatus = selectedLobby.split(" ");
         ClientOutput.send(CommandsClientToServer.ENLO, splitLobbyAndStatus[0]);
@@ -49,20 +62,32 @@ public class LobbyWindowController implements Initializable {
         SceneController.switchToGameWindow(event);
     }
 
+    /**
+     * Handles when the button leaveGame is pressed
+     */
     public void leaveGame() {
         Main.exit();
     }
 
+    /**
+     * Handles what happens when a Lobby in the TreeView is selected
+     */
     public void selectLobby() {
         TreeItem<String> currentItem = lobbyList.getSelectionModel().getSelectedItem();
 
         if (currentItem != null) {
+            //selects the current lobby to possibly enter
             selectedLobby = currentItem.getValue();
         }
 
+        //enables the button to enter the chosen lobby
         enterLobbyButton.setDisable(false);
     }
 
+    /**
+     * Gets the initial list of existing lobbies from the server and displays it in the tree view
+     * @param lobbies the list of lobbies from the server, it is of the form "Lobbie:player:player,Lobbie:player..."
+     */
     public void initializeLobbyList(String lobbies) {
 
         if(lobbies.equals("")) {
@@ -82,12 +107,20 @@ public class LobbyWindowController implements Initializable {
         }
     }
 
+    /**
+     * Adds a new Lobby to the TreeView
+     * @param name
+     */
     public void addLobby(String name) {
         TreeItem<String> newLobby = new TreeItem<>(name);
         lobbyList.getRoot().getChildren().add(newLobby);
         lobbyCounter++;
     }
 
+    /**
+     * Adds a new Player to a Lobby in the TreeView
+     * @param lobbyAndPlayerName
+     */
     public void addPlayerToLobby(String lobbyAndPlayerName) {
         String[] splitInLobbyAndPlayer = lobbyAndPlayerName.split(":");
 
@@ -101,17 +134,21 @@ public class LobbyWindowController implements Initializable {
         }
     }
 
+    /**
+     * Removes a player from a lobby in the TreeView
+     * @param lobbyAndPlayerName
+     */
     public void removePlayerFromList(String lobbyAndPlayerName) {
         String[] splitInLobbyAndPlayer = lobbyAndPlayerName.split(":");
-        System.out.println("lobby: " + splitInLobbyAndPlayer[0]);
+        logger.debug("lobby: " + splitInLobbyAndPlayer[0]);
 
         for (TreeItem<String> treeItem : lobbyList.getRoot().getChildren()) {
-            System.out.println("Tree item found, " + treeItem.getValue());
+            logger.debug("Tree item found, " + treeItem.getValue());
             if(treeItem.getValue().equals(splitInLobbyAndPlayer[0])) {
-                System.out.println("lobby found");
+                logger.debug("lobby found");
                 for (TreeItem<String> playerInLobby : treeItem.getChildren()) {
                     if (playerInLobby.getValue().equals(splitInLobbyAndPlayer[1])) {
-                        System.out.println("player found");
+                        logger.debug("player found");
                         playerInLobby.getParent().getChildren().remove(playerInLobby);
                         return;
                     }
@@ -121,8 +158,19 @@ public class LobbyWindowController implements Initializable {
 
     }
 
+    /**
+     * The initialize Method for the Lobby Window
+     * @param location
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resources
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        logger.info("The Lobby Window has been initialized");
 
         Main.setLobbyWindowController(this);
 

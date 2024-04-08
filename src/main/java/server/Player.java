@@ -3,16 +3,20 @@ package server;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.Logger;
 import server.gamelogic.ActionDice;
 import server.networking.ClientThread;
 import server.networking.CommandsServerToClient;
 import server.networking.Communication;
+import starter.Starter;
 
 /**
  * This class contains all methods and information (e.g. username) about one single Player/Client that is connected
  * to the server.
  */
 public class Player {
+
+    Logger logger = Starter.logger;
 
     /**
      * This variable counts all instances of connected players.
@@ -70,7 +74,7 @@ public class Player {
         playerThreadManager.sendToServerOutput(CommandsServerToClient.BRCT, "Your username is now " + username);
         Communication.broadcast(this.getPlayerList(), this, "Player " + savedUsername + " has changed their name to " + username);
 
-        System.out.println("Player " + savedUsername + " has changed their name to " + username);
+        logger.info("Player " + savedUsername + " has changed their name to " + username);
 
     }
 

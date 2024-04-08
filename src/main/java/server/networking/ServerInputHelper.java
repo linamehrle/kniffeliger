@@ -1,15 +1,17 @@
 package server.networking;
 
 import client.networking.CommandsClientToServer;
+import org.apache.logging.log4j.Logger;
 import server.ListManager;
-import server.Lobby;
 import server.Player;
-import server.gamelogic.GameManager;
+import starter.Starter;
 
 /**
  * This class handles the input read by the ServerInput class and processes it accordingly.
  */
 public class ServerInputHelper implements Runnable {
+
+    Logger logger = Starter.logger;
 
     ClientThread clientThread;
     String message;
@@ -40,16 +42,10 @@ public class ServerInputHelper implements Runnable {
         String[] input = message.split(" ", 2);
         CommandsClientToServer cmd;
 
-        /*if (input.length != 2) {
-            System.out.println("Invalid message to server");
-            serverOutput.send(CommandsServerToClient.BRCT, "Invalid message: try again.");
-            return;
-        }*/
-
         try {
             cmd = CommandsClientToServer.valueOf(input[0].toUpperCase());
         } catch (IllegalArgumentException e) {
-            System.out.println("Received invalid command " + input[0]);
+            logger.info("Received invalid command " + input[0]);
             serverOutput.send(CommandsServerToClient.BRCT, "Invalid command: try again.");
             return;
         }
@@ -82,23 +78,7 @@ public class ServerInputHelper implements Runnable {
             case LOCH -> Communication.sendToLobby(player, input[1]);
             case STRT -> player.getLobby().startGame(player);
             case GAME -> player.getLobby().getGameManager().getAnswer(input[1]);
-            //case ROLL -> serverOutput.send(CommandsServerToClient.DICE, GameManager.stringsAndRockNRoll()); method does not work
-            /*case SAVE -> {
-                GameManager.saveDice(input[1]);
-                serverOutput.send(CommandsServerToClient.BRCT, "Dice successfully saved");
-            }*/
-
-            //case SHES -> serverOutput.send(CommandsServerToClient.SHES, function to get entry sheet as string by username);
-            //function by anisja
-            //if (input[1].equals(myOwnSheet)) { print the own sheet of the player }
-
-            //case SHAC -> serverOutput.send(CommandsServerToClient.SHAC, function to get actions as one string);
-            //function by anisja or in the player? only in the gui?
-
-            //case PLAC -> give the action to the game manager, handles by anisja
-
-            //case ENCO -> give the comb name to the game manager to enter the dice in the entry sheet, handled by anisja
-            default -> System.out.println("unknown command received from client " + message);
+            default -> logger.info("unknown command received from client " + message);
 
         }
     }

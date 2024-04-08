@@ -3,12 +3,16 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import org.apache.logging.log4j.Logger;
+import starter.Starter;
 
 /**
  * This is the main class for the server. It contains a list of all connected clients. When it is constucted,
  * it waits for new connections and starts a new object Player every time.
  */
 public class Server {
+
+    Logger logger = Starter.logger;
 
     private ServerSocket serverSocket;
 
@@ -22,7 +26,7 @@ public class Server {
             serverSocket = new ServerSocket(port);
 
             // connection established
-            System.out.println("Waiting for connection on " + port);
+            logger.info("Waiting for connection on " + port);
 
             while(true) {
                 // wait for connections and create new player
@@ -31,7 +35,7 @@ public class Server {
                 ListManager.addPlayer(player);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 }

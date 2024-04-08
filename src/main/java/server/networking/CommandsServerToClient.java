@@ -37,24 +37,9 @@ public enum CommandsServerToClient {
     CHAT,
 
     /**
-     * Returns the rolled dice to the player
-     */
-    DICE,
-
-    /**
      * Returns a list of all lobbies to the client
      */
     LOLI,
-
-    /**
-     * Sends the current entry sheet to the player to print out in the console
-     */
-    SHES,
-
-    /**
-     * Gives a list of special action the player has to the client to print out
-     */
-    SHAC,
 
     /**
      * Used to tell the gui that a new lobby has been created
@@ -69,6 +54,11 @@ public enum CommandsServerToClient {
     /**
      * Used to tell the gui that a player has left a lobby
      */
-    LELO
+    LELO,
+
+    /**
+     * Used to give out game related information to the client
+     */
+    GAME
 
 }

@@ -1,11 +1,8 @@
 package server;
 
 import java.util.ArrayList;
-
 import server.gamelogic.GameManager;
 import server.networking.Communication;
-import server.networking.CommandsServerToClient;
-import server.networking.ServerOutput;
 
 /**
  * This class represents a lobby in the game
@@ -103,7 +100,6 @@ public class Lobby {
      * @param player
      */
     public void leaveLobby(Player player) {
-        ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
 
         if(!player.getLobby().equals(this)) {
             Communication.sendToPlayer(player, "You are not in this lobby");
@@ -124,6 +120,9 @@ public class Lobby {
 
     //TODO should you be able to rename a lobby?
 
+    /**
+     * Handles the lobby status at the end of the game
+     */
     public void gameEnded() {
         if(playersInLobby.size() == 4) {
             status = "full";
@@ -156,6 +155,10 @@ public class Lobby {
         return status;
     }
 
+    /**
+     * Getter for the Game Manager
+     * @return
+     */
     public GameManager getGameManager() {
         return gameManager;
     }

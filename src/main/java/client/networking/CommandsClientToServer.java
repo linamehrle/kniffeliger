@@ -39,16 +39,6 @@ public enum CommandsClientToServer {
     QUIT,
 
     /**
-     *  Communicates to the server that a player wants to roll all dice that are not saved
-     */
-    ROLL,
-
-    /**
-     * used to save certain dice, so they are not rerolled in the next roll
-     */
-    SAVE,
-
-    /**
      * Requests a list of all existing lobbies from the server to print in the console
      */
     LOLI,
@@ -77,26 +67,6 @@ public enum CommandsClientToServer {
      * Used to start a game in a lobby
      */
     STRT,
-
-    /**
-     * Requests the current entry sheet of a player from the server
-     */
-    SHES,
-
-    /**
-     * Requests a list od all special actions the player has acquired from the server
-     */
-    SHAC,
-
-    /**
-     * Indicates to the server that a player wants to play a special action with a given name
-     */
-    PLAC,
-
-    /**
-     * Used by a player to enter their dice in a field in the entry sheet
-     */
-    ENCO,
 
     /**
      * Gives all game related information to the GameManager on the server

@@ -1,8 +1,6 @@
 package server.networking;
 
 import java.util.ArrayList;
-
-import server.ListManager;
 import server.Lobby;
 import server.Player;
 
@@ -21,8 +19,6 @@ public class Communication {
             serverOutput.send(cmd, message);
         }
     }
-
-    //TODO added command as parameter, fix in use cases
 
     /**
      * sends a message from the server to all clients in the list but the single specified player
@@ -120,9 +116,5 @@ public class Communication {
             }
         }
     }
-
-    //TODO eigene funktion um vom server nur an einen player zu senden?
-
-    //TODO broadcast to lobby needed for game?
 
 }

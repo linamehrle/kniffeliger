@@ -6,6 +6,9 @@ import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
 import client.networking.ConsoleInput;
 import client.networking.Pong;
+import org.apache.logging.log4j.Logger;
+import starter.Starter;
+
 import java.io.IOException;
 import java.net.Socket;
 import javafx.application.Application;
@@ -17,6 +20,7 @@ import javafx.application.Application;
  * The class also contains a disconnect method which closes all threads when the client disconnects.
  */
 public class Client {
+    Logger logger = Starter.logger;
 
     private Socket socket;
     private ConsoleInput consoleInput;
@@ -52,20 +56,11 @@ public class Client {
             Thread pongThread = new Thread(pong);
             pongThread.start();
 
-
-
-            //logicManager = new GameLogicManager(); for later
         } catch (IOException e) {
-            System.out.println("no server found\ngoodbye!");
-            //e.printStackTrace();
+            logger.info("no server found, goodbye!");
+            logger.info(e.getMessage());
             return;
         }
-
-        //start chatwindow
-        //Thread guiThread = new Thread(() -> ChatWindow.main(new String[0]));
-        //guiThread.start();
-        //CWLauncher chatWindow = new CWLauncher();
-        //new Thread(() -> Application.launch(ChatWindow.class)).start();
 
         // print welcome text
         String welcomeText = "======================================================================\n" +
@@ -94,9 +89,7 @@ public class Client {
         }
 
         //start the gui
-        //guiThread = new Thread(() -> Main.main(new String[0]));
-        //guiThread.start();
-        System.out.println("before Main launch");
+        logger.debug("before main Launch");
         Application.launch(Main.class);
     }
 

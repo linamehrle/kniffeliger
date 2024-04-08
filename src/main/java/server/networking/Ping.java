@@ -1,11 +1,14 @@
 package server.networking;
 
+import org.apache.logging.log4j.Logger;
 import server.Player;
+import starter.Starter;
 
 /**
  * This class handles the thread which sends a ping to the client in set intervals. It also handles a timeout.
  */
 public class Ping implements Runnable{
+    Logger logger = Starter.logger;
 
     /**
      * This variable indicates whether the thread is running. It will be set true when the client disconnects.
@@ -37,17 +40,16 @@ public class Ping implements Runnable{
 
         while (!stop && Math.abs(System.currentTimeMillis() - lastReceivedPong) < 5000) {
             serverOutput.send(CommandsServerToClient.PING, String.valueOf(System.currentTimeMillis()));
-            //System.out.println("Ping send");
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
         }
 
         // this occurs if a timeout is detected
         if (!stop) {
-           System.out.println(player.getUsername() + " has timed out");
+           logger.info(player.getUsername() + " has timed out");
            clientThread.disconnect();
         }
 
@@ -59,7 +61,6 @@ public class Ping implements Runnable{
      */
     public void updatePong(String pongTime) {
         lastReceivedPong = Long.parseLong(pongTime);
-        //System.out.println("Pong received and updated");
     }
 
     /**

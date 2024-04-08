@@ -5,10 +5,15 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
+import org.apache.logging.log4j.Logger;
+import starter.Starter;
+
 /**
  * This thread reads the input coming from the client.
  */
 public class ServerInput implements Runnable {
+
+    Logger logger = Starter.logger;
 
     /**
      * This variable indicates whether the thread is running. It will be set true when the client disconnects.
@@ -51,7 +56,7 @@ public class ServerInput implements Runnable {
             in.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 

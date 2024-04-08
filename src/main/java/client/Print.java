@@ -42,14 +42,4 @@ public class Print {
         }
     }
 
-    /**
-     * Prints the current actions the player has acquired to the terminal
-     * @param actions must have the form "ActionName: number, ActionName: number, ... "
-     */
-    public static void printActions(String actions) {
-        String[] splitActions = actions.split(",");
-        for (int i = 0; i < splitActions.length; i++) {
-            System.out.println(splitActions[i]);
-        }
-    }
 }

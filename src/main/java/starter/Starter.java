@@ -1,3 +1,5 @@
+package starter;
+
 import client.Client;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -125,5 +127,9 @@ public class Starter {
 
         // start server
         Server server = new Server(port);
+    }
+
+    public static Logger getLogger() {
+        return logger;
     }
 }
