@@ -244,3 +244,6 @@ gradle-app.setting
 # End of https://www.toptal.com/developers/gitignore/api/windows,linux,macos,intellij,java,gradle
 
 .idea/*
+
+# keep log files local
+**/logs/
