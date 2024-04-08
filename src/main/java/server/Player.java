@@ -97,6 +97,8 @@ public class Player {
      * Used by the player to leave the lobby they are in
      */
     public void leaveLobby() {
+        Communication.broadcastToAll(CommandsServerToClient.LELO, playerList,
+                getLobby().getName() + " ("+ getLobby().getStatus() + "):" + username);
         lobby.leaveLobby(this);
     }
 
@@ -112,6 +114,9 @@ public class Player {
         } else {
             playerThreadManager.getServerOutput().send(CommandsServerToClient.BRCT, "There is no lobby with this name");
         }
+
+        Communication.broadcastToAll(CommandsServerToClient.ENLO, playerList, name + " (" +
+                getLobby().getStatus() + "):" + username);
     }
 
     //TODO remove player from lobby when disconnecting? how to handle possible reconnect?
