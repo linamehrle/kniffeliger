@@ -150,7 +150,6 @@ public class CWcontroller implements Initializable {
      */
     //display message from server TODO: display messages from different users in different ways
     public void addMsgReceived(String messageFromServer, VBox displayLocation){
-        System.out.println("Message received: " + messageFromServer);
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER_LEFT);
         hBox.setPadding(new Insets(5, 5, 5, 10));
@@ -181,7 +180,6 @@ public class CWcontroller implements Initializable {
      * @param message message to send, contains @all, @lobby or @username at the beginning followed by a space
      */
     public void sendMsgtoServer(String message){
-        System.out.println("Message to send is: " + message);
 
         //at the moment the default is to send a message to everybody (if no @... is at the beginning)
         if (message.charAt(0) != '@') {
@@ -231,6 +229,5 @@ public class CWcontroller implements Initializable {
     public void displayReceivedMessage(String message) {
         //display this in the chat window, message is "username: message"
         addMsgReceived(message, msgDisplayAll);
-        System.out.println("GUI received: " + message);
     }
 }

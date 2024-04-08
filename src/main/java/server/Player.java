@@ -97,8 +97,6 @@ public class Player {
      * Used by the player to leave the lobby they are in
      */
     public void leaveLobby() {
-        Communication.broadcastToAll(CommandsServerToClient.LELO, playerList,
-                getLobby().getName() + " ("+ getLobby().getStatus() + "):" + username);
         lobby.leaveLobby(this);
     }
 

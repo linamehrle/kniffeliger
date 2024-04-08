@@ -108,10 +108,12 @@ public class Lobby {
         }
 
         if (!status.equals("ongoing game")) {
-            playersInLobby.remove(player);
             numbOfPlayers--;
-            player.setLobby(null);
             Communication.sendToPlayer(CommandsServerToClient.BRCT, player, "You successfully left the lobby " + name);
+            Communication.broadcastToAll(CommandsServerToClient.LELO, ListManager.getPlayerList(),
+                    player.getLobby().getName() + " ("+ player.getLobby().getStatus() + "):" + player.getUsername());
+            playersInLobby.remove(player);
+            player.setLobby(null);
             if (status.equals("full")) {
                 status = "open";
             }
