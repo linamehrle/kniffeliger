@@ -59,6 +59,11 @@ public enum CommandsServerToClient {
     /**
      * Used to give out game related information to the client
      */
-    GAME
+    GAME,
+
+    /**
+     * Returns a list with all connected players to the client
+     */
+    PLLI
 
 }

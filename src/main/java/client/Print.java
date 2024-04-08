@@ -49,4 +49,13 @@ public class Print {
         }
     }
 
+    public static void printPlayerList(String playerList) {
+        String[] players = playerList.split(",");
+
+        System.out.println("The connected players are:");
+        for (int i = 0; i < players.length; i++) {
+            System.out.println(players[i]);
+        }
+    }
+
 }

@@ -118,4 +118,12 @@ public class ListManager {
     public static ArrayList<Lobby> getLobbyList() {
         return lobbyList;
     }
+
+    public static String getPlayerListAsString() {
+        String playersAsString = "";
+        for (Player player : playerList) {
+            playersAsString += player.getUsername() + ",";
+        }
+        return playersAsString;
+    }
 }

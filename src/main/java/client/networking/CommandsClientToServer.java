@@ -39,7 +39,7 @@ public enum CommandsClientToServer {
     QUIT,
 
     /**
-     * Requests a list of all existing lobbies from the server to print in the console
+     * Requests a list of all existing lobbies and players in lobbies from the server to print in the console
      */
     LOLI,
 
@@ -71,6 +71,11 @@ public enum CommandsClientToServer {
     /**
      * Gives all game related information to the GameManager on the server
      */
-    GAME
+    GAME,
+
+    /**
+     * Requests a list of all connected players from the server to print in the console
+     */
+    PLLI
 
 }

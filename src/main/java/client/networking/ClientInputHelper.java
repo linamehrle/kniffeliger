@@ -75,6 +75,7 @@ public class ClientInputHelper implements Runnable {
                 logger.debug("LELO received with message: " + input[1]);
             }
             case GAME -> System.out.println("Game: " + input[1]);
+            case PLLI -> Print.printPlayerList(input[1]);
             default -> logger.info("unknown command received from server " + message);
         }
     }

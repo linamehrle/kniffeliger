@@ -41,6 +41,7 @@ public class ClientOutput {
                 case "\\showLobbies" -> sendToServer("LOLI show me all lobbies");
                 case "\\leaveLobby" -> sendToServer("LELO byebye");
                 case "\\start" -> sendToServer("STRT start a game");
+                case "\\showPlayers" -> sendToServer("PLLI show me all players");
                 default -> logger.info("Invalid input entered");
 
             }
