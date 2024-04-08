@@ -229,9 +229,9 @@ public class GameManager implements Runnable {
                                 String rolledDiceAsString = "";
                                 for (int i = 0; i < allDice.length - 1; i++) {
                                     int diceNumber = i + 1;
-                                    rolledDiceAsString = "Dice " + diceNumber + ": " + allDice[i].getDiceValue() + " ";
+                                    rolledDiceAsString = rolledDiceAsString + allDice[i].getDiceValue() + " ";
                                 }
-                                rolledDiceAsString = rolledDiceAsString + "Dice " + 5 + ": " + allDice[4].getDiceValue();
+                                rolledDiceAsString = rolledDiceAsString + allDice[4].getDiceValue();
                                 Communication.sendToPlayer(currentPlayer, "Your dice: " + rolledDiceAsString);
                                 Communication.broadcastToAll(helpersPlayersArrayList, currentPlayer.getUsername() + " rolled: " + rolledDiceAsString);
 
