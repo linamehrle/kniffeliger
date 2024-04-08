@@ -1,9 +1,6 @@
 package client;
 
-import client.gui.CWLauncher;
-import client.gui.ChatWindow;
 import client.gui.Main;
-
 import client.networking.ClientInput;
 import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
@@ -11,9 +8,7 @@ import client.networking.ConsoleInput;
 import client.networking.Pong;
 import java.io.IOException;
 import java.net.Socket;
-
 import javafx.application.Application;
-import javafx.application.Platform;
 
 /**
  * This is the main class for the client. It contains the input thread for the console and from the server and the
@@ -29,19 +24,12 @@ public class Client {
     private ClientOutput clientOutput;
     private Pong pong;
 
-    //private ChatWindow chatWindow;
-
-
-    //private GameLogicManager logicManager; for later
-
     /**
      * Constructor for the GameManager
      * @param hostName
      * @param port
      */
     public Client(String hostName, int port, String username) {
-
-        //TODO handle username given as input parameter
 
         try {
             socket = new Socket(hostName, port);

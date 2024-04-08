@@ -17,7 +17,7 @@ import java.net.URL;
  * The actions are implemented in the class CWcontroller
  * the controller is specified in the FXML and an instance of the class CWcontroller is created when loading
  */
-public class ChatWindow extends Application {
+/*public class ChatWindow extends Application {
     Stage window;
     //private static ClientOutput networkManager;
     CWcontroller controller;
@@ -71,4 +71,4 @@ public class ChatWindow extends Application {
 
 
 
-}
+}*/
