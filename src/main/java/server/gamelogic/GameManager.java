@@ -49,7 +49,7 @@ public class GameManager implements Runnable {
      * STARTER METHOD
      * #################################################################################################################
      */
-    public void starter() throws InterruptedException {
+    public synchronized void starter() throws InterruptedException {
         // TODO: use Communication class to print to client
         Player[] players = new Player[playerArraysList.size()];
         for (int i = 0; i < playerArraysList.size(); i++){
