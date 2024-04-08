@@ -75,7 +75,7 @@ public class ServerInputHelper implements Runnable {
                         player.getLobby().getName() + " ("+ player.getLobby().getStatus() + "):" + player.getUsername());
                 player.leaveLobby();
             }
-            case LOCH -> Communication.sendToLobby(player, input[1]);
+            case LOCH -> Communication.sendToLobby(CommandsServerToClient.CHAT, player, input[1]);
             case STRT -> player.getLobby().startGame(player);
             case GAME -> player.getLobby().getGameManager().getAnswer(input[1]);
             default -> logger.info("unknown command received from client " + message);

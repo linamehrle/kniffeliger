@@ -39,9 +39,9 @@ public class Communication {
      * @param player
      * @param message
      */
-    public static void sendToPlayer(Player player, String message) {
+    public static void sendToPlayer(CommandsServerToClient cmd, Player player, String message) {
         ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
-        serverOutput.send(CommandsServerToClient.BRCT, message);
+        serverOutput.send(cmd, message);
     }
 
     /**
@@ -98,7 +98,7 @@ public class Communication {
      * @param player the sender
      * @param message
      */
-    public static void sendToLobby(Player player, String message) {
+    public static void sendToLobby(CommandsServerToClient cmd, Player player, String message) {
 
         //checks if a player is in a lobby
         if(player.getLobby() == null) {
@@ -111,10 +111,20 @@ public class Communication {
         ArrayList<Player> playersInLobby = lobby.getPlayersInLobby();
         for (Player playerInList : playersInLobby) {
             if (!playerInList.equals(player)) {
-                ServerOutput serverOutput = playerInList.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
-                serverOutput.send(CommandsServerToClient.CHAT, player.getUsername() + " to Lobby : " + message);
+                switch (cmd) {
+                    case GAME -> {
+                        ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
+                        serverOutput.send(cmd, message);
+                    }
+                    case CHAT -> {
+                        ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
+                        serverOutput.send(CommandsServerToClient.CHAT, player.getUsername() + " to Lobby : " + message);
+                    }
+                }
             }
         }
+
     }
 
 }
+

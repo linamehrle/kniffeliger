@@ -3,6 +3,7 @@ package server;
 import java.util.ArrayList;
 
 import org.apache.logging.log4j.Logger;
+import server.networking.CommandsServerToClient;
 import server.networking.Communication;
 import starter.Starter;
 
@@ -99,11 +100,11 @@ public class ListManager {
      */
     public static void createNewLobby(Player player, String name) {
         if (lobbyExists(name)) {
-            Communication.sendToPlayer(player, "Name is already taken");
+            Communication.sendToPlayer(CommandsServerToClient.BRCT, player, "Name is already taken");
         } else {
             getLobbyList().add(new Lobby(name));
             logger.info("Player " + player.getUsername() + " created a new lobby: " + name);
-            Communication.sendToPlayer(player, "You successfully created the lobby " + name); //to the player
+            Communication.sendToPlayer(CommandsServerToClient.BRCT, player, "You successfully created the lobby " + name); //to the player
             Communication.broadcast(playerList, player, "Player " + player.getUsername() + " created a new lobby " + name); //to all other players
         }
     }

@@ -3,14 +3,13 @@ package server.gamelogic;
 import server.Player;
 import server.networking.CommandsServerToClient;
 import server.networking.Communication;
-
 import java.util.ArrayList;
-
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Scanner;
 
-// TODO javadoc for class
+/**
+ * This class handles the process during the game.
+ */
 public class GameManager implements Runnable {
     // fixed number of rounds
     private final int ROUNDS = EntrySheet.getEntrySheetLength();
@@ -51,7 +50,6 @@ public class GameManager implements Runnable {
      * #################################################################################################################
      */
     public void starter() throws InterruptedException {
-        // TODO: use Communication class to print to client
         Player[] players = new Player[playerArraysList.size()];
         for (int i = 0; i < playerArraysList.size(); i++){
             players[i] = playerArraysList.get(i);
@@ -65,11 +63,11 @@ public class GameManager implements Runnable {
         }
 
         // starting the game and sending all players in lobby a message
-        Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "############################################## LET THE GAME BEGIN ##############################################");
+        Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "############################################## LET THE GAME BEGIN ##############################################");
 
         // starting 14 rounds
         for (int round = 0; round < ROUNDS; round++) {
-            Communication.broadcastToAll(CommandsServerToClient.BRCT,playerArraysList, "################################################### ROUND " + (round + 1) + " ###################################################");
+            Communication.broadcastToAll(CommandsServerToClient.GAME,playerArraysList, "################################################### ROUND " + (round + 1) + " ###################################################");
 
             // for each round we go through a player
             for (EntrySheet currentEntrySheet : allEntrySheets) {
@@ -87,8 +85,9 @@ public class GameManager implements Runnable {
                 }
 
                 // prints whose current turn it is
-                Communication.broadcastToAll(CommandsServerToClient.BRCT,helpersPlayersArrayList, "It is " + currentPlayer.getUsername() + "'s turn!");
-                Communication.sendToPlayer(currentPlayer, "It is your turn! Your action dice are/is: " + ActionDice.printActionDice(currentEntrySheet.getPlayer().getActionDice()));
+                Communication.broadcastToAll(CommandsServerToClient.GAME,helpersPlayersArrayList, "It is " + currentPlayer.getUsername() + "'s turn!");
+                Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
+                        "It is your turn! Your action dice are/is: " + ActionDice.printActionDice(currentEntrySheet.getPlayer().getActionDice()));
 
                 // variable that checks at very end if all dice are saved
                 boolean allDiceSaved = false;
@@ -127,7 +126,8 @@ public class GameManager implements Runnable {
                     // if it exists an all-time playable action, then the player can choose to play it
                     while (allTimePlayableActions != 0) {
                         // ask player if they want to play the action dice
-                        Communication.sendToPlayer(currentPlayer, "Do you want to play an all-time playable action dice (aka freeze/crossOut)? Answer with 'yes' or 'no'.");
+                        Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
+                                "Do you want to play an all-time playable action dice (aka freeze/crossOut)? Answer with 'yes' or 'no'.");
 
                         // wait for input
                         wait();
@@ -139,9 +139,11 @@ public class GameManager implements Runnable {
                             String nameOfEntry = "";
                             // if player wants to play action, then we check the input String for typos
                             // if there are none, then we split input-string and assign the values to an action, victim and an entry to variables
-                            Communication.sendToPlayer(currentPlayer, "These are your action dice: " + ActionDice.printActionDice(currentActionDice));
+                            Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
+                                    "These are your action dice: " + ActionDice.printActionDice(currentActionDice));
                             while (typo) {
-                                Communication.sendToPlayer(currentPlayer, "Choose your action with the following command: 'freeze'/'crossOut' <username victim> <entry name> or 'none'.");
+                                Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
+                                        "Choose your action with the following command: 'freeze'/'crossOut' <username victim> <entry name> or 'none'.");
 
                                 wait();
                                 String[] splitStr = input.split("\\s+");
@@ -174,7 +176,8 @@ public class GameManager implements Runnable {
                             allTimePlayableActions = allTimePlayableActions - 1;
 
                             // asks player if more action dice should be played
-                            Communication.sendToLobby(currentPlayer, "Do you want to play more action dice? Answer with 'yes' or 'no'.");
+                            Communication.sendToLobby(CommandsServerToClient.GAME, currentPlayer,
+                                    "Do you want to play more action dice? Answer with 'yes' or 'no'.");
                             wait();
                             if (input.equals("no")) {
                                 allTimePlayableActions = 0;
@@ -188,10 +191,12 @@ public class GameManager implements Runnable {
                      * #2: roll dice or use steal dice
                      */
                     // handle stealing dice
-                    Communication.sendToPlayer(currentPlayer, "Do you want to steal an entry or do you want to roll the dice? Answer 'want to steal' or 'want to roll'.");
+                    Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
+                            "Do you want to steal an entry or do you want to roll the dice? Answer 'want to steal' or 'want to roll'.");
                     wait();
                     if (input.equals("want to steal") && existsStealingDice) {
-                        Communication.sendToPlayer(currentPlayer, "Who do you want to steal from and what entry? Answer with:<username> <entry name>.");
+                        Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
+                                "Who do you want to steal from and what entry? Answer with:<username> <entry name>.");
 
                         wait();
                         String[] splitString = input.split("\\s+");
@@ -211,14 +216,16 @@ public class GameManager implements Runnable {
                         }
                         EntrySheet sheetOfVictim = Helper.getEntrySheetByName(allEntrySheets, nameOfVictim);
                         ActionDice.steal(currentEntrySheet, sheetOfVictim, nameOfEntry);
-                        Communication.sendToPlayer(currentPlayer, "You just stole " + nameOfEntry + " from " + nameOfVictim);
-                        Communication.broadcastToAll(CommandsServerToClient.BRCT,helpersPlayersArrayList, currentPlayer.getUsername() + " just stole the entry '" + nameOfEntry + "' from " + nameOfVictim);
+                        Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
+                                "You just stole " + nameOfEntry + " from " + nameOfVictim);
+                        Communication.broadcastToAll(CommandsServerToClient.GAME,helpersPlayersArrayList,
+                                currentPlayer.getUsername() + " just stole the entry '" + nameOfEntry + "' from " + nameOfVictim);
                         deleteActionDice(currentPlayer, "steal");
                         stealingDicePlayed = true;
 
                         // roll dice
                     } else if (input.equals("want to roll")) {
-                        Communication.sendToPlayer(currentPlayer, "Please roll the dice.");
+                        Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer, "Please roll the dice.");
                         while (!allDiceSaved) {
 
                             wait();
@@ -233,11 +240,13 @@ public class GameManager implements Runnable {
                                     rolledDiceAsString = "Dice " + diceNumber + ": " + allDice[i].getDiceValue() + " ";
                                 }
                                 rolledDiceAsString = rolledDiceAsString + "Dice " + 5 + ": " + allDice[4].getDiceValue();
-                                Communication.sendToPlayer(currentPlayer, "Your dice: " + rolledDiceAsString);
-                                Communication.broadcastToAll(CommandsServerToClient.BRCT,helpersPlayersArrayList, currentPlayer.getUsername() + " rolled: " + rolledDiceAsString);
+                                Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer, "Your dice: " + rolledDiceAsString);
+                                Communication.broadcastToAll(CommandsServerToClient.GAME,helpersPlayersArrayList,
+                                        currentPlayer.getUsername() + " rolled: " + rolledDiceAsString);
 
                                 // saves dice player wants to save
-                                Communication.sendToPlayer(currentPlayer, "Which dice do you want to keep? Write with a space in between the name/number of the dice you want to save.");
+                                Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
+                                        "Which dice do you want to keep? Write with a space in between the name/number of the dice you want to save.");
 
                                 wait();
 
@@ -259,8 +268,9 @@ public class GameManager implements Runnable {
                                         savedDiceAsString = savedDiceAsString + d.getDiceValue() + " ";
                                     }
                                 }
-                                Communication.sendToPlayer(currentPlayer, "You saved the dice: " + savedDiceAsString);
-                                Communication.broadcastToAll(CommandsServerToClient.BRCT,helpersPlayersArrayList, currentPlayer.getUsername() + " saved: " + savedDiceAsString);
+                                Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer, "You saved the dice: " + savedDiceAsString);
+                                Communication.broadcastToAll(CommandsServerToClient.GAME,helpersPlayersArrayList,
+                                        currentPlayer.getUsername() + " saved: " + savedDiceAsString);
                                 // checks if any unsaved dice is available to roll
                                 allDiceSaved = true;
                                 for (Dice d : allDice) {
@@ -271,7 +281,8 @@ public class GameManager implements Runnable {
                             }
                         }
                         // choosing entry
-                        Communication.sendToPlayer(currentPlayer, "You saved all your dice, now choose an entry: 'ones', 'twos', 'threes', 'fours', 'fives', 'sixes', 'threeOfAKind', 'fourOfAKind', 'fullHouse', 'smallStraight', 'largeStraight', 'kniffeliger', 'chance', 'pi'");
+                        Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
+                                "You saved all your dice, now choose an entry: 'ones', 'twos', 'threes', 'fours', 'fives', 'sixes', 'threeOfAKind', 'fourOfAKind', 'fullHouse', 'smallStraight', 'largeStraight', 'kniffeliger', 'chance', 'pi'");
                         boolean entryChoiceValid = false;
                         while (entryChoiceValid == false) {
                             wait();
@@ -284,27 +295,32 @@ public class GameManager implements Runnable {
                             }
 
                         }
-                        Communication.sendToPlayer(currentPlayer, "This is your entry sheet:" + currentEntrySheet.printEntrySheet());
-                        Communication.broadcastToAll(CommandsServerToClient.BRCT,helpersPlayersArrayList, currentPlayer.getUsername() + "'s entry sheet: " + currentEntrySheet.printEntrySheet());
+                        Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
+                                "This is your entry sheet:" + currentEntrySheet.printEntrySheet());
+                        Communication.broadcastToAll(CommandsServerToClient.GAME,helpersPlayersArrayList, currentPlayer.getUsername() + "'s entry sheet: " + currentEntrySheet.printEntrySheet());
                     }
                 }
                 // hand player the action dice and let player know the action dice (everybody else just knows that they got an action dice but not what kind)
                 boolean getActionDice = addActionDice(allDice, currentPlayer);
                 if (getActionDice) {
-                    Communication.sendToPlayer(currentPlayer, "Your action dice is/are now: " + ActionDice.printActionDice(currentEntrySheet.getPlayer().getActionDice()));
-                    Communication.broadcastToAll(CommandsServerToClient.BRCT,helpersPlayersArrayList, currentPlayer.getUsername() + " got an action dice.");
+                    Communication.sendToPlayer(CommandsServerToClient.GAME,currentPlayer,
+                            "Your action dice is/are now: " + ActionDice.printActionDice(currentEntrySheet.getPlayer().getActionDice()));
+                    Communication.broadcastToAll(CommandsServerToClient.GAME,helpersPlayersArrayList, currentPlayer.getUsername() + " got an action dice.");
                 }
             }
-            Communication.broadcastToAll(CommandsServerToClient.BRCT,playerArraysList, "############################################## ALL ENTRY SHEETS ##############################################");
+            Communication.broadcastToAll(CommandsServerToClient.GAME,playerArraysList,
+                    "############################################## ALL ENTRY SHEETS ##############################################");
             for (EntrySheet e : allEntrySheets) {
-                Communication.broadcastToAll(CommandsServerToClient.BRCT,playerArraysList, e.getUsername() + "-------------------" + e.printEntrySheet());
+                Communication.broadcastToAll(CommandsServerToClient.GAME,playerArraysList,
+                        e.getUsername() + "-------------------" + e.printEntrySheet());
             }
 
             /*
              * #3: Asking all player if they want to shift and/or swap entry sheets.
              */
             for (Player player : players) {
-                Communication.sendToPlayer(player, player.getUsername() + ", your action dice: " + ActionDice.printActionDice(player.getActionDice()));
+                Communication.sendToPlayer(CommandsServerToClient.GAME, player,
+                        player.getUsername() + ", your action dice: " + ActionDice.printActionDice(player.getActionDice()));
 
                 // check for swaps and shifts
                 int numberOfSwaps = 0;
@@ -328,7 +344,8 @@ public class GameManager implements Runnable {
                     continueShiftsAndSwaps = false;
                 } else {
                     while ((numberOfShifts > 0 || numberOfSwaps > 0) && continueShiftsAndSwaps) {
-                        Communication.sendToPlayer(player, player.getUsername() + ", do you want to shift or swap entry sheets? Answer 'want to shift', 'want to swap' or 'none'.");
+                        Communication.sendToPlayer(CommandsServerToClient.GAME, player,
+                                player.getUsername() + ", do you want to shift or swap entry sheets? Answer 'want to shift', 'want to swap' or 'none'.");
 
                         wait();
 
@@ -340,12 +357,14 @@ public class GameManager implements Runnable {
                             }
                         } else if (input.equals("want to swap")) {
                             if (numberOfSwaps > 0) {
-                                Communication.sendToPlayer(player, "Who do you want to swap with? Answer with the username.");
+                                Communication.sendToPlayer(CommandsServerToClient.GAME, player,
+                                        "Who do you want to swap with? Answer with the username.");
 
                                 wait();
 
                                 while (!Helper.checkPlayerName(players, input)) {
-                                    Communication.sendToPlayer(player, "This is an invalid username. Please try again.");
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, player,
+                                            "This is an invalid username. Please try again.");
 
                                     wait();
                                 }
