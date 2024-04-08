@@ -395,6 +395,7 @@ public class GameManager implements Runnable {
         }
         System.out.println(ranking);
 
+        players[0].getLobby().gameEnded();
     }
 
     /*
