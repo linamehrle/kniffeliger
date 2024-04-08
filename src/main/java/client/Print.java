@@ -1,30 +1,37 @@
 package client;
 
+import org.apache.logging.log4j.Logger;
+import starter.Starter;
+
 /**
  * This class contains useful methods to print information from the server to the console
  * of the client
  */
 public class Print {
+    static Logger logger = Starter.logger;
 
     /**
      * This method prints a list of alle existing Lobbies and their status to the console
      * @param lobbies A string with lobby(status) lobby(status) ... from the server
      */
-    public static void printLobbies(String lobbies) { //TODO anpassen für die player!!!
+    public static void printLobbies(String lobbies) {
 
-        /*if(lobbies.equals("")) {
-            System.out.println("There are no lobbies yet");
+        if(lobbies.equals("")) {
+            logger.info("There are no lobbies yet");
             return;
         }
 
-        String[] splitLobbie = lobbies.split(" ");
+        String[] splitLobbie = lobbies.split(",");
 
         System.out.println("The existing Lobbies are:");
         for (int i = 0; i < splitLobbie.length; i++) {
-            System.out.println(splitLobbie[i]);
-        }*/
-
-        System.out.println(lobbies);
+            String[] splitInLobbyAndPlayer = splitLobbie[i].split(":");
+            int l = splitInLobbyAndPlayer.length;
+            System.out.println(splitInLobbyAndPlayer[0] + ":");
+            for (int j = 1; j < l; j++) {
+                System.out.println(" " + splitInLobbyAndPlayer[j]);
+            }
+        }
     }
 
     /**

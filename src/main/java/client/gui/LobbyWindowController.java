@@ -126,7 +126,7 @@ public class LobbyWindowController implements Initializable {
 
         for (int i = 0; i < lobbyCounter; i++) {
             if(lobbyList.getTreeItem(i).getValue().equals(splitInLobbyAndPlayer[0])) {
-                System.out.println("Lobby found");
+                logger.debug("Lobby found");
                 TreeItem<String> newPlayer = new TreeItem<>(splitInLobbyAndPlayer[1]);
                 lobbyList.getTreeItem(i).getChildren().add(newPlayer);
                 return;
