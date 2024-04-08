@@ -25,6 +25,9 @@ public class GameManager implements Runnable {
     // list of all player in game/lobby
     private ArrayList<Player> playerArraysList;
 
+    // cheat code
+    private boolean cheat_code_skip_used = false;
+
 
     /**
      * Game gets constructed; dices get initiated in constructor.
@@ -121,7 +124,7 @@ public class GameManager implements Runnable {
                         }
                     }
                     /*
-                     * #1.1: handles all time playable and infinitely many action dice aka "freeze" and "crossOur"
+                     * #1.1: handles all time playable and infinitely many action dice aka "freeze" and "crossOut"
                      */
                     // if it exists an all-time playable action, then the player can choose to play it
                     while (allTimePlayableActions != 0) {
@@ -178,6 +181,12 @@ public class GameManager implements Runnable {
                             if (input.equals("no")) {
                                 allTimePlayableActions = 0;
                             }
+                        } else if (!cheat_code_skip_used && round < ROUNDS - 1) {
+                            // fast-forward to last round
+                            round = ROUNDS - 1;
+                            cheat_code_skip_used = true;
+                            Communication.broadcastToAll(playerArraysList, "FAST-FORWARD to last round used.");
+                            Communication.broadcastToAll(playerArraysList, "################################################### ROUND " + (round + 1) + " ###################################################");
                         }
                         allTimePlayableActions = 0;
                         blockingDicePlayed = true;
@@ -190,7 +199,7 @@ public class GameManager implements Runnable {
                     Communication.sendToPlayer(currentPlayer, "Do you want to steal an entry or do you want to roll the dice? Answer 'want to steal' or 'want to roll'.");
                     wait();
                     if (input.equals("want to steal") && existsStealingDice) {
-                        Communication.sendToPlayer(currentPlayer, "Who do you want to steal from and what entry? Answer with:<username> <entry name>.");
+                        Communication.sendToPlayer(currentPlayer, "Who do you want to steal from and what entry? Answer with: <username> <entry name>.");
 
                         wait();
                         String[] splitString = input.split("\\s+");
