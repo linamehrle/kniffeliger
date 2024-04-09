@@ -37,6 +37,7 @@ public class GameManager implements Runnable {
     @Override
     // starts the game thread
     public void run() {
+        System.out.println("DEBUG: GAME STARTER RUN STARTED");
         try {
             starter();
         } catch (InterruptedException e) {
@@ -49,7 +50,7 @@ public class GameManager implements Runnable {
      * STARTER METHOD
      * #################################################################################################################
      */
-    public void starter() throws InterruptedException {
+    public synchronized void starter() throws InterruptedException {
         // TODO: use Communication class to print to client
         Player[] players = new Player[playerArraysList.size()];
         for (int i = 0; i < playerArraysList.size(); i++){
@@ -65,6 +66,8 @@ public class GameManager implements Runnable {
 
         // starting the game and sending all players in lobby a message
         Communication.broadcastToAll(playerArraysList, "############################################## LET THE GAME BEGIN ##############################################");
+
+        System.out.println("DEBUG FIRST BROADCAST SENT");
 
         // starting 14 rounds
         for (int round = 0; round < ROUNDS; round++) {
@@ -222,6 +225,7 @@ public class GameManager implements Runnable {
 
                             wait();
                             if (input.equals("roll")) {
+                                System.out.println("Number of dices" + allDice.length);
                                 // rolls all dice
                                 rollDice(allDice);
 
@@ -229,11 +233,15 @@ public class GameManager implements Runnable {
                                 String rolledDiceAsString = "";
                                 for (int i = 0; i < allDice.length - 1; i++) {
                                     int diceNumber = i + 1;
-                                    rolledDiceAsString = "Dice " + diceNumber + ": " + allDice[i].getDiceValue() + " ";
+                                    rolledDiceAsString = rolledDiceAsString + allDice[i].getDiceValue() + " ";
+                                    System.out.println("#1" + rolledDiceAsString);
                                 }
-                                rolledDiceAsString = rolledDiceAsString + "Dice " + 5 + ": " + allDice[4].getDiceValue();
+                                rolledDiceAsString = rolledDiceAsString + allDice[4].getDiceValue();
+                                System.out.println("#2" + rolledDiceAsString);
                                 Communication.sendToPlayer(currentPlayer, "Your dice: " + rolledDiceAsString);
                                 Communication.broadcastToAll(helpersPlayersArrayList, currentPlayer.getUsername() + " rolled: " + rolledDiceAsString);
+
+                                System.out.println("BROADCAST:" + rolledDiceAsString);
 
                                 // saves dice player wants to save
                                 Communication.sendToPlayer(currentPlayer, "Which dice do you want to keep? Write with a space in between the name/number of the dice you want to save.");

@@ -82,6 +82,8 @@ public class Lobby {
      * @param player
      */
     public void startGame(Player player) {
+        System.out.println("DEBUG: TRYING TO START GAME");
+
         if (!playersInLobby.contains(player)) {
             Communication.sendToPlayer(player, "You are not in this lobby, please enter before starting a game!");
         } else if (numbOfPlayers < 2) {
