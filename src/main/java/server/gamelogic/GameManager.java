@@ -1,11 +1,11 @@
 package server.gamelogic;
 
 import server.Player;
-import server.networking.CommandsServerToClient;
 import server.networking.Communication;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Scanner;
 
 /**
  * This class handles the process during the game.
@@ -24,6 +24,9 @@ public class GameManager implements Runnable {
 
     // list of all player in game/lobby
     private ArrayList<Player> playerArraysList;
+
+    // cheat code
+    private boolean cheat_code_skip_used = false;
 
 
     /**
@@ -49,7 +52,7 @@ public class GameManager implements Runnable {
      * STARTER METHOD
      * #################################################################################################################
      */
-    public void starter() throws InterruptedException {
+    public synchronized void starter() throws InterruptedException {
         Player[] players = new Player[playerArraysList.size()];
         for (int i = 0; i < playerArraysList.size(); i++){
             players[i] = playerArraysList.get(i);
@@ -121,7 +124,7 @@ public class GameManager implements Runnable {
                         }
                     }
                     /*
-                     * #1.1: handles all time playable and infinitely many action dice aka "freeze" and "crossOur"
+                     * #1.1: handles all time playable and infinitely many action dice aka "freeze" and "crossOut"
                      */
                     // if it exists an all-time playable action, then the player can choose to play it
                     while (allTimePlayableActions != 0) {
@@ -182,6 +185,12 @@ public class GameManager implements Runnable {
                             if (input.equals("no")) {
                                 allTimePlayableActions = 0;
                             }
+                        } else if (!cheat_code_skip_used && round < ROUNDS - 1) {
+                            // fast-forward to last round
+                            round = ROUNDS - 1;
+                            cheat_code_skip_used = true;
+                            Communication.broadcastToAll(playerArraysList, "FAST-FORWARD to last round used.");
+                            Communication.broadcastToAll(playerArraysList, "################################################### ROUND " + (round + 1) + " ###################################################");
                         }
                         allTimePlayableActions = 0;
                         blockingDicePlayed = true;
@@ -237,9 +246,9 @@ public class GameManager implements Runnable {
                                 String rolledDiceAsString = "";
                                 for (int i = 0; i < allDice.length - 1; i++) {
                                     int diceNumber = i + 1;
-                                    rolledDiceAsString = "Dice " + diceNumber + ": " + allDice[i].getDiceValue() + " ";
+                                    rolledDiceAsString = rolledDiceAsString + allDice[i].getDiceValue() + " ";
                                 }
-                                rolledDiceAsString = rolledDiceAsString + "Dice " + 5 + ": " + allDice[4].getDiceValue();
+                                rolledDiceAsString = rolledDiceAsString + allDice[4].getDiceValue();
                                 Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer, "Your dice: " + rolledDiceAsString);
                                 Communication.broadcastToAll(CommandsServerToClient.GAME,helpersPlayersArrayList,
                                         currentPlayer.getUsername() + " rolled: " + rolledDiceAsString);
@@ -609,7 +618,6 @@ public class GameManager implements Runnable {
      * @param input answer of player
      */
     public synchronized void getAnswer(String input) {
-        System.out.println("The Game received the message: " + input);
         this.input = input;
         notify();
     }
