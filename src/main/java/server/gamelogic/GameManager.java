@@ -1,6 +1,7 @@
 package server.gamelogic;
 
 import server.Player;
+import server.networking.CommandsServerToClient;
 import server.networking.Communication;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -189,8 +190,8 @@ public class GameManager implements Runnable {
                             // fast-forward to last round
                             round = ROUNDS - 1;
                             cheat_code_skip_used = true;
-                            Communication.broadcastToAll(playerArraysList, "FAST-FORWARD to last round used.");
-                            Communication.broadcastToAll(playerArraysList, "################################################### ROUND " + (round + 1) + " ###################################################");
+                            Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "FAST-FORWARD to last round used.");
+                            Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "################################################### ROUND " + (round + 1) + " ###################################################");
                         }
                         allTimePlayableActions = 0;
                         blockingDicePlayed = true;
