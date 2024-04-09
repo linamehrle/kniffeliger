@@ -88,6 +88,3 @@ The GUI offers:
 - there is a button to open the high score list
 
 For a mockup, see MockUp.jpeg.
-
-
-

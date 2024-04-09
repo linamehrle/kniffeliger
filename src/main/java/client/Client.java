@@ -1,12 +1,17 @@
 package client;
 
+import client.gui.Main;
 import client.networking.ClientInput;
 import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
 import client.networking.ConsoleInput;
 import client.networking.Pong;
+import org.apache.logging.log4j.Logger;
+import starter.Starter;
+
 import java.io.IOException;
 import java.net.Socket;
+import javafx.application.Application;
 
 /**
  * This is the main class for the client. It contains the input thread for the console and from the server and the
@@ -14,7 +19,8 @@ import java.net.Socket;
  * The constructor starts all necessary threads and prints a welcome message in the console for the user.
  * The class also contains a disconnect method which closes all threads when the client disconnects.
  */
-public class GameManager {
+public class Client {
+    Logger logger = Starter.logger;
 
     private Socket socket;
     private ConsoleInput consoleInput;
@@ -22,16 +28,12 @@ public class GameManager {
     private ClientOutput clientOutput;
     private Pong pong;
 
-    //private GameLogicManager logicManager; for later
-
     /**
      * Constructor for the GameManager
      * @param hostName
      * @param port
      */
-    public GameManager(String hostName, int port, String username) {
-
-        //TODO handle username given as input parameter
+    public Client(String hostName, int port, String username) {
 
         try {
             socket = new Socket(hostName, port);
@@ -54,10 +56,9 @@ public class GameManager {
             Thread pongThread = new Thread(pong);
             pongThread.start();
 
-            //logicManager = new GameLogicManager(); for later
         } catch (IOException e) {
-            System.out.println("no server found\ngoodbye!");
-            //e.printStackTrace();
+            logger.info("no server found, goodbye!");
+            logger.info(e.getMessage());
             return;
         }
 
@@ -71,22 +72,26 @@ public class GameManager {
                 "\\changeUsername <new username> to change your username\n" +
                 "\\chat <message> to send a chat message to all other players\n" +
                 "\\whisper <username> <message> to send a chat to only one other player\n" +
+                "\\newLobby <name> to create a new lobby with the given name\n" +
+                "\\showLobbies to get a list of all existing lobbies\n" +
+                "\\showPlayers to et a list of all connected players\n" +
+                "\\enterLobby <name> to enter a lobby of a given name\n" +
+                "\\start to start a game in a lobby\n" +
+                "\\gameAction to enter all commands belonging to the game\n" +
                 "\\quit to leave the game\n" +
                 "======================================================================\n";
         System.out.println(welcomeText);
 
-        String systemUsername = System.getProperty("user.name");
-        clientOutput.send(CommandsClientToServer.CHNA, systemUsername);
+        if (username.equals("default")) {
+            String systemUsername = System.getProperty("user.name");
+            clientOutput.send(CommandsClientToServer.CHNA, systemUsername);
+        } else {
+            clientOutput.send(CommandsClientToServer.CHNA, username);
+        }
 
-        // start game
-        this.start();
-    }
-
-    /**
-     * This function starts the game.
-     */
-    private void start() {
-        //do we need this later?
+        //start the gui
+        logger.debug("before main Launch");
+        Application.launch(Main.class);
     }
 
     /**
@@ -99,6 +104,8 @@ public class GameManager {
             pong.stop();
             socket.close();
             clientOutput.stop();
+            //TODO how to stop the gui thread
+            //Platform.exit();
             System.out.println("Goodbye!");
         } catch (IOException e) {
             e.printStackTrace();

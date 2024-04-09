@@ -34,6 +34,36 @@ public enum CommandsServerToClient {
     /**
      * Used to send chat messages to other clients.
      */
-    CHAT
+    CHAT,
+
+    /**
+     * Returns a list of all lobbies to the client
+     */
+    LOLI,
+
+    /**
+     * Used to tell the gui that a new lobby has been created
+     */
+    CRLO,
+
+    /**
+     * Used to tell the gui that a player has entered a lobby
+     */
+    ENLO,
+
+    /**
+     * Used to tell the gui that a player has left a lobby
+     */
+    LELO,
+
+    /**
+     * Used to give out game related information to the client
+     */
+    GAME,
+
+    /**
+     * Returns a list with all connected players to the client
+     */
+    PLLI
 
 }

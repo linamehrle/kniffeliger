@@ -17,19 +17,31 @@ be used in which context. On the server side, no commands can be input in the te
 | PONG    | time send by the server                | returns a ping send by the server to the server                            | there is no terminal input for this command |         
  | PING    | current system time                    | sends a ping to the server to check for connection losses                  | there is no terminal input for this command |
 | QUIT    | no parameter                           | used to disconnect the client                                              | \quit                                       |
-
+| LOLI    | no parameter                           | requests a list of all lobbies and players in lobbies from the server      | \showLobbies                                | 
+| CRLO    | name of the lobby                      | creates a new lobby with the given name                                    | \newLobby name                              |
+| ENLO    | name of the lobby                      | the player enters the lobby with the given name                            | \enterLobby name                            |
+| LELO    | name of the lobby                      | the player leaves the lobby with the given name                            | \leaveLobby name                            |
+| LOCH    | message                                | used to send a chat message only to players in the same lobby              | \lobbyChat message                          |
+| STRT    | no parameter                           | used to start a game in a lobby                                            | \start                                      |
+| GAME    | game action                            | used to send information related to an ongoing game to the server          | \gameAction gameAction                      |
+| PLLI    | no parameter                           | requests a list of all players that are connected to the server            | \showPlayers                                |
 
 ### Commands from the server to the client:
 
-| command | parameter               | functionality                                                                                                                    |
-|---------|-------------------------|----------------------------------------------------------------------------------------------------------------------------------|
-| BRCT    | message                 | used to send messages from the server to multiple client, the message will be print out in the client console as Alfred: message |
-| PING    | current system time     | sends a ping to a client containing the current time                                                                             |
-| PONG    | time send by the client | returns a ping send by the client to the client                                                                                  |
-| CHNA    | new username            | confirms a changed username to the client, all connected clients are informed about this change via a printout in the terminal   |
-| QUIT    | no parameter            | confirms a client disconnect to the client                                                                                       |
-| CHAT    | message                 | distributes a chat message to the connected clients, message will be print out as username: message                              |
-
+| command | parameter                  | functionality                                                                                                                    |
+|---------|----------------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| BRCT    | message                    | used to send messages from the server to multiple client, the message will be print out in the client console as Alfred: message |
+| PING    | current system time        | sends a ping to a client containing the current time                                                                             |
+| PONG    | time send by the client    | returns a ping send by the client to the client                                                                                  |
+| CHNA    | new username               | confirms a changed username to the client, all connected clients are informed about this change via a printout in the terminal   |
+| QUIT    | no parameter               | confirms a client disconnect to the client                                                                                       |
+| CHAT    | message                    | distributes a chat message to the connected clients, message will be print out as username: message                              |
+| LOLI    | the list of all lobbies    | return the list of all lobbies to the client to print out                                                                        |
+| CRLO    | lobby name                 | returns the created lobby to the client to update the list in the gui and confirm creation                                       |
+| ENLO    | lobby name and player name | update the gui                                                                                                                   |
+| LELO    | lobby name and player name | update the gui                                                                                                                   |
+| GAME    | information from the game  | prints game related information for the clients to see                                                                           |
+| PLLI    | list of all players        | returns the list of all connected players to the client to print put                                                             |
 
 ### Examples:
 
@@ -41,10 +53,12 @@ is sent back.
 client/server then again split the string and again in a switch case give the time back to the Ping class which compares 
 it with the now current time to check for timeouts.
 
-Case Chat: <br>
+Case Chat and Lobby Chat: <br>
 The user Anisja (for example) inputs the string "\chat hi" into the console. The command \chat is then recognized and 
 the string "CHAT hi" send to the server. Again in the switch case the message is sent to the communications class which
 then sends the string "CHAT Anisja: hi" to all other clients. They in turn print out "Anisja: hi" in the console.
+Analogously if Anisja had put "\lobbyChat hi", the server gets "LOCH hi" and only sends the message to
+all the players in the lobby again with the command "CHAT".
 
 Case Whisper: <br>
 The user Anisja inputs the string "\whisper Lina hi" into the console. Analogously to above, then the string "WHSP Lina hi"
@@ -70,3 +84,32 @@ necessary objects and terminates.
 Case Broadcast: <br>
 This command is only used by the server to communicate necessary information to all necessary clients, e.g. when other clients
 change their usernames or connect or disconnect to/from the server. Also see cases above for concrete examples.
+
+Case Lobbies: <br>
+Tha commands "CRLO", "ENLO" and "LELO" are used to handle creating and entering/leaving lobbies. The Player for example inputs
+"\newLobby exampleName" into the console, the client then sends "CRLO exampleName" to the server, which creates a new lobby
+and informs all other clients with the same command about this change. The lobby window in the gui then updates the list
+of existing lobbies. If the player then enters "\enterLobby exampleName" / "\leaveLobby examoleName", the client sends
+"ENLO exampleName" / "LELO exampleName" to the server which enters/takes the player out of the lobby and again informs the 
+clients about this change with the same commands.
+
+Case Lists: <br>
+The player can request a list of all connected players as well as a list with all existing lobbies and players in those lobbies
+with the commands "\showLobbies" and "\showPlayers". The client then sends the request to the server with the commands
+"LOLI" and "PLLI". The server gets the lists as a String from the ListManager class (for example "Lina,Anisja,Riccardo,Dominique,"
+for a list of Players, analogously for the lobbies) and sends "PLLI Lina,Anisja,Riccardo,Dominique," back to the client which 
+prints the list to the terminal after formatting the string in the Print class.
+
+Case start: <br>
+Once a player is in a lobby with at most one other player, they can start a game in this lobby. For this the player inputs "\start"
+to the console. The client then send the request to the server using "STRT". The server receives this command and calls the starter() function
+in the GameManager class, which handles the game.
+
+Case game: <br>
+Once the starter() function is called to start the game, the method sends all necessary information (like which round it is, 
+whos turn it is etc.) to the players in the lobby using "GAME information about the game". This is then printed out in the console
+of the players.
+The player for example receives the messages "Game: It is your turn!" and then "Game: Do you want to steal an entry or do 
+you want to roll the dice? Answer 'want to steal' or 'want to roll'". The player can then enter "\gameAction want to roll"
+to indicate that they want to roll the dice. The client then sends "GAME want to roll" to the server which sends the String
+"want to roll" to the GameManager to handle in the game.

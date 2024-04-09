@@ -36,6 +36,46 @@ public enum CommandsClientToServer {
     /**
      *  used to disconnect a client, send message to server that a client has disconnected
      */
-    QUIT
+    QUIT,
+
+    /**
+     * Requests a list of all existing lobbies and players in lobbies from the server to print in the console
+     */
+    LOLI,
+
+    /**
+     * Used to create a new Lobby with a given name, name must be unique
+     */
+    CRLO,
+
+    /**
+     * Used ba the client to enter a lobby of a given name
+     */
+    ENLO,
+
+    /**
+     *  Used by the client to leave the lobby that they are in
+     */
+    LELO,
+
+    /**
+     * Used to send a chat message only to players in the same lobby
+     */
+    LOCH,
+
+    /**
+     * Used to start a game in a lobby
+     */
+    STRT,
+
+    /**
+     * Gives all game related information to the GameManager on the server
+     */
+    GAME,
+
+    /**
+     * Requests a list of all connected players from the server to print in the console
+     */
+    PLLI
 
 }

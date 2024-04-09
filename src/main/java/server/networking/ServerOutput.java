@@ -28,23 +28,12 @@ public class ServerOutput {
     }
 
     /**
-     * This message handles the different commands according to the network protocol.
+     * This message sends a command with message to the client
      * @param cmd
      * @param message
      */
     public synchronized void send(CommandsServerToClient cmd, String message) {
-
-        switch (cmd) {
-
-            case CHNA -> sendToClient("CHNA " + message);
-            case QUIT -> sendToClient("QUIT " + message);
-            case PING -> sendToClient("PING " + message);
-            case PONG -> sendToClient("PONG " + message);
-            case CHAT -> sendToClient("CHAT " + message);
-            case BRCT -> sendToClient("BRCT " + message);
-            default -> System.out.println("unknown command to send from server to client " + message);
-
-        }
+        sendToClient(cmd.toString() + " " + message);
     }
 
     /**

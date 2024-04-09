@@ -5,12 +5,15 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import org.apache.logging.log4j.Logger;
+import starter.Starter;
 
 /**
  * This class handles outgoing commands and messages from client to server.
  */
 public class ClientOutput {
-    private BufferedWriter out;
+    private Logger logger = Starter.logger;
+    private static BufferedWriter out;
 
     /**
      * The constructor for ClientOutput, it starts the output stream to the server.
@@ -33,8 +36,13 @@ public class ClientOutput {
 
             switch (input[0]) {
 
+                case "\\roll" -> sendToServer("ROLL player rolled the dice");
                 case "\\quit" -> sendToServer("QUIT goodbye!");
-                default -> System.out.println("Invalid input entered");
+                case "\\showLobbies" -> sendToServer("LOLI show me all lobbies");
+                case "\\leaveLobby" -> sendToServer("LELO byebye");
+                case "\\start" -> sendToServer("STRT start a game");
+                case "\\showPlayers" -> sendToServer("PLLI show me all players");
+                default -> logger.info("Invalid input entered");
 
             }
 
@@ -45,7 +53,13 @@ public class ClientOutput {
                 case "\\changeUsername" -> sendToServer("CHNA " + input[1]);
                 case "\\chat" -> sendToServer("CHAT " + input[1]);
                 case "\\whisper" -> sendToServer("WHSP " + input[1]);
-                default -> System.out.println("Invalid command or message entered: command " + input[0] + " message " + input[1]);
+                case "\\save" -> sendToServer("SAVE " + input[1]);
+                case "\\newLobby" -> sendToServer("CRLO " + input[1]);
+                case "\\enterLobby" -> sendToServer("ENLO " + input[1]);
+                case "\\lobbyChat" -> sendToServer("LOCH " + input[1]);
+                case "\\gameAction" -> sendToServer("GAME " + input[1]);
+                //TODO get list of players
+                default -> logger.info("Invalid command or message entered: command " + input[0] + " message " + input[1]);
             }
         }
 
@@ -56,23 +70,15 @@ public class ClientOutput {
      * @param cmd command as defined by the network protocol
      * @param message
      */
-    public synchronized void send(CommandsClientToServer cmd, String message) {
-
-        switch (cmd) {
-
-            case CHNA -> sendToServer("CHNA " + message);
-            case PONG -> sendToServer("PONG " + message);
-            case PING -> sendToServer("PING " + message);
-            default -> System.out.println("unknown command to send from client to server " + message);
-
-        }
+    public static synchronized void send(CommandsClientToServer cmd, String message) {
+        sendToServer(cmd.toString() + " " + message);
     }
 
     /**
      * This method writes the message to the server on the out-stream
      * @param message has to contain a command first, then a blank followed by a non-empty message
      */
-    private synchronized void sendToServer(String message) {
+    public static synchronized void sendToServer(String message) {
         try {
             out.write(message);
             out.newLine();

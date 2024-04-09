@@ -1,11 +1,14 @@
 package client.networking;
 
-import client.GameManager;
+import client.Client;
+import org.apache.logging.log4j.Logger;
+import starter.Starter;
 
 /**
  * This class handles the thread which sends a ping to the server in set intervals. It also handles a timeout.
  */
 public class Pong implements Runnable {
+    Logger logger = Starter.logger;
 
     /**
      * This variable indicates whether the thread is running. It will be set true when the client disconnects.
@@ -17,13 +20,13 @@ public class Pong implements Runnable {
      */
     private long lastReceivedPing;
     private ClientOutput clientOutput;
-    private GameManager gameManager;
+    private Client gameManager;
 
     /**
      * The constructor for Pong.
      * @param gameManager
      */
-    public Pong(GameManager gameManager) {
+    public Pong(Client gameManager) {
         this.gameManager = gameManager;
         this.clientOutput = gameManager.getClientOutput();
     }
@@ -39,17 +42,16 @@ public class Pong implements Runnable {
 
         while (!stop && Math.abs(lastReceivedPing - System.currentTimeMillis()) < 5000) {
             clientOutput.send(CommandsClientToServer.PING, String.valueOf(System.currentTimeMillis()));
-            //System.out.println("Ping send");
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
         }
 
         //this occurs if a timeout is detected
         if(!stop) {
-            System.out.println("Server can't be reached, shutting down now.");
+            logger.info("Server can't be reached, shutting down now.");
             gameManager.disconnect();
         }
     }
@@ -60,7 +62,6 @@ public class Pong implements Runnable {
      */
     public void updatePong(String pongTime) {
         lastReceivedPing = Long.parseLong(pongTime);
-        //System.out.println("Pong received and updated");
     }
 
     /**

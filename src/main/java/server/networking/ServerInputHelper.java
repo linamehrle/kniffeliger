@@ -1,12 +1,17 @@
 package server.networking;
 
 import client.networking.CommandsClientToServer;
+import org.apache.logging.log4j.Logger;
+import server.ListManager;
 import server.Player;
+import starter.Starter;
 
 /**
  * This class handles the input read by the ServerInput class and processes it accordingly.
  */
 public class ServerInputHelper implements Runnable {
+
+    Logger logger = Starter.logger;
 
     ClientThread clientThread;
     String message;
@@ -37,16 +42,10 @@ public class ServerInputHelper implements Runnable {
         String[] input = message.split(" ", 2);
         CommandsClientToServer cmd;
 
-        if (input.length != 2) {
-            System.out.println("Invalid message to server");
-            serverOutput.send(CommandsServerToClient.BRCT, "Invalid message: try again.");
-            return;
-        }
-
         try {
             cmd = CommandsClientToServer.valueOf(input[0].toUpperCase());
         } catch (IllegalArgumentException e) {
-            System.out.println("Received invalid command " + input[0]);
+            logger.info("Received invalid command " + input[0]);
             serverOutput.send(CommandsServerToClient.BRCT, "Invalid command: try again.");
             return;
         }
@@ -60,7 +59,15 @@ public class ServerInputHelper implements Runnable {
             case PING -> serverOutput.send(CommandsServerToClient.PONG, input[1]);
             case CHAT -> Communication.sendChat(player, input[1]);
             case WHSP -> Communication.sendWhisper(player, input[1]);
-            default -> System.out.println("unknown command received from client " + message);
+            case LOLI -> serverOutput.send(CommandsServerToClient.LOLI, ListManager.returnLobbyListAsString());
+            case CRLO -> ListManager.createNewLobby(player, input[1]);
+            case ENLO -> player.enterLobby(input[1]);
+            case LELO -> player.leaveLobby();
+            case LOCH -> Communication.sendToLobby(CommandsServerToClient.CHAT, player, input[1]);
+            case STRT -> player.getLobby().startGame(player);
+            case GAME -> player.getLobby().getGameManager().getAnswer(input[1]);
+            case PLLI -> Communication.sendToPlayer(CommandsServerToClient.PLLI, player, ListManager.getPlayerListAsString());
+            default -> logger.info("unknown command received from client " + message);
 
         }
     }

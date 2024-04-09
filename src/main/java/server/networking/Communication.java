@@ -1,6 +1,7 @@
 package server.networking;
 
 import java.util.ArrayList;
+import server.Lobby;
 import server.Player;
 
 /**
@@ -12,18 +13,20 @@ public class Communication {
      * sends a message from the server to all connected clients
      * @param message
      */
-    public static void broadcastToAll(ArrayList<Player> playerList, String message) {
-        //TODO
+    public static void broadcastToAll(CommandsServerToClient cmd, ArrayList<Player> playerList, String message) {
+        for (Player player : playerList) {
+            ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
+            serverOutput.send(cmd, message);
+        }
     }
 
     /**
-     * sends a message from the server to all connected clients but the specified player
+     * sends a message from the server to all clients in the list but the single specified player
      * @param player
      * @param message
      */
-    public static void broadcast(Player player, String message) {
-        ArrayList<Player> playerList = player.getPlayerList();
-        for (Player playerInList : playerList) {
+    public static void broadcast(ArrayList<Player> listOfPlayers, Player player, String message) {
+        for (Player playerInList : listOfPlayers) {
             if (!playerInList.equals(player)) {
                 ServerOutput serverOutput = playerInList.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
                 serverOutput.send(CommandsServerToClient.BRCT, message);
@@ -32,7 +35,17 @@ public class Communication {
     }
 
     /**
-     * sends a chat message to all other clients (later: in the same lobby?)
+     * Sends a message from the server to the specified player
+     * @param player
+     * @param message
+     */
+    public static void sendToPlayer(CommandsServerToClient cmd, Player player, String message) {
+        ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
+        serverOutput.send(cmd, message);
+    }
+
+    /**
+     * sends a chat message to all other clients
      * @param player the player which is sending the message
      * @param message
      */
@@ -81,12 +94,37 @@ public class Communication {
     }
 
     /**
-     * send the message to all other players in the same lobby
+     * sends a chat message to all other players in the same lobby
      * @param player the sender
      * @param message
      */
-    public static void sendToLobby(Player player, String message) {
-        //TODO
+    public static void sendToLobby(CommandsServerToClient cmd, Player player, String message) {
+
+        //checks if a player is in a lobby
+        if(player.getLobby() == null) {
+            ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
+            serverOutput.send(CommandsServerToClient.BRCT, "You are not in a lobby");
+        }
+
+        //sends the message to all other players in the lobby
+        Lobby lobby = player.getLobby();
+        ArrayList<Player> playersInLobby = lobby.getPlayersInLobby();
+        for (Player playerInList : playersInLobby) {
+            if (!playerInList.equals(player)) {
+                switch (cmd) {
+                    case GAME -> {
+                        ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
+                        serverOutput.send(cmd, message);
+                    }
+                    case CHAT -> {
+                        ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
+                        serverOutput.send(CommandsServerToClient.CHAT, player.getUsername() + " to Lobby : " + message);
+                    }
+                }
+            }
+        }
+
     }
 
 }
+
