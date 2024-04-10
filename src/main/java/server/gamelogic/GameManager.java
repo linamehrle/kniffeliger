@@ -45,7 +45,72 @@ public class GameManager {
                 Player currentPlayer = currentEntrySheet.getPlayer();
                 ActionDice[] currentActionDice = currentPlayer.getActionDice();
 
+                // conditions to check if game needs to go on or stop; this includes:
+                // 1. if a cheat code has been played
+                // 2. if an entry has been made
                 boolean cheatCode = false;
+                boolean entryMade = false;
+
+                // gets all the action dice of a player
+                int stealCount = 0;
+                int freezeCount = 0;
+                int crossOutCount = 0;
+                int shiftCount = 0;
+                int swapCount = 0;
+                for (ActionDice actionDice : currentActionDice ){
+                    switch(actionDice.getActionName()) {
+                        case "steal":
+                            stealCount = stealCount + 1;
+                            break;
+                        case "freeze":
+                            freezeCount = freezeCount + 1;
+                            break;
+                        case "crossOut":
+                            crossOutCount = crossOutCount + 1;
+                            break;
+                        case "shift":
+                            shiftCount = shiftCount + 1;
+                            break;
+                        case "swap":
+                            swapCount = swapCount + 1;
+                            break;
+                    }
+
+                    while(!cheatCode && !entryMade){
+                        System.out.print("Please choose an action. ('roll', 'steal', 'freeze', 'crossOut')");
+                        String answer = scanner.nextLine();
+
+                        switch (answer){
+                            case "roll":
+                                rollDice(allDice);
+                                for (Dice d : allDice){
+                                    if (d.getSavingStatus()){
+
+                                    }
+                                }
+                                boolean allDiceSaved = true;
+                                while(!allDiceSaved){
+
+                                }
+                                entryMade = true;
+                                break;
+                            case "steal":
+
+                                entryMade = true;
+                                break;
+                            case "freeze":
+
+                                freezeCount = freezeCount - 1;
+                                break;
+                            case "crossOut":
+
+                                crossOutCount = crossOutCount - 1;
+                        }
+                    }
+
+                }
+
+                // TODO: shift, swap
 
 
 
