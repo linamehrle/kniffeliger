@@ -1,9 +1,12 @@
 package server;
 
 import java.util.ArrayList;
+
+import org.apache.logging.log4j.Logger;
 import server.gamelogic.GameManager;
 import server.networking.CommandsServerToClient;
 import server.networking.Communication;
+import starter.Starter;
 
 /**
  * This class represents a lobby in the game
@@ -30,6 +33,7 @@ public class Lobby {
     private String status;
 
     private ArrayList<Player> playersInLobby = new ArrayList<>();
+    Logger logger = Starter.logger;
 
     //private boolean gameIsRunning = false; needed?
 
@@ -81,7 +85,7 @@ public class Lobby {
      * @param player
      */
     public void startGame(Player player) {
-        System.out.println("DEBUG: TRYING TO START GAME");
+        logger.debug("TRYING TO START GAME");
 
         if (!playersInLobby.contains(player)) {
             Communication.sendToPlayer(CommandsServerToClient.BRCT, player, "You are not in this lobby, please enter before starting a game!");

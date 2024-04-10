@@ -6,7 +6,6 @@ import server.networking.Communication;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Scanner;
 
 /**
  * This class handles the process during the game.
