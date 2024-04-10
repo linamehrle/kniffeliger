@@ -42,7 +42,7 @@ task generateDocs(type: Javadoc) {
     classpath += project.files(sourceSets.main.compileClasspath)
 
     // set the destination dir for the javadoc
-    destinationDir = file("/build/docs/javadoc")
+    destinationDir = file("build/docs/javadoc")
 }
 
 // create task given by milestone 3
