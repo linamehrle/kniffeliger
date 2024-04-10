@@ -1,6 +1,13 @@
 package server.gamelogic;
 
 // TODO javadoc for class
+
+/**
+ * This class builds a single dice. In this class, there are methods to roll, reset and print a dice. When given a dice
+ * array, then it can be transformed into an int-array. A dice in Kniffeliger has several properties other than just its
+ * value, just like its savingStatus, which contains the information if a player has already saved the dice. If also has
+ * a numberOfRolls since in Kniffeliger, you can only roll each dice 3 times.
+ */
 public class Dice {
 
     private boolean savingStatus;

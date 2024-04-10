@@ -1,6 +1,12 @@
 package server.gamelogic;
 
 // TODO javadoc for class
+
+/**
+ * This class can create entries with a value and a name. An entry is a specific dice combination that gives the player
+ * a points. An entry can be final, if a combination of dice was assigned to it. It can also be frozen, if another
+ * player uses a dice to block this entry.
+ */
 public class Entry {
 
     // keeps in track if entry is final of not

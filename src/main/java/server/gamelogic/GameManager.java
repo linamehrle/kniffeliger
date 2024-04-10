@@ -9,7 +9,11 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Scanner;
 
-// TODO javadoc for class
+/**
+ * This class manages the game play and makes sure that the steps of a game will be played at the right time. This class
+ * also handles if a player gets an action dice. It also handles the final ranking of the players and handles the
+ * rolling of the dice-array.
+ */
 public class GameManager implements Runnable {
     // fixed number of rounds
     private final int ROUNDS = EntrySheet.getEntrySheetLength();
@@ -32,7 +36,6 @@ public class GameManager implements Runnable {
     /**
      * Game gets constructed; dices get initiated in constructor.
      */
-    // TODO hand over playerArrayList??
     public GameManager() {
         allDice = new Dice[]{new Dice(), new Dice(), new Dice(), new Dice(), new Dice()};
     }

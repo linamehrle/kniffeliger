@@ -1,7 +1,11 @@
 package server.gamelogic;
 
 import server.Player;
-// TODO javadoc for class
+
+/**
+ * This class contains helper methods for the GameManager class to check if the parameters that get handed to the
+ * starter-method are valid. It also returns an entry sheet, if a username is available.
+ */
 public class Helper {
 
     /*

@@ -4,7 +4,12 @@ import java.util.Arrays;
 import java.util.Scanner;
 import server.Player;
 
-// TODO javadoc for class
+/**
+ * This class creates entry sheet associated with a player, which is a sheet with 14 different entries that can be made
+ * by a player. If a player rolls the five dice, the final dice result can be assigned to one of the entries on the
+ * entry sheet. The assignment then gets checked and the values will be assigned to the chosen entry. The total points
+ * of an entry sheet gets updated every time an entry has been made.
+ */
 public class EntrySheet {
     // entry sheet length
     private static final int ENTRY_SHEET_LENGTH = 14;

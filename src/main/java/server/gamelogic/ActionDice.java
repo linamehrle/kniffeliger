@@ -1,10 +1,12 @@
 package server.gamelogic;
 import server.Player;
 
-// TODO javadoc for class
 
 /**
- * Class that contains
+ * This class builds action dice which are a specific kind of dice that let you steal, free, cross out entries or shift and
+ * swap whole entry sheets. It contains all methods that perform the actions just mentioned.
+ * Actions that are build need to have the name 'steal', 'freeze', 'crossOut', 'shift' odr 'swap' because the action
+ * that the dice performs will be called by its name.
  */
 public class ActionDice {
 
