@@ -402,8 +402,11 @@ public class GameManager implements Runnable {
         for (int i = 0; i < rankedPlayer.length; i++) {
             ranking = ranking + "Number " + (i + 1)+ " is " + rankedPlayer[i].getUsername() + ".";
         }
-        System.out.println(ranking);
+        //System.out.println(ranking);
+        // sends ranking to all players in lobby
+        Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, ranking);
 
+        // TODO: should end the game but wtf is happening (only indicates if lobby is closed or open, does not end lobby)
         players[0].getLobby().gameEnded();
     }
 
