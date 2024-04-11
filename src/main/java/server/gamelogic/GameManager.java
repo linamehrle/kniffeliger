@@ -328,6 +328,11 @@ public class GameManager implements Runnable {
              * #3: Asking all player if they want to shift and/or swap entry sheets.
              */
             for (Player player : players) {
+                // don't ask if at the end of the last round
+                if (round == ROUNDS - 1) {
+                    break;
+                }
+
                 Communication.sendToPlayer(CommandsServerToClient.GAME, player,
                         player.getUsername() + ", your action dice: " + ActionDice.printActionDice(player.getActionDice()));
 
