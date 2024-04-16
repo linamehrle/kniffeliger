@@ -340,3 +340,14 @@ We gotta work now, byeeeee.
 Until next time!
 
 ########################################################################################################################
+
+TUE, 16.4.24 (Team meeting)
+
+Dear Diary
+
+Milestone 3 was fucked up again. Here are the things we need to fix:
+
+1.  Lina: check lobby chat functions, finish lobby window, add field to change username
+2.  Anisja: add 'how to start the game' to the manual
+3.  Riccardo: https://www.youtube.com/watch?v=qZuxPKUVGiw&pp=ygUPZnVjayB0aGUgcG9saWNl
+4.  Dominique + Riccardo: GUI
