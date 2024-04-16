@@ -44,6 +44,12 @@ get to roll another dice: the action dice. With this dice you can perform the fo
 After rolling the action dice you can choose to keep it for later or if you want to play it immediately. After that you
 finished a round.
 
+HOW TO BUILD THE FUCKING JAR:
+To build the jar you need to open the terminal where the jar-file is located. To start the client enter:
+ <java -jar kniffeliger-VERSION.jar client ipAddress:port [username]>
+ and to start the server:
+ <java -jar kniffeliger-VERSION.jar server port>
+
 HOW TO START THE GAME:
 1.  To start a game a player first need to create a lobby.
 2.  After creating a lobby, at least two players need to enter the lobby.
