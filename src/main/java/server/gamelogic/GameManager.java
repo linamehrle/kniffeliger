@@ -57,58 +57,58 @@ public class GameManager {
                 int crossOutCount = 0;
                 int shiftCount = 0;
                 int swapCount = 0;
-                for (ActionDice actionDice : currentActionDice ){
-                    switch(actionDice.getActionName()) {
+                for (ActionDice actionDice : currentActionDice ) {
+                    switch (actionDice.getActionName()) {
+                        case "steal" -> stealCount = stealCount + 1;
+                        case "freeze" -> freezeCount = freezeCount + 1;
+                        case "crossOut" -> crossOutCount = crossOutCount + 1;
+                        case "shift" -> shiftCount = shiftCount + 1;
+                        case "swap" -> swapCount = swapCount + 1;
+                    }
+                }
+
+                while ((!cheatCode && !entryMade) || (freezeCount > 0 || crossOutCount > 0)) {
+                    System.out.print("Please choose an action. ('roll', 'steal', 'freeze', 'crossOut')");
+                    String answer = scanner.nextLine();
+
+                    switch (answer) {
+                        case "roll":
+                            rollDice(allDice);
+                            if (allDiceSaved(allDice)) {
+                                entryMade = true;
+                            }
+                            break;
                         case "steal":
-                            stealCount = stealCount + 1;
+                            System.out.println("Who do you want to steal from? Answer with: <username> <entry name>.");
+
+                            String stealingAnswer = scanner.nextLine();
+                            boolean typo = true;
+                            while (typo) {
+                                System.out.println("Choose your action with the following command:\n'freeze'/'crossOut' <username victim> <entry name> or 'none'.");
+                                String input = scanner.nextLine();
+                                String[] splitStr = input.split("\\s+");
+
+                                if (splitStr.length > 1) {
+                                    // checks if there are typos in input of player
+                                    typo = !Helper.checkActionName(splitStr[0]) && !Helper.checkPlayerName(players, splitStr[1]) && !Helper.checkEntryName(splitStr[2]);
+                                } else if (input.equals("none")) {
+                                    typo = false;
+                                }
+                            }
+
+                            entryMade = true;
                             break;
                         case "freeze":
-                            freezeCount = freezeCount + 1;
+
+                            freezeCount = freezeCount - 1;
                             break;
                         case "crossOut":
-                            crossOutCount = crossOutCount + 1;
-                            break;
-                        case "shift":
-                            shiftCount = shiftCount + 1;
-                            break;
-                        case "swap":
-                            swapCount = swapCount + 1;
-                            break;
+
+                            crossOutCount = crossOutCount - 1;
                     }
-
-                    while(!cheatCode && !entryMade){
-                        System.out.print("Please choose an action. ('roll', 'steal', 'freeze', 'crossOut')");
-                        String answer = scanner.nextLine();
-
-                        switch (answer){
-                            case "roll":
-                                rollDice(allDice);
-                                for (Dice d : allDice){
-                                    if (d.getSavingStatus()){
-
-                                    }
-                                }
-                                boolean allDiceSaved = true;
-                                while(!allDiceSaved){
-
-                                }
-                                entryMade = true;
-                                break;
-                            case "steal":
-
-                                entryMade = true;
-                                break;
-                            case "freeze":
-
-                                freezeCount = freezeCount - 1;
-                                break;
-                            case "crossOut":
-
-                                crossOutCount = crossOutCount - 1;
-                        }
-                    }
-
                 }
+
+
 
                 // TODO: shift, swap
 
@@ -416,6 +416,22 @@ public class GameManager {
      * ROLLS AND PRINTS DICE
      * #################################################################################################################
      */
+
+    /**
+     * Checks if all dice are saved.
+     *
+     * @param playersDice dice array of a player
+     * @return true if all dice are saved and false if not
+     */
+    public static boolean allDiceSaved(Dice[] playersDice) {
+        for (Dice d : playersDice) {
+            if (!d.getSavingStatus()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Prints values of all dice.
      *
