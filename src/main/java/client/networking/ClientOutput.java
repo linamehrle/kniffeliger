@@ -56,7 +56,10 @@ public class ClientOutput {
                 case "\\save" -> sendToServer("SAVE " + input[1]);
                 case "\\newLobby" -> sendToServer("CRLO " + input[1]);
                 case "\\enterLobby" -> sendToServer("ENLO " + input[1]);
-                case "\\lobbyChat" -> sendToServer("LOCH " + input[1]);
+                case "\\lobbyChat" -> {
+                    sendToServer("LOCH " + input[1]);
+                    logger.debug("lobby chat send to server");
+                }
                 case "\\gameAction" -> sendToServer("GAME " + input[1]);
                 //TODO get list of players
                 default -> logger.info("Invalid command or message entered: command " + input[0] + " message " + input[1]);

@@ -8,7 +8,6 @@ import client.networking.ConsoleInput;
 import client.networking.Pong;
 import org.apache.logging.log4j.Logger;
 import starter.Starter;
-
 import java.io.IOException;
 import java.net.Socket;
 import javafx.application.Application;

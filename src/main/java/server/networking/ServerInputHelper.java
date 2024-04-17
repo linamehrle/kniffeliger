@@ -63,7 +63,10 @@ public class ServerInputHelper implements Runnable {
             case CRLO -> ListManager.createNewLobby(player, input[1]);
             case ENLO -> player.enterLobby(input[1]);
             case LELO -> player.leaveLobby();
-            case LOCH -> Communication.sendToLobby(CommandsServerToClient.CHAT, player, input[1]);
+            case LOCH -> {
+                Communication.sendToLobby(CommandsServerToClient.CHAT, player, input[1]);
+                logger.debug("lobby chat received");
+            }
             case STRT -> player.getLobby().startGame(player);
             case GAME -> player.getLobby().getGameManager().getAnswer(input[1]);
             case PLLI -> Communication.sendToPlayer(CommandsServerToClient.PLLI, player, ListManager.getPlayerListAsString());
