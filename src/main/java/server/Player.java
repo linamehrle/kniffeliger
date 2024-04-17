@@ -2,7 +2,6 @@ package server;
 
 import java.net.Socket;
 import java.util.ArrayList;
-
 import org.apache.logging.log4j.Logger;
 import server.gamelogic.ActionDice;
 import server.networking.ClientThread;

@@ -107,7 +107,7 @@ public class Client {
             //Platform.exit();
             System.out.println("Goodbye!");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }
     }
 
