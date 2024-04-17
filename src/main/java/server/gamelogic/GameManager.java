@@ -1,5 +1,6 @@
 package server.gamelogic;
 
+import server.HighScore;
 import server.Player;
 import server.networking.CommandsServerToClient;
 import server.networking.Communication;
@@ -410,6 +411,12 @@ public class GameManager implements Runnable {
         //System.out.println(ranking);
         // sends ranking to all players in lobby
         Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, ranking);
+
+        //TODO create a list of players with points as string
+        String rankingWithPoints = "";
+
+        //send ranking to the high score class to possibly update the highscore
+        HighScore.updateHighScore(rankingWithPoints);
 
         // TODO: should end the game but wtf is happening (only indicates if lobby is closed or open, does not end lobby)
         players[0].getLobby().gameEnded();
