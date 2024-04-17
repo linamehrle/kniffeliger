@@ -74,6 +74,7 @@ public class Client {
                 "\\newLobby <name> to create a new lobby with the given name\n" +
                 "\\showLobbies to get a list of all existing lobbies\n" +
                 "\\showPlayers to et a list of all connected players\n" +
+                "\\showHighScores to get a high score list\n" +
                 "\\enterLobby <name> to enter a lobby of a given name\n" +
                 "\\start to start a game in a lobby\n" +
                 "\\gameAction to enter all commands belonging to the game\n" +

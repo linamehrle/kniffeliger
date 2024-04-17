@@ -2,6 +2,7 @@ package server.networking;
 
 import client.networking.CommandsClientToServer;
 import org.apache.logging.log4j.Logger;
+import server.HighScore;
 import server.ListManager;
 import server.Player;
 import starter.Starter;
@@ -70,6 +71,7 @@ public class ServerInputHelper implements Runnable {
             case STRT -> player.getLobby().startGame(player);
             case GAME -> player.getLobby().getGameManager().getAnswer(input[1]);
             case PLLI -> Communication.sendToPlayer(CommandsServerToClient.PLLI, player, ListManager.getPlayerListAsString());
+            case HGSC -> Communication.sendToPlayer(CommandsServerToClient.HGSC, player, HighScore.getHighScoreList());
             default -> logger.info("unknown command received from client " + message);
 
         }
