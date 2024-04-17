@@ -92,22 +92,12 @@ public class Starter {
         String hostAddress = firstInput[0];
         int port = Integer.parseInt(firstInput[1]);
 
-        // set default username
+        // set username to default
         String username = "default";
 
-        // allow additional syntax
-        if (args.length != 2 && !loggerSpecified) {
-            // get username
-            int startIdx = args[2].indexOf('[') + 1;
-            int endIdx = args[2].indexOf(']');
-
-            // assure user entered something
-            if (startIdx >= endIdx || startIdx <= 0) {
-                throw new Exception("Incorrect syntax in username " + args[2] +
-                        ".\nPlease enter a nonempty username with correct syntax.");
-            }
-
-            username = args[2].substring(startIdx, endIdx);
+        // fetch username if existing
+        if (args.length == 3 && !loggerSpecified || args.length == 4 && loggerSpecified) {
+            username = args[2];
         }
 
         // start client
@@ -119,7 +109,7 @@ public class Starter {
      *
      * @param args The input data the user has provided to start the jar. Look at main for the correct syntax.
      */
-    private static void startServer(String[] args) throws Exception {
+    private static void startServer(String[] args) {
         logger.trace("startServer()");
 
         // get port
