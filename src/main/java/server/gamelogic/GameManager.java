@@ -412,11 +412,8 @@ public class GameManager implements Runnable {
         // sends ranking to all players in lobby
         Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, ranking);
 
-        //TODO create a list of players with points as string
-        String rankingWithPoints = "";
-
-        //send ranking to the high score class to possibly update the highscore
-        HighScore.updateHighScore(rankingWithPoints);
+        //send the scores to the high score class to possibly update the highscore
+        HighScore.updateHighScore(returnScoreAsString(allEntrySheets));
 
         // TODO: should end the game but wtf is happening (only indicates if lobby is closed or open, does not end lobby)
         players[0].getLobby().gameEnded();
@@ -664,6 +661,14 @@ public class GameManager implements Runnable {
             rankedPlayer[i] = allEntrySheets[allEntrySheets.length - i - 1].getPlayer();
         }
         return rankedPlayer;
+    }
+
+    private String returnScoreAsString(EntrySheet[] allEntrySheets) {
+        String ranking = "";
+        for (EntrySheet sheet : allEntrySheets) {
+            ranking = ranking + sheet.getUsername() + ":" + sheet.getTotalPoints() + ",";
+        }
+        return ranking;
     }
 
 
