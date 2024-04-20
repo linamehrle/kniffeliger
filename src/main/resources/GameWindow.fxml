@@ -6,26 +6,29 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.GameWindowController">
+<Pane fx:id="chatPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.GameWindowController">
    <children>
       <Label layoutX="25.0" layoutY="50.0" text="Entry Sheet of:" />
       <Label fx:id="usernameLabel" layoutX="167.0" layoutY="50.0" text="Username" />
       <Label layoutX="25.0" layoutY="543.0" text="Total points:" />
       <Label fx:id="pointsLabel" layoutX="167.0" layoutY="543.0" text="Points" />
-      <Label layoutX="370.0" layoutY="102.0" text="Dice" />
-      <Button fx:id="stealButton" layoutX="370.0" layoutY="325.0" mnemonicParsing="false" onAction="#stealEntryAction" text="steal" />
-      <Button fx:id="freezeButton" layoutX="450.0" layoutY="325.0" mnemonicParsing="false" onAction="#freezeEntryButton" text="freeze" />
-      <Button fx:id="rotateButton" layoutX="533.0" layoutY="325.0" mnemonicParsing="false" onAction="#rotateSheetsAction" text="rotate" />
-      <Button fx:id="swapButton" layoutX="620.0" layoutY="325.0" mnemonicParsing="false" onAction="#swapSheetsAction" text="swap" />
-      <Button fx:id="deleteButton" layoutX="695.0" layoutY="325.0" mnemonicParsing="false" onAction="#deleteEntryAction" text="delete" />
+      <Label layoutX="368.0" layoutY="48.0" text="Dice" />
+      <Button fx:id="stealButton" layoutX="373.0" layoutY="275.0" mnemonicParsing="false" onAction="#stealEntryAction" text="steal" />
+      <Button fx:id="freezeButton" layoutX="368.0" layoutY="313.0" mnemonicParsing="false" onAction="#freezeEntryButton" text="freeze" />
+      <Button fx:id="rotateButton" layoutX="369.0" layoutY="350.0" mnemonicParsing="false" onAction="#rotateSheetsAction" text="rotate" />
+      <Button fx:id="swapButton" layoutX="370.0" layoutY="389.0" mnemonicParsing="false" onAction="#swapSheetsAction" text="swap" />
+      <Button fx:id="deleteButton" layoutX="369.0" layoutY="425.0" mnemonicParsing="false" onAction="#deleteEntryAction" text="delete" />
       <Button fx:id="startButton" layoutX="789.0" layoutY="38.0" mnemonicParsing="false" onAction="#startGameAction" text="START" />
-      <Button fx:id="leaveGameButton" layoutX="775.0" layoutY="518.0" mnemonicParsing="false" onAction="#leaveGameAction" text="leave game" />
-      <Button fx:id="leaveLobbyButton" layoutX="674.0" layoutY="518.0" mnemonicParsing="false" onAction="#leaveLobbyAction" text="leave Lobby" />
-      <Button fx:id="rollButton" layoutX="633.0" layoutY="98.0" mnemonicParsing="false" text="roll" />
-      <Button fx:id="enterButton" layoutX="694.0" layoutY="98.0" mnemonicParsing="false" onAction="#enterToEntrySheetAction" text="enter" />
+      <Button fx:id="leaveGameButton" layoutX="436.0" layoutY="515.0" mnemonicParsing="false" onAction="#leaveGameAction" text="leave game" />
+      <Button fx:id="leaveLobbyButton" layoutX="330.0" layoutY="515.0" mnemonicParsing="false" onAction="#leaveLobbyAction" text="leave Lobby" />
+      <Button fx:id="rollButton" layoutX="626.0" layoutY="44.0" mnemonicParsing="false" text="roll" />
+      <Button fx:id="enterButton" layoutX="696.0" layoutY="44.0" mnemonicParsing="false" onAction="#enterToEntrySheetAction" text="enter" />
       <ListView fx:id="entrySheet" layoutX="25.0" layoutY="108.0" onMouseClicked="#enterToEntrySheetAction" prefHeight="419.0" prefWidth="250.0" />
-      <ListView fx:id="dice" layoutX="370.0" layoutY="158.0" orientation="HORIZONTAL" prefHeight="53.0" prefWidth="373.0" />
+      <ListView fx:id="dice" layoutX="369.0" layoutY="79.0" orientation="HORIZONTAL" prefHeight="53.0" prefWidth="373.0" />
       <TextField fx:id="diceTextField" layoutX="370.0" layoutY="241.0" />
       <Button fx:id="saveDiceButton" layoutX="555.0" layoutY="241.0" mnemonicParsing="false" onAction="#saveDiceAction" text="save Dice" />
+      <fx:include fx:id="chatWindow" layoutX="620.0" layoutY="270.0" source="chatwindow.fxml" />
+      <ListView fx:id="saveDice" layoutX="369.0" layoutY="174.0" orientation="HORIZONTAL" prefHeight="53.0" prefWidth="373.0" />
+      <Label layoutX="365.0" layoutY="147.0" text="Safe Haven" />
    </children>
 </Pane>
