@@ -666,7 +666,7 @@ public class GameManager implements Runnable {
     private String returnScoreAsString(EntrySheet[] allEntrySheets) {
         String ranking = "";
         for (EntrySheet sheet : allEntrySheets) {
-            ranking = ranking + sheet.getUsername() + ":" + sheet.getTotalPoints() + ",";
+            ranking = ranking + sheet.getTotalPoints() + ":" + sheet.getUsername() + ",";
         }
         return ranking;
     }

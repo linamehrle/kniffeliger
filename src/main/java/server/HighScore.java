@@ -1,13 +1,14 @@
 package server;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.Arrays;
+import java.util.Comparator;
 import org.apache.logging.log4j.Logger;
 import starter.Starter;
 
@@ -26,35 +27,52 @@ public class HighScore {
     public static void updateHighScore(String ranking) {
         //TODO check if highest score in the game is lower than lowest on the board to make more efficient?
         try {
-            //read current high scores
+
             BufferedReader reader = new BufferedReader(new FileReader("highscore.txt"));
             String line = reader.readLine();
             reader.close();
 
             line = line + ranking;
 
-            Map<Integer,String> sortedRanking = new TreeMap<>(); //apparently this is a sorted map
-
             String[] splitLine = line.split(",");
-            for (String score : splitLine) {
-                String[] personAndScore = score.split(":");
-                sortedRanking.put(Integer.parseInt(personAndScore[1]), personAndScore[0]);
+
+            Comparator<String> comparator = new Comparator<String>() {
+                @Override
+                public int compare(String o1, String o2) {
+                    Integer number1 = Integer.parseInt(o1.substring(0, o1.indexOf(":")));
+                    Integer number2 = Integer.parseInt(o2.substring(0, o2.indexOf(":")));
+
+                    if (number1 == number2) {
+                        return 0;
+                    } else if (number1 < number2) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+
+                }
+            };
+
+            Arrays.sort(splitLine, comparator);
+
+            String newRanking = "";
+            for (int i = 0; i < Math.min(10, splitLine.length); i++) {
+                newRanking = newRanking + splitLine[i] + ",";
             }
 
-            //create new list to write in highscore.txt
-            Object[] mapKeys = sortedRanking.keySet().toArray();
-            String newHighScores = "";
-
-            for (int i = mapKeys.length - 1; i >= Math.max(0, mapKeys.length - 10); i--) {
-                newHighScores = newHighScores + sortedRanking.get(mapKeys[i]) + ":" + mapKeys[i].toString() + ",";
-            }
+            BufferedWriter writer = new BufferedWriter(new FileWriter("highscore.txt"));
+            writer.write(newRanking);
+            writer.flush();
+            writer.close();
 
         } catch (FileNotFoundException e) {
             //creates the file if it does not exist yet
             new File("highscore.txt");
-            logger.info("new file highscore.txt created");
+            //logger.info("new file highscore.txt created");
+            System.out.println("new file created");
         } catch (Exception e) {
-            logger.warn(e.getMessage());
+            //logger.warn(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -68,10 +86,6 @@ public class HighScore {
         String highScoreList = "";
         try (BufferedReader reader = new BufferedReader(new FileReader("highscore.txt"))) {
             highScoreList = reader.readLine();
-            FileWriter writer = new FileWriter("highscore.txt");
-            writer.write("test");
-            writer.flush();
-            writer.close();
         } catch (FileNotFoundException e) {
             logger.warn(e.getMessage() + ": no file highscore.txt found");
         } catch (IOException e) {
