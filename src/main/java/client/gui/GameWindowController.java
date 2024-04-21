@@ -24,6 +24,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.Logger;
@@ -60,7 +61,7 @@ public class GameWindowController implements Initializable {
     @FXML
     private ListView<String> entrySheet;
     @FXML
-    private ListView<String> dice;
+    private DiceGUImplementation dice;
     @FXML
     private ListView<DiceGUImplementation> diceBox;
     @FXML
@@ -78,7 +79,7 @@ public class GameWindowController implements Initializable {
     private static ObservableList<String> entryList = FXCollections.observableArrayList();
     private static ObservableList<DiceGUImplementation> diceList = FXCollections.observableArrayList();
     //variables for dice images
-    private static Image[]  diceFaces = new Image[7];
+    private static Image[]  diceFaces = new Image[13];
 
 
 
@@ -132,6 +133,16 @@ public class GameWindowController implements Initializable {
             }
         });
 
+        //Listener for diceBox ListView
+        diceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DiceGUImplementation>() {
+
+            @Override
+            public void changed(ObservableValue<? extends DiceGUImplementation> observable, DiceGUImplementation oldValue, DiceGUImplementation newValue) {
+                //action
+            }
+        });
+
+
 
         //Load images
         IntStream.range(0, diceFaces.length).forEach(i -> {
@@ -158,7 +169,7 @@ public class GameWindowController implements Initializable {
                 } else {
                     //set baseIndex, such that different symbols are loaded for saved and unsaved dice
                     int baseIndex = 0;
-                    if (!dice.getSavingStatus()) {
+                    if (dice.getSavingStatus()) {
                         baseIndex = 6;}
                     ImageView imageView = new ImageView();
                     switch (dice.getDiceValue()) {
@@ -221,9 +232,10 @@ public class GameWindowController implements Initializable {
     }
 
     /**
-     * Method that handles when the startGame Button is pressen to start a game
+     * Method that handles when the startGame Button is pressed to start a game
      * @param event
      */
+    @FXML
     public void startGameAction(ActionEvent event) {
         ClientOutput.send(CommandsClientToServer.STRT, "lets start the game :)");
         logger.info("Game Start initialized by GUI");
@@ -266,7 +278,7 @@ public class GameWindowController implements Initializable {
 
 
     public void rollActionSend(ActionEvent event){
-        ClientOutput.sendToServer("GAME " + "roll" );
+        ClientOutput.send(CommandsClientToServer.GAME, "roll" );
     }
 
     /*
@@ -281,7 +293,12 @@ public class GameWindowController implements Initializable {
     public static Image diceImageLoader(int diceNumber) throws FileNotFoundException {
         //String.valueOf(GameWindowController.class.getResource("/images/dice-" + diceNumber  + ".png"))
         //FileInputStream fis = new FileInputStream(file);
-        return new Image(String.valueOf(GameWindowController.class.getResource("/images/dice-" + diceNumber  + ".png")), 64, 63.2, true, false);
+        String saved = "";
+        if (diceNumber > 6){
+            saved = "s";
+            diceNumber = diceNumber -6;
+        }
+        return new Image(String.valueOf(GameWindowController.class.getResource("/images/dice-" + saved + diceNumber  + ".png")), 64, 63.2, true, false);
     }
 
     public void setDiceImage(HBox diceBoxID, int diceValue) {
@@ -298,7 +315,10 @@ public class GameWindowController implements Initializable {
 
     }
 
-    public void saveDiceClick(){
-
+    @FXML
+    public void diceClick (MouseEvent arg0) {
+        DiceGUImplementation dice = diceBox.getSelectionModel().getSelectedItem();
+        dice.setSavingStatus(true);
+        ClientOutput.send(CommandsClientToServer.GAME, " \save " + String.valueOf(dice.getID()));
     }
 }

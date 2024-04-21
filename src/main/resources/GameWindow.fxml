@@ -29,7 +29,7 @@
       <TextField fx:id="diceTextField" layoutX="360.0" layoutY="337.0" />
       <Button fx:id="saveDiceButton" layoutX="545.0" layoutY="337.0" mnemonicParsing="false" onAction="#saveDiceAction" text="save Dice" />
       <fx:include fx:id="chatWindow" layoutX="700.0" layoutY="400.0" source="chatwindow.fxml" />
-      <ListView fx:id="diceBox" layoutX="362.0" layoutY="224.0" orientation="HORIZONTAL" prefHeight="103.0" prefWidth="400.0" />
+      <ListView fx:id="diceBox" layoutX="362.0" layoutY="224.0" onMouseClicked="#diceClick" orientation="HORIZONTAL" prefHeight="103.0" prefWidth="400.0" />
       <Label layoutX="361.0" layoutY="199.0" text="Safe Haven" />
       <HBox layoutX="361.0" layoutY="93.0" prefHeight="103.0" prefWidth="505.0">
          <children>

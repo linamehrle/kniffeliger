@@ -1,5 +1,7 @@
 package client.gui;
 
+import client.networking.ClientOutput;
+
 /**
  * Class to implement dice in GUI, might eventually be replaced by dice class of Game Logic
  */
@@ -20,4 +22,8 @@ public class DiceGUImplementation {
     public boolean getSavingStatus(){return savingStatus;}
 
     public int getDiceValue(){return diceValue;}
+
+    public void setSavingStatus(boolean status){
+        this.savingStatus = status;
+    }
 }
