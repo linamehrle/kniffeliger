@@ -77,7 +77,7 @@ public class GameWindowController implements Initializable {
 
 
     private static ObservableList<String> entryList = FXCollections.observableArrayList();
-    private static ObservableList<DiceGUImplementation> diceList = FXCollections.observableArrayList();
+    private ObservableList<DiceGUImplementation> diceList = FXCollections.observableArrayList();
     //variables for dice images
     private static Image[]  diceFaces = new Image[13];
 
@@ -103,7 +103,7 @@ public class GameWindowController implements Initializable {
                 "kniffeliger", "chance", "pi");
         entrySheet.setItems(entryList);
 
-        //würfel am anfang auf null
+        //Initialize observable list of dice
         diceList.addAll(new DiceGUImplementation[]{new DiceGUImplementation(1), new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4), new DiceGUImplementation(5) });
         diceBox.setItems(diceList);
 
@@ -133,7 +133,7 @@ public class GameWindowController implements Initializable {
             }
         });
 
-        //Listener for diceBox ListView
+        //Listener for diceBox ListView (might not be needed)
         diceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DiceGUImplementation>() {
 
             @Override
@@ -152,6 +152,7 @@ public class GameWindowController implements Initializable {
                 throw new RuntimeException(e);
             }
         });
+        logger.info("Dice images loaded into GUI");
 
 
         //cell factory for diceBox selection box
@@ -276,7 +277,10 @@ public class GameWindowController implements Initializable {
         //TODO
     }
 
-
+    /**
+     * Method to send roll command to server when rollButton is pressed
+     * @param event
+     */
     public void rollActionSend(ActionEvent event){
         ClientOutput.send(CommandsClientToServer.GAME, "roll" );
     }
@@ -318,7 +322,25 @@ public class GameWindowController implements Initializable {
     @FXML
     public void diceClick (MouseEvent arg0) {
         DiceGUImplementation dice = diceBox.getSelectionModel().getSelectedItem();
-        dice.setSavingStatus(true);
-        ClientOutput.send(CommandsClientToServer.GAME, " \save " + String.valueOf(dice.getID()));
+        if (!dice.getSavingStatus()) {
+            dice.setSavingStatus(true);
+            ClientOutput.send(CommandsClientToServer.GAME, "save " + String.valueOf(dice.getID()));
+        }
+    }
+
+
+    /**
+     * Method to update values of dices in GUI
+     * @param diceValues integer array of values (1-6) for 5 dices (usually provided by game logic engine)
+     */
+    public void receiveRoll(int[] diceValues) {
+        int i = 0;
+        for (DiceGUImplementation dice : this.diceList) {
+            //TODO: add null-check
+            if (!dice.getSavingStatus() ) {
+                dice.setDiceValue(diceValues[i]);
+            }
+            i++;
+        }
     }
 }

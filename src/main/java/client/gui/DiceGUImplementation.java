@@ -26,4 +26,13 @@ public class DiceGUImplementation {
     public void setSavingStatus(boolean status){
         this.savingStatus = status;
     }
+
+    public void setDiceValue(int value){
+        this.diceValue = value;
+    }
+
+    public void resetDice() {
+        this.savingStatus = false;
+        this.diceValue = 0;
+    }
 }
