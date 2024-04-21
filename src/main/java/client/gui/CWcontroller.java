@@ -104,7 +104,7 @@ public class CWcontroller implements Initializable {
         //read message from input text field
         String messageToSend = msgAcceptor.getText();
         if (!msgAcceptor.getText().isEmpty()) {
-            //add send message to message display field
+            // add sent message to message display field (right side, in light gray)
             HBox hBox = new HBox();
             hBox.setAlignment(Pos.CENTER_RIGHT);
 
@@ -121,17 +121,27 @@ public class CWcontroller implements Initializable {
 
             hBox.getChildren().add(textFlow);
             msgDisplayAll.getChildren().add(hBox);
-
+            // relay message to server
             sendMsgtoServer(messageToSend);
-
+            // clear text field, where message is entered
             msgAcceptor.clear();
         }
 
     }
 
+    /**
+     * getter for the recipent field that stores the username currently selected in ChoiceBox recID
+     * @return value of recipient field
+     */
     public String getRecipient() {
         return recipient;
     }
+
+    /**
+     * setter recipent field that stores the username currently selected in ChoiceBox recID
+     * used for updating recipient field when selection in ChoiceBox recID is changed
+     * @param recipient username from list of usernames to set the recipient field with
+     */
 
     public void setRecipient(String recipient) {
         this.recipient = recipient;
@@ -176,7 +186,7 @@ public class CWcontroller implements Initializable {
 
 
     /**
-     * method to send messages to server, this is the standard method to send messages over the chatwindow
+     * method to send messages to server, this is the standard method to send messages over the chat window
      * @param message message to send, contains @all, @lobby or @username at the beginning followed by a space
      */
     public void sendMsgtoServer(String message){
@@ -208,7 +218,11 @@ public class CWcontroller implements Initializable {
 
     }
 
-
+    /**
+     * method to transfer list of players from server to GUI
+     * @param playerList
+     * @return
+     */
     public static List<String> makeUsernameList(ArrayList<Player> playerList){
         List<String> userNameList = new ArrayList<>();
         for (Player player : playerList) {
@@ -217,6 +231,11 @@ public class CWcontroller implements Initializable {
         return userNameList;
     }
 
+    /**
+     * method to set
+     * @param choiceBox JavaFX ChoiceBox to be set
+     * @param values values update choice box with as string array
+     */
     public static void setChoiceBox(ChoiceBox<String> choiceBox, String[] values) {
         ObservableList<String> userNameList = FXCollections.observableArrayList();
         choiceBox.setItems(userNameList);
@@ -226,6 +245,10 @@ public class CWcontroller implements Initializable {
         //this.networkManager = clientOutput;
     //}
 
+    /**
+     * method to display message in main display area of chat window (on left side in light gray)
+     * @param message message to be displayed
+     */
     public void displayReceivedMessage(String message) {
         //display this in the chat window, message is "username: message"
         addMsgReceived(message, msgDisplayAll);
