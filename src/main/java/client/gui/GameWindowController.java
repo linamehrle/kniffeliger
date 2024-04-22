@@ -328,6 +328,8 @@ public class GameWindowController implements Initializable {
                 //Reset values in arrays with stashed dice
                 diceStashedList[i] = "";
             }
+        } else {
+            ClientOutput.send(CommandsClientToServer.GAME,  "none");
         }
         diceBox.refresh();
         ClientOutput.send(CommandsClientToServer.GAME, "roll" );
