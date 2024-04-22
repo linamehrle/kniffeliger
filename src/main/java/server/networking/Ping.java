@@ -43,7 +43,7 @@ public class Ping implements Runnable{
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
-                logger.error(e.getMessage());
+                logger.warn(e.getMessage());
             }
         }
 

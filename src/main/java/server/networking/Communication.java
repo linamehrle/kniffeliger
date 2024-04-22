@@ -1,13 +1,18 @@
 package server.networking;
 
 import java.util.ArrayList;
+
+import org.apache.logging.log4j.Logger;
 import server.Lobby;
 import server.Player;
+import starter.Starter;
 
 /**
  * This class contains all necessary methods for communication between clients and from server to client.
  */
 public class Communication {
+
+    static Logger logger = Starter.logger;
 
     /**
      * sends a message from the server to all connected clients
@@ -100,6 +105,8 @@ public class Communication {
      */
     public static void sendToLobby(CommandsServerToClient cmd, Player player, String message) {
 
+        logger.debug("sendToLobby received a message from player " + player.getUsername());
+
         //checks if a player is in a lobby
         if(player.getLobby() == null) {
             ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
@@ -113,12 +120,13 @@ public class Communication {
             if (!playerInList.equals(player)) {
                 switch (cmd) {
                     case GAME -> {
-                        ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
+                        ServerOutput serverOutput = playerInList.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
                         serverOutput.send(cmd, message);
                     }
                     case CHAT -> {
-                        ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
+                        ServerOutput serverOutput = playerInList.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
                         serverOutput.send(CommandsServerToClient.CHAT, player.getUsername() + " to Lobby : " + message);
+                        logger.debug("chat send to player " + player.getUsername());
                     }
                 }
             }
