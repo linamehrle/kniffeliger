@@ -1,10 +1,12 @@
 package client.gui;
 
 import java.awt.*;
+import java.awt.Label;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -80,6 +82,8 @@ public class GameWindowController implements Initializable {
     private ObservableList<DiceGUImplementation> diceList = FXCollections.observableArrayList();
     //variables for dice images
     private static Image[]  diceFaces = new Image[13];
+    //List with dice selected for saving in GUI, but not yet saved
+    private String[] diceStashedList = new String[]{"", "", "", "", ""};
 
 
 
@@ -107,22 +111,9 @@ public class GameWindowController implements Initializable {
         diceList.addAll(new DiceGUImplementation[]{new DiceGUImplementation(1), new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4), new DiceGUImplementation(5) });
         diceBox.setItems(diceList);
 
+        //Disable all game fields before starting
+        //disableAllGameFields();
 
-
-
-        entrySheet.setDisable(true);
-        //dice.setDisable(false);
-        //diceTextField.setDisable(true);
-
-        stealButton.setDisable(true);
-        freezeButton.setDisable(true);
-        rotateButton.setDisable(true);
-        rollButton.setDisable(true);
-        swapButton.setDisable(true);
-        deleteButton.setDisable(true);
-        rollButton.setDisable(true);
-        enterButton.setDisable(true);
-        saveDiceButton.setDisable(true);
 
         //Listener to see if the text field to save the dice is active
         diceTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
@@ -170,7 +161,7 @@ public class GameWindowController implements Initializable {
                 } else {
                     //set baseIndex, such that different symbols are loaded for saved and unsaved dice
                     int baseIndex = 0;
-                    if (dice.getSavingStatus()) {
+                    if (dice.getSavingStatus() || dice.getStashStatus()) {
                         baseIndex = 6;}
                     ImageView imageView = new ImageView();
                     switch (dice.getDiceValue()) {
@@ -191,6 +182,43 @@ public class GameWindowController implements Initializable {
 
 
     }
+
+    /*
+    Methods for enabling/disabling buttons
+     */
+
+    /**
+     * Method disables all game fields (but not leave and quit buttons)
+     * can be used to disable fields when it is another player's turn
+     */
+    public void disableAllGameFields(){
+        entrySheet.setDisable(true);
+        diceBox.setDisable(true);
+        diceTextField.setDisable(true);
+        stealButton.setDisable(true);
+        freezeButton.setDisable(true);
+        rotateButton.setDisable(true);
+        rollButton.setDisable(true);
+        swapButton.setDisable(true);
+        deleteButton.setDisable(true);
+        rollButton.setDisable(true);
+        enterButton.setDisable(true);
+        saveDiceButton.setDisable(true);
+    }
+
+    /**
+     * Method enables all game fields except special action fields
+     * can be used to enable button's when it is a player's turn
+     */
+    public void enableAllGameFields(){
+        entrySheet.setDisable(false);
+        diceBox.setDisable(false);
+        rollButton.setDisable(false);
+        enterButton.setDisable(false);
+        saveDiceButton.setDisable(false);
+
+    }
+
 
     /**
      * Method that handles when the stealEntry Button is pressed to steal an entry from a player
@@ -277,17 +305,32 @@ public class GameWindowController implements Initializable {
         //TODO
     }
 
+     /*
+        Dice controls
+     */
+
     /**
      * Method to send roll command to server when rollButton is pressed
      * @param event
      */
     public void rollActionSend(ActionEvent event){
+        String saveDiceString = diceStashedArrToString();
+        //Saved dice are automatically transmitted before dice are rolled again
+        if ( !saveDiceString.isEmpty()) {
+            ClientOutput.send(CommandsClientToServer.GAME, "save" + saveDiceString);
+            //Reset list of Stashed Arrays
+            for (String elem:diceStashedList){
+                elem = "";
+            }
+            //Reset Stash Status and set save status
+            for (DiceGUImplementation dice : diceList){
+                dice.setStashStatus(false);
+                dice.setSavingStatus(true);
+            }
+        }
         ClientOutput.send(CommandsClientToServer.GAME, "roll" );
     }
 
-    /*
-        Dice controls
-     */
     /**
      * method to load images of dice faces
      * @param diceNumber number of dice face e.g. 1-6
@@ -320,12 +363,29 @@ public class GameWindowController implements Initializable {
     }
 
     @FXML
-    public void diceClick (MouseEvent arg0) {
+    public void diceClick (MouseEvent event) {
         DiceGUImplementation dice = diceBox.getSelectionModel().getSelectedItem();
-        if (!dice.getSavingStatus()) {
-            dice.setSavingStatus(true);
-            ClientOutput.send(CommandsClientToServer.GAME, "save " + String.valueOf(dice.getID()));
+        if (!dice.getSavingStatus() && !dice.getStashStatus() && (dice.getDiceValue() != 0)) {
+            //ClientOutput.send(CommandsClientToServer.GAME, String.valueOf(dice.getID()));
+            diceStashedList[dice.getID() - 1] = String.valueOf(dice.getID());
+            dice.setStashStatus(true);
+        } else if (!dice.getSavingStatus() && dice.getStashStatus() ) {
+            //ClientOutput.send(CommandsClientToServer.GAME, String.valueOf(dice.getID()));
+            diceStashedList[dice.getID() - 1] = "";
+            dice.setStashStatus(false);
         }
+        diceBox.refresh();
+    }
+
+    //This method is only necessary if surplus spaces are not ignored by gamelogic
+    public String diceStashedArrToString(){
+        StringBuilder saveMsgString = new StringBuilder();
+        for (String elem:diceStashedList){
+            if (! elem.isEmpty() ){
+                saveMsgString.append(" ").append(elem);
+            }
+        }
+        return saveMsgString.toString();
     }
 
 
@@ -337,7 +397,7 @@ public class GameWindowController implements Initializable {
         int i = 0;
         for (DiceGUImplementation dice : this.diceList) {
             //TODO: add null-check
-            if (!dice.getSavingStatus() ) {
+            if ( !dice.getSavingStatus() ) {
                 dice.setDiceValue(diceValues[i]);
             }
             i++;
