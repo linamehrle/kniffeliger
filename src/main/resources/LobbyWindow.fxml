@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.LobbyWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.LobbyWindowController">
    <children>
-      <Button fx:id="createLobbyButton" layoutX="387.0" layoutY="200.0" mnemonicParsing="false" onAction="#createLobbyAction" text="Create Lobby" />
-      <Button fx:id="enterLobbyButton" layoutX="390.0" layoutY="244.0" mnemonicParsing="false" onAction="#enterLobbyAction" text="Enter Lobby" />
-      <Button fx:id="leaveGameButton" layoutX="390.0" layoutY="364.0" mnemonicParsing="false" onAction="#leaveGame" text="Leave Game" AnchorPane.bottomAnchor="10.399999999999977" />
+      <Button fx:id="createLobbyButton" layoutX="78.0" layoutY="88.0" mnemonicParsing="false" onAction="#createLobbyAction" text="Create Lobby" />
+      <Button fx:id="enterLobbyButton" layoutX="199.0" layoutY="88.0" mnemonicParsing="false" onAction="#enterLobbyAction" text="Enter Lobby" />
+      <Button fx:id="leaveGameButton" layoutX="492.0" layoutY="361.0" mnemonicParsing="false" onAction="#leaveGame" text="Leave Game" AnchorPane.bottomAnchor="14.0" />
       <Label layoutX="286.0" layoutY="24.0" text="Welcome to Kniffeliger :)" textAlignment="CENTER" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <font>
             <Font size="24.0" />
@@ -23,6 +23,7 @@
          </font>
       </Label>
       <TreeView fx:id="lobbyList" layoutX="35.0" layoutY="163.0" onMouseClicked="#selectLobby" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="350.0" AnchorPane.topAnchor="150.0" />
-      <TextField fx:id="lobbyTextField" layoutX="356.0" layoutY="163.0" AnchorPane.topAnchor="150.0" />
+      <TextField fx:id="lobbyTextField" layoutX="89.0" layoutY="52.0" AnchorPane.topAnchor="52.0" />
+      <fx:include layoutX="300.0" layoutY="20.0" source="chatwindow.fxml" />
    </children>
 </AnchorPane>
