@@ -317,17 +317,19 @@ public class GameWindowController implements Initializable {
         String saveDiceString = diceStashedArrToString();
         //Saved dice are automatically transmitted before dice are rolled again
         if ( !saveDiceString.isEmpty()) {
-            ClientOutput.send(CommandsClientToServer.GAME, "save" + saveDiceString);
-            //Reset list of Stashed Arrays
-            for (String elem:diceStashedList){
-                elem = "";
-            }
-            //Reset Stash Status and set save status
-            for (DiceGUImplementation dice : diceList){
-                dice.setStashStatus(false);
-                dice.setSavingStatus(true);
+            ClientOutput.send(CommandsClientToServer.GAME,  saveDiceString);
+
+            //Set dice to saved
+            for (int i=0; i < diceStashedList.length; i++){
+                if ( !diceStashedList[i].isEmpty() ){
+                    diceList.get(i).setSavingStatus(true);
+                    diceList.get(i).setStashStatus(false);
+                }
+                //Reset values in arrays with stashed dice
+                diceStashedList[i] = "";
             }
         }
+        diceBox.refresh();
         ClientOutput.send(CommandsClientToServer.GAME, "roll" );
     }
 
@@ -382,7 +384,7 @@ public class GameWindowController implements Initializable {
         StringBuilder saveMsgString = new StringBuilder();
         for (String elem:diceStashedList){
             if (! elem.isEmpty() ){
-                saveMsgString.append(" ").append(elem);
+                saveMsgString.append(elem).append(" ");
             }
         }
         return saveMsgString.toString();
