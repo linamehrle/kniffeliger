@@ -21,6 +21,7 @@ import org.apache.logging.log4j.Logger;
  * It implements Initializable
  */
 public class LobbyWindowController implements Initializable {
+    
     private Logger logger = LogManager.getLogger(LobbyWindowController.class);
 
     @FXML
@@ -33,7 +34,16 @@ public class LobbyWindowController implements Initializable {
     private Button enterLobbyButton;
 
     @FXML
+    private Button leaveGameButton;
+    
+    @FXML
+    private Button changeUsernameButton;
+
+    @FXML
     private TextField lobbyTextField;
+    
+    @FXML
+    private TextField usernameTextField;
 
     private String selectedLobby = null;
 
@@ -60,6 +70,17 @@ public class LobbyWindowController implements Initializable {
         ClientOutput.send(CommandsClientToServer.ENLO, splitLobbyAndStatus[0]);
         enterLobbyButton.setDisable(true); //TODO deactivate button also when list is not selected?
         SceneController.switchToGameWindow(event);
+    }
+
+    /**
+     * Handles when the user changes their username via the gui to the name put in via the text field
+     * @param event
+     */
+    public void changeUsernameAction(ActionEvent event) {
+        String username = usernameTextField.getText();
+        ClientOutput.send(CommandsClientToServer.CHNA, username);
+        changeUsernameButton.setDisable(true);
+        usernameTextField.clear();
     }
 
     /**
@@ -186,12 +207,22 @@ public class LobbyWindowController implements Initializable {
 
         createLobbyButton.setDisable(true);
         enterLobbyButton.setDisable(true);
+        changeUsernameButton.setDisable(true);
 
         //TODO make this pretty
         lobbyTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(lobbyTextField.isFocused()){
+                if (lobbyTextField.isFocused()) {
                     createLobbyButton.setDisable(false);
+                }
+            }
+        });
+
+        usernameTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (usernameTextField.isFocused()) {
+                    changeUsernameButton.setDisable(false);
                 }
             }
         });
