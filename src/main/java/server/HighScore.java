@@ -22,7 +22,7 @@ public class HighScore {
      * This method updates the high score list with the new scores once a game is done.
      *
      * @param ranking The score at the end of the game given by the GameManager (not in order!) of the form
-     *                "username:score,username:score,..."
+     *                "score:username,score:username,..."
      */
     public static void updateHighScore(String ranking) {
         //TODO check if highest score in the game is lower than lowest on the board to make more efficient?
@@ -68,11 +68,9 @@ public class HighScore {
         } catch (FileNotFoundException e) {
             //creates the file if it does not exist yet
             new File("highscore.txt");
-            //logger.info("new file highscore.txt created");
-            System.out.println("new file created");
+            logger.info("new file highscore.txt created");
         } catch (Exception e) {
-            //logger.warn(e.getMessage());
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }
     }
 
@@ -80,7 +78,7 @@ public class HighScore {
      * This method reads the high score list from the txt file and returns it as a string
      *
      * @return a String containing the current high score list in the form of
-     * "username:score,username:score,.."
+     * "score:username,score:username,.."
      */
     public static String getHighScoreList() {
         String highScoreList = "";
