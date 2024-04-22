@@ -45,12 +45,12 @@ public class Main extends Application {
             mainWidow.show();
             logger.info("Lobby Window started");
 
-            chatWindow = new Stage();
-            FXMLLoader loaderChat = new FXMLLoader(getClass().getResource("/chatwindow.fxml"));
-            Parent rootChat = (Parent)loaderChat.load();
-            Scene scene = new Scene(rootChat, 600, 300, Color.BLACK);
-            this.chatWindow.setScene(scene);
-            this.chatWindow.show();
+            //chatWindow = new Stage();
+            //FXMLLoader loaderChat = new FXMLLoader(getClass().getResource("/chatwindow.fxml"));
+            //Parent rootChat = (Parent)loaderChat.load();
+            //Scene scene = new Scene(rootChat, 600, 300, Color.BLACK);
+            //this.chatWindow.setScene(scene);
+            //this.chatWindow.show();
             logger.info("Chat Window started");
         } catch (Exception e) {
             logger.error(e.getMessage());
