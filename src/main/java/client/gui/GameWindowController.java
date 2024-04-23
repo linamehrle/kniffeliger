@@ -55,6 +55,9 @@ public class GameWindowController implements Initializable {
     private Button enterButton;
 
     @FXML
+    private Button highScoreButton;
+
+    @FXML
     TextField diceTextField;
 
     @FXML
@@ -334,6 +337,10 @@ public class GameWindowController implements Initializable {
      /*
         Dice controls
      */
+
+    public void highScoreAction() {
+        //TODO
+    }
 
     /**
      * Method to send roll command to server when rollButton is pressed

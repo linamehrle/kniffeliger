@@ -40,6 +40,9 @@ public class LobbyWindowController implements Initializable {
     private Button changeUsernameButton;
 
     @FXML
+    private Button highScoreButton;
+
+    @FXML
     private TextField lobbyTextField;
     
     @FXML
@@ -81,6 +84,10 @@ public class LobbyWindowController implements Initializable {
         ClientOutput.send(CommandsClientToServer.CHNA, username);
         changeUsernameButton.setDisable(true);
         usernameTextField.clear();
+    }
+
+    public void highScoreAction() {
+        //TODO
     }
 
     /**
@@ -230,7 +237,8 @@ public class LobbyWindowController implements Initializable {
         hasBeenInitialized = true;
     }
 
+    //TODO implement high score list
     //TODO only lobbies, not players can be selected
-    //TODO popUps when something is not done right
+    //TODO popUps when something is not done right?
     //TODO status of lobby is correct
 }
