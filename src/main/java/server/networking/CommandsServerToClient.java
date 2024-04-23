@@ -64,6 +64,11 @@ public enum CommandsServerToClient {
     /**
      * Returns a list with all connected players to the client
      */
-    PLLI
+    PLLI,
+
+    /**
+     * Returns new dice values (string of 5 space separated integers) to client
+     */
+    ROLL,
 
 }
