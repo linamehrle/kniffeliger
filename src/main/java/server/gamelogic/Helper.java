@@ -1,7 +1,10 @@
 package server.gamelogic;
 
 import server.Player;
-// TODO javadoc for class
+
+/**
+ * This class contains methods that help the game manager especially for the game play in the console.
+ */
 public class Helper {
 
     /*

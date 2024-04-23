@@ -8,7 +8,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 /**
- * This class handles the process during the game.
+ * This class handles the process during the game. It contains the starter method that handles the whole game including
+ * the game play.
  */
 public class GameManager implements Runnable {
     // fixed number of rounds
