@@ -64,7 +64,7 @@ public class GameWindowController implements Initializable {
     Button saveDiceButton;
 
     @FXML
-    private ListView<EntrySheetGUImplementation> entrySheet;
+    private TableView<EntrySheetGUImplementation> entrySheet;
 
     @FXML
     private ListView<DiceGUImplementation> diceBox;
@@ -192,22 +192,22 @@ public class GameWindowController implements Initializable {
         });
 
         //Set Cell Factory for entrysheet
-        entrySheet.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
-            @Override
-            public void updateItem(EntrySheetGUImplementation entry, boolean empty) {
-                super.updateItem(entry, empty);
-                if (empty) {
-                    setText(null);
-                    setGraphic(null);
-                } else {
-                    if (entry.getSavingStatus() ) {
-                        setDisable(true);
-                    }
-                    setText(entry.getIDname() + " " + entry.getScore());
-                    //setGraphic(imageView);
-                }
-            }
-        });
+//        entrySheet.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
+//            @Override
+//            public void updateItem(EntrySheetGUImplementation entry, boolean empty) {
+//                super.updateItem(entry, empty);
+//                if (empty) {
+//                    setText(null);
+//                    setGraphic(null);
+//                } else {
+//                    if (entry.getSavingStatus() ) {
+//                        setDisable(true);
+//                    }
+//                    setText(entry.getIDname() + " " + entry.getScore());
+//                    //setGraphic(imageView);
+//                }
+//            }
+//        });
 
 
     }
@@ -438,4 +438,12 @@ public class GameWindowController implements Initializable {
             i++;
         }
     }
+
+    /*
+    Entry sheet controls
+     */
+    public void entryClickAction(){
+
+    }
+
 }
