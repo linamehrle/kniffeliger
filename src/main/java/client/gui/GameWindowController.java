@@ -366,6 +366,9 @@ public class GameWindowController implements Initializable {
                 diceStashedList[i] = "";
             }
         }
+        else {
+            ClientOutput.send(CommandsClientToServer.GAME,  "none");
+        }
         diceBox.refresh();
         ClientOutput.send(CommandsClientToServer.GAME, "roll" );
     }
