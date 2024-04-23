@@ -103,6 +103,9 @@ public class GameWindowController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         logger.info("Game Window initialized");
 
+        //Set this instance of GameWindowController as controller in main
+        Main.setGameWindowController(this);
+
         //Initialize entry sheet
         String[] entryNames = {"ones", "twos", "threes", "fours", "fives", "sixes",
                 "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight", "largeStraight",
@@ -342,12 +345,13 @@ public class GameWindowController implements Initializable {
         //TODO
     }
 
+
     /**
      * Method to send roll command to server when rollButton is pressed
      * @param event
      */
     public void rollActionSend(ActionEvent event){
-        String saveDiceString = diceStashedArrToString();
+        String saveDiceString = diceStashedArrToString(diceStashedList);
         //Saved dice are automatically transmitted before dice are rolled again
         if ( !saveDiceString.isEmpty()) {
             ClientOutput.send(CommandsClientToServer.GAME,  saveDiceString);
@@ -413,7 +417,7 @@ public class GameWindowController implements Initializable {
     }
 
     //This method is only necessary if surplus spaces are not ignored by gamelogic
-    public String diceStashedArrToString(){
+    public static String diceStashedArrToString(String[] diceStashedList){
         StringBuilder saveMsgString = new StringBuilder();
         for (String elem:diceStashedList){
             if (! elem.isEmpty() ){
@@ -437,7 +441,10 @@ public class GameWindowController implements Initializable {
             }
             i++;
         }
+        diceBox.refresh();
     }
+
+
 
     /*
     Entry sheet controls

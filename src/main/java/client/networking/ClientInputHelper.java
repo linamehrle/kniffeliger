@@ -8,6 +8,8 @@ import org.apache.logging.log4j.Logger;
 import server.networking.CommandsServerToClient;
 import starter.Starter;
 
+import java.util.Arrays;
+
 /**
  * This class handles the input read by the ClientInput class and processes it accordingly.
  */
@@ -74,7 +76,14 @@ public class ClientInputHelper implements Runnable {
                 Main.removePlayer(input[1]);
                 logger.debug("LELO received with message: " + input[1]);
             }
-            case GAME -> System.out.println("Game: " + input[1]);
+            case GAME -> {
+                System.out.println("Game: " + input[1]);
+                //Main.sendGameToGUI()
+            }
+            case ROLL -> {
+                System.out.println("Game: Your dice: " + input[1]);
+                Main.sendDicetoGUI(input[1]);
+            }
             case PLLI -> Print.printPlayerList(input[1]);
             default -> logger.info("unknown command received from server " + message);
         }

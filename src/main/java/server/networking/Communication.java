@@ -120,6 +120,11 @@ public class Communication {
                         ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
                         serverOutput.send(CommandsServerToClient.CHAT, player.getUsername() + " to Lobby : " + message);
                     }
+                    //Added ROLL command
+                    case ROLL ->{
+                        ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
+                        serverOutput.send(CommandsServerToClient.ROLL, message);
+                    }
                 }
             }
         }
