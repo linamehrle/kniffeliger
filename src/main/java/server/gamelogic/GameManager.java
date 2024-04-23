@@ -53,6 +53,12 @@ public class GameManager implements Runnable {
      * STARTER METHOD
      * #################################################################################################################
      */
+
+    /**
+     * This method runs the whole game, keeps the game play in the right order and checks all inputs.
+     *
+     * @throws InterruptedException exception when thread has an error
+     */
     public synchronized void starter() throws InterruptedException {
         Player[] players = new Player[playerArraysList.size()];
         for (int i = 0; i < playerArraysList.size(); i++){
