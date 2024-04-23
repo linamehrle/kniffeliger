@@ -18,7 +18,7 @@ public class DiceGUImplementation {
         this.diceID = diceID;
         this.savingStatus = false;
         this.stashedForSaving = false;
-        this.diceValue = 1;
+        this.diceValue = 0;
     }
 
     public int getID(){return diceID;}
