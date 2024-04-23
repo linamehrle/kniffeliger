@@ -1,6 +1,5 @@
 package client.gui;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,31 +8,23 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import server.Player;
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
@@ -52,7 +43,7 @@ public class CWcontroller implements Initializable {
     //choice box to chose recipient
     @FXML
     private ChoiceBox<String> recID;
-    private Player player;
+    //private Player player;
     private String recipient;
     //private List<String> userNameList;
     //ArrayList<Player> playerList;
@@ -220,8 +211,8 @@ public class CWcontroller implements Initializable {
 
     /**
      * method to transfer list of players from server to GUI
-     * @param playerList
-     * @return
+     * @param playerList list of players
+     * @return list of strings with user names
      */
     public static List<String> makeUsernameList(ArrayList<Player> playerList){
         List<String> userNameList = new ArrayList<>();

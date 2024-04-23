@@ -61,9 +61,8 @@ public class GameWindowController implements Initializable {
     Button saveDiceButton;
 
     @FXML
-    private ListView<String> entrySheet;
-    @FXML
-    private DiceGUImplementation dice;
+    private ListView<EntrySheetGUImplementation> entrySheet;
+
     @FXML
     private ListView<DiceGUImplementation> diceBox;
     @FXML
@@ -78,7 +77,7 @@ public class GameWindowController implements Initializable {
     private VBox diceBox5;
 
 
-    private static ObservableList<String> entryList = FXCollections.observableArrayList();
+    private static ObservableList<EntrySheetGUImplementation> entryList = FXCollections.observableArrayList();
     private ObservableList<DiceGUImplementation> diceList = FXCollections.observableArrayList();
     //variables for dice images
     private static Image[]  diceFaces = new Image[13];
@@ -101,18 +100,31 @@ public class GameWindowController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         logger.info("Game Window initialized");
 
-        //einträge im entry sheet
-        entryList.addAll("ones", "twos", "threes", "fours", "fives", "sixes",
+        //Initialize entry sheet
+        String[] entryNames = {"ones", "twos", "threes", "fours", "fives", "sixes",
                 "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight", "largeStraight",
-                "kniffeliger", "chance", "pi");
+                "kniffeliger", "chance", "pi"};
+
+        EntrySheetGUImplementation[] entryElements = new EntrySheetGUImplementation[entryNames.length];
+
+        int k = 0;
+        for (String name : entryNames){
+            //Begin ID number of entries at 1, such that ones = 1, twos = 2 etc.
+            entryElements[k] = new EntrySheetGUImplementation(k+1, name);
+            k++;
+        }
+
+        entryList.addAll(entryElements);
         entrySheet.setItems(entryList);
+
+
+
+
 
         //Initialize observable list of dice
         diceList.addAll(new DiceGUImplementation[]{new DiceGUImplementation(1), new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4), new DiceGUImplementation(5) });
         diceBox.setItems(diceList);
 
-        //Disable all game fields before starting
-        //disableAllGameFields();
 
 
         //Listener to see if the text field to save the dice is active
@@ -148,10 +160,6 @@ public class GameWindowController implements Initializable {
 
         //cell factory for diceBox selection box
         diceBox.setCellFactory(param -> new ListCell<DiceGUImplementation>() {
-            private String diceID;
-            private int diceValue;
-            private boolean empty;
-
             @Override
             public void updateItem(DiceGUImplementation dice, boolean empty) {
                 super.updateItem(dice, empty);
@@ -174,8 +182,26 @@ public class GameWindowController implements Initializable {
                         default -> imageView.setImage(GameWindowController.diceFaces[0]);
                     };
 
-                    setText(String.valueOf(dice.getID()));
+                    setText(null);
                     setGraphic(imageView);
+                }
+            }
+        });
+
+        //Set Cell Factory for entrysheet
+        entrySheet.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
+            @Override
+            public void updateItem(EntrySheetGUImplementation entry, boolean empty) {
+                super.updateItem(entry, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    if (entry.getSavingStatus() ) {
+                        setDisable(true);
+                    }
+                    setText(entry.getIDname() + " " + entry.getScore());
+                    //setGraphic(imageView);
                 }
             }
         });
