@@ -8,7 +8,8 @@ import java.io.IOException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This is the test class for the class HighScore which handles the high score list
@@ -27,7 +28,7 @@ class HighScoreTest {
             savedScore = reader.readLine();
             reader.close();
         } catch (Exception e) {
-            fail();
+            return;
         }
     }
 
@@ -84,12 +85,16 @@ class HighScoreTest {
      */
     @AfterEach
     void reset() {
+        if (savedScore == null) {
+            savedScore = "353:Benni,";
+        }
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("highscore.txt"));
             writer.write(savedScore);
             writer.flush();
             writer.close();
         } catch (Exception e) {
+            e.printStackTrace();
             fail();
         }
     }
