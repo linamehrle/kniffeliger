@@ -338,8 +338,11 @@ public class GameWindowController implements Initializable {
         Dice controls
      */
 
+    /**
+     * Method to open the high score list as a new window when pushing the highScoreButton
+     */
     public void highScoreAction() {
-        //TODO
+        SceneController.showHighScoreWindow();
     }
 
     /**

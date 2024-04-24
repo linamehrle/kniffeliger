@@ -87,7 +87,7 @@ public class LobbyWindowController implements Initializable {
     }
 
     public void highScoreAction() {
-        //TODO
+        SceneController.showHighScoreWindow();
     }
 
     /**
