@@ -1,6 +1,8 @@
 package client.gui;
 
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.image.Image;
 
 /**
@@ -10,9 +12,9 @@ public class EntrySheetGUImplementation {
     //Identifier number beginning at 1 for ones
     private int idNumber;
     //Name of field
-    private String idName;
+    private SimpleStringProperty idName;
     //Score of entry
-    private int score;
+    private SimpleIntegerProperty score;
 
     //Specifies if entry still can be modified
     private Boolean savingStatus;
@@ -27,8 +29,8 @@ public class EntrySheetGUImplementation {
      */
     EntrySheetGUImplementation (int entryNumber, String entryName){
         this.idNumber = entryNumber;
-        this.idName = entryName;
-        this.score = 0;
+        this.idName = new SimpleStringProperty(entryName);
+        this.score = new SimpleIntegerProperty(0);
         this.savingStatus = false;
     }
     //Getters
@@ -37,11 +39,11 @@ public class EntrySheetGUImplementation {
     }
 
     public String getIDname() {
-        return idName;
+        return idName.get();
     }
 
     public int getScore() {
-        return score;
+        return score.get();
     }
 
     public Boolean getSavingStatus () {
@@ -54,15 +56,25 @@ public class EntrySheetGUImplementation {
     }
 
     public void setIdName(String name) {
-        this.idName = name;
+        this.idName.set(name);
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setScore(int number) {
+        this.score.set(number);
     }
 
     public void getSavingStatus(Boolean status) {
         this.savingStatus = status;
+    }
+
+    //Getters for observable values
+
+
+    public SimpleIntegerProperty scoreProperty() {
+        return score;
+    }
+    public SimpleStringProperty nameProperty() {
+        return idName;
     }
 
 }
