@@ -105,7 +105,9 @@ public class ClientThread implements Runnable{
             Communication.broadcast(player.getPlayerList(), player, "Player " + player.getUsername() + " has disconnected");
             ArrayList<Player> playerList = player.getPlayerList();
             playerList.remove(player);
-            player.getLobby().leaveLobby(player);
+            if (player.getLobby() != null) {
+                player.getLobby().leaveLobby(player);
+            }
             ping.stop();
             serverInput.stop();
             serverOutput.stop();
@@ -113,7 +115,7 @@ public class ClientThread implements Runnable{
 
             logger.info(player.getUsername() + " has successfully disconnected");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }
 
     }

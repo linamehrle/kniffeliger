@@ -5,11 +5,15 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import org.apache.logging.log4j.Logger;
+import starter.Starter;
 
 /**
  * This class handles outgoing commands and messages from server to client.
  */
 public class ServerOutput {
+
+    Logger logger = Starter.getLogger();
 
     private BufferedWriter out;
 
@@ -46,7 +50,7 @@ public class ServerOutput {
             out.newLine();
             out.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.warn("Message " + message + " to client could not go through");
         }
     }
 

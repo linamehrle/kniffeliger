@@ -76,6 +76,11 @@ public enum CommandsClientToServer {
     /**
      * Requests a list of all connected players from the server to print in the console
      */
-    PLLI
+    PLLI,
+
+    /**
+     * Requests a high score list from the server
+     */
+    HGSC
 
 }
