@@ -85,6 +85,7 @@ public class ClientInputHelper implements Runnable {
                 Main.sendDicetoGUI(input[1]);
             }
             case PLLI -> Print.printPlayerList(input[1]);
+            case HGSC -> System.out.println(input[1]);
             default -> logger.info("unknown command received from server " + message);
         }
     }

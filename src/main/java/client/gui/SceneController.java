@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import org.apache.logging.log4j.Logger;
 import starter.Starter;
 
@@ -17,6 +16,8 @@ public class SceneController {
     private static Logger logger = Starter.logger;
 
     private static Stage mainWindow;
+
+    private static Scene highScoreWindow;
     private static Scene scene;
     private static Parent root;
 
@@ -33,7 +34,7 @@ public class SceneController {
             mainWindow.setScene(scene);
             mainWindow.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }
     }
 
@@ -46,12 +47,25 @@ public class SceneController {
         try {
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/LobbyWindow.fxml"));
             root = loader.load();
-            scene = new Scene(root);
+            highScoreWindow = new Scene(root);
             mainWindow.setScene(scene);
             mainWindow.show();
-        } catch (
-                IOException e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            logger.warn(e.getMessage());
+        }
+    }
+
+    public static void showHighScoreWindow() {
+        logger.info("trying to open the high score window");
+        try {
+            FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/HighScoreWindow.fxml"));
+            Parent root2 = loader.load();
+            Stage stage = new Stage();
+            scene = new Scene(root2);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            logger.warn(e.getMessage());
         }
     }
 
