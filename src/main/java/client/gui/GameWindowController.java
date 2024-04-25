@@ -48,17 +48,12 @@ public class GameWindowController implements Initializable {
     private Button deleteButton;
     @FXML
     private Button rollButton;
-    @FXML
-    private Button enterButton;
+
 
     @FXML
     private Button highScoreButton;
 
-    @FXML
-    TextField diceTextField;
 
-    @FXML
-    Button saveDiceButton;
 
     @FXML
     private TableView<EntrySheetGUImplementation> entrySheet;
@@ -72,16 +67,7 @@ public class GameWindowController implements Initializable {
 
     @FXML
     private ListView<DiceGUImplementation> diceBox;
-    @FXML
-    private VBox diceBox1;
-    @FXML
-    private VBox diceBox2;
-    @FXML
-    private VBox diceBox3;
-    @FXML
-    private VBox diceBox4;
-    @FXML
-    private VBox diceBox5;
+
 
 
     private ObservableList<EntrySheetGUImplementation> entryList = FXCollections.observableArrayList();
@@ -121,7 +107,8 @@ public class GameWindowController implements Initializable {
         entrySheetIcons.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         entrySheetScores.setCellValueFactory(cellData -> cellData.getValue().scoreProperty().asObject());
 
-        entrySheet.getItems().setAll(entryList);
+        entrySheet.setItems(entryList);
+        System.out.println(entrySheet.getItems());
 
         //Initialize observable list of dice
         diceList.addAll(new DiceGUImplementation[]{new DiceGUImplementation(1), new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4), new DiceGUImplementation(5) });
@@ -130,13 +117,13 @@ public class GameWindowController implements Initializable {
 
 
         //Listener to see if the text field to save the dice is active
-        diceTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(diceTextField.isFocused()){
-                    saveDiceButton.setDisable(false);
-                }
-            }
-        });
+//        diceTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+//            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+//                if(diceTextField.isFocused()){
+//                    saveDiceButton.setDisable(false);
+//                }
+//            }
+//        });
 
         //Listener for diceBox ListView (might not be needed)
         diceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DiceGUImplementation>() {
@@ -200,9 +187,9 @@ public class GameWindowController implements Initializable {
                 protected void updateItem(Integer entry, boolean empty) {
                     super.updateItem(entry, empty);
                     if (empty) {
-                        setText(null);
+                        super.setText(null);
                     } else {
-                        setText(entry.toString());
+                        super.setText(entry.toString());
                     }
                 }
             };
@@ -241,7 +228,6 @@ public class GameWindowController implements Initializable {
     public void disableAllGameFields(){
         entrySheet.setDisable(true);
         diceBox.setDisable(true);
-        diceTextField.setDisable(true);
         stealButton.setDisable(true);
         freezeButton.setDisable(true);
         rotateButton.setDisable(true);
@@ -249,8 +235,7 @@ public class GameWindowController implements Initializable {
         swapButton.setDisable(true);
         deleteButton.setDisable(true);
         rollButton.setDisable(true);
-        enterButton.setDisable(true);
-        saveDiceButton.setDisable(true);
+
     }
 
     /**
@@ -261,9 +246,6 @@ public class GameWindowController implements Initializable {
         entrySheet.setDisable(false);
         diceBox.setDisable(false);
         rollButton.setDisable(false);
-        enterButton.setDisable(false);
-        saveDiceButton.setDisable(false);
-
     }
 
 

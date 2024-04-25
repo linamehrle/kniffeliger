@@ -5,13 +5,17 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.GameWindowController">
    <children>
+      <TableView fx:id="entrySheet" editable="true" fixedCellSize="1.0" layoutX="35.0" layoutY="106.0" onMouseClicked="#entryClickAction" prefHeight="433.0" prefWidth="250.0">
+         <columns>
+            <TableColumn fx:id="entrySheetNames" minWidth="50.0" prefWidth="102.0" sortable="false" text="Entry" />
+            <TableColumn fx:id="entrySheetIcons" editable="false" prefWidth="83.0" sortable="false" />
+            <TableColumn fx:id="entrySheetScores" editable="false" minWidth="50.0" prefWidth="64.0" sortable="false" text="Score" />
+         </columns>
+      </TableView>
       <Label layoutX="25.0" layoutY="50.0" text="Entry Sheet of:" />
       <Label fx:id="usernameLabel" layoutX="167.0" layoutY="50.0" text="Username" />
       <Label layoutX="25.0" layoutY="543.0" text="Total points:" />
@@ -26,27 +30,8 @@
       <Button fx:id="leaveGameButton" layoutX="436.0" layoutY="515.0" mnemonicParsing="false" onAction="#leaveGameAction" text="leave game" />
       <Button fx:id="leaveLobbyButton" layoutX="330.0" layoutY="515.0" mnemonicParsing="false" onAction="#leaveLobbyAction" text="leave Lobby" />
       <Button fx:id="rollButton" layoutX="774.0" layoutY="224.0" mnemonicParsing="false" onAction="#rollActionSend" prefHeight="103.0" prefWidth="94.0" text="ROLL" />
-      <Button fx:id="enterButton" layoutX="696.0" layoutY="44.0" mnemonicParsing="false" onAction="#enterToEntrySheetAction" text="enter" />
-      <TextField fx:id="diceTextField" layoutX="360.0" layoutY="337.0" />
-      <Button fx:id="saveDiceButton" layoutX="545.0" layoutY="337.0" mnemonicParsing="false" onAction="#saveDiceAction" text="save Dice" />
       <fx:include fx:id="chatWindow" layoutX="700.0" layoutY="400.0" source="chatwindow.fxml" />
       <ListView fx:id="diceBox" layoutX="362.0" layoutY="224.0" onMouseClicked="#diceClick" orientation="HORIZONTAL" prefHeight="103.0" prefWidth="400.0" />
-      <HBox layoutX="361.0" layoutY="93.0" prefHeight="103.0" prefWidth="505.0">
-         <children>
-            <VBox fx:id="diceBox1" prefHeight="100.0" prefWidth="100.0" />
-            <VBox fx:id="diceBox2" prefHeight="100.0" prefWidth="100.0" />
-            <VBox fx:id="diceBox3" prefHeight="100.0" prefWidth="100.0" />
-            <VBox fx:id="diceBox4" prefHeight="100.0" prefWidth="100.0" />
-            <VBox fx:id="diceBox5" prefHeight="100.0" prefWidth="100.0" />
-         </children>
-      </HBox>
       <Button fx:id="highScoreButton" layoutX="881.0" layoutY="36.0" mnemonicParsing="false" onAction="#highScoreAction" text="High Score" />
-      <TableView fx:id="entrySheet" editable="true" fixedCellSize="1.0" layoutX="35.0" layoutY="106.0" onMouseClicked="#entryClickAction" prefHeight="433.0" prefWidth="250.0">
-         <columns>
-            <TableColumn fx:id="entrySheetNames" editable="false" prefWidth="102.0" sortable="false" text="Entry" />
-            <TableColumn fx:id="entrySheetIcons" editable="false" prefWidth="83.0" sortable="false" />
-            <TableColumn fx:id="entrySheetScores" prefWidth="64.0" sortable="false" text="Score" />
-         </columns>
-      </TableView>
    </children>
 </Pane>
