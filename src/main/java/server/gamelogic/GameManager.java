@@ -208,6 +208,7 @@ public class GameManager implements Runnable {
                             break;
                     }
                 }
+                // TODO ADD DEFREEZE
             }
 
             // shifting and swapping phase
