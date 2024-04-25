@@ -155,6 +155,10 @@ public class Main extends Application {
         Main.gameWindowController.receiveEntrySheet(listOfEntries);
     }
 
+    public static void sendInformationTextToGUI(String informationText) {
+        Main.gameWindowController.displayInformationText(informationText);
+    }
+
     /**
      * Sends a new lobby status to the gui to update the list
      * @param lobby

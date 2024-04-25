@@ -515,6 +515,14 @@ public class GameWindowController implements Initializable {
         entrySheet.refresh();
     }
 
+    /**
+     * Method to display text in information VBox of Game Window
+     * @param informationText
+     */
+    public void displayInformationText(String informationText) {
+        //TODO
+    }
+
 
 
     /*
