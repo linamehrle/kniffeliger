@@ -251,6 +251,8 @@ public class GameManager implements Runnable {
                                 }
                                 rolledDiceAsString = rolledDiceAsString + allDice[4].getDiceValue();
                                 Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer, "Your dice: " + rolledDiceAsString);
+                                //Added ROLL command
+                                Communication.sendToPlayer(CommandsServerToClient.ROLL, currentPlayer, rolledDiceAsString);
                                 Communication.broadcastToAll(CommandsServerToClient.GAME,helpersPlayersArrayList,
                                         currentPlayer.getUsername() + " rolled: " + rolledDiceAsString);
 

@@ -4,6 +4,10 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.stream.IntStream;
+
+import javafx.beans.property.ReadOnlyIntegerWrapper;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -14,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import client.networking.ClientOutput;
@@ -57,6 +62,13 @@ public class GameWindowController implements Initializable {
 
     @FXML
     private TableView<EntrySheetGUImplementation> entrySheet;
+    //Score column of entry sheet
+    @FXML
+    private TableColumn<EntrySheetGUImplementation, Integer> entrySheetScores;
+    @FXML
+    private TableColumn<EntrySheetGUImplementation, String> entrySheetNames;
+    @FXML
+    private TableColumn<EntrySheetGUImplementation, String> entrySheetIcons;
 
     @FXML
     private ListView<DiceGUImplementation> diceBox;
@@ -72,7 +84,7 @@ public class GameWindowController implements Initializable {
     private VBox diceBox5;
 
 
-    private static ObservableList<EntrySheetGUImplementation> entryList = FXCollections.observableArrayList();
+    private ObservableList<EntrySheetGUImplementation> entryList = FXCollections.observableArrayList();
     private ObservableList<DiceGUImplementation> diceList = FXCollections.observableArrayList();
     //variables for dice images
     private static Image[]  diceFaces = new Image[13];
@@ -95,26 +107,21 @@ public class GameWindowController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         logger.info("Game Window initialized");
 
+        //Set this instance of GameWindowController as controller in main
+        Main.setGameWindowController(this);
+
         //Initialize entry sheet
-        String[] entryNames = {"ones", "twos", "threes", "fours", "fives", "sixes",
-                "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight", "largeStraight",
-                "kniffeliger", "chance", "pi"};
+        EntrySheetGUImplementation[] entryElements;
+        entryElements = makeEntrySheetElements();
 
-        EntrySheetGUImplementation[] entryElements = new EntrySheetGUImplementation[entryNames.length];
-
-        int k = 0;
-        for (String name : entryNames){
-            //Begin ID number of entries at 1, such that ones = 1, twos = 2 etc.
-            entryElements[k] = new EntrySheetGUImplementation(k+1, name);
-            k++;
-        }
 
         entryList.addAll(entryElements);
-        entrySheet.setItems(entryList);
 
+        entrySheetNames.setCellValueFactory(cellData -> cellData.getValue().nameProperty()); // new PropertyValueFactory<>("name"));
+        entrySheetIcons.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+        entrySheetScores.setCellValueFactory(cellData -> cellData.getValue().scoreProperty().asObject());
 
-
-
+        entrySheet.getItems().setAll(entryList);
 
         //Initialize observable list of dice
         diceList.addAll(new DiceGUImplementation[]{new DiceGUImplementation(1), new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4), new DiceGUImplementation(5) });
@@ -184,6 +191,25 @@ public class GameWindowController implements Initializable {
         });
 
         //Set Cell Factory for entrysheet
+//        PropertyValueFactory<EntrySheetGUImplementation, Integer> scoreProperty = new PropertyValueFactory<>("score");
+
+
+        entrySheetScores.setCellFactory((tableColumn) -> {
+            TableCell<EntrySheetGUImplementation, Integer> tableCell = new TableCell<>() {
+                @Override
+                protected void updateItem(Integer entry, boolean empty) {
+                    super.updateItem(entry, empty);
+                    if (empty) {
+                        setText(null);
+                    } else {
+                        setText(entry.toString());
+                    }
+                }
+            };
+            return tableCell;
+        });
+
+
 //        entrySheet.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
 //            @Override
 //            public void updateItem(EntrySheetGUImplementation entry, boolean empty) {
@@ -337,12 +363,13 @@ public class GameWindowController implements Initializable {
         SceneController.showHighScoreWindow();
     }
 
+
     /**
      * Method to send roll command to server when rollButton is pressed
      * @param event
      */
     public void rollActionSend(ActionEvent event){
-        String saveDiceString = diceStashedArrToString();
+        String saveDiceString = diceStashedArrToString(diceStashedList);
         //Saved dice are automatically transmitted before dice are rolled again
         if ( !saveDiceString.isEmpty()) {
             ClientOutput.send(CommandsClientToServer.GAME,  saveDiceString);
@@ -356,6 +383,9 @@ public class GameWindowController implements Initializable {
                 //Reset values in arrays with stashed dice
                 diceStashedList[i] = "";
             }
+        }
+        else {
+            ClientOutput.send(CommandsClientToServer.GAME,  "none");
         }
         diceBox.refresh();
         ClientOutput.send(CommandsClientToServer.GAME, "roll" );
@@ -408,7 +438,7 @@ public class GameWindowController implements Initializable {
     }
 
     //This method is only necessary if surplus spaces are not ignored by gamelogic
-    public String diceStashedArrToString(){
+    public static String diceStashedArrToString(String[] diceStashedList){
         StringBuilder saveMsgString = new StringBuilder();
         for (String elem:diceStashedList){
             if (! elem.isEmpty() ){
@@ -432,13 +462,32 @@ public class GameWindowController implements Initializable {
             }
             i++;
         }
+        diceBox.refresh();
     }
+
+
 
     /*
     Entry sheet controls
      */
     public void entryClickAction(){
 
+    }
+
+    public EntrySheetGUImplementation[] makeEntrySheetElements(){
+        String[] entryNames = {"ones", "twos", "threes", "fours", "fives", "sixes",
+                "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight", "largeStraight",
+                "kniffeliger", "chance", "pi"};
+
+        EntrySheetGUImplementation[] entryElements = new EntrySheetGUImplementation[entryNames.length];
+
+        int k = 0;
+        for (String name : entryNames){
+            //Begin ID number of entries at 1, such that ones = 1, twos = 2 etc.
+            entryElements[k] = new EntrySheetGUImplementation(k+1, name);
+            k++;
+        }
+        return entryElements;
     }
 
 }

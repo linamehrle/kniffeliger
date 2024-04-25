@@ -67,8 +67,14 @@ public enum CommandsServerToClient {
     PLLI,
 
     /**
-     * Returns a high score list to a client
+     * Requests a high score list from the server
      */
-    HGSC
+    HGSC,
+
+
+    /**
+     * Requests new dice values from server/gamelogic (roll the dice)
+     */
+    ROLL,
 
 }

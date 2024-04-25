@@ -81,6 +81,14 @@ public enum CommandsClientToServer {
     /**
      * Requests a high score list from the server
      */
-    HGSC
+    HGSC,
+
+
+    /**
+     * Requests new dice values from server/gamelogic (roll the dice)
+     */
+    ROLL,
+
+
 
 }

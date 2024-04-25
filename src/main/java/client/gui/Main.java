@@ -18,9 +18,14 @@ public class Main extends Application {
 
     private static LobbyWindowController lobbyWindowController;
     private static CWcontroller cWcontroller;
+
+    private static GameWindowController gameWindowController;
     private static HighScoreController highScoreController;
+
     Stage mainWidow;
     Stage chatWindow;
+
+
 
     /**
      * The start method for the gui
@@ -45,12 +50,6 @@ public class Main extends Application {
             mainWidow.show();
             logger.info("Lobby Window started");
 
-            //chatWindow = new Stage();
-            //FXMLLoader loaderChat = new FXMLLoader(getClass().getResource("/chatwindow.fxml"));
-            //Parent rootChat = (Parent)loaderChat.load();
-            //Scene scene = new Scene(rootChat, 600, 300, Color.BLACK);
-            //this.chatWindow.setScene(scene);
-            //this.chatWindow.show();
             logger.info("Chat Window started");
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -97,6 +96,10 @@ public class Main extends Application {
         Main.lobbyWindowController = lobbyWindowController;
     }
 
+    public static void setGameWindowController(GameWindowController controller) {
+        Main.gameWindowController = controller;
+    }
+
     /**
      * Setter for the cWcontroller
      * @param cWcontroller
@@ -127,6 +130,32 @@ public class Main extends Application {
      */
     public static void updateHighScore(String highScore) {
         Main.highScoreController.updateHighScore(highScore);
+    }
+
+    /**
+     * Method to relay dice values to GUI (Game Window Controller)
+     * @param diceValues string of 5 dice values separated by empty spaces
+     */
+    public static void sendDicetoGUI(String diceValues) {
+        int[] diceValueArray = parseIntArray(diceValues);
+        Main.gameWindowController.receiveRoll(diceValueArray);
+    }
+
+    //Put this in a separate file with helper functions?
+    /**
+     * Hekper function to convert dice values received as string to array
+     * @param input
+     * @return
+     */
+    public static int[] parseIntArray(String input) {
+        String[] numbers = input.split(" ");
+        int[] array = new int[numbers.length];
+
+        for (int i = 0; i < numbers.length; i++) {
+            array[i] = Integer.parseInt(numbers[i]);
+        }
+
+        return array;
     }
 
     /**

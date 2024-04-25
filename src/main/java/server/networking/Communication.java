@@ -128,6 +128,11 @@ public class Communication {
                         serverOutput.send(CommandsServerToClient.CHAT, player.getUsername() + " to Lobby : " + message);
                         logger.debug("chat send to player " + player.getUsername());
                     }
+                    //Added ROLL command
+                    case ROLL ->{
+                        ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
+                        serverOutput.send(CommandsServerToClient.ROLL, message);
+                    }
                 }
             }
         }

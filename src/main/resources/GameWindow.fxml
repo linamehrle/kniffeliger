@@ -41,11 +41,11 @@
          </children>
       </HBox>
       <Button fx:id="highScoreButton" layoutX="881.0" layoutY="36.0" mnemonicParsing="false" onAction="#highScoreAction" text="High Score" />
-      <TableView fx:id="entrySheet" fixedCellSize="1.0" layoutX="35.0" layoutY="106.0" onMouseClicked="#entryClickAction" prefHeight="433.0" prefWidth="250.0">
+      <TableView fx:id="entrySheet" editable="true" fixedCellSize="1.0" layoutX="35.0" layoutY="106.0" onMouseClicked="#entryClickAction" prefHeight="433.0" prefWidth="250.0">
          <columns>
             <TableColumn fx:id="entrySheetNames" editable="false" prefWidth="102.0" sortable="false" text="Entry" />
-            <TableColumn fx:id="entrySheetIcon" editable="false" prefWidth="83.0" sortable="false" />
-            <TableColumn fx:id="entrySheetScores" editable="false" prefWidth="64.0" sortable="false" text="Score" />
+            <TableColumn fx:id="entrySheetIcons" editable="false" prefWidth="83.0" sortable="false" />
+            <TableColumn fx:id="entrySheetScores" prefWidth="64.0" sortable="false" text="Score" />
          </columns>
       </TableView>
    </children>
