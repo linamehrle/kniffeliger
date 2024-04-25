@@ -231,20 +231,7 @@ public class GameWindowController implements Initializable {
                         setDisable(true);
                     }
                     String title = entry.getIDname();
-                    String separation = "";
-                    //Align the scores by adjusting separation
-                    int titleLength = title.length();
-                    if ( title.equals("kniffeliger") ){
-                        separation = "\t".repeat(4);
-                    }else if (titleLength >= 10) {
-                        separation = "\t".repeat(3);
-                    } else if (titleLength > 8) {
-                        separation = "\t".repeat(4);
-                    } else if (titleLength > 3) {
-                        separation = "\t".repeat(5);
-                    } else {
-                        separation = "\t".repeat(6);
-                    }
+                    String separation = fillWithTabulators(title, 4);
 
                     setText(title + separation + entry.getScore());
                     //setGraphic(imageView);
@@ -254,6 +241,8 @@ public class GameWindowController implements Initializable {
 
 
     }
+
+
 
     /*
     Methods for enabling/disabling buttons
@@ -555,6 +544,30 @@ public class GameWindowController implements Initializable {
             k++;
         }
         return entryElements;
+    }
+
+    /**
+     * Method that determines the required separation (tabulators) to align different strings
+     * @param title String, on the length of which the required number of tabualators is determined
+     * @param baselength Minimal number of tabulators added, e.g. separation added to longest String
+     * @return String of containing a number of \t (tabulators), the number depends on the length of the layouted string
+     */
+    private static String fillWithTabulators(String title, int baselength) {
+        String separation = "";
+        //Align the scores by adjusting separation
+        int titleLength = title.length();
+        if ( title.equals("kniffeliger") ){
+            separation = "\t".repeat(baselength + 1);
+        }else if (titleLength >= 10) {
+            separation = "\t".repeat(baselength);
+        } else if (titleLength > 8) {
+            separation = "\t".repeat(baselength + 1);
+        } else if (titleLength > 3) {
+            separation = "\t".repeat(baselength + 2);
+        } else {
+            separation = "\t".repeat(baselength + 3);
+        }
+        return separation;
     }
 
 }
