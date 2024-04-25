@@ -15,7 +15,7 @@ import starter.Starter;
  * This is the main class for the gui, it handles the start and communication from the network to the gui.
  */
 public class Main extends Application {
-    private Logger logger = Starter.logger;
+    private Logger logger = Starter.getLogger();
 
     private static LobbyWindowController lobbyWindowController;
     private static CWcontroller cWcontroller;

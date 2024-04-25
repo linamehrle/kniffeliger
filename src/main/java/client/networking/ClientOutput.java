@@ -12,7 +12,7 @@ import starter.Starter;
  * This class handles outgoing commands and messages from client to server.
  */
 public class ClientOutput {
-    private Logger logger = Starter.logger;
+    private static Logger logger = Starter.getLogger();
     private static BufferedWriter out;
 
     /**
@@ -42,6 +42,7 @@ public class ClientOutput {
                 case "\\leaveLobby" -> sendToServer("LELO byebye");
                 case "\\start" -> sendToServer("STRT start a game");
                 case "\\showPlayers" -> sendToServer("PLLI show me all players");
+                case "\\showHighScores" -> sendToServer("HGSC who is on top?");
                 default -> logger.info("Invalid input entered");
 
             }
@@ -56,9 +57,11 @@ public class ClientOutput {
                 case "\\save" -> sendToServer("SAVE " + input[1]);
                 case "\\newLobby" -> sendToServer("CRLO " + input[1]);
                 case "\\enterLobby" -> sendToServer("ENLO " + input[1]);
-                case "\\lobbyChat" -> sendToServer("LOCH " + input[1]);
+                case "\\lobbyChat" -> {
+                    sendToServer("LOCH " + input[1]);
+                    logger.debug("lobby chat send to server");
+                }
                 case "\\gameAction" -> sendToServer("GAME " + input[1]);
-                //TODO get list of players
                 default -> logger.info("Invalid command or message entered: command " + input[0] + " message " + input[1]);
             }
         }
@@ -84,7 +87,7 @@ public class ClientOutput {
             out.newLine();
             out.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }
     }
 

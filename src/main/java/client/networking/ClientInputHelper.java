@@ -13,7 +13,7 @@ import starter.Starter;
  */
 
 public class ClientInputHelper implements Runnable {
-    Logger logger = Starter.logger;
+    private Logger logger = Starter.getLogger();
     Client gameManager;
     String message;
     Pong pong;
@@ -76,6 +76,7 @@ public class ClientInputHelper implements Runnable {
             }
             case GAME -> System.out.println("Game: " + input[1]);
             case PLLI -> Print.printPlayerList(input[1]);
+            case HGSC -> System.out.println(input[1]);
             default -> logger.info("unknown command received from server " + message);
         }
     }

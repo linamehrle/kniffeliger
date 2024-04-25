@@ -14,7 +14,7 @@ import starter.Starter;
  * This class controls which window is open in the gui
  */
 public class SceneController {
-    private static Logger logger = Starter.logger;
+    private static Logger logger = Starter.getLogger();
 
     private static Stage mainWindow;
     private static Scene scene;

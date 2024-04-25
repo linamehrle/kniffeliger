@@ -8,7 +8,7 @@ import starter.Starter;
  * of the client
  */
 public class Print {
-    static Logger logger = Starter.logger;
+    private static Logger logger = Starter.getLogger();
 
     /**
      * This method prints a list of alle existing Lobbies and their status to the console

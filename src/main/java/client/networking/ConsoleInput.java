@@ -12,7 +12,7 @@ import starter.Starter;
  * This is the thread that reads input from the console.
  */
 public class ConsoleInput implements Runnable {
-    Logger logger = Starter.logger;
+    Logger logger = Starter.getLogger();
 
     /**
      * This variable indicates whether the thread is running. It will be set true when the client disconnects.
