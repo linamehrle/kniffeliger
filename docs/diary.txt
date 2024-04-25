@@ -371,7 +371,7 @@ Here our to-dos for the next week:
     faulty game actions can be done and prevent them), unit tests are tested (before each for testing with unit tests),
     GUI drawings
 2.  Lina: GUI, presentation milestone 5 (technology wack-slide), dramatic game play
-3.  Riccardo: gradle-police, check JAR-stuff, QA (jarcoco)
+3.  Riccardo: gradle-police, check JAR-stuff, QA (jacoco)
 4.  Dominique: GUI
 
 ATTENTION: only what runs with the jar will be looked at on milestone 4.
