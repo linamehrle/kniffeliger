@@ -58,16 +58,18 @@ public class GameManager {
                 int stealCount = 0;
                 int freezeCount = 0;
                 int crossOutCount = 0;
-                for (ActionDice actionDice : currentActionDice ) {
-                    switch (actionDice.getActionName()) {
-                        case "steal" -> stealCount = stealCount + 1;
-                        case "freeze" -> freezeCount = freezeCount + 1;
-                        case "crossOut" -> crossOutCount = crossOutCount + 1;
+                if (currentActionDice != null){
+                    for (ActionDice actionDice : currentActionDice ) {
+                        switch (actionDice.getActionName()) {
+                            case "steal" -> stealCount = stealCount + 1;
+                            case "freeze" -> freezeCount = freezeCount + 1;
+                            case "crossOut" -> crossOutCount = crossOutCount + 1;
+                        }
                     }
                 }
 
                 while (!entryMade || !endTurn) {
-                    System.out.print("Please choose an action. ('ROLL', 'STEA', 'FRZE', 'COUT', 'ENDT')");
+                    System.out.print("Please choose an action: 'ROLL', 'STEA', 'FRZE', 'COUT', 'ENDT'");
                     String answer = scanner.nextLine();
                     String[] answerArray = answer.split("\\s+");
 
@@ -80,6 +82,19 @@ public class GameManager {
                                 // TODO: when rolled then you cannot steal anymore, when you steal you cannot roll anymore
                                 // TODO: if you cannot add entry somewhere it should save it as 0 >> maybe handle this in entry sheet class
                                 rollDice(allDice);
+                                printDice(allDice);
+                                System.out.println("Which dice do you want to save?");
+                                String savedDice = scanner.nextLine();
+
+                                if (!savedDice.equals("none")){
+                                    String[] splitStr = savedDice.split("\\s+");
+                                     // turn string array to int array
+                                    for (String s : splitStr) {
+                                        int i = Integer.parseInt(s);
+                                        allDice[i - 1].saveDice();
+                                    }
+                                }
+
                                 if (allDiceSaved(allDice)) {
                                     System.out.println("You saved all your dice, now choose an entry:\nones: 'ones'\ntwos: 'twos'\nthrees: 'threes'\nfours: 'fours'\nfives: 'fives'\nsixes: 'sixes'\nthree of a kind: 'threeOfAKind'\nfour of a kind: 'fourOfAKind'\nfull house: 'fullHouse'\nsmall straight: 'smallStraight'\nlarge straight: 'largeStraight'\nkniffeliger: 'kniffeliger'\nchance: 'chance'\npi: 'pi'");
                                     String entryChoice = scanner.nextLine();
@@ -124,6 +139,7 @@ public class GameManager {
                             break;
                     }
                 }
+                currentEntrySheet.defreeze();
             }
             // TODO: shift, swap
             for (EntrySheet currentEntrySheet : allEntrySheets) {
@@ -134,10 +150,13 @@ public class GameManager {
                 // counts the shifts and swaps the current player has
                 int shiftCount = 0;
                 int swapCount = 0;
-                for (ActionDice actionDice : currentActionDice ) {
-                    switch (actionDice.getActionName()) {
-                        case "shift" -> shiftCount = shiftCount + 1;
-                        case "swap" -> swapCount = swapCount + 1;
+
+                if (currentActionDice != null) {
+                    for (ActionDice actionDice : currentActionDice ) {
+                        switch (actionDice.getActionName()) {
+                            case "shift" -> shiftCount = shiftCount + 1;
+                            case "swap" -> swapCount = swapCount + 1;
+                        }
                     }
                 }
 

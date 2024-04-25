@@ -205,6 +205,15 @@ public class EntrySheet {
     }
 
     /**
+     * Sets all the entries in an entry sheet to not frozen.
+     */
+    public void defreeze () {
+        for (Entry entry : entrySheet) {
+            entry.setFrozenStatus(false);
+        }
+    }
+
+    /**
      * Detects entry from sheet and deletes it. Sets entry as final since the value should not change now.
      *
      * @param deletedEntry gives us name of entry that needs to be deleted
