@@ -71,7 +71,7 @@ public class GameManager {
                 }
 
                 while (!entryMade || !endTurn) {
-                    System.out.print("Please choose an action. ('ROLL', 'STEAL', 'FREEZE', 'CROSSOUT')");
+                    System.out.print("Please choose an action. ('ROLL', 'STEA', 'FRZE', 'COUT', 'ENDT')");
                     String answer = scanner.nextLine();
                     String[] answerArray = answer.split("\\s+");
 
@@ -94,15 +94,15 @@ public class GameManager {
                                 }
                             }
                             break;
-                        case "STEAL":
-                            // TODO: ask Dominique to give me STEAL <victim name> <entry name>
+                        case "STEA":
+                            // TODO: ask Dominique to give me STEA <victim name> <entry name>
                             // TODO: extract the first part of the command first and then save the rest in a String-array (STEAL) [victim name, enty name]
                             if (!aboutToRoll && stealCount > 0) {
                                 ActionDice.steal(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, answerArray[1]), answerArray[2]);
                                 entryMade = true;
                             }
                             break;
-                        case "FREEZE":
+                        case "FRZE":
                             // TODO: ask Dominique to give me FREEZE <victim name> <entry name>
                             // TODO: check if entry can even be frozen >> check in action dice class
                             // TODO: extract the first part of the command first and then save the rest in a String-array (STEAL) [victim name, entry name]
@@ -111,7 +111,7 @@ public class GameManager {
                                 freezeCount = freezeCount - 1;
                             }
                             break;
-                        case "CROSSOUT":
+                        case "COUT":
                             // TODO: ask Dominique to give me FREEZE <victim name> <entry name>
                             // TODO: check if entry can even be crossed out (only possible for made entry) >>check in action dice class
                             // TODO: extract the first part of the command first and then save the rest in a String-array (STEAL) [victim name, enty name]
@@ -120,8 +120,7 @@ public class GameManager {
                                 crossOutCount = crossOutCount - 1;
                             }
                             break;
-                        case "ENDTURN":
-                            // TODO: ask DOminiue to insert "end turn/next"-button
+                        case "ENDT":
                             if (entryMade) {
                                 endTurn = true;
                             }
@@ -130,6 +129,10 @@ public class GameManager {
                 }
             }
             // TODO: shift, swap
+            for (Player player : players) {
+
+            }
+
         }
     }
 
