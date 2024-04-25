@@ -222,7 +222,21 @@ public class GameWindowController implements Initializable {
                     if (entry.getSavingStatus() ) {
                         setDisable(true);
                     }
-                    setText(entry.getIDname() + "\t\t" + entry.getScore());
+                    String title = entry.getIDname();
+                    String separation = "";
+                    //Align the scores by adjusting separation
+                    int titleLength = title.length();
+                    if (titleLength >= 10) {
+                        separation = "\t".repeat(3);
+                    } else if (titleLength > 8) {
+                        separation = "\t".repeat(4);
+                    } else if (titleLength > 3) {
+                        separation = "\t".repeat(5);
+                    } else {
+                        separation = "\t".repeat(6);
+                    }
+
+                    setText(title + separation + entry.getScore());
                     //setGraphic(imageView);
                 }
             }
