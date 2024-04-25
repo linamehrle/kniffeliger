@@ -86,6 +86,9 @@ public class LobbyWindowController implements Initializable {
         usernameTextField.clear();
     }
 
+    /**
+     * Opens the high score pup up window when the high score button is pressed
+     */
     public void highScoreAction() {
         SceneController.showHighScoreWindow();
     }
@@ -188,6 +191,20 @@ public class LobbyWindowController implements Initializable {
     }
 
     /**
+     * Updates the status of the lobby in the gui list if the status changes (e.g. a game is started or the lobby is full)
+     * @param lobbyWithNewStatus the name of the lobby and the new status in the form of "lobbyName (status)"
+     */
+    public void updateLobbyStatus(String lobbyWithNewStatus) {
+        String lobbyName = lobbyWithNewStatus.split(" ")[0];
+        for (TreeItem<String> treeItem : lobbyList.getRoot().getChildren()) {
+            String treeItemName = treeItem.getValue().split(" ")[0];
+            if (treeItemName.equals(lobbyName)) {
+                treeItem.setValue(lobbyWithNewStatus);
+            }
+        }
+    }
+
+    /**
      * The initialize Method for the Lobby Window
      * @param location
      * The location used to resolve relative paths for the root object, or
@@ -217,7 +234,6 @@ public class LobbyWindowController implements Initializable {
         enterLobbyButton.setDisable(true);
         changeUsernameButton.setDisable(true);
 
-        //TODO make this pretty
         lobbyTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 if (lobbyTextField.isFocused()) {
@@ -238,8 +254,6 @@ public class LobbyWindowController implements Initializable {
         hasBeenInitialized = true;
     }
 
-    //TODO implement high score list
-    //TODO only lobbies, not players can be selected
     //TODO popUps when something is not done right?
     //TODO status of lobby is correct
 }

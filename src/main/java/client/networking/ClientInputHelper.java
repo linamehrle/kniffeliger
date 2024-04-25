@@ -89,6 +89,7 @@ public class ClientInputHelper implements Runnable {
                 System.out.println(input[1]);
                 Main.updateHighScore(input[1]);
             }
+            case LOST -> Main.updateLobby(input[1]);
             default -> logger.info("unknown command received from server " + message);
         }
     }

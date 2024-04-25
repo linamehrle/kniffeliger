@@ -141,6 +141,14 @@ public class Main extends Application {
         Main.gameWindowController.receiveRoll(diceValueArray);
     }
 
+    /**
+     * Sends a new lobby status to the gui to update the list
+     * @param lobby
+     */
+    public static void updateLobby(String lobby) {
+        Main.lobbyWindowController.updateLobbyStatus(lobby);
+    }
+
     //Put this in a separate file with helper functions?
     /**
      * Hekper function to convert dice values received as string to array

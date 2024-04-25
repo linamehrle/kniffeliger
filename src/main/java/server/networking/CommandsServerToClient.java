@@ -77,4 +77,9 @@ public enum CommandsServerToClient {
      */
     ROLL,
 
+    /**
+     * Sends an update of a lobby status to the client to update the gui
+     */
+    LOST
+
 }
