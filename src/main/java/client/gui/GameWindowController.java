@@ -69,6 +69,8 @@ public class GameWindowController implements Initializable {
 
     @FXML
     private ListView<DiceGUImplementation> diceBox;
+    @ FXML
+    private Button endTurnButton;
     private ObservableList<EntrySheetGUImplementation> entryList = FXCollections.observableArrayList();
     private ObservableList<DiceGUImplementation> diceList = FXCollections.observableArrayList();
     //variables for dice images
@@ -373,6 +375,10 @@ public class GameWindowController implements Initializable {
         SceneController.showHighScoreWindow();
     }
 
+    @FXML
+    public void endTurnAction() {
+        //action
+    }
 
     /**
      * Method to send roll command to server when rollButton is pressed
@@ -485,6 +491,18 @@ public class GameWindowController implements Initializable {
      * @param diceValues integer array of values (1-6) for 5 dices (usually provided by game logic engine)
      */
     public void receiveRoll(int[] diceValues) {
+        int i = 0;
+        for (DiceGUImplementation dice : this.diceList) {
+            //TODO: add null-check
+            if ( !dice.getSavingStatus() ) {
+                dice.setDiceValue(diceValues[i]);
+            }
+            i++;
+        }
+        diceBox.refresh();
+    }
+
+    public void receiveEntrySheet(int[] diceValues) {
         int i = 0;
         for (DiceGUImplementation dice : this.diceList) {
             //TODO: add null-check

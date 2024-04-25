@@ -25,5 +25,6 @@
       <ListView fx:id="diceBox" layoutX="330.0" layoutY="141.0" onMouseClicked="#diceClick" orientation="HORIZONTAL" prefHeight="103.0" prefWidth="400.0" />
       <Button fx:id="highScoreButton" layoutX="881.0" layoutY="36.0" mnemonicParsing="false" onAction="#highScoreAction" text="High Score" />
       <ListView fx:id="entrySheet" layoutX="25.0" layoutY="93.0" prefHeight="430.0" prefWidth="262.0" />
+      <Button fx:id="endTurnButton" layoutX="641.0" layoutY="470.0" mnemonicParsing="false" onMouseClicked="#endTurnAction" text="END TURN" />
    </children>
 </Pane>
