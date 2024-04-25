@@ -113,6 +113,7 @@ public class GameManager implements Runnable {
                     // wait for input
                     wait();
                     String[] inputArr = input.split("\\s+");
+                    logger.info("Input received: " + inputArr);
 
                     // check if input has more parameters
                     if (inputArr.length == 3) {
@@ -122,6 +123,8 @@ public class GameManager implements Runnable {
 
                     switch (inputArr[0]) {
                         case "ROLL":
+                            logger.trace("Entered ROLL case");
+
                             if (!entryMade) {
                                 // if player did not steal yet then roll
                                 // set about to roll to true so player cannot steal anymore
@@ -129,6 +132,10 @@ public class GameManager implements Runnable {
 
 
                                 rollDice(allDice);
+
+                                // TODO: SAVE AND GET TO SAVE DICE
+
+
                                 if (allDiceSaved(allDice)) {
                                     // wait for player selecting entry
                                     Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer, "ENTY");
@@ -144,12 +151,16 @@ public class GameManager implements Runnable {
                                     Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "ENTY " + currentPlayer.getUsername() + " " + entryChoice + " "
                                             + currentEntrySheet.getEntryByName(entryChoice).getValue());
 
+                                    logger.info("Save entry "+ entryChoice + "(" + currentEntrySheet.getEntryByName(entryChoice).getValue() + ") of " + currentPlayer.getUsername());
+
                                     addActionDice(allDice, currentPlayer);
                                     entryMade = true;
                                 }
                             }
                             break;
                         case "STEA":
+                            logger.trace("Entered STEA case");
+
                             if (!aboutToRoll && stealCount > 0) {
                                 ActionDice.steal(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
 
@@ -165,6 +176,8 @@ public class GameManager implements Runnable {
                             }
                             break;
                         case "FRZE":
+                            logger.trace("Entered FRZE case");
+
                             if (freezeCount > 0) {
                                 ActionDice.freeze(EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
 
@@ -175,6 +188,8 @@ public class GameManager implements Runnable {
                             }
                             break;
                         case "COUT":
+                            logger.trace("Entered COUT case");
+
                             if (crossOutCount > 0) {
                                 ActionDice.crossOut(EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
 
@@ -187,6 +202,7 @@ public class GameManager implements Runnable {
                             break;
                         case "ENDT":
                             if (entryMade) {
+                                logger.trace("Ending turn (" + currentPlayer.getUsername() + ")");
                                 endTurn = true;
                             }
                             break;
@@ -213,6 +229,8 @@ public class GameManager implements Runnable {
                 // notify players which turn is
                 Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "STRT " + currentPlayer.getUsername() + "ShiftSwap");
 
+                logger.trace("Entering shifting and swapping phase.");
+
                 // checks if player wants to shift or swap
                 boolean finishedSwapOrShift = false;
 
@@ -221,31 +239,43 @@ public class GameManager implements Runnable {
                     wait();
                     String[] inputArr = input.split("\\s+");
 
+                    logger.info("Received " + input);
+
                     switch (inputArr[0]) {
                         case "SHFT":
+                            logger.trace("Entered SHFT case");
+
                             if (shiftCount > 0) {
                                 ActionDice.shift(allEntrySheets);
                                 Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "SHFT");
+                                logger.info("Shifting");
 
                                 shiftCount = shiftCount - 1;
                             }
                             break;
                         case "SWAP":
+                            logger.trace("Entered SWAP case");
+
                             if (swapCount > 0) {
                                 ActionDice.swap(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, inputArr[1]));
                                 Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "SWAP " + currentPlayer.getUsername() + " " + inputArr[1]);
+
+                                logger.info("Swappgin " + currentPlayer.getUsername() + " <-> " + inputArr[1]);
 
                                 swapCount = swapCount - 1;
                             }
                             break;
                         case "ENDT":
+                            logger.info("End turn.");
                             finishedSwapOrShift = true;
+
                             break;
                     }
                 }
             }
         }
 
+        // TODO REWORK RANKING
         Player[] rankedPlayer = ranking(allEntrySheets);
         String ranking = "";
         for (int i = 0; i < rankedPlayer.length; i++) {
