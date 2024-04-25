@@ -12,7 +12,7 @@ import starter.Starter;
  */
 public class ServerInputHelper implements Runnable {
 
-    Logger logger = Starter.logger;
+    private Logger logger = Starter.getLogger();
 
     ClientThread clientThread;
     String message;

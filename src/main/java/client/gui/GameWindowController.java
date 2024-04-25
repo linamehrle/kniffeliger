@@ -23,7 +23,7 @@ import starter.Starter;
  * It implements Initializable.
  */
 public class GameWindowController implements Initializable {
-    private Logger logger = Starter.logger;
+    private Logger logger = Starter.getLogger();
 
     @FXML
     private Button stealButton;

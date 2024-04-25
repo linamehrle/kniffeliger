@@ -12,7 +12,7 @@ import java.util.Arrays;
  * the main parameters to start either the client or the server.
  */
 public class Starter {
-    public static Logger logger;
+    private static Logger logger;
 
     /**
      * The main method.

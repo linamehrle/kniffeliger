@@ -12,7 +12,7 @@ import starter.Starter;
  */
 public class Server {
 
-    Logger logger = Starter.logger;
+    private Logger logger = Starter.getLogger();
 
     private ServerSocket serverSocket;
 

@@ -8,7 +8,7 @@ import starter.Starter;
  * This class handles the thread which sends a ping to the server in set intervals. It also handles a timeout.
  */
 public class Pong implements Runnable {
-    Logger logger = Starter.logger;
+    Logger logger = Starter.getLogger();
 
     /**
      * This variable indicates whether the thread is running. It will be set true when the client disconnects.

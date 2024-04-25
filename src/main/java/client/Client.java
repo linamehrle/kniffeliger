@@ -19,7 +19,7 @@ import javafx.application.Application;
  * The class also contains a disconnect method which closes all threads when the client disconnects.
  */
 public class Client {
-    Logger logger = Starter.logger;
+    Logger logger = Starter.getLogger();
 
     private Socket socket;
     private ConsoleInput consoleInput;

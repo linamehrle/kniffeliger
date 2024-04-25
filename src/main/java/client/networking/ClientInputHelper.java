@@ -13,7 +13,7 @@ import starter.Starter;
  */
 
 public class ClientInputHelper implements Runnable {
-    Logger logger = Starter.logger;
+    private Logger logger = Starter.getLogger();
     Client gameManager;
     String message;
     Pong pong;
