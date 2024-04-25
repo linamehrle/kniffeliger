@@ -7,6 +7,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 
+import java.util.Map;
+
 /**
  * Class that contains values for entries to facilitate implementation of entrySheet in GUI
  */
