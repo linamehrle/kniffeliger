@@ -48,6 +48,8 @@ public class GameWindowController implements Initializable {
     private Button deleteButton;
     @FXML
     private Button rollButton;
+    @FXML
+    private VBox informationBox;
 
 
     @FXML
@@ -349,11 +351,15 @@ public class GameWindowController implements Initializable {
     }
 
     /**
-     * Method that handles when the enterToEntrySheet Button is pressen to enter your dice into your entry sheet
+     * Method that handles when an entry is selected (clicked on) in entry sheet
      * @param event
      */
-    public void enterToEntrySheetAction(ActionEvent event) {
-        //TODO
+    @FXML
+    public void enterToEntrySheetAction(MouseEvent event) {
+        EntrySheetGUImplementation entry = entrySheet.getSelectionModel().getSelectedItem();
+        //send entry selection to gamelogic
+        ClientOutput.send(CommandsClientToServer.GAME,  entry.getIDname());
+        entrySheet.refresh();
     }
 
     /**
@@ -379,6 +385,9 @@ public class GameWindowController implements Initializable {
     public void endTurnAction(MouseEvent event) {
         //action
     }
+
+
+
 
     /**
      * Method to send roll command to server when rollButton is pressed
