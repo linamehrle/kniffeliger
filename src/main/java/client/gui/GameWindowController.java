@@ -108,7 +108,7 @@ public class GameWindowController implements Initializable {
         entrySheetScores.setCellValueFactory(cellData -> cellData.getValue().scoreProperty().asObject());
 
         entrySheet.setItems(entryList);
-        System.out.println(entrySheet.getItems());
+
 
         //Initialize observable list of dice
         diceList.addAll(new DiceGUImplementation[]{new DiceGUImplementation(1), new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4), new DiceGUImplementation(5) });
@@ -126,24 +126,18 @@ public class GameWindowController implements Initializable {
 //        });
 
         //Listener for diceBox ListView (might not be needed)
-        diceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DiceGUImplementation>() {
-
-            @Override
-            public void changed(ObservableValue<? extends DiceGUImplementation> observable, DiceGUImplementation oldValue, DiceGUImplementation newValue) {
-                //action
-            }
-        });
+//        diceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DiceGUImplementation>() {
+//
+//            @Override
+//            public void changed(ObservableValue<? extends DiceGUImplementation> observable, DiceGUImplementation oldValue, DiceGUImplementation newValue) {
+//                //action
+//            }
+//        });
 
 
 
         //Load images
-        IntStream.range(0, diceFaces.length).forEach(i -> {
-            try {
-                diceFaces[i] = diceImageLoader(i );
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        loadImagesToArray(diceFaces);
         logger.info("Dice images loaded into GUI");
 
 
@@ -181,19 +175,16 @@ public class GameWindowController implements Initializable {
 //        PropertyValueFactory<EntrySheetGUImplementation, Integer> scoreProperty = new PropertyValueFactory<>("score");
 
 
-        entrySheetScores.setCellFactory((tableColumn) -> {
-            TableCell<EntrySheetGUImplementation, Integer> tableCell = new TableCell<>() {
-                @Override
-                protected void updateItem(Integer entry, boolean empty) {
-                    super.updateItem(entry, empty);
-                    if (empty) {
-                        super.setText(null);
-                    } else {
-                        super.setText(entry.toString());
-                    }
+        entrySheetScores.setCellFactory((tableColumn) -> new TableCell<>() {
+            @Override
+            protected void updateItem(Integer entry, boolean empty) {
+                super.updateItem(entry, empty);
+                if (empty) {
+                    super.setText(null);
+                } else {
+                    super.setText(entry.toString());
                 }
-            };
-            return tableCell;
+            }
         });
 
 
@@ -371,6 +362,17 @@ public class GameWindowController implements Initializable {
         }
         diceBox.refresh();
         ClientOutput.send(CommandsClientToServer.GAME, "roll" );
+    }
+
+
+    public static void loadImagesToArray(Image[] imageArray){
+        IntStream.range(0, imageArray.length).forEach(i -> {
+            try {
+                imageArray[i] = diceImageLoader(i);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     /**
