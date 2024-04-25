@@ -1,8 +1,10 @@
 package client.gui;
 
 
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 
 /**
@@ -12,9 +14,9 @@ public class EntrySheetGUImplementation {
     //Identifier number beginning at 1 for ones
     private int idNumber;
     //Name of field
-    private SimpleStringProperty idName;
+    private StringProperty idName;
     //Score of entry
-    private SimpleIntegerProperty score;
+    private IntegerProperty score;
 
     //Specifies if entry still can be modified
     private Boolean savingStatus;
@@ -70,10 +72,10 @@ public class EntrySheetGUImplementation {
     //Getters for observable values
 
 
-    public SimpleIntegerProperty scoreProperty() {
+    public IntegerProperty scoreProperty() {
         return score;
     }
-    public SimpleStringProperty nameProperty() {
+    public StringProperty nameProperty() {
         return idName;
     }
 
