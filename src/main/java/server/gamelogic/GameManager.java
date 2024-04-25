@@ -58,15 +58,11 @@ public class GameManager {
                 int stealCount = 0;
                 int freezeCount = 0;
                 int crossOutCount = 0;
-                int shiftCount = 0;
-                int swapCount = 0;
                 for (ActionDice actionDice : currentActionDice ) {
                     switch (actionDice.getActionName()) {
                         case "steal" -> stealCount = stealCount + 1;
                         case "freeze" -> freezeCount = freezeCount + 1;
                         case "crossOut" -> crossOutCount = crossOutCount + 1;
-                        case "shift" -> shiftCount = shiftCount + 1;
-                        case "swap" -> swapCount = swapCount + 1;
                     }
                 }
 
@@ -129,10 +125,48 @@ public class GameManager {
                 }
             }
             // TODO: shift, swap
-            for (Player player : players) {
+            for (EntrySheet currentEntrySheet : allEntrySheets) {
+                // saves values of current entry sheet, so player and current action dice, so we can access it easily
+                Player currentPlayer = currentEntrySheet.getPlayer();
+                ActionDice[] currentActionDice = currentPlayer.getActionDice();
 
+                // counts the shifts and swaps the current player has
+                int shiftCount = 0;
+                int swapCount = 0;
+                for (ActionDice actionDice : currentActionDice ) {
+                    switch (actionDice.getActionName()) {
+                        case "shift" -> shiftCount = shiftCount + 1;
+                        case "swap" -> swapCount = swapCount + 1;
+                    }
+                }
+
+                // checks if player wants to shift or swap
+                boolean finishedSwapOrShift = false;
+
+                while (!finishedSwapOrShift) {
+                    System.out.println("Do you want to shift or swap entry sheets? Answer 'SHFT' or 'SWAP'.");
+                    String answer = scanner.nextLine();
+                    String[] answerArray = answer.split("\\s+");
+
+                    switch (answerArray[0]) {
+                        case "SHFT":
+                            if (shiftCount > 0) {
+                                ActionDice.shift(allEntrySheets);
+                                shiftCount = shiftCount - 1;
+                            }
+                            break;
+                        case "SWAP":
+                            if (swapCount > 0) {
+                                ActionDice.swap(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, answerArray[1]));
+                                swapCount = swapCount - 1;
+                            }
+                            break;
+                        case "ENDT":
+                            finishedSwapOrShift = true;
+                            break;
+                    }
+                }
             }
-
         }
     }
 
