@@ -86,6 +86,7 @@ public class GameManager {
                                     EntrySheet.entryValidation(currentEntrySheet, entryChoice, allDice);
                                     System.out.println("This is your entry sheet:");
                                     System.out.println(currentEntrySheet.printEntrySheet());
+                                    addActionDice(allDice, currentPlayer);
                                     entryMade = true;
                                 }
                             }
@@ -168,6 +169,8 @@ public class GameManager {
                 }
             }
         }
+        // TODO: Score board
+
     }
 
 //    public static void starter(Player[] players) {
