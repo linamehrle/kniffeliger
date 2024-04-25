@@ -48,8 +48,11 @@ public class GameManager {
                 // conditions to check if game needs to go on or stop; this includes:
                 // 1. if a cheat code has been played
                 // 2. if an entry has been made
-                boolean cheatCode = false;
                 boolean entryMade = false;
+                boolean endTurn = false;
+                // TODO: Riccardo fragen ob das so am sinnvollsten ist
+                // checks if player already started to roll because then stealing is not allowed anymore
+                boolean aboutToRoll = false;
 
                 // gets all the action dice of a player
                 int stealCount = 0;
@@ -67,58 +70,67 @@ public class GameManager {
                     }
                 }
 
-                while ((!cheatCode && !entryMade) || (freezeCount > 0 || crossOutCount > 0)) {
-                    System.out.print("Please choose an action. ('roll', 'steal', 'freeze', 'crossOut')");
+                while (!entryMade || !endTurn) {
+                    System.out.print("Please choose an action. ('ROLL', 'STEAL', 'FREEZE', 'CROSSOUT')");
                     String answer = scanner.nextLine();
+                    String[] answerArray = answer.split("\\s+");
 
-                    switch (answer) {
-                        case "roll":
-                            rollDice(allDice);
-                            if (allDiceSaved(allDice)) {
+                    switch (answerArray[0]) {
+                        case "ROLL":
+                            if (!entryMade) {
+                                // if player did not steal yet then roll
+                                // set about to roll to true so player cannot steal anymore
+                                aboutToRoll = true;
+                                // TODO: when rolled then you cannot steal anymore, when you steal you cannot roll anymore
+                                // TODO: if you cannot add entry somewhere it should save it as 0 >> maybe handle this in entry sheet class
+                                rollDice(allDice);
+                                if (allDiceSaved(allDice)) {
+                                    System.out.println("You saved all your dice, now choose an entry:\nones: 'ones'\ntwos: 'twos'\nthrees: 'threes'\nfours: 'fours'\nfives: 'fives'\nsixes: 'sixes'\nthree of a kind: 'threeOfAKind'\nfour of a kind: 'fourOfAKind'\nfull house: 'fullHouse'\nsmall straight: 'smallStraight'\nlarge straight: 'largeStraight'\nkniffeliger: 'kniffeliger'\nchance: 'chance'\npi: 'pi'");
+                                    String entryChoice = scanner.nextLine();
+                                    EntrySheet.entryValidation(currentEntrySheet, entryChoice, allDice);
+                                    System.out.println("This is your entry sheet:");
+                                    System.out.println(currentEntrySheet.printEntrySheet());
+                                    entryMade = true;
+                                }
+                            }
+                            break;
+                        case "STEAL":
+                            // TODO: ask Dominique to give me STEAL <victim name> <entry name>
+                            // TODO: extract the first part of the command first and then save the rest in a String-array (STEAL) [victim name, enty name]
+                            if (!aboutToRoll && stealCount > 0) {
+                                ActionDice.steal(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, answerArray[1]), answerArray[2]);
                                 entryMade = true;
                             }
                             break;
-                        case "steal":
-                            System.out.println("Who do you want to steal from? Answer with: <username> <entry name>.");
-
-                            String stealingAnswer = scanner.nextLine();
-                            boolean typo = true;
-                            while (typo) {
-                                System.out.println("Choose your action with the following command:\n'freeze'/'crossOut' <username victim> <entry name> or 'none'.");
-                                String input = scanner.nextLine();
-                                String[] splitStr = input.split("\\s+");
-
-                                if (splitStr.length > 1) {
-                                    // checks if there are typos in input of player
-                                    typo = !Helper.checkActionName(splitStr[0]) && !Helper.checkPlayerName(players, splitStr[1]) && !Helper.checkEntryName(splitStr[2]);
-                                } else if (input.equals("none")) {
-                                    typo = false;
-                                }
+                        case "FREEZE":
+                            // TODO: ask Dominique to give me FREEZE <victim name> <entry name>
+                            // TODO: check if entry can even be frozen >> check in action dice class
+                            // TODO: extract the first part of the command first and then save the rest in a String-array (STEAL) [victim name, entry name]
+                            if (freezeCount > 0) {
+                                ActionDice.freeze(EntrySheet.getEntrySheetByName(allEntrySheets, answerArray[1]), answerArray[2]);
+                                freezeCount = freezeCount - 1;
                             }
-
-                            entryMade = true;
                             break;
-                        case "freeze":
-
-                            freezeCount = freezeCount - 1;
+                        case "CROSSOUT":
+                            // TODO: ask Dominique to give me FREEZE <victim name> <entry name>
+                            // TODO: check if entry can even be crossed out (only possible for made entry) >>check in action dice class
+                            // TODO: extract the first part of the command first and then save the rest in a String-array (STEAL) [victim name, enty name]
+                            if (crossOutCount > 0) {
+                                ActionDice.crossOut(EntrySheet.getEntrySheetByName(allEntrySheets, answerArray[1]), answerArray[2]);
+                                crossOutCount = crossOutCount - 1;
+                            }
                             break;
-                        case "crossOut":
-
-                            crossOutCount = crossOutCount - 1;
+                        case "ENDTURN":
+                            // TODO: ask DOminiue to insert "end turn/next"-button
+                            if (entryMade) {
+                                endTurn = true;
+                            }
+                            break;
                     }
                 }
-
-
-
-                // TODO: shift, swap
-
-
-
             }
-
+            // TODO: shift, swap
         }
-
-
     }
 
 //    public static void starter(Player[] players) {
