@@ -284,9 +284,8 @@ public class EntrySheet {
      *
      * @param nameOfEntry     entry name which player wants to save the dice/points for.
      * @param finalDiceValues the dice values after the player is done rolling.
-     * @throws Exception if entry cannot be found in sheet
      */
-    public static void entryValidation(EntrySheet entrySheet, String nameOfEntry, Dice[] finalDiceValues) throws Exception {
+    public static void entryValidation(EntrySheet entrySheet, String nameOfEntry, Dice[] finalDiceValues) {
         // checks if all dice have been saved, if one is not, then save them
         for (Dice d : finalDiceValues) {
             if (d.getSavingStatus() == false) {
@@ -383,14 +382,10 @@ public class EntrySheet {
      * @return the sum of dice
      * @throws Exception if the value we need to compare the dice value with is not between 1 and 6
      */
-    public static int singleValueRolls(int[] rolledDice, int value) throws Exception {
+    public static int singleValueRolls(int[] rolledDice, int value) {
         // checks if we inserted a valid value for dice
         int sum = 0;
         for (int d : rolledDice) {
-            // if values of dice are not between 1 and 6 an Exception is thrown
-            if (!(d >= 1 && d <= 6)) {
-                throw new Exception("Only the values 1 to 6 can be checked.");
-            }
             if (d == value) {
                 sum = sum + d;
             }
