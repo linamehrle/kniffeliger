@@ -1,17 +1,9 @@
 package client.gui;
 
-import java.awt.*;
-import java.awt.Label;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.IntStream;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;

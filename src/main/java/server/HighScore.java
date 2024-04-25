@@ -90,6 +90,7 @@ public class HighScore {
             File highScore = new File("highscore.txt");
             logger.info("new file highscore.txt created");
             writeInitialHighScore(highScore);
+            return "353:Benni,";
         } catch (IOException e) {
             logger.warn(e.getMessage());
         }

@@ -122,6 +122,14 @@ public class Main extends Application {
     }
 
     /**
+     * Sends the current high score list to the gui to display
+     * @param highScore
+     */
+    public static void updateHighScore(String highScore) {
+        Main.highScoreController.updateHighScore(highScore);
+    }
+
+    /**
      * Communicates to the server that a player wants to leave the game
      */
     public static void exit() {
