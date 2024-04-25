@@ -103,13 +103,14 @@ public class LobbyWindowController implements Initializable {
     public void selectLobby() {
         TreeItem<String> currentItem = lobbyList.getSelectionModel().getSelectedItem();
 
-        if (currentItem != null) {
+        if (currentItem != null && lobbyList.getTreeItemLevel(currentItem) == 1) {
             //selects the current lobby to possibly enter
             selectedLobby = currentItem.getValue();
+            //enables the button to enter the chosen lobby
+            enterLobbyButton.setDisable(false);
+        } else {
+            enterLobbyButton.setDisable(true);
         }
-
-        //enables the button to enter the chosen lobby
-        enterLobbyButton.setDisable(false);
     }
 
     /**
