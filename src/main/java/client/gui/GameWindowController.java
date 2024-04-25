@@ -67,15 +67,13 @@ public class GameWindowController implements Initializable {
 
     @FXML
     private ListView<DiceGUImplementation> diceBox;
-
-
-
     private ObservableList<EntrySheetGUImplementation> entryList = FXCollections.observableArrayList();
     private ObservableList<DiceGUImplementation> diceList = FXCollections.observableArrayList();
     //variables for dice images
     private static Image[]  diceFaces = new Image[13];
     //List with dice selected for saving in GUI, but not yet saved
     private String[] diceStashedList = new String[]{"", "", "", "", ""};
+
 
 
 
@@ -105,9 +103,10 @@ public class GameWindowController implements Initializable {
 
         entrySheetNames.setCellValueFactory(cellData -> cellData.getValue().nameProperty()); // new PropertyValueFactory<>("name"));
         entrySheetIcons.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        entrySheetScores.setCellValueFactory(cellData -> cellData.getValue().scoreProperty().asObject());
+        entrySheetScores.setCellValueFactory(cellData -> (cellData.getValue().scoreProperty()).asObject());
 
         entrySheet.setItems(entryList);
+
 
 
         //Initialize observable list of dice
@@ -170,22 +169,44 @@ public class GameWindowController implements Initializable {
                 }
             }
         });
-
-        //Set Cell Factory for entrysheet
-//        PropertyValueFactory<EntrySheetGUImplementation, Integer> scoreProperty = new PropertyValueFactory<>("score");
+        logger.info("Cell factory for DiceBox set");
 
 
-        entrySheetScores.setCellFactory((tableColumn) -> new TableCell<>() {
-            @Override
-            protected void updateItem(Integer entry, boolean empty) {
-                super.updateItem(entry, empty);
-                if (empty) {
-                    super.setText(null);
-                } else {
-                    super.setText(entry.toString());
-                }
-            }
-        });
+//        entrySheetNames.setCellFactory((tableColumn) -> new TableCell<>() {
+//            @Override
+//            protected void updateItem(String entry, boolean empty) {
+//                super.updateItem(entry, empty);
+//                if (empty) {
+//                    super.setText(null);
+//                } else {
+//                    super.setText(entry);
+//                }
+//            }
+//        });
+//
+//        entrySheetIcons.setCellFactory((tableColumn) -> new TableCell<>() {
+//            @Override
+//            protected void updateItem(String entry, boolean empty) {
+//                super.updateItem(entry, empty);
+//                if (empty) {
+//                    super.setText(null);
+//                } else {
+//                    super.setText(entry);
+//                }
+//            }
+//        });
+//
+//        entrySheetScores.setCellFactory((tableColumn) -> new TableCell<>() {
+//            @Override
+//            protected void updateItem(Integer entry, boolean empty) {
+//                super.updateItem(entry, empty);
+//                if (empty) {
+//                    super.setText(null);
+//                } else {
+//                    super.setText(entry.toString());
+//                }
+//            }
+//        });
 
 
 //        entrySheet.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
@@ -339,6 +360,13 @@ public class GameWindowController implements Initializable {
 
     /**
      * Method to send roll command to server when rollButton is pressed
+     * The following actions are performed:
+     * diceStashedList (list of dice to be saved) is converted from String[] to String and sent to server/gamelogic
+     * savingStatus of saved dice in GUI is set to true
+     * stashStatus of dice is set to false
+     * elements of diceStashedList is set to empty string
+     * if dicedStashedList is empty, command 'none' is sent to server
+     * roll command is sent to server
      * @param event
      */
     public void rollActionSend(ActionEvent event){
@@ -365,6 +393,10 @@ public class GameWindowController implements Initializable {
     }
 
 
+    /**
+     * Loads dice images to Image array, such that images have only to be loaded once
+     * @param imageArray Image array, to which the images are loaded
+     */
     public static void loadImagesToArray(Image[] imageArray){
         IntStream.range(0, imageArray.length).forEach(i -> {
             try {
@@ -392,20 +424,15 @@ public class GameWindowController implements Initializable {
         return new Image(String.valueOf(GameWindowController.class.getResource("/images/dice-" + saved + diceNumber  + ".png")), 64, 63.2, true, false);
     }
 
-    public void setDiceImage(HBox diceBoxID, int diceValue) {
-        ImageView imageView = new ImageView();
-        switch (diceValue) {
-            case 1 -> imageView.setImage(GameWindowController.diceFaces[1]);
-            case 2 -> imageView.setImage(GameWindowController.diceFaces[2]);
-            case 3 -> imageView.setImage(GameWindowController.diceFaces[3]);
-            case 4 -> imageView.setImage(GameWindowController.diceFaces[4]);
-            case 5 -> imageView.setImage(GameWindowController.diceFaces[5]);
-            case 6 -> imageView.setImage(GameWindowController.diceFaces[6]);
-            default -> imageView.setImage(GameWindowController.diceFaces[0]);
-        };
 
-    }
 
+
+    /**
+     * Event handler for clicking on dice pictures in GUI, constructed via FXML API
+     * if dice is clicked, the saving status of the dice is changed
+     * the index of the dice is added (if not in array) or removed (if already in array) to the array of dice stashed for saving
+     * @param event
+     */
     @FXML
     public void diceClick (MouseEvent event) {
         DiceGUImplementation dice = diceBox.getSelectionModel().getSelectedItem();
@@ -421,7 +448,11 @@ public class GameWindowController implements Initializable {
         diceBox.refresh();
     }
 
-    //This method is only necessary if surplus spaces are not ignored by gamelogic
+    /**
+     * Method to convert array of String containing indices of saved dices to String suitable to send to gamelogic
+     * @param diceStashedList Array of String containing indices of dices to save as String
+     * @return New string containing the indices of the dice separated by spaces
+     */
     public static String diceStashedArrToString(String[] diceStashedList){
         StringBuilder saveMsgString = new StringBuilder();
         for (String elem:diceStashedList){
@@ -458,6 +489,10 @@ public class GameWindowController implements Initializable {
 
     }
 
+    /**
+     * Method to construct elements of entry sheet
+     * @return Array of objects of EntrySheetGUImplementation class
+     */
     public EntrySheetGUImplementation[] makeEntrySheetElements(){
         String[] entryNames = {"ones", "twos", "threes", "fours", "fives", "sixes",
                 "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight", "largeStraight",
