@@ -55,15 +55,17 @@ public class GameWindowController implements Initializable {
 
 
 
+//    @FXML
+//    private TableView<EntrySheetGUImplementation> entrySheet;
+//    //Score column of entry sheet
+//    @FXML
+//    private TableColumn<EntrySheetGUImplementation, Integer> entrySheetScores;
+//    @FXML
+//    private TableColumn<EntrySheetGUImplementation, String> entrySheetNames;
+//    @FXML
+//    private TableColumn<EntrySheetGUImplementation, String> entrySheetIcons;
     @FXML
-    private TableView<EntrySheetGUImplementation> entrySheet;
-    //Score column of entry sheet
-    @FXML
-    private TableColumn<EntrySheetGUImplementation, Integer> entrySheetScores;
-    @FXML
-    private TableColumn<EntrySheetGUImplementation, String> entrySheetNames;
-    @FXML
-    private TableColumn<EntrySheetGUImplementation, String> entrySheetIcons;
+    private ListView<EntrySheetGUImplementation> entrySheet;
 
     @FXML
     private ListView<DiceGUImplementation> diceBox;
@@ -101,9 +103,9 @@ public class GameWindowController implements Initializable {
 
         entryList.addAll(entryElements);
 
-        entrySheetNames.setCellValueFactory(cellData -> cellData.getValue().nameProperty()); // new PropertyValueFactory<>("name"));
-        entrySheetIcons.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        entrySheetScores.setCellValueFactory(cellData -> (cellData.getValue().scoreProperty()).asObject());
+//        entrySheetNames.setCellValueFactory(cellData -> cellData.getValue().nameProperty()); // new PropertyValueFactory<>("name"));
+//        entrySheetIcons.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+//        entrySheetScores.setCellValueFactory(cellData -> (cellData.getValue().scoreProperty()).asObject());
 
         entrySheet.setItems(entryList);
 
@@ -209,22 +211,22 @@ public class GameWindowController implements Initializable {
 //        });
 
 
-//        entrySheet.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
-//            @Override
-//            public void updateItem(EntrySheetGUImplementation entry, boolean empty) {
-//                super.updateItem(entry, empty);
-//                if (empty) {
-//                    setText(null);
-//                    setGraphic(null);
-//                } else {
-//                    if (entry.getSavingStatus() ) {
-//                        setDisable(true);
-//                    }
-//                    setText(entry.getIDname() + " " + entry.getScore());
-//                    //setGraphic(imageView);
-//                }
-//            }
-//        });
+        entrySheet.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
+            @Override
+            public void updateItem(EntrySheetGUImplementation entry, boolean empty) {
+                super.updateItem(entry, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    if (entry.getSavingStatus() ) {
+                        setDisable(true);
+                    }
+                    setText(entry.getIDname() + "\t\t" + entry.getScore());
+                    //setGraphic(imageView);
+                }
+            }
+        });
 
 
     }
