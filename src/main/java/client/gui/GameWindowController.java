@@ -376,7 +376,7 @@ public class GameWindowController implements Initializable {
     }
 
     @FXML
-    public void endTurnAction() {
+    public void endTurnAction(MouseEvent event) {
         //action
     }
 
