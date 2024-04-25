@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.Scanner;
 import server.Player;
 
-// TODO javadoc for class
+/**
+ * Entry sheet class to build entry sheets that are associated with a player.
+ */
 public class EntrySheet {
     // entry sheet length
     private static final int ENTRY_SHEET_LENGTH = 14;

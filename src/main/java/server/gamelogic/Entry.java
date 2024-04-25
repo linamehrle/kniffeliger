@@ -1,6 +1,9 @@
 package server.gamelogic;
 
-// TODO javadoc for class
+/**
+ * Helper class for entry sheet to handle all entry specific characteristics such as that an entry can be final, have a
+ * value and a name.
+ */
 public class Entry {
 
     // keeps in track if entry is final of not

@@ -1,6 +1,9 @@
 package server.gamelogic;
 
-// TODO javadoc for class
+/**
+ * This class builds dice with different attributes needed for the game just like rolling a dice, saving a dice, and
+ * returning the values of a dice or dice array in different datatype-arrays.
+ */
 public class Dice {
 
     private boolean savingStatus;
