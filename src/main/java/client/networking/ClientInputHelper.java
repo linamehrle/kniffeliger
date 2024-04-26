@@ -82,7 +82,7 @@ public class ClientInputHelper implements Runnable {
             }
             case ROLL -> {
                 System.out.println("Game: Your dice: " + input[1]);
-                Main.sendDicetoGUI(input[1]);
+                Main.sendDiceToGUI(input[1]);
             }
             case PLLI -> Print.printPlayerList(input[1]);
             case HGSC -> {
@@ -90,6 +90,8 @@ public class ClientInputHelper implements Runnable {
                 Main.updateHighScore(input[1]);
             }
             case LOST -> Main.updateLobby(input[1]);
+            case ENTS -> Main.sendEntrySheetToGUI(input[1]);
+            case INFM -> Main.sendInformationTextToGUI(input[1]);
             default -> logger.info("unknown command received from server " + message);
         }
     }

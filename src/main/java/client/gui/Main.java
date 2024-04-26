@@ -10,6 +10,8 @@ import client.networking.CommandsClientToServer;
 import org.apache.logging.log4j.Logger;
 import starter.Starter;
 
+import java.util.ArrayList;
+
 /**
  * This is the main class for the gui, it handles the start and communication from the network to the gui.
  */
@@ -136,9 +138,25 @@ public class Main extends Application {
      * Method to relay dice values to GUI (Game Window Controller)
      * @param diceValues string of 5 dice values separated by empty spaces
      */
-    public static void sendDicetoGUI(String diceValues) {
+    public static void sendDiceToGUI(String diceValues) {
         int[] diceValueArray = parseIntArray(diceValues);
         Main.gameWindowController.receiveRoll(diceValueArray);
+    }
+
+    public static void sendEntrySheetToGUI (String entrySheetString) {
+        //First split results at spaces giving entryFieldName:score
+        String[] nameValueStrings = entrySheetString.split(" ");
+        ArrayList<String[]> listOfEntries = new ArrayList<>();
+        for (String elem : nameValueStrings){
+            //Split at : giving arrays containing {entryFieldName, score}
+            String[] nameValuePairs = elem.split(":");
+            listOfEntries.add(nameValuePairs);
+        }
+        Main.gameWindowController.receiveEntrySheet(listOfEntries);
+    }
+
+    public static void sendInformationTextToGUI(String informationText) {
+        Main.gameWindowController.displayInformationText(informationText);
     }
 
     /**

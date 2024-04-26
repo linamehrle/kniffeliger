@@ -2,6 +2,8 @@ package client.gui;
 
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.stream.IntStream;
 
@@ -49,28 +51,41 @@ public class GameWindowController implements Initializable {
     @FXML
     private Button rollButton;
     @FXML
+    private VBox informationBox;
+
+    @FXML
     private Label usernameLabel;
 
 
+    @FXML
+    private Button highScoreButton;
 
+
+
+//    @FXML
+//    private TableView<EntrySheetGUImplementation> entrySheet;
+//    //Score column of entry sheet
+//    @FXML
+//    private TableColumn<EntrySheetGUImplementation, Integer> entrySheetScores;
+//    @FXML
+//    private TableColumn<EntrySheetGUImplementation, String> entrySheetNames;
+//    @FXML
+//    private TableColumn<EntrySheetGUImplementation, String> entrySheetIcons;
     @FXML
-    private TableView<EntrySheetGUImplementation> entrySheet;
-    //Score column of entry sheet
-    @FXML
-    private TableColumn<EntrySheetGUImplementation, Integer> entrySheetScores;
-    @FXML
-    private TableColumn<EntrySheetGUImplementation, String> entrySheetNames;
-    @FXML
-    private TableColumn<EntrySheetGUImplementation, String> entrySheetIcons;
+    private ListView<EntrySheetGUImplementation> entrySheet;
 
     @FXML
     private ListView<DiceGUImplementation> diceBox;
+    @ FXML
+    private Button endTurnButton;
     private ObservableList<EntrySheetGUImplementation> entryList = FXCollections.observableArrayList();
     private ObservableList<DiceGUImplementation> diceList = FXCollections.observableArrayList();
     //variables for dice images
     private static Image[]  diceFaces = new Image[13];
     //List with dice selected for saving in GUI, but not yet saved
     private String[] diceStashedList = new String[]{"", "", "", "", ""};
+    //
+    private HashMap<String, Integer> entrySheetNameIndexMap = new HashMap<>();
 
 
 
@@ -102,9 +117,9 @@ public class GameWindowController implements Initializable {
 
         entryList.addAll(entryElements);
 
-        entrySheetNames.setCellValueFactory(cellData -> cellData.getValue().nameProperty()); // new PropertyValueFactory<>("name"));
-        entrySheetIcons.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        entrySheetScores.setCellValueFactory(cellData -> (cellData.getValue().scoreProperty()).asObject());
+//        entrySheetNames.setCellValueFactory(cellData -> cellData.getValue().nameProperty()); // new PropertyValueFactory<>("name"));
+//        entrySheetIcons.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+//        entrySheetScores.setCellValueFactory(cellData -> (cellData.getValue().scoreProperty()).asObject());
 
         entrySheet.setItems(entryList);
 
@@ -210,25 +225,30 @@ public class GameWindowController implements Initializable {
 //        });
 
 
-//        entrySheet.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
-//            @Override
-//            public void updateItem(EntrySheetGUImplementation entry, boolean empty) {
-//                super.updateItem(entry, empty);
-//                if (empty) {
-//                    setText(null);
-//                    setGraphic(null);
-//                } else {
-//                    if (entry.getSavingStatus() ) {
-//                        setDisable(true);
-//                    }
-//                    setText(entry.getIDname() + " " + entry.getScore());
-//                    //setGraphic(imageView);
-//                }
-//            }
-//        });
+        entrySheet.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
+            @Override
+            public void updateItem(EntrySheetGUImplementation entry, boolean empty) {
+                super.updateItem(entry, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    if (entry.getSavingStatus() ) {
+                        setDisable(true);
+                    }
+                    String title = entry.getIDname();
+                    String separation = fillWithTabulators(title, 4);
+
+                    setText(title + separation + entry.getScore());
+                    //setGraphic(imageView);
+                }
+            }
+        });
 
 
     }
+
+
 
     /*
     Methods for enabling/disabling buttons
@@ -332,15 +352,19 @@ public class GameWindowController implements Initializable {
     }
 
     /**
-     * Method that handles when the enterToEntrySheet Button is pressen to enter your dice into your entry sheet
+     * Method that handles when an entry is selected (clicked on) in entry sheet
      * @param event
      */
-    public void enterToEntrySheetAction(ActionEvent event) {
-        //TODO
+    @FXML
+    public void enterToEntrySheetAction(MouseEvent event) {
+        EntrySheetGUImplementation entry = entrySheet.getSelectionModel().getSelectedItem();
+        //send entry selection to gamelogic
+        ClientOutput.send(CommandsClientToServer.GAME,  entry.getIDname());
+        entrySheet.refresh();
     }
 
     /**
-     * Method that handles when the saveDice Button is pressen to save certain dice before re rolling
+     * Method that handles when the saveDice Button is pressed to save certain dice before re rolling
      * @param event
      */
     public void saveDiceAction(ActionEvent event) {
@@ -357,6 +381,13 @@ public class GameWindowController implements Initializable {
     public void highScoreAction() {
         SceneController.showHighScoreWindow();
     }
+
+    @FXML
+    public void endTurnAction(MouseEvent event) {
+        //action
+    }
+
+
 
 
     /**
@@ -481,6 +512,23 @@ public class GameWindowController implements Initializable {
         diceBox.refresh();
     }
 
+    //TODO: maybe add exception handling for null pointers and invalid strings
+    public void receiveEntrySheet(ArrayList<String[]> entryElementList) {
+        int i = 0;
+        for (String[] elem: entryElementList) {
+            entryList.get(entrySheetNameIndexMap.get(elem[0])).setScore(Integer.parseInt(elem[1]));
+        }
+        entrySheet.refresh();
+    }
+
+    /**
+     * Method to display text in information VBox of Game Window
+     * @param informationText
+     */
+    public void displayInformationText(String informationText) {
+        //TODO
+    }
+
 
 
     /*
@@ -495,6 +543,7 @@ public class GameWindowController implements Initializable {
      * @return Array of objects of EntrySheetGUImplementation class
      */
     public EntrySheetGUImplementation[] makeEntrySheetElements(){
+
         String[] entryNames = {"ones", "twos", "threes", "fours", "fives", "sixes",
                 "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight", "largeStraight",
                 "kniffeliger", "chance", "pi"};
@@ -505,9 +554,34 @@ public class GameWindowController implements Initializable {
         for (String name : entryNames){
             //Begin ID number of entries at 1, such that ones = 1, twos = 2 etc.
             entryElements[k] = new EntrySheetGUImplementation(k+1, name);
+            entrySheetNameIndexMap.put(name, k);
             k++;
         }
         return entryElements;
+    }
+
+    /**
+     * Method that determines the required separation (tabulators) to align different strings
+     * @param title String, on the length of which the required number of tabualators is determined
+     * @param baselength Minimal number of tabulators added, e.g. separation added to longest String
+     * @return String of containing a number of \t (tabulators), the number depends on the length of the layouted string
+     */
+    private static String fillWithTabulators(String title, int baselength) {
+        String separation = "";
+        //Align the scores by adjusting separation
+        int titleLength = title.length();
+        if ( title.equals("kniffeliger") ){
+            separation = "\t".repeat(baselength + 1);
+        }else if (titleLength >= 10) {
+            separation = "\t".repeat(baselength);
+        } else if (titleLength > 8) {
+            separation = "\t".repeat(baselength + 1);
+        } else if (titleLength > 3) {
+            separation = "\t".repeat(baselength + 2);
+        } else {
+            separation = "\t".repeat(baselength + 3);
+        }
+        return separation;
     }
 
 }

@@ -80,6 +80,16 @@ public enum CommandsServerToClient {
     /**
      * Sends an update of a lobby status to the client to update the gui
      */
-    LOST
+    LOST,
+
+    /**
+     * Sends current status of entry sheet to client to update entry sheet in GUI
+     */
+    ENTS,
+
+    /**
+     * Sends information to client to display in corresponding field in GUI (e.g. instructions)
+     */
+    INFM,
 
 }

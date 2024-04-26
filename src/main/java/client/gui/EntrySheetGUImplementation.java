@@ -7,6 +7,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 
+import java.util.Map;
+
 /**
  * Class that contains values for entries to facilitate implementation of entrySheet in GUI
  */
@@ -15,6 +17,8 @@ public class EntrySheetGUImplementation {
     private int idNumber;
     //Name of field
     private StringProperty idName;
+    //Name that is displayed
+    private String displayName;
     //Score of entry
     private IntegerProperty score;
 
@@ -34,6 +38,7 @@ public class EntrySheetGUImplementation {
         this.idName = new SimpleStringProperty(entryName);
         this.score = new SimpleIntegerProperty(0);
         this.savingStatus = false;
+        this.displayName = convertIDnameToDisplay(entryName);
     }
     //Getters
     public int getIDnumber() {
@@ -43,6 +48,8 @@ public class EntrySheetGUImplementation {
     public String getIDname() {
         return idName.get();
     }
+
+    public String getDisplayName() { return displayName; }
 
     public int getScore() {
         return score.get();
@@ -78,5 +85,40 @@ public class EntrySheetGUImplementation {
     public StringProperty nameProperty() {
         return idName;
     }
+
+    /**
+     * Method to convert idName to display name with separated words (e.g. "fourOfAKind" to "Four Of A Kind")
+     * @param inputString String to convert
+     * @return converted String
+     */
+    public static String convertIDnameToDisplay(String inputString) {
+        StringBuilder result = new StringBuilder();
+        boolean isNewWord = true;
+
+        for (int i = 0; i < inputString.length(); i++) {
+            char currentChar = inputString.charAt(i);
+            char nextChar = (i + 1 < inputString.length()) ? inputString.charAt(i + 1) : ' ';
+
+            if (Character.isUpperCase(currentChar)) {
+                if (!isNewWord) {
+                    result.append(" ");
+                }
+                result.append(Character.toUpperCase(currentChar));
+            } else if (isNewWord && Character.isLowerCase(currentChar)) {
+                result.append(Character.toUpperCase(currentChar));
+            } else {
+                result.append(currentChar);
+            }
+
+            if (Character.isLetter(currentChar) && !Character.isLetter(nextChar)) {
+                isNewWord = true;
+            } else {
+                isNewWord = false;
+            }
+        }
+
+        return result.toString();
+    }
+
 
 }
