@@ -48,10 +48,8 @@ public class GameWindowController implements Initializable {
     private Button deleteButton;
     @FXML
     private Button rollButton;
-
-
     @FXML
-    private Button highScoreButton;
+    private Label usernameLabel;
 
 
 
@@ -93,6 +91,9 @@ public class GameWindowController implements Initializable {
 
         //Set this instance of GameWindowController as controller in main
         Main.setGameWindowController(this);
+
+        //set the username
+        usernameLabel.setText("username"); //TODO usernames of players for the sheets
 
         //Initialize entry sheet
         EntrySheetGUImplementation[] entryElements;

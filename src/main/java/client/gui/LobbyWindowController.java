@@ -255,5 +255,5 @@ public class LobbyWindowController implements Initializable {
     }
 
     //TODO popUps when something is not done right?
-    //TODO status of lobby is correct
+    //TODO show personalized welcome, ie integrate username
 }
