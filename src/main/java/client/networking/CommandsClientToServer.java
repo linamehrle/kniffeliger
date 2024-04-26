@@ -66,12 +66,7 @@ public enum CommandsClientToServer {
     /**
      * Used to start a game in a lobby
      */
-    STRG, //TODO check if i changed it correctly
-
-    /**
-     * Gives all game related information to the GameManager on the server
-     */
-    GAME,
+    STRG,
 
     /**
      * Requests a list of all connected players from the server to print in the console
@@ -112,9 +107,14 @@ public enum CommandsClientToServer {
      */
     COUT,
 
-
-    //TODO doc
+    /**
+     * Communicates that the player wants to shift the entry sheets
+     */
     SHFT,
+
+    /**
+     * Communicates that the player wants to swap their entry sheet, command is followed by the name of the victim
+     */
     SWAP,
 
     /**

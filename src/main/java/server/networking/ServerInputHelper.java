@@ -64,14 +64,12 @@ public class ServerInputHelper implements Runnable {
             case CRLO -> ListManager.createNewLobby(player, input[1]);
             case ENLO -> player.enterLobby(input[1]);
             case LELO -> player.leaveLobby();
-            case LOCH -> {
-                Communication.sendToLobby(CommandsServerToClient.CHAT, player, input[1]);
-                logger.debug("lobby chat received");
-            }
+            case LOCH -> Communication.sendToLobby(CommandsServerToClient.CHAT, player, input[1]);
             case STRG -> player.getLobby().startGame(player);
-            case GAME -> player.getLobby().getGameManager().getAnswer(input[1]);
             case PLLI -> Communication.sendToPlayer(CommandsServerToClient.PLLI, player, ListManager.getPlayerListAsString());
             case HGSC -> Communication.sendToPlayer(CommandsServerToClient.HGSC, player, HighScore.getHighScoreList());
+            case COUT, ENDT, ROLL, ENTY, STEA, FRZE, SWAP  -> player.getLobby().getGameManager().getAnswer(cmd.toString() + " " + input[1], player);
+            case SHFT -> player.getLobby().getGameManager().getAnswer(cmd.toString(), player);
             default -> logger.info("unknown command received from client " + message);
 
         }

@@ -573,12 +573,13 @@ public class GameManager implements Runnable {
         }
     }
 
-    /**addActionDice(allDice, currentPlayer
+    /**
      * Gets answer as String and saves it in answer field, so it can be accessed in starter-method.
      *
      * @param input answer of player
      */
-    public synchronized void getAnswer(String input) {
+    public synchronized void getAnswer(String input, Player player) {
+        //TODO only update input if it is the players turn
         this.input = input;
         notify();
     }
