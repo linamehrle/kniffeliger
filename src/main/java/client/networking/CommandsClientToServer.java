@@ -66,7 +66,7 @@ public enum CommandsClientToServer {
     /**
      * Used to start a game in a lobby
      */
-    STRT,
+    STRG, //TODO check if i changed it correctly
 
     /**
      * Gives all game related information to the GameManager on the server
@@ -92,6 +92,36 @@ public enum CommandsClientToServer {
     /**
      * Sends entry sheet selection to server, usually followed by String &lt name of entry field &gt
      */
-    ENTS,
+    ENTY,
+
+    /**
+     * Communicates that the player wants to steal an entry, command is followed by the name of the victim and then the
+     * name of the entry
+     */
+    STEA,
+
+    /**
+     * Communicates that the player wants to freeze an entry, command is followed by the name of the victim and then the
+     * name of the entry
+     */
+    FRZE,
+
+    /**
+     * Communicates that the player wants to cross out an entry, command is followed by the name of the victim and then the
+     * name of the entry
+     */
+    COUT,
+
+
+    //TODO doc
+    SHFT,
+    SWAP,
+
+    /**
+     * Used to communicate that a player has ended their turn
+     */
+    ENDT,
+
+
 
 }
