@@ -125,7 +125,12 @@ public enum CommandsClientToServer {
     /**
      * Used to communicate the saved dice to the server, followed by a list of numbers from 0 to 4
      */
-    SAVE
+    SAVE,
+
+    /**
+     * Used to get a list of the players that are in the same lobby as the player asking
+     */
+    LOPL
 
 
 

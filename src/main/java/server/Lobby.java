@@ -77,6 +77,7 @@ public class Lobby {
                 Communication.broadcastToAll(CommandsServerToClient.LOST, ListManager.getPlayerList(), name + " (full)");
             }
             Communication.sendToPlayer(CommandsServerToClient.BRCT, player, "You successfully entered the lobby " + name);
+            Communication.broadcastToAll(CommandsServerToClient.LOPL, playersInLobby, getPlayersInLobbyAsString());
         }
     }
 
@@ -128,6 +129,7 @@ public class Lobby {
                 Communication.broadcastToAll(CommandsServerToClient.LOST, ListManager.getPlayerList(), name + " (open)");
             }
         }
+        Communication.broadcastToAll(CommandsServerToClient.LOPL, playersInLobby, getPlayersInLobbyAsString());
         //TODO how to handle leaving a lobby when a game is running?
     }
 
@@ -143,6 +145,18 @@ public class Lobby {
             status = "open";
             Communication.broadcastToAll(CommandsServerToClient.LOST, ListManager.getPlayerList(), name + " (open)");
         }
+    }
+
+    /**
+     * Returns a list of the players in the lobby as a string in the following way: "username,username,..."
+     * @return
+     */
+    public String getPlayersInLobbyAsString() {
+        String playersInLobbyAsString = "";
+        for (Player player : playersInLobby) {
+            playersInLobbyAsString = playersInLobbyAsString + player.getUsername() + ",";
+        }
+        return playersInLobbyAsString;
     }
 
     /**

@@ -99,6 +99,7 @@ public class GameWindowController implements Initializable {
     private String[] diceStashedList = new String[]{"", "", "", "", ""};
     //
     private HashMap<String, Integer> entrySheetNameIndexMap = new HashMap<>();
+    private ArrayList<String> playersInLobby;
 
 
 
@@ -257,8 +258,21 @@ public class GameWindowController implements Initializable {
                 }
             }
         });
-        
 
+        //initiate the arraylist that has all usernames of the players in the lobby
+        ClientOutput.send(CommandsClientToServer.LOPL, "getting the players in the lobby");
+    }
+
+    /**
+     * Updates the list of players in the lobby
+     * @param playerList the list of players from the server, a String of the form "username,username,..."
+     */
+    public void updatePlayerList(String playerList) {
+        String[] players = playerList.split(",");
+        playersInLobby = new ArrayList<>();
+        for (int i = 0; i < players.length; i++) {
+            playersInLobby.add(players[i]);
+        }
     }
 
 
