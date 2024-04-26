@@ -58,6 +58,16 @@ public class GameWindowController implements Initializable {
 
     @FXML
     private Label usernameLabel;
+    @FXML
+    private Tab ownerTab;
+    @FXML
+    private Tab otherPlayersTab;
+    @FXML
+    private Button entryEnterButton;
+    @FXML
+    private ListView<DiceGUImplementation> diceBoxOther;
+    @FXML
+    private HBox hBoxEntries;
 
 
     @FXML
@@ -129,7 +139,7 @@ public class GameWindowController implements Initializable {
 
 
         //Initialize observable list of dice
-        diceList.addAll(new DiceGUImplementation[]{new DiceGUImplementation(1), new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4), new DiceGUImplementation(5) });
+        diceList.addAll(new DiceGUImplementation[]{new DiceGUImplementation(0), new DiceGUImplementation(1), new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4) });
         diceBox.setItems(diceList);
 
 
@@ -362,7 +372,7 @@ public class GameWindowController implements Initializable {
     public void enterToEntrySheetAction(MouseEvent event) {
         EntrySheetGUImplementation entry = entrySheet.getSelectionModel().getSelectedItem();
         //send entry selection to gamelogic
-        ClientOutput.send(CommandsClientToServer.GAME,  entry.getIDname());
+        ClientOutput.send(CommandsClientToServer.ENTY,  entry.getIDname());
         entrySheet.refresh();
     }
 
@@ -408,7 +418,7 @@ public class GameWindowController implements Initializable {
         String saveDiceString = diceStashedArrToString(diceStashedList);
         //Saved dice are automatically transmitted before dice are rolled again
         if ( !saveDiceString.isEmpty()) {
-            ClientOutput.send(CommandsClientToServer.GAME,  saveDiceString);
+            ClientOutput.send(CommandsClientToServer.SAVE,  saveDiceString);
 
             //Set dice to saved
             for (int i=0; i < diceStashedList.length; i++){
@@ -421,10 +431,10 @@ public class GameWindowController implements Initializable {
             }
         }
         else {
-            ClientOutput.send(CommandsClientToServer.GAME,  "none");
+            ClientOutput.send(CommandsClientToServer.SAVE,  "none");
         }
         diceBox.refresh();
-        ClientOutput.send(CommandsClientToServer.GAME, "roll" );
+        ClientOutput.send(CommandsClientToServer.ROLL, "roll" );
     }
 
 
