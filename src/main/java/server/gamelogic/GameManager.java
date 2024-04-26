@@ -1,5 +1,6 @@
 package server.gamelogic;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import server.HighScore;
 import server.Player;
@@ -32,6 +33,7 @@ public class GameManager implements Runnable {
 
     // logger
     private Logger logger = Starter.getLogger();
+    private Level gameLogic = Level.getLevel("GAME_LOGIC");
 
     /**
      * Game gets constructed; dices get initiated in constructor.
@@ -67,12 +69,12 @@ public class GameManager implements Runnable {
 
         // starting the game and sending all players in lobby a message
         Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "STRG");
-        logger.info("Game lobby with " + playerArraysList + " started.");
+        logger.log(gameLogic, "Game lobby with " + playerArraysList + " started.");
 
         // starting 14 rounds
         for (int round = 0; round < ROUNDS; round++) {
             Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "NRND " + (round + 1));
-            logger.info("Round " + (round + 1) + " started");
+            logger.log(gameLogic, "Round " + (round + 1) + " started");
 
             // loop through all the players
             for (EntrySheet currentEntrySheet : allEntrySheets) {
@@ -107,13 +109,13 @@ public class GameManager implements Runnable {
 
                 // notify players which turn is
                 Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "STRT " + currentPlayer.getUsername() + "Main");
-                logger.info(currentPlayer.getUsername() + "'s turn.");
+                logger.log(gameLogic, currentPlayer.getUsername() + "'s turn.");
 
                 while (!entryMade || !endTurn) {
                     // wait for input
                     wait();
                     String[] inputArr = input.split("\\s+");
-                    logger.info("Input received: " + inputArr);
+                    logger.log(gameLogic, "Input received: " + inputArr);
 
                     // check if input has more parameters
                     if (inputArr.length == 3) {
@@ -151,7 +153,7 @@ public class GameManager implements Runnable {
                                     Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "ENTY " + currentPlayer.getUsername() + " " + entryChoice + " "
                                             + currentEntrySheet.getEntryByName(entryChoice).getValue());
 
-                                    logger.info("Save entry "+ entryChoice + "(" + currentEntrySheet.getEntryByName(entryChoice).getValue() + ") of " + currentPlayer.getUsername());
+                                    logger.log(gameLogic, "Save entry "+ entryChoice + "(" + currentEntrySheet.getEntryByName(entryChoice).getValue() + ") of " + currentPlayer.getUsername());
 
                                     addActionDice(allDice, currentPlayer);
                                     entryMade = true;
@@ -163,6 +165,8 @@ public class GameManager implements Runnable {
 
                             if (!aboutToRoll && stealCount > 0) {
                                 ActionDice.steal(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
+
+                                logger.log(gameLogic, currentPlayer.getUsername() + " has stolen entry " + selectedEntry + " from " + victimPlayerName);
 
                                 // send player stolen entry
                                 Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "ENTY " + currentPlayer.getUsername() + " " + selectedEntry + " "
@@ -181,6 +185,8 @@ public class GameManager implements Runnable {
                             if (freezeCount > 0) {
                                 ActionDice.freeze(EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
 
+                                logger.log(gameLogic, currentPlayer.getUsername() + " has frozen entry " + selectedEntry + " from " + victimPlayerName);
+
                                 // send freeze state
                                 Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "FRZE " + victimPlayerName + " " + selectedEntry);
 
@@ -193,6 +199,8 @@ public class GameManager implements Runnable {
                             if (crossOutCount > 0) {
                                 ActionDice.crossOut(EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
 
+                                logger.log(gameLogic, currentPlayer + " has crossed out entry " + selectedEntry + " from " + victimPlayerName);
+
                                 // send cross out state
                                 Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "ENTY " + victimPlayerName + " " + selectedEntry + " "
                                         + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
@@ -201,8 +209,10 @@ public class GameManager implements Runnable {
                             }
                             break;
                         case "ENDT":
+                            logger.trace("Entered ENDT case");
+
                             if (entryMade) {
-                                logger.trace("Ending turn (" + currentPlayer.getUsername() + ")");
+                                logger.log(gameLogic, "Ending turn (" + currentPlayer.getUsername() + ")");
                                 endTurn = true;
                             }
                             break;
@@ -212,6 +222,8 @@ public class GameManager implements Runnable {
             }
 
             // shifting and swapping phase
+            logger.log(gameLogic, "Shifting and Swapping phase started.");
+
             for (EntrySheet currentEntrySheet : allEntrySheets) {
                 // saves values of current entry sheet, so player and current action dice, so we can access it easily
                 Player currentPlayer = currentEntrySheet.getPlayer();
@@ -230,7 +242,7 @@ public class GameManager implements Runnable {
                 // notify players which turn is
                 Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "STRT " + currentPlayer.getUsername() + "ShiftSwap");
 
-                logger.trace("Entering shifting and swapping phase.");
+                logger.log(gameLogic, currentPlayer.getUsername() + "'s turn.");
 
                 // checks if player wants to shift or swap
                 boolean finishedSwapOrShift = false;
@@ -240,7 +252,7 @@ public class GameManager implements Runnable {
                     wait();
                     String[] inputArr = input.split("\\s+");
 
-                    logger.info("Received " + input);
+                    logger.log(gameLogic, "Received " + input);
 
                     switch (inputArr[0]) {
                         case "SHFT":
@@ -249,7 +261,7 @@ public class GameManager implements Runnable {
                             if (shiftCount > 0) {
                                 ActionDice.shift(allEntrySheets);
                                 Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "SHFT");
-                                logger.info("Shifting");
+                                logger.log(gameLogic, "Shifting");
 
                                 shiftCount = shiftCount - 1;
                             }
@@ -261,13 +273,14 @@ public class GameManager implements Runnable {
                                 ActionDice.swap(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, inputArr[1]));
                                 Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "SWAP " + currentPlayer.getUsername() + " " + inputArr[1]);
 
-                                logger.info("Swappgin " + currentPlayer.getUsername() + " <-> " + inputArr[1]);
+                                logger.log(gameLogic, "Swappging " + currentPlayer.getUsername() + " <-> " + inputArr[1]);
 
                                 swapCount = swapCount - 1;
                             }
                             break;
                         case "ENDT":
-                            logger.info("End turn.");
+                            logger.trace("Entered ENDT case");
+                            logger.log(gameLogic, "Ending turn (" + currentPlayer.getUsername() + ")");
                             finishedSwapOrShift = true;
 
                             break;
@@ -275,16 +288,17 @@ public class GameManager implements Runnable {
                 }
             }
         }
+        logger.log(gameLogic, "Game finished.");
 
-        // TODO REWORK RANKING
+        //==== RANKING
         Player[] rankedPlayer = ranking(allEntrySheets);
-        String ranking = "";
+        String rankingMsg = "";
         for (int i = 0; i < rankedPlayer.length; i++) {
-            ranking = ranking + "Number " + (i + 1)+ " is " + rankedPlayer[i].getUsername() + ".";
+            rankingMsg = rankingMsg + rankedPlayer[i].getUsername() + " " + rankedPlayer[i];
         }
 
         // sends ranking to all players in lobby
-        Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, ranking);
+        Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, rankingMsg);
 
         //send the scores to the high score class to possibly update the highscore
         HighScore.updateHighScore(returnScoreAsString(allEntrySheets));
