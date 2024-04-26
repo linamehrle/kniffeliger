@@ -67,6 +67,7 @@ public class ActionDice {
      * @return message for game in console
      */
     public static String freeze (EntrySheet entrySheetVictim, String frozenEntry){
+        // TODO: Entry validation: if entry is made on a frozen entry, then it is zero
         String message = "";
         for (Entry entry : entrySheetVictim.getAsArray()){
             if (entry.getName().equals(frozenEntry)){
@@ -88,6 +89,7 @@ public class ActionDice {
      * @return message for game in console
      */
     public static String crossOut(EntrySheet entrySheetVictim, String crossedOutEntry) {
+        // TODO: check if entry that needs to be crossed out is final because only made entries can be crossed out
         entrySheetVictim.deleteEntry(crossedOutEntry);
         return "You crossed out " + crossedOutEntry + " in " + entrySheetVictim.getUsername() + "'s entry sheet.";
     }

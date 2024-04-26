@@ -79,13 +79,14 @@ public class GameManager {
                                 // if player did not steal yet then roll
                                 // set about to roll to true so player cannot steal anymore
                                 aboutToRoll = true;
-                                // TODO: when rolled then you cannot steal anymore, when you steal you cannot roll anymore
-                                // TODO: if you cannot add entry somewhere it should save it as 0 >> maybe handle this in entry sheet class
+
+                                // rolls and displays dice
                                 rollDice(allDice);
                                 printDice(allDice);
+
+                                // saves dice
                                 System.out.println("Which dice do you want to save?");
                                 String savedDice = scanner.nextLine();
-
                                 if (!savedDice.equals("none")){
                                     String[] splitStr = savedDice.split("\\s+");
                                      // turn string array to int array
@@ -98,35 +99,33 @@ public class GameManager {
                                 if (allDiceSaved(allDice)) {
                                     System.out.println("You saved all your dice, now choose an entry:\nones: 'ones'\ntwos: 'twos'\nthrees: 'threes'\nfours: 'fours'\nfives: 'fives'\nsixes: 'sixes'\nthree of a kind: 'threeOfAKind'\nfour of a kind: 'fourOfAKind'\nfull house: 'fullHouse'\nsmall straight: 'smallStraight'\nlarge straight: 'largeStraight'\nkniffeliger: 'kniffeliger'\nchance: 'chance'\npi: 'pi'");
                                     String entryChoice = scanner.nextLine();
+
+                                    // checks if entry choice is valid
                                     EntrySheet.entryValidation(currentEntrySheet, entryChoice, allDice);
+
+                                    // displays entry sheet
                                     System.out.println("This is your entry sheet:");
                                     System.out.println(currentEntrySheet.printEntrySheet());
+
+                                    // adds action dice
                                     addActionDice(allDice, currentPlayer);
                                     entryMade = true;
                                 }
                             }
                             break;
                         case "STEA":
-                            // TODO: ask Dominique to give me STEA <victim name> <entry name>
-                            // TODO: extract the first part of the command first and then save the rest in a String-array (STEAL) [victim name, enty name]
                             if (!aboutToRoll && stealCount > 0) {
                                 ActionDice.steal(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, answerArray[1]), answerArray[2]);
                                 entryMade = true;
                             }
                             break;
                         case "FRZE":
-                            // TODO: ask Dominique to give me FREEZE <victim name> <entry name>
-                            // TODO: check if entry can even be frozen >> check in action dice class
-                            // TODO: extract the first part of the command first and then save the rest in a String-array (STEAL) [victim name, entry name]
                             if (freezeCount > 0) {
                                 ActionDice.freeze(EntrySheet.getEntrySheetByName(allEntrySheets, answerArray[1]), answerArray[2]);
                                 freezeCount = freezeCount - 1;
                             }
                             break;
                         case "COUT":
-                            // TODO: ask Dominique to give me FREEZE <victim name> <entry name>
-                            // TODO: check if entry can even be crossed out (only possible for made entry) >>check in action dice class
-                            // TODO: extract the first part of the command first and then save the rest in a String-array (STEAL) [victim name, enty name]
                             if (crossOutCount > 0) {
                                 ActionDice.crossOut(EntrySheet.getEntrySheetByName(allEntrySheets, answerArray[1]), answerArray[2]);
                                 crossOutCount = crossOutCount - 1;
