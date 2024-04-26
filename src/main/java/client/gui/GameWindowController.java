@@ -515,6 +515,7 @@ public class GameWindowController implements Initializable {
         diceBox.refresh();
     }
 
+
     //TODO: maybe add exception handling for null pointers and invalid strings
     public void receiveEntrySheet(ArrayList<String[]> entryElementList) {
         int i = 0;
@@ -538,6 +539,8 @@ public class GameWindowController implements Initializable {
         //Font
         displayText.setFont(Font.font("Courier New"));
         textFlow.getChildren().add(displayText);
+        //Clear field first (alternative scrollplane with old information at the bottom?)
+        informationBox.getChildren().clear();
         informationBox.getChildren().add(textFlow);
     }
 
