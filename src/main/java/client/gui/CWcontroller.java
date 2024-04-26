@@ -2,7 +2,6 @@ package client.gui;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import client.networking.ClientOutput;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -23,6 +22,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import client.networking.CommandsClientToServer;
 import server.Player;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -63,6 +63,7 @@ public class CWcontroller implements Initializable {
         //will be used later to select user for whisper chat
         String[] userList = {"all", "usr1", "usr2", "usr3"};
 
+        ClientOutput.send(CommandsClientToServer.PLLI, "get the player list");
 
         //playerList .getPlayerList();
         //userNameList = makeUsernameList(playerList);
@@ -93,7 +94,8 @@ public class CWcontroller implements Initializable {
 
 
 
-    /** Method which handles the addition of text to chat window
+    /**
+     * Method which handles the addition of text to chat window
      *  and sends message to server when send button is fired
      */
     public void sendButtonAction() {
@@ -248,5 +250,11 @@ public class CWcontroller implements Initializable {
     public void displayReceivedMessage(String message) {
         //display this in the chat window, message is "username: message"
         addMsgReceived(message, msgDisplayAll);
+    }
+
+    public void updatePlayerList(String playerlist) {
+        playerlist = "all,lobby," + playerlist;
+        String[] players = playerlist.split(",");
+        setChoiceBox(recID, players);
     }
 }

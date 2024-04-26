@@ -184,12 +184,19 @@ public class Main extends Application {
         return array;
     }
 
+    public static void updateChatPlayerList(String playerList) {
+        if (cWcontroller != null) {
+            Main.cWcontroller.updatePlayerList(playerList);
+        }
+    }
+
     /**
      * Communicates to the server that a player wants to leave the game
      */
     public static void exit() {
         ClientOutput.send(CommandsClientToServer.QUIT, "leaving now");
     }
+
 }
 
 

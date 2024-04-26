@@ -84,7 +84,10 @@ public class ClientInputHelper implements Runnable {
                 System.out.println("Game: Your dice: " + input[1]);
                 Main.sendDiceToGUI(input[1]);
             }
-            case PLLI -> Print.printPlayerList(input[1]);
+            case PLLI -> {
+                Print.printPlayerList(input[1]);
+                Main.updateChatPlayerList(input[1]);
+            }
             case HGSC -> {
                 System.out.println(input[1]);
                 Main.updateHighScore(input[1]);

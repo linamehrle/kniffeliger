@@ -1,6 +1,7 @@
 package server.networking;
 
 import org.apache.logging.log4j.Logger;
+import server.ListManager;
 import server.Player;
 import starter.Starter;
 import java.io.IOException;
@@ -48,6 +49,7 @@ public class ClientThread implements Runnable{
 
         serverOutput.send(CommandsServerToClient.BRCT, "Connection to server established");
         Communication.broadcast(player.getPlayerList(), player, "Player " + player.getUsername() + " connected to the server");
+        Communication.broadcastToAll(CommandsServerToClient.PLLI, ListManager.getPlayerList(), ListManager.getPlayerListAsString());
 
         ping = new Ping(this);
         Thread pingThread = new Thread(ping);
@@ -105,6 +107,7 @@ public class ClientThread implements Runnable{
             Communication.broadcast(player.getPlayerList(), player, "Player " + player.getUsername() + " has disconnected");
             ArrayList<Player> playerList = player.getPlayerList();
             playerList.remove(player);
+            Communication.broadcastToAll(CommandsServerToClient.PLLI, playerList, ListManager.getPlayerListAsString());
             if (player.getLobby() != null) {
                 player.getLobby().leaveLobby(player);
             }
