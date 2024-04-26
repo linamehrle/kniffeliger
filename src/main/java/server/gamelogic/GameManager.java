@@ -132,36 +132,40 @@ public class GameManager implements Runnable {
                                 // set about to roll to true so player cannot steal anymore
                                 aboutToRoll = true;
 
-
+                                // rolls dice
                                 rollDice(allDice);
                                 logger.log(gameLogic, "Dices were rolled");
 
                                 // TODO: SAVE AND GET TO SAVE DICE
+                                // TODO: get saved dice as SVDI <numbers of dice asl String>
                                 // get rolled dice values as string (1stDiceVal, 2ndDiceVal, ...)
-                                String dicesMsg = "";
+                                String rolledDice = "";
 
                                 for (Dice dice : allDice) {
                                     // if dice was not saved
                                     if (!dice.getSavingStatus()) {
-                                        dicesMsg = dicesMsg + dice.getDiceValue();
+                                        rolledDice = rolledDice + dice.getDiceValue();
                                     }
                                 }
-                                logger.log(gameLogic, "Rolled: " + dicesMsg);
+                                logger.log(gameLogic, "Rolled: " + rolledDice);
 
                                 // send dices to all players
-                                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "ROLL " + dicesMsg);
+                                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "ROLL " + rolledDice);
 
                                 // wait for current player to choose dices to save
                                 wait();
-                                String[] dicesToSave = input.split("\\s+");
+                                String[] savedDice = input.split("\\s+");
 
-                                logger.log(gameLogic, "Save dices: " + Arrays.toString(dicesToSave));
+                                logger.log(gameLogic, "Save dices: " + Arrays.toString(savedDice));
 
-                                for (String diceToSaveStr : dicesToSave) {
-                                    // TODO: Exception Handling?? Y\n?
-                                    // parse to int
-                                    int diceToSaveInt = Integer.parseInt(diceToSaveStr);
-                                    allDice[diceToSaveInt - 1].saveDice();
+                                // TODO: SAVES DICE WITH NUMBER BY 0 1 2 3 4 (not like in terminal version with 1 2 3 4 5)
+                                // saves the rolled dice; if player does not want to save one, then "none" is sent
+                                if (!savedDice[0].equals("none")) {
+                                    // turns the single String array entries into int and save the corresponding dice
+                                    for (String s : savedDice) {
+                                        int i = Integer.parseInt(s);
+                                        allDice[i].saveDice();
+                                    }
                                 }
 
                                 if (allDiceSaved(allDice)) {
@@ -185,6 +189,7 @@ public class GameManager implements Runnable {
 
                                     logger.log(gameLogic, "Save entry "+ entryChoice + "(" + currentEntrySheet.getEntryByName(entryChoice).getValue() + ") of " + currentPlayer.getUsername());
 
+                                    // adds action dice to player
                                     addActionDice(allDice, currentPlayer);
                                     entryMade = true;
                                 }
