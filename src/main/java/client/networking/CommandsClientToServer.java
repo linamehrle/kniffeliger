@@ -122,6 +122,7 @@ public enum CommandsClientToServer {
      */
     ENDT,
 
-
+    @Deprecated
+    GAME
 
 }
