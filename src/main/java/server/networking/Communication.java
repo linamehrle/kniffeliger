@@ -12,7 +12,7 @@ import starter.Starter;
  */
 public class Communication {
 
-    static Logger logger = Starter.logger;
+    private static Logger logger = Starter.getLogger();
 
     /**
      * sends a message from the server to all connected clients

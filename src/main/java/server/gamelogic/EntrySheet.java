@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.Scanner;
 import server.Player;
 
-// TODO javadoc for class
+/**
+ * Entry sheet class to build entry sheets that are associated with a player.
+ */
 public class EntrySheet {
     // entry sheet length
     private static final int ENTRY_SHEET_LENGTH = 14;
@@ -210,6 +212,15 @@ public class EntrySheet {
     }
 
     /**
+     * Sets all the entries in an entry sheet to not frozen.
+     */
+    public void defreeze () {
+        for (Entry entry : entrySheet) {
+            entry.setFrozenStatus(false);
+        }
+    }
+
+    /**
      * Adds the new value for an entry at the right position of the entry sheet array. Total points get updated by the added value.
      *
      * @param newEntry contains the name we can compare and the new entry value
@@ -282,9 +293,9 @@ public class EntrySheet {
      *
      * @param nameOfEntry     entry name which player wants to save the dice/points for.
      * @param finalDiceValues the dice values after the player is done rolling.
-     * @throws Exception if entry cannot be found in sheet
      */
-    public static void entryValidation(EntrySheet entrySheet, String nameOfEntry, Dice[] finalDiceValues) throws Exception {
+    public static void entryValidation(EntrySheet entrySheet, String nameOfEntry, Dice[] finalDiceValues) {
+        // TODO: entry validation: if entry is made on a frozen entry, then it is zero
         // checks if all dice have been saved, if one is not, then save them
         for (Dice d : finalDiceValues) {
             if (d.getSavingStatus() == false) {
@@ -362,7 +373,7 @@ public class EntrySheet {
                     entrySheet.addEntry(pi);
                     break;
                 default:
-                    // TODO: ACHTUND, ÄNDERE DAS FÜR SPIEL AUSSERHALB DER KONSOLE
+                    // TODO: ACHTUNG, ÄNDERE DAS FÜR SPIEL AUSSERHALB DER KONSOLE
                     Scanner scanner = new Scanner(System.in);
                     System.out.println("Your entry name is wrong. Please try again.");
                     String entryName = scanner.nextLine();
@@ -381,14 +392,10 @@ public class EntrySheet {
      * @return the sum of dice
      * @throws Exception if the value we need to compare the dice value with is not between 1 and 6
      */
-    public static int singleValueRolls(int[] rolledDice, int value) throws Exception {
+    public static int singleValueRolls(int[] rolledDice, int value) {
         // checks if we inserted a valid value for dice
         int sum = 0;
         for (int d : rolledDice) {
-            // if values of dice are not between 1 and 6 an Exception is thrown
-            if (!(d >= 1 && d <= 6)) {
-                throw new Exception("Only the values 1 to 6 can be checked.");
-            }
             if (d == value) {
                 sum = sum + d;
             }

@@ -12,7 +12,7 @@ import starter.Starter;
  */
 public class ListManager {
 
-    static Logger logger = Starter.logger;
+    static Logger logger = Starter.getLogger();
 
     /**
      * List of all players currently connected to the server

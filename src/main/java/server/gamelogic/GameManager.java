@@ -1,15 +1,20 @@
 package server.gamelogic;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
 import server.HighScore;
 import server.Player;
 import server.networking.CommandsServerToClient;
 import server.networking.Communication;
+import starter.Starter;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
 /**
- * This class handles the process during the game.
+ * This class handles the process during the game. It contains the starter method that handles the whole game including
+ * the game play.
  */
 public class GameManager implements Runnable {
     // fixed number of rounds
@@ -26,14 +31,13 @@ public class GameManager implements Runnable {
     // list of all player in game/lobby
     private ArrayList<Player> playerArraysList;
 
-    // cheat code
-    private boolean cheat_code_skip_used = false;
-
+    // logger
+    private Logger logger = Starter.getLogger();
+    private Level gameLogic = Level.getLevel("GAME_LOGIC");
 
     /**
      * Game gets constructed; dices get initiated in constructor.
      */
-    // TODO hand over playerArrayList??
     public GameManager() {
         allDice = new Dice[]{new Dice(), new Dice(), new Dice(), new Dice(), new Dice()};
     }
@@ -54,370 +58,303 @@ public class GameManager implements Runnable {
      * #################################################################################################################
      */
     public synchronized void starter() throws InterruptedException {
-        Player[] players = new Player[playerArraysList.size()];
-        for (int i = 0; i < playerArraysList.size(); i++){
-            players[i] = playerArraysList.get(i);
-        }
-        // preparing the game: initialize five dice and give every player an entry sheet
+        logger.trace("starter()");
 
         // initializes entry sheets for each player and saves all in an array
+        Player[] players = new Player[playerArraysList.size()];
         EntrySheet[] allEntrySheets = new EntrySheet[players.length];
         for (int i = 0; i < players.length; i++) {
             allEntrySheets[i] = new EntrySheet(players[i]);
         }
 
         // starting the game and sending all players in lobby a message
-        Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "############################################## LET THE GAME BEGIN ##############################################");
+        Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "STRG");
+        logger.log(gameLogic, "Game lobby with " + playerArraysList + " started.");
 
         // starting 14 rounds
         for (int round = 0; round < ROUNDS; round++) {
-            Communication.broadcastToAll(CommandsServerToClient.GAME,playerArraysList, "################################################### ROUND " + (round + 1) + " ###################################################");
+            Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "NRND " + (round + 1));
+            logger.log(gameLogic, "Round " + (round + 1) + " started");
 
-            // for each round we go through a player
+            // loop through all the players
             for (EntrySheet currentEntrySheet : allEntrySheets) {
-
-                // current player of the entry sheet with its action dice
+                // saves values of current entry sheet, so player and current action dice, so we can access it easily
                 Player currentPlayer = currentEntrySheet.getPlayer();
                 ActionDice[] currentActionDice = currentPlayer.getActionDice();
 
-                // helper Players ArrayList to broadcast to all players but the current one
-                ArrayList<Player> helpersPlayersArrayList = new ArrayList<Player>();
-                for (Player p : playerArraysList){
-                    if (!(p.getUsername().equals(currentPlayer.getUsername()))){
-                        helpersPlayersArrayList.add(p);
+                // conditions to check if game needs to go on or stop; this includes:
+                // 1. if a cheat code has been played
+                // 2. if an entry has been made
+                boolean entryMade = false;
+                boolean endTurn = false;
+
+                // checks if player already started to roll because then stealing is not allowed anymore
+                boolean aboutToRoll = false;
+
+                // saves input for steal/freeze/cout
+                String victimPlayerName = "";
+                String selectedEntry = "";
+
+                // gets all the action dice of a player
+                int stealCount = 0;
+                int freezeCount = 0;
+                int crossOutCount = 0;
+                for (ActionDice actionDice : currentActionDice) {
+                    switch (actionDice.getActionName()) {
+                        case "steal" -> stealCount = stealCount + 1;
+                        case "freeze" -> freezeCount = freezeCount + 1;
+                        case "crossOut" -> crossOutCount = crossOutCount + 1;
                     }
                 }
 
-                // prints whose current turn it is
-                Communication.broadcastToAll(CommandsServerToClient.GAME,helpersPlayersArrayList, "It is " + currentPlayer.getUsername() + "'s turn!");
-                Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
-                        "It is your turn! Your action dice are/is: " + ActionDice.printActionDice(currentEntrySheet.getPlayer().getActionDice()));
+                // notify players which turn is
+                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "STRT " + currentPlayer.getUsername() + "Main");
+                logger.log(gameLogic, currentPlayer.getUsername() + "'s turn.");
 
-                // variable that checks at very end if all dice are saved
-                boolean allDiceSaved = false;
-
-                // variable that checks if action has been played
-                boolean blockingDicePlayed = false;
-
-                // variable that checks if action has been stolen
-                boolean stealingDicePlayed = false;
-
-                // resets all dice before rolling
-                resetDice();
-
-                while (!allDiceSaved && !blockingDicePlayed && !stealingDicePlayed) {
-                    /*
-                     * #1: check if player has action dice that is all time playable and ask if they want to roll or if they want to play an action
-                     */
-                    int allTimePlayableActions = 0;
-                    boolean existsStealingDice = false;
-                    if (currentActionDice != null) {
-                        // counts actions that can be played at any time, if there is at least one, then player gets asked if it should be played
-                        // sets all-time and infinitely many playable action true if the player has the action steal, freeze or crossOut
-                        for (ActionDice a : currentActionDice) {
-                            if (a != null) {
-                                if (!(a.getActionName().equals("shift") && !a.getActionName().equals("swap")) && !a.getActionName().equals("steal")) {
-                                    allTimePlayableActions = allTimePlayableActions + 1;
-                                } else if (a.getActionName().equals("steal")) {
-                                    existsStealingDice = true;
-                                }
-                            }
-                        }
-                    }
-                    /*
-                     * #1.1: handles all time playable and infinitely many action dice aka "freeze" and "crossOut"
-                     */
-                    // if it exists an all-time playable action, then the player can choose to play it
-                    while (allTimePlayableActions != 0) {
-                        // ask player if they want to play the action dice
-                        Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
-                                "Do you want to play an all-time playable action dice (aka freeze/crossOut)? Answer with 'yes' or 'no'.");
-
-                        // wait for input
-                        wait();
-
-                        if (input.equals("yes")) {
-                            boolean typo = true;
-                            String nameOfAction = "";
-                            String nameOfVictim = "";
-                            String nameOfEntry = "";
-                            // if player wants to play action, then we check the input String for typos
-                            // if there are none, then we split input-string and assign the values to an action, victim and an entry to variables
-                            Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
-                                    "These are your action dice: " + ActionDice.printActionDice(currentActionDice));
-                            while (typo) {
-                                Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
-                                        "Choose your action with the following command: 'freeze'/'crossOut' <username victim> <entry name> or 'none'.");
-
-                                wait();
-                                String[] splitStr = input.split("\\s+");
-
-                                if (splitStr.length > 1) {
-                                    nameOfAction = splitStr[0];
-                                    nameOfVictim = splitStr[1];
-                                    nameOfEntry = splitStr[2];
-                                    // checks if there are typos in input of player
-                                    typo = !Helper.checkActionName(nameOfAction) && !Helper.checkPlayerName(players, nameOfVictim) && !Helper.checkEntryName(nameOfEntry);
-                                } else if (input.equals("none")) {
-                                    typo = false;
-                                }
-                            }
-                            EntrySheet sheetOfVictim = Helper.getEntrySheetByName(allEntrySheets, nameOfVictim);
-
-                            // since player wants to play the action dice, it needs to check which function should be played (done with the switch case
-                            // and the methods in ActionDice-class)
-                            switch (nameOfAction) {
-                                case "freeze":
-                                    ActionDice.freeze(sheetOfVictim, nameOfEntry);
-                                    break;
-                                case "crossOut":
-                                    ActionDice.crossOut(sheetOfVictim, nameOfEntry);
-                                    break;
-                                case "none":
-                                    allTimePlayableActions = 0;
-                            }
-                            deleteActionDice(currentPlayer, nameOfAction);
-                            allTimePlayableActions = allTimePlayableActions - 1;
-
-                            // asks player if more action dice should be played
-                            Communication.sendToLobby(CommandsServerToClient.GAME, currentPlayer,
-                                    "Do you want to play more action dice? Answer with 'yes' or 'no'.");
-                            wait();
-                            if (input.equals("no")) {
-                                allTimePlayableActions = 0;
-                            }
-                        } else if (!cheat_code_skip_used && round < ROUNDS - 1) {
-                            // fast-forward to last round
-                            round = ROUNDS - 1;
-                            cheat_code_skip_used = true;
-                            Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "FAST-FORWARD to last round used.");
-                            Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "################################################### ROUND " + (round + 1) + " ###################################################");
-                        }
-                        allTimePlayableActions = 0;
-                        blockingDicePlayed = true;
-                    }
-
-                    /*
-                     * #2: roll dice or use steal dice
-                     */
-                    // handle stealing dice
-                    Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
-                            "Do you want to steal an entry or do you want to roll the dice? Answer 'want to steal' or 'want to roll'.");
+                while (!entryMade || !endTurn) {
+                    // wait for input
                     wait();
-                    if (input.equals("want to steal") && existsStealingDice) {
-                        Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
-                                "Who do you want to steal from and what entry? Answer with:<username> <entry name>.");
+                    String[] inputArr = input.split("\\s+");
+                    logger.log(gameLogic, "Input received: " + inputArr);
 
-                        wait();
-                        String[] splitString = input.split("\\s+");
+                    // check if input has more parameters
+                    if (inputArr.length == 3) {
+                        victimPlayerName = inputArr[1];
+                        selectedEntry = inputArr[2];
+                    }
 
-                        // checks for typo
-                        boolean typo = true;
-                        String nameOfVictim = "";
-                        String nameOfEntry = "";
-                        // if player wants to play action, then we check the input String for typos
-                        // if there are none, then we split input-string and assign the values to victim and an entry to variables
-                        while (typo) {
+                    switch (inputArr[0]) {
+                        case "ROLL":
+                            logger.trace("Entered ROLL case");
 
-                            // checks if there are typos in input of player
-                            nameOfVictim = splitString[0];
-                            nameOfEntry = splitString[1];
-                            typo = !Helper.checkPlayerName(players, nameOfVictim) && !Helper.checkEntryName(nameOfEntry);
-                        }
-                        EntrySheet sheetOfVictim = Helper.getEntrySheetByName(allEntrySheets, nameOfVictim);
-                        ActionDice.steal(currentEntrySheet, sheetOfVictim, nameOfEntry);
-                        Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
-                                "You just stole " + nameOfEntry + " from " + nameOfVictim);
-                        Communication.broadcastToAll(CommandsServerToClient.GAME,helpersPlayersArrayList,
-                                currentPlayer.getUsername() + " just stole the entry '" + nameOfEntry + "' from " + nameOfVictim);
-                        deleteActionDice(currentPlayer, "steal");
-                        stealingDicePlayed = true;
+                            if (!entryMade) {
+                                // if player did not steal yet then roll
+                                // set about to roll to true so player cannot steal anymore
+                                aboutToRoll = true;
 
-                        // roll dice
-                    } else if (input.equals("want to roll")) {
-                        Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer, "Please roll the dice.");
-                        while (!allDiceSaved) {
-
-                            wait();
-                            if (input.equals("roll")) {
-                                // rolls all dice
+                                // rolls dice
                                 rollDice(allDice);
+                                logger.log(gameLogic, "Dices were rolled");
 
-                                // prints all rolled dice
-                                String rolledDiceAsString = "";
-                                for (int i = 0; i < allDice.length - 1; i++) {
-                                    int diceNumber = i + 1;
-                                    rolledDiceAsString = rolledDiceAsString + allDice[i].getDiceValue() + " ";
+                                // TODO: SAVE AND GET TO SAVE DICE
+                                // TODO: get saved dice as SVDI <numbers of dice asl String>
+                                // get rolled dice values as string (1stDiceVal, 2ndDiceVal, ...)
+                                String rolledDice = "";
+
+                                for (Dice dice : allDice) {
+                                    // if dice was not saved
+                                    if (!dice.getSavingStatus()) {
+                                        rolledDice = rolledDice + dice.getDiceValue();
+                                    }
                                 }
-                                rolledDiceAsString = rolledDiceAsString + allDice[4].getDiceValue();
-                                Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer, "Your dice: " + rolledDiceAsString);
-                                //Added ROLL command
-                                Communication.sendToPlayer(CommandsServerToClient.ROLL, currentPlayer, rolledDiceAsString);
-                                Communication.broadcastToAll(CommandsServerToClient.GAME,helpersPlayersArrayList,
-                                        currentPlayer.getUsername() + " rolled: " + rolledDiceAsString);
+                                logger.log(gameLogic, "Rolled: " + rolledDice);
 
-                                // saves dice player wants to save
-                                Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
-                                        "Which dice do you want to keep? Write with a space in between the name/number of the dice you want to save.");
+                                // send dices to all players
+                                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "ROLL " + rolledDice);
 
+                                // wait for current player to choose dices to save
                                 wait();
+                                String[] savedDice = input.split("\\s+");
 
-                                if (input.equals("none")){
-                                    // do nothing
-                                } else {
-                                    String[] splitStr = input.split("\\s+");
-                                    // turn string array to int array
-                                    for (String s : splitStr) {
+                                logger.log(gameLogic, "Save dices: " + Arrays.toString(savedDice));
+
+                                // TODO: SAVES DICE WITH NUMBER BY 0 1 2 3 4 (not like in terminal version with 1 2 3 4 5)
+                                // saves the rolled dice; if player does not want to save one, then "none" is sent
+                                if (!savedDice[0].equals("none")) {
+                                    // turns the single String array entries into int and save the corresponding dice
+                                    for (String s : savedDice) {
                                         int i = Integer.parseInt(s);
-                                        allDice[i - 1].saveDice();
+                                        allDice[i].saveDice();
                                     }
                                 }
 
-                                // shows player the saved dice
-                                String savedDiceAsString = "";
-                                for (Dice d : allDice) {
-                                    if (d.getSavingStatus()) {
-                                        savedDiceAsString = savedDiceAsString + d.getDiceValue() + " ";
-                                    }
-                                }
-                                Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer, "You saved the dice: " + savedDiceAsString);
-                                Communication.broadcastToAll(CommandsServerToClient.GAME,helpersPlayersArrayList,
-                                        currentPlayer.getUsername() + " saved: " + savedDiceAsString);
-                                // checks if any unsaved dice is available to roll
-                                allDiceSaved = true;
-                                for (Dice d : allDice) {
-                                    if (!d.getSavingStatus()) {
-                                        allDiceSaved = false;
-                                    }
-                                }
-                            }
-                        }
-                        // choosing entry
-                        Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
-                                "You saved all your dice, now choose an entry: 'ones', 'twos', 'threes', 'fours', 'fives', 'sixes', 'threeOfAKind', 'fourOfAKind', 'fullHouse', 'smallStraight', 'largeStraight', 'kniffeliger', 'chance', 'pi'");
-                        boolean entryChoiceValid = false;
-                        while (entryChoiceValid == false) {
-                            wait();
+                                if (allDiceSaved(allDice)) {
+                                    logger.log(gameLogic, "All dices of " + currentPlayer.getUsername() + " were saved.");
 
-                            try {
-                                EntrySheet.entryValidation(currentEntrySheet, input, allDice);
-                                entryChoiceValid = true;
-                            } catch (Exception e) {
-                                e.getMessage();
-                            }
-
-                        }
-                        Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer,
-                                "This is your entry sheet:" + currentEntrySheet.printEntrySheet());
-                        Communication.broadcastToAll(CommandsServerToClient.GAME,helpersPlayersArrayList, currentPlayer.getUsername() + "'s entry sheet: " + currentEntrySheet.printEntrySheet());
-                    }
-                }
-                // hand player the action dice and let player know the action dice (everybody else just knows that they got an action dice but not what kind)
-                boolean getActionDice = addActionDice(allDice, currentPlayer);
-                if (getActionDice) {
-                    Communication.sendToPlayer(CommandsServerToClient.GAME,currentPlayer,
-                            "Your action dice is/are now: " + ActionDice.printActionDice(currentEntrySheet.getPlayer().getActionDice()));
-                    Communication.broadcastToAll(CommandsServerToClient.GAME,helpersPlayersArrayList, currentPlayer.getUsername() + " got an action dice.");
-                }
-            }
-            Communication.broadcastToAll(CommandsServerToClient.GAME,playerArraysList,
-                    "############################################## ALL ENTRY SHEETS ##############################################");
-            for (EntrySheet e : allEntrySheets) {
-                Communication.broadcastToAll(CommandsServerToClient.GAME,playerArraysList,
-                        e.getUsername() + "-------------------" + e.printEntrySheet());
-            }
-
-            /*
-             * #3: Asking all player if they want to shift and/or swap entry sheets.
-             */
-            for (Player player : players) {
-                // don't ask if at the end of the last round
-                if (round == ROUNDS - 1) {
-                    break;
-                }
-
-                Communication.sendToPlayer(CommandsServerToClient.GAME, player,
-                        player.getUsername() + ", your action dice: " + ActionDice.printActionDice(player.getActionDice()));
-
-                // check for swaps and shifts
-                int numberOfSwaps = 0;
-                int numberOfShifts = 0;
-                if (player.getActionDice() != null) {
-                    // counts shift and swaps actions
-                    for (ActionDice a : player.getActionDice()) {
-                        if (a != null) {
-                            if (a.getActionName().equals("shift")) {
-                                numberOfShifts = numberOfShifts + 1;
-                            } else if (a.getActionName().equals("swap")) {
-                                numberOfSwaps = numberOfSwaps + 1;
-                            }
-                        }
-                    }
-                }
-                // variable to stop the shifts and swaps
-                boolean continueShiftsAndSwaps = true;
-                // prevents player from getting asked if they want to shift or swap, if they do not have one of those actions
-                if (numberOfSwaps == 0 && numberOfShifts == 0) {
-                    continueShiftsAndSwaps = false;
-                } else {
-                    while ((numberOfShifts > 0 || numberOfSwaps > 0) && continueShiftsAndSwaps) {
-                        Communication.sendToPlayer(CommandsServerToClient.GAME, player,
-                                player.getUsername() + ", do you want to shift or swap entry sheets? Answer 'want to shift', 'want to swap' or 'none'.");
-
-                        wait();
-
-                        if (input.equals("want to shift")) {
-                            if (numberOfShifts > 0) {
-                                ActionDice.shift(allEntrySheets);
-                                deleteActionDice(player, "shift");
-                                numberOfShifts = numberOfShifts - 1;
-                            }
-                        } else if (input.equals("want to swap")) {
-                            if (numberOfSwaps > 0) {
-                                Communication.sendToPlayer(CommandsServerToClient.GAME, player,
-                                        "Who do you want to swap with? Answer with the username.");
-
-                                wait();
-
-                                while (!Helper.checkPlayerName(players, input)) {
-                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, player,
-                                            "This is an invalid username. Please try again.");
-
+                                    // wait for player selecting entry
+                                    Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer, "ENTY");
                                     wait();
+
+                                    logger.log(gameLogic, currentPlayer.getUsername() + " chose " + selectedEntry);
+
+                                    // extract entry
+                                    String entryChoice = input;
+
+                                    // validate entry
+                                    EntrySheet.entryValidation(currentEntrySheet, entryChoice, allDice);
+
+                                    // sent updated entry sheet to all players
+                                    Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "ENTY " + currentPlayer.getUsername() + " " + entryChoice + " "
+                                            + currentEntrySheet.getEntryByName(entryChoice).getValue());
+
+                                    logger.log(gameLogic, "Save entry "+ entryChoice + "(" + currentEntrySheet.getEntryByName(entryChoice).getValue() + ") of " + currentPlayer.getUsername());
+
+                                    // adds action dice to player
+                                    addActionDice(allDice, currentPlayer);
+                                    currentActionDice = currentPlayer.getActionDice();
+
+                                    // TODO SEND ACTION DICES TO PLAYER
+                                    // sends the new action dice to player
+                                    Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer, ActionDice.printActionDice(currentActionDice));
+
+                                    entryMade = true;
                                 }
-                                // gets entry sheet of victim
-                                EntrySheet victimsEntrySheet = EntrySheet.getEntrySheetByName(allEntrySheets, input);
-                                // gets entry sheet of villain
-                                EntrySheet villainsEntrySheet = EntrySheet.getEntrySheetByName(allEntrySheets, player.getUsername());
-                                // swap entry sheets
-                                ActionDice.swap(villainsEntrySheet, victimsEntrySheet);
-                                deleteActionDice(player, "swap");
-                                numberOfSwaps = numberOfSwaps - 1;
                             }
-                        } else if (input.equals("none")) {
-                            continueShiftsAndSwaps = false;
-                        }
-                        // stops loop of player does not want to play shifts or swaps
-                        if (numberOfSwaps == 0 && numberOfShifts == 0) {
-                            continueShiftsAndSwaps = false;
-                        }
+                            break;
+                        case "STEA":
+                            logger.trace("Entered STEA case");
+
+                            if (!aboutToRoll && stealCount > 0) {
+                                ActionDice.steal(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
+
+                                logger.log(gameLogic, currentPlayer.getUsername() + " has stolen entry " + selectedEntry + " from " + victimPlayerName);
+
+                                // send player stolen entry
+                                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "ENTY " + currentPlayer.getUsername() + " " + selectedEntry + " "
+                                            + currentEntrySheet.getEntryByName(selectedEntry).getValue());
+
+                                // send player crossed out entry
+                                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "ENTY " + currentPlayer.getUsername() + " " + selectedEntry + " "
+                                            + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
+
+                                entryMade = true;
+                            }
+                            break;
+                        case "FRZE":
+                            logger.trace("Entered FRZE case");
+
+                            if (freezeCount > 0) {
+                                ActionDice.freeze(EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
+
+                                logger.log(gameLogic, currentPlayer.getUsername() + " has frozen entry " + selectedEntry + " from " + victimPlayerName);
+
+                                // send freeze state
+                                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "FRZE " + victimPlayerName + " " + selectedEntry);
+
+                                freezeCount = freezeCount - 1;
+                            }
+                            break;
+                        case "COUT":
+                            logger.trace("Entered COUT case");
+
+                            if (crossOutCount > 0) {
+                                ActionDice.crossOut(EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
+
+                                logger.log(gameLogic, currentPlayer + " has crossed out entry " + selectedEntry + " from " + victimPlayerName);
+
+                                // send cross out state
+                                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "ENTY " + victimPlayerName + " " + selectedEntry + " "
+                                        + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
+
+                                crossOutCount = crossOutCount - 1;
+                            }
+                            break;
+                        case "ENDT":
+                            logger.trace("Entered ENDT case");
+
+                            if (entryMade) {
+                                logger.log(gameLogic, "Ending turn (" + currentPlayer.getUsername() + ")");
+                                endTurn = true;
+                            }
+                            break;
+                    }
+                }
+                // defreeze at and of turn
+                currentEntrySheet.defreeze();
+                logger.log(gameLogic, "Defreeze all entries of " + currentPlayer.getUsername());
+
+                // reset all dice
+                resetDice();
+            }
+
+            // shifting and swapping phase
+            logger.log(gameLogic, "Shifting and Swapping phase started.");
+
+            for (EntrySheet currentEntrySheet : allEntrySheets) {
+                // saves values of current entry sheet, so player and current action dice, so we can access it easily
+                Player currentPlayer = currentEntrySheet.getPlayer();
+                ActionDice[] currentActionDice = currentPlayer.getActionDice();
+
+                // counts the shifts and swaps the current player has
+                int shiftCount = 0;
+                int swapCount = 0;
+                for (ActionDice actionDice : currentActionDice) {
+                    switch (actionDice.getActionName()) {
+                        case "shift" -> shiftCount = shiftCount + 1;
+                        case "swap" -> swapCount = swapCount + 1;
+                    }
+                }
+
+                // notify players which turn is
+                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "STRT " + currentPlayer.getUsername() + "ShiftSwap");
+
+                logger.log(gameLogic, currentPlayer.getUsername() + "'s turn.");
+
+                // checks if player wants to shift or swap
+                boolean finishedSwapOrShift = false;
+
+                while (!finishedSwapOrShift) {
+                    // wait for input
+                    wait();
+                    String[] inputArr = input.split("\\s+");
+
+                    logger.log(gameLogic, "Received " + input);
+
+                    switch (inputArr[0]) {
+                        case "SHFT":
+                            logger.trace("Entered SHFT case");
+
+                            if (shiftCount > 0) {
+                                ActionDice.shift(allEntrySheets);
+                                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "SHFT");
+                                logger.log(gameLogic, "Shifting");
+
+                                shiftCount = shiftCount - 1;
+                            }
+                            break;
+                        case "SWAP":
+                            logger.trace("Entered SWAP case");
+
+                            if (swapCount > 0) {
+                                ActionDice.swap(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, inputArr[1]));
+                                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "SWAP " + currentPlayer.getUsername() + " " + inputArr[1]);
+
+                                logger.log(gameLogic, "Swapping " + currentPlayer.getUsername() + " <-> " + inputArr[1]);
+
+                                swapCount = swapCount - 1;
+                            }
+                            break;
+                        case "ENDT":
+                            logger.trace("Entered ENDT case");
+                            logger.log(gameLogic, "Ending turn (" + currentPlayer.getUsername() + ")");
+                            finishedSwapOrShift = true;
+
+                            break;
                     }
                 }
             }
         }
-        Player[] rankedPlayer = ranking(allEntrySheets);
-        String ranking = "";
-        for (int i = 0; i < rankedPlayer.length; i++) {
-            ranking = ranking + "Number " + (i + 1)+ " is " + rankedPlayer[i].getUsername() + ".";
-        }
-        //System.out.println(ranking);
-        // sends ranking to all players in lobby
-        Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, ranking);
+        logger.log(gameLogic, "Game finished.");
 
-        //send the scores to the high score class to possibly update the highscore
+        //==== RANKING
+        Player[] rankedPlayer = ranking(allEntrySheets);
+        String rankingMsg = "";
+        for (int i = 0; i < rankedPlayer.length; i++) {
+            rankingMsg = rankingMsg + rankedPlayer[i].getUsername() + " "
+                         + EntrySheet.getEntrySheetByName(allEntrySheets, rankedPlayer[i].getUsername()).getTotalPoints();
+        }
+
+        logger.log(gameLogic, "Ranking: " + rankingMsg);
+
+        // sends ranking to all players in lobby
+        Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, rankingMsg);
+
+        // send the scores to the high score class to possibly update the highscore
         HighScore.updateHighScore(returnScoreAsString(allEntrySheets));
+        logger.trace("Calling updateHighScore() on HighScore");
 
         // TODO: should end the game but wtf is happening (only indicates if lobby is closed or open, does not end lobby)
+        logger.trace("Calling gameEnded() on lobby");
         players[0].getLobby().gameEnded();
     }
 
@@ -426,6 +363,21 @@ public class GameManager implements Runnable {
      * ROLLS AND PRINTS DICE
      * #################################################################################################################
      */
+    /**
+     * Checks if all dice are saved.
+     *
+     * @param playersDice dice array of a player
+     * @return true if all dice are saved and false if not
+     */
+    public static boolean allDiceSaved(Dice[] playersDice) {
+        for (Dice d : playersDice) {
+            if (!d.getSavingStatus()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Prints values of all dice.
      *

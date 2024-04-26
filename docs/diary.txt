@@ -349,5 +349,40 @@ Milestone 3 was fucked up again. Here are the things we need to fix:
 
 1.  Lina: check lobby chat functions, finish lobby window, add field to change username
 2.  Anisja: add 'how to start the game' to the manual
-3.  Riccardo: https://www.youtube.com/watch?v=qZuxPKUVGiw&pp=ygUPZnVjayB0aGUgcG9saWNl
-4.  Dominique + Riccardo: GUI
+
+The next task is: GUI.
+
+Until next time!
+
+P.S.: This song is dedicated to our police officer Riccardo:
+https://www.youtube.com/watch?v=qZuxPKUVGiw.
+
+########################################################################################################################
+
+TUE, 23.4.24 (Exercise Lesson and Team Meeting)
+
+Dear Diary
+
+First we want to thank Loris for giving us the points for the manual even tho we forgot to add the explanation on how
+to build and start the JAR-file.
+
+Here our to-dos for the next week:
+1.  Anisja: add JavaDoc to game logic classes and starter method, redo the starter method, rules enforcement (check if
+    faulty game actions can be done and prevent them), unit tests are tested (before each for testing with unit tests),
+    GUI drawings
+2.  Lina: GUI, presentation milestone 5 (technology wack-slide), dramatic game play
+3.  Riccardo: gradle-police, check JAR-stuff, QA (jacoco)
+4.  Dominique: GUI
+
+ATTENTION: only what runs with the jar will be looked at on milestone 4.
+ATTENTION: when running other groups JARs explain why we give points and why not.
+ATTENTION: minimize bugs with giving the lobbies default names (lobby_1, lobby_2, etc.)
+
+TIPS: use library "animate effects"
+
+Little side note: Lina and I want to do the GUi in https://www.youtube.com/watch?v=ZfbBqBOSXlU but Riccardo does not
+like it. Maybe we make some references to Roy Lichtenstein? We will see.
+
+Until next time!
+
+########################################################################################################################

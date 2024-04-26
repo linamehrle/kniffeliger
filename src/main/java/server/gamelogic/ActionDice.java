@@ -4,7 +4,7 @@ import server.Player;
 // TODO javadoc for class
 
 /**
- * Class that contains
+ * Class that contains the action dice and all the methods that enforce the actions of the action dice.
  */
 public class ActionDice {
 
@@ -90,6 +90,7 @@ public class ActionDice {
      * @return message for game in console
      */
     public static String crossOut(EntrySheet entrySheetVictim, String crossedOutEntry) {
+        // TODO: check if entry that needs to be crossed out is final because only made entries can be crossed out
         entrySheetVictim.deleteEntry(crossedOutEntry);
         return "You crossed out " + crossedOutEntry + " in " + entrySheetVictim.getUsername() + "'s entry sheet.";
     }

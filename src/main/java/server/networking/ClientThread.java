@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class ClientThread implements Runnable{
 
-    Logger logger = Starter.logger;
+    private Logger logger = Starter.getLogger();
 
     private Player player;
     private Socket socket;

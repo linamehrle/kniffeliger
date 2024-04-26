@@ -2,12 +2,13 @@ plugins {
     id 'java-library'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'jacoco'
 }
 
 /**
  * set important variables/settings as sourceSet and the name of the main class.
  */
-version 0.2
+version 0.6
 mainClassName = 'starter.Starter'
 
 build {
@@ -35,7 +36,7 @@ javadoc {
     }
 }
 
-// creates task createJavadox
+// creates task create Javadoc
 task generateDocs(type: Javadoc) {
     // set the source of the classes and classpath for which a documentation should be generated
     source = sourceSets.main.allJava

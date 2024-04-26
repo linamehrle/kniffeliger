@@ -15,7 +15,7 @@ import starter.Starter;
  */
 public class Player {
 
-    Logger logger = Starter.logger;
+    private Logger logger = Starter.getLogger();
 
     /**
      * This variable counts all instances of connected players.

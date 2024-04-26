@@ -13,7 +13,7 @@ import starter.Starter;
  */
 public class ServerInput implements Runnable {
 
-    Logger logger = Starter.logger;
+    private Logger logger = Starter.getLogger();
 
     /**
      * This variable indicates whether the thread is running. It will be set true when the client disconnects.

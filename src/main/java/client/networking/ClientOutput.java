@@ -12,7 +12,7 @@ import starter.Starter;
  * This class handles outgoing commands and messages from client to server.
  */
 public class ClientOutput {
-    private static Logger logger = Starter.logger;
+    private static Logger logger = Starter.getLogger();
     private static BufferedWriter out;
 
     /**

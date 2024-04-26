@@ -33,7 +33,7 @@ public class Lobby {
     private String status;
 
     private ArrayList<Player> playersInLobby = new ArrayList<>();
-    Logger logger = Starter.logger;
+    private Logger logger = Starter.getLogger();
 
     //private boolean gameIsRunning = false; needed?
 
