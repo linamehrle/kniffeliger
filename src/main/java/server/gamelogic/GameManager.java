@@ -191,6 +191,7 @@ public class GameManager implements Runnable {
 
                                     // adds action dice to player
                                     addActionDice(allDice, currentPlayer);
+
                                     entryMade = true;
                                 }
                             }
