@@ -87,10 +87,19 @@ public enum CommandsServerToClient {
      */
     STRT,
 
+    /**
+     * Communicates to the gui that a player has stolen an entry of another player
+     */
     STEA,
 
+    /**
+     * Communicates to the gui that a player has frozen an entry of another player
+     */
     FRZE,
 
+    /**
+     * Communicates to the gui that a player has crossed out an entry of another player
+     */
     COUT,
 
     /**
@@ -98,13 +107,30 @@ public enum CommandsServerToClient {
      */
     ENTY,
 
+    /**
+     * Communicates a shift of entry sheets to the gui
+     */
     SHFT,
 
+    /**
+     * Communicates a swap of entry sheets to the gui
+     */
     SWAP,
 
+    /**
+     * Communicates that a player has gotten an action die
+     */
     ACTN,
 
-    RANK
+    /**
+     * Communicates the final score of the game to display
+     */
+    RANK,
+
+    /**
+     * Returns a list of all players that are in a certain lobby
+     */
+    LOPL
 
 
 }

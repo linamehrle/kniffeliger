@@ -169,7 +169,7 @@ public class Main extends Application {
 
     //Put this in a separate file with helper functions?
     /**
-     * Hekper function to convert dice values received as string to array
+     * Helper function to convert dice values received as string to array
      * @param input
      * @return
      */
@@ -184,9 +184,23 @@ public class Main extends Application {
         return array;
     }
 
+    /**
+     * Used to update the player list in the drop-down of the chat window
+     * @param playerList
+     */
     public static void updateChatPlayerList(String playerList) {
         if (cWcontroller != null) {
             Main.cWcontroller.updatePlayerList(playerList);
+        }
+    }
+
+    /**
+     * Used to update the list of players in the lobby in the game window controller
+     * @param playerList
+     */
+    public static void updateGamePlayerList(String playerList) {
+        if (gameWindowController != null) {
+            Main.gameWindowController.updatePlayerList(playerList);
         }
     }
 

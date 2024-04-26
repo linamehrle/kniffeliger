@@ -96,6 +96,7 @@ public class ClientInputHelper implements Runnable {
             // TODO: FIX LIFE
             //case ENTS -> Main.sendEntrySheetToGUI(input[1]);
             //case INFM -> Main.sendInformationTextToGUI(input[1]);
+            case LOPL -> Main.updateGamePlayerList(input[1]);
             default -> logger.info("unknown command received from server " + message);
         }
     }

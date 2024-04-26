@@ -58,6 +58,16 @@ public class GameWindowController implements Initializable {
 
     @FXML
     private Label usernameLabel;
+    @FXML
+    private Tab ownerTab;
+    @FXML
+    private Tab otherPlayersTab;
+    @FXML
+    private Button entryEnterButton;
+    @FXML
+    private ListView<DiceGUImplementation> diceBoxOther;
+    @FXML
+    private HBox hBoxEntries;
 
 
     @FXML
@@ -89,6 +99,7 @@ public class GameWindowController implements Initializable {
     private String[] diceStashedList = new String[]{"", "", "", "", ""};
     //
     private HashMap<String, Integer> entrySheetNameIndexMap = new HashMap<>();
+    private ArrayList<String> playersInLobby;
 
 
 
@@ -129,7 +140,7 @@ public class GameWindowController implements Initializable {
 
 
         //Initialize observable list of dice
-        diceList.addAll(new DiceGUImplementation[]{new DiceGUImplementation(1), new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4), new DiceGUImplementation(5) });
+        diceList.addAll(new DiceGUImplementation[]{new DiceGUImplementation(0), new DiceGUImplementation(1), new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4) });
         diceBox.setItems(diceList);
 
 
@@ -247,8 +258,21 @@ public class GameWindowController implements Initializable {
                 }
             }
         });
-        
 
+        //initiate the arraylist that has all usernames of the players in the lobby
+        ClientOutput.send(CommandsClientToServer.LOPL, "getting the players in the lobby");
+    }
+
+    /**
+     * Updates the list of players in the lobby
+     * @param playerList the list of players from the server, a String of the form "username,username,..."
+     */
+    public void updatePlayerList(String playerList) {
+        String[] players = playerList.split(",");
+        playersInLobby = new ArrayList<>();
+        for (int i = 0; i < players.length; i++) {
+            playersInLobby.add(players[i]);
+        }
     }
 
 
@@ -333,6 +357,9 @@ public class GameWindowController implements Initializable {
     public void startGameAction(ActionEvent event) {
         ClientOutput.send(CommandsClientToServer.STRG, "lets start the game :)");
         logger.info("Game Start initialized by GUI");
+        //Adds entry sheets of other players to second tab
+        //TODO: Update player list
+        initTabOther();
     }
 
     /**
@@ -362,7 +389,7 @@ public class GameWindowController implements Initializable {
     public void enterToEntrySheetAction(MouseEvent event) {
         EntrySheetGUImplementation entry = entrySheet.getSelectionModel().getSelectedItem();
         //send entry selection to gamelogic
-        ClientOutput.send(CommandsClientToServer.GAME,  entry.getIDname());
+        ClientOutput.send(CommandsClientToServer.ENTY,  entry.getIDname());
         entrySheet.refresh();
     }
 
@@ -408,7 +435,7 @@ public class GameWindowController implements Initializable {
         String saveDiceString = diceStashedArrToString(diceStashedList);
         //Saved dice are automatically transmitted before dice are rolled again
         if ( !saveDiceString.isEmpty()) {
-            ClientOutput.send(CommandsClientToServer.GAME,  saveDiceString);
+            ClientOutput.send(CommandsClientToServer.SAVE,  saveDiceString);
 
             //Set dice to saved
             for (int i=0; i < diceStashedList.length; i++){
@@ -421,10 +448,10 @@ public class GameWindowController implements Initializable {
             }
         }
         else {
-            ClientOutput.send(CommandsClientToServer.GAME,  "none");
+            ClientOutput.send(CommandsClientToServer.SAVE,  "none");
         }
         diceBox.refresh();
-        ClientOutput.send(CommandsClientToServer.GAME, "roll" );
+        ClientOutput.send(CommandsClientToServer.ROLL, "roll" );
     }
 
 
@@ -549,7 +576,28 @@ public class GameWindowController implements Initializable {
     /*
     Entry sheet controls
      */
-    public void entryClickAction(){
+    public void entryClickAction(MouseEvent event){
+
+    }
+
+    @FXML
+    public void entryEnterButtonAction(MouseEvent event){
+        EntrySheetGUImplementation entry = entrySheet.getSelectionModel().getSelectedItem();
+        if (entry != null && !entry.getSavingStatus()){
+            String entryIDName = entry.getIDname();
+            ClientOutput.send(CommandsClientToServer.ENTY,  entryIDName);
+            displayInformationText("You selected: " + entryIDName);
+        } else {
+            displayInformationText("No valid entry field selected. Please select a valid entry field.");
+        }
+
+    }
+
+
+    public void initTabOther() {
+        for (String player : playersInLobby){
+            //initEntrySheet();
+        }
 
     }
 
