@@ -157,6 +157,8 @@ class EntrySheetTest {
     int[] smallStraight4 = {1, 6, 3, 4, 5};
     int[] largeStraight1 = {1, 2, 3, 4, 5};
     int[] largeStraight2 = {2, 3, 4, 5, 6};
+    int[] pi1 = {1, 3, 1, 4, 5};
+    int[] pi2 = {1, 1, 3, 4, 5};
 
     @Test
     @DisplayName("Checks if single value entries work.")
@@ -251,6 +253,14 @@ class EntrySheetTest {
                 () -> assertEquals(14, EntrySheet.chance(smallStraight3)),
                 () -> assertEquals(15, EntrySheet.chance(largeStraight1)),
                 () -> assertEquals(20, EntrySheet.chance(largeStraight2))
+        );
+    }
+
+    @Test
+    @DisplayName("Checks if pi method gets calculated correctly.")
+    void piTest() {
+        assertAll(() -> assertEquals(31, EntrySheet.pi(pi1)),
+                () -> assertEquals(31, EntrySheet.pi(pi2))
         );
     }
 }
