@@ -45,6 +45,9 @@ public class CWcontroller implements Initializable {
     private ChoiceBox<String> recID;
     //private Player player;
     private String recipient;
+
+    //will be used later to select user for whisper chat
+    String[] userList = new String[]{"dummy"};
     //private List<String> userNameList;
     //ArrayList<Player> playerList;
     //private ClientOutput networkManager;
@@ -59,15 +62,8 @@ public class CWcontroller implements Initializable {
 
         Main.setcWcontroller(this);
 
-        //TODO: replace by real usernames, maybe use dictionary structure with userID as key, such that username can be changed without changing display order and colour
-        //will be used later to select user for whisper chat
-        String[] userList = {"all", "usr1", "usr2", "usr3"};
-
         ClientOutput.send(CommandsClientToServer.PLLI, "get the player list");
 
-        //playerList .getPlayerList();
-        //userNameList = makeUsernameList(playerList);
-        //cast String[] to Object[] to remove warning when compiling
         setChoiceBox(recID, userList);
 
         //set default recipient to all (corresponds to \chat in console)
@@ -78,6 +74,7 @@ public class CWcontroller implements Initializable {
             public void changed(ObservableValue ov, Number value, Number new_value) {
                 // set recipient to selected user
                 recipient = userList[new_value.intValue()];
+                System.out.println("the recipient is: " + recipient);
             }
         });
 
@@ -101,13 +98,23 @@ public class CWcontroller implements Initializable {
     public void sendButtonAction() {
         //read message from input text field
         String messageToSend = msgAcceptor.getText();
+        String messageToDisplay = "";
+
+        if (recipient.equals("all")) {
+            messageToDisplay = "to all: " + messageToSend;
+        } else if (recipient.equals("lobby")) {
+            messageToDisplay = "to lobby: " + messageToSend;
+        } else {
+            messageToDisplay = "to " + recipient + ": " + messageToSend;
+        }
+
         if (!msgAcceptor.getText().isEmpty()) {
             // add sent message to message display field (right side, in light gray)
             HBox hBox = new HBox();
             hBox.setAlignment(Pos.CENTER_RIGHT);
 
             hBox.setPadding(new Insets(5, 5, 5, 10));
-            Text text = new Text(messageToSend);
+            Text text = new Text(messageToDisplay);
             TextFlow textFlow = new TextFlow(text);
             textFlow.setStyle(
                     "-fx-color: rgb(239, 242, 255);" +
@@ -158,11 +165,13 @@ public class CWcontroller implements Initializable {
      */
     //display message from server TODO: display messages from different users in different ways
     public void addMsgReceived(String messageFromServer, VBox displayLocation){
+
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER_LEFT);
         hBox.setPadding(new Insets(5, 5, 5, 10));
 
         Text text = new Text(messageFromServer);
+
         TextFlow textFlow = new TextFlow(text);
 
         textFlow.setStyle(
@@ -190,28 +199,23 @@ public class CWcontroller implements Initializable {
     public void sendMsgtoServer(String message){
 
         //at the moment the default is to send a message to everybody (if no @... is at the beginning)
-        if (message.charAt(0) != '@') {
+        /*if (message.charAt(0) != '@') {
             ClientOutput.sendToServer("CHAT " + message);
             return;
-        }
+        }*/
 
-        //String receiver = getRecipient();
-        //assemble message to server, use command CHAT if 'all' or '' is selected in ChoiceBox
-        //TODO: add error handling for unkown user names (although this should never occur)
-
-        String[] splitMessage = message.split(" ", 2);
-        String receiver = splitMessage[0];
-        String messageBody = splitMessage[1];
+        String receiver = getRecipient();
+        System.out.println("the receiver is: " + receiver);
 
         switch(receiver) {
-            case "@lobby":
-                ClientOutput.sendToServer("LOCH " + messageBody);
+            case "lobby":
+                ClientOutput.sendToServer("LOCH " + message);
                 break;
-            case "@all":
-                ClientOutput.sendToServer("CHAT " + messageBody);
+            case "all":
+                ClientOutput.sendToServer("CHAT " + message);
                 break;
             default:
-                ClientOutput.sendToServer("WHSP " + receiver.substring(1) + " " + messageBody);
+                ClientOutput.sendToServer("WHSP " + receiver + " " + message);
         }
 
     }
@@ -254,7 +258,7 @@ public class CWcontroller implements Initializable {
 
     public void updatePlayerList(String playerlist) {
         playerlist = "all,lobby," + playerlist;
-        String[] players = playerlist.split(",");
-        setChoiceBox(recID, players);
+        userList = playerlist.split(",");
+        setChoiceBox(recID, userList);
     }
 }
