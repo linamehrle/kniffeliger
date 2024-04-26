@@ -212,6 +212,15 @@ public class EntrySheet {
     }
 
     /**
+     * Sets all the entries in an entry sheet to not frozen.
+     */
+    public void defreeze () {
+        for (Entry entry : entrySheet) {
+            entry.setFrozenStatus(false);
+        }
+    }
+
+    /**
      * Adds the new value for an entry at the right position of the entry sheet array. Total points get updated by the added value.
      *
      * @param newEntry contains the name we can compare and the new entry value

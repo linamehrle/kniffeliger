@@ -134,14 +134,44 @@ public class GameManager implements Runnable {
 
 
                                 rollDice(allDice);
+                                logger.log(gameLogic, "Dices were rolled");
 
                                 // TODO: SAVE AND GET TO SAVE DICE
+                                // get rolled dice values as string (1stDiceVal, 2ndDiceVal, ...)
+                                String dicesMsg = "";
 
+                                for (Dice dice : allDice) {
+                                    // if dice was not saved
+                                    if (!dice.getSavingStatus()) {
+                                        dicesMsg = dicesMsg + dice.getDiceValue();
+                                    }
+                                }
+                                logger.log(gameLogic, "Rolled: " + dicesMsg);
+
+                                // send dices to all players
+                                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "ROLL " + dicesMsg);
+
+                                // wait for current player to choose dices to save
+                                wait();
+                                String[] dicesToSave = input.split("\\s+");
+
+                                logger.log(gameLogic, "Save dices: " + Arrays.toString(dicesToSave));
+
+                                for (String diceToSaveStr : dicesToSave) {
+                                    // TODO: Exception Handling?? Y\n?
+                                    // parse to int
+                                    int diceToSaveInt = Integer.parseInt(diceToSaveStr);
+                                    allDice[diceToSaveInt - 1].saveDice();
+                                }
 
                                 if (allDiceSaved(allDice)) {
+                                    logger.log(gameLogic, "All dices of " + currentPlayer.getUsername() + " were saved.");
+
                                     // wait for player selecting entry
                                     Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer, "ENTY");
                                     wait();
+
+                                    logger.log(gameLogic, currentPlayer.getUsername() + " chose " + selectedEntry);
 
                                     // extract entry
                                     String entryChoice = input;
@@ -218,7 +248,9 @@ public class GameManager implements Runnable {
                             break;
                     }
                 }
-                // TODO ADD DEFREEZE
+                // defreeze at and of turn
+                currentEntrySheet.defreeze();
+                logger.log(gameLogic, "Defreeze all entries of " + currentPlayer.getUsername());
             }
 
             // shifting and swapping phase
@@ -294,16 +326,21 @@ public class GameManager implements Runnable {
         Player[] rankedPlayer = ranking(allEntrySheets);
         String rankingMsg = "";
         for (int i = 0; i < rankedPlayer.length; i++) {
-            rankingMsg = rankingMsg + rankedPlayer[i].getUsername() + " " + rankedPlayer[i];
+            rankingMsg = rankingMsg + rankedPlayer[i].getUsername() + " "
+                         + EntrySheet.getEntrySheetByName(allEntrySheets, rankedPlayer[i].getUsername()).getTotalPoints();
         }
+
+        logger.log(gameLogic, "Ranking: " + rankingMsg);
 
         // sends ranking to all players in lobby
         Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, rankingMsg);
 
-        //send the scores to the high score class to possibly update the highscore
+        // send the scores to the high score class to possibly update the highscore
         HighScore.updateHighScore(returnScoreAsString(allEntrySheets));
+        logger.trace("Calling updateHighScore() on HighScore");
 
         // TODO: should end the game but wtf is happening (only indicates if lobby is closed or open, does not end lobby)
+        logger.trace("Calling gameEnded() on lobby");
         players[0].getLobby().gameEnded();
     }
 
