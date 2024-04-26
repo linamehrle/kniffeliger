@@ -57,4 +57,20 @@ class GameManagerTest {
 //        );
 //    }
 
+    // TODO: starterTest
+
+    // TODO: allDiceSavedTest
+
+    // TODO: resetDiceTest
+
+    // TODO: rollDiceTest
+
+    // TODO: addActionDiceTest
+
+    // TODO: deleteActionDiceTest
+
+    // TODO: rankingTest
+
+    // TODO: returnScoreAsStringTest
+
 }

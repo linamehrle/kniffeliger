@@ -172,6 +172,15 @@ public class EntrySheet {
     public Player getPlayer() { return player;  }
 
     /**
+     * Access total points of entry sheet
+     *
+     * @return all the points of the entry sheet added together
+     */
+    public int getTotalPoints() {
+        return totalPoints;
+    }
+
+    /**
      * Access username which is also name of entry sheet.
      *
      * @return username
@@ -200,15 +209,6 @@ public class EntrySheet {
     public void setPlayer(Player newPlayer) {
         player = newPlayer;
         username = newPlayer.getUsername();
-    }
-
-    /**
-     * Access total points of entry sheet
-     *
-     * @return all the points of the entry sheet added together
-     */
-    public int getTotalPoints() {
-        return totalPoints;
     }
 
     /**
@@ -296,6 +296,7 @@ public class EntrySheet {
      */
     public static void entryValidation(EntrySheet entrySheet, String nameOfEntry, Dice[] finalDiceValues) {
         // TODO: entry validation: if entry is made on a frozen entry, then it is zero
+        // TODO: if entry is not valid: enter in 0
         // checks if all dice have been saved, if one is not, then save them
         for (Dice d : finalDiceValues) {
             if (d.getSavingStatus() == false) {
@@ -309,7 +310,6 @@ public class EntrySheet {
         // when entry player want to make is not final then add it to entry sheet
         // else: aks for different entry
         if (entrySheet.getEntryByName(nameOfEntry).getIsFinal() || entrySheet.getEntryByName(nameOfEntry).getFrozenStatus()) {
-            // TODO CHECK FOR SCANNER
             System.out.println("This is not a valid choice. Please try again.");
             Scanner scanner = new Scanner(System.in);
             entryValidation(entrySheet, scanner.nextLine(), finalDiceValues);

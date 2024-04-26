@@ -263,4 +263,16 @@ class EntrySheetTest {
                 () -> assertEquals(31, EntrySheet.pi(pi2))
         );
     }
+
+    // TODO: setEntrySheet test
+
+    // TODO: setPlayer test
+
+    // TODO: defreeze test
+
+    // TODO: addEntry test
+
+    // TODO: deleteEntry test
+
+    // TODO: entryValidation test
 }
