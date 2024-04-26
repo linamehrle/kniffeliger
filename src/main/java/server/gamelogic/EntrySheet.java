@@ -373,7 +373,7 @@ public class EntrySheet {
                     entrySheet.addEntry(pi);
                     break;
                 default:
-                    // TODO: ACHTUND, ÄNDERE DAS FÜR SPIEL AUSSERHALB DER KONSOLE
+                    // TODO: ACHTUNG, ÄNDERE DAS FÜR SPIEL AUSSERHALB DER KONSOLE
                     Scanner scanner = new Scanner(System.in);
                     System.out.println("Your entry name is wrong. Please try again.");
                     String entryName = scanner.nextLine();

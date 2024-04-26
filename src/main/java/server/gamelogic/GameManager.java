@@ -191,6 +191,11 @@ public class GameManager implements Runnable {
 
                                     // adds action dice to player
                                     addActionDice(allDice, currentPlayer);
+                                    currentActionDice = currentPlayer.getActionDice();
+
+                                    // TODO SEND ACTION DICES TO PLAYER
+                                    // sends the new action dice to player
+                                    Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer, ActionDice.printActionDice(currentActionDice));
 
                                     entryMade = true;
                                 }
@@ -257,6 +262,9 @@ public class GameManager implements Runnable {
                 // defreeze at and of turn
                 currentEntrySheet.defreeze();
                 logger.log(gameLogic, "Defreeze all entries of " + currentPlayer.getUsername());
+
+                // reset all dice
+                resetDice();
             }
 
             // shifting and swapping phase
