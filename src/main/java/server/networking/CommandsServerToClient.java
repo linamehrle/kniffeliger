@@ -73,7 +73,7 @@ public enum CommandsServerToClient {
 
 
     /**
-     * Requests new dice values from server/gamelogic (roll the dice)
+     * Sends rolled dice to the client
      */
     ROLL,
 
@@ -83,13 +83,26 @@ public enum CommandsServerToClient {
     LOST,
 
     /**
-     * Sends current status of entry sheet to client to update entry sheet in GUI
+     * Starts a turn and communicates the player name and the game phase
      */
-    ENTS,
+    STRT,
+
+    STEA,
+
+    FRZE,
+
+    COUT,
 
     /**
-     * Sends information to client to display in corresponding field in GUI (e.g. instructions)
+     * Communicates the updated entry to the client to display in the gui
      */
-    INFM,
+    ENTY,
+
+    SHFT,
+
+    SWAP
+
+
+
 
 }

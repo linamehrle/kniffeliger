@@ -331,7 +331,7 @@ public class GameWindowController implements Initializable {
      */
     @FXML
     public void startGameAction(ActionEvent event) {
-        ClientOutput.send(CommandsClientToServer.STRT, "lets start the game :)");
+        ClientOutput.send(CommandsClientToServer.STRG, "lets start the game :)");
         logger.info("Game Start initialized by GUI");
     }
 
