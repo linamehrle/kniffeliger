@@ -45,6 +45,9 @@ public class GameManager {
                 Player currentPlayer = currentEntrySheet.getPlayer();
                 ActionDice[] currentActionDice = currentPlayer.getActionDice();
 
+                // welcomes user
+                System.out.println("Hi " + currentPlayer.getUsername() + " it is your turn!");
+
                 // conditions to check if game needs to go on or stop; this includes:
                 // 1. if a cheat code has been played
                 // 2. if an entry has been made
@@ -109,6 +112,9 @@ public class GameManager {
 
                                     // adds action dice
                                     addActionDice(allDice, currentPlayer);
+                                    currentActionDice = currentPlayer.getActionDice();
+
+                                    System.out.println(ActionDice.printActionDice(currentActionDice));
                                     entryMade = true;
                                 }
                             }
@@ -121,6 +127,7 @@ public class GameManager {
                             break;
                         case "FRZE":
                             if (freezeCount > 0) {
+                                System.out.println("WE ARE ABOUT TO FREEZE");
                                 ActionDice.freeze(EntrySheet.getEntrySheetByName(allEntrySheets, answerArray[1]), answerArray[2]);
                                 freezeCount = freezeCount - 1;
                             }
@@ -138,7 +145,10 @@ public class GameManager {
                             break;
                     }
                 }
+                //defreeze entries and reset dices
                 currentEntrySheet.defreeze();
+                resetDice(allDice);
+
             }
             // TODO: shift, swap
             for (EntrySheet currentEntrySheet : allEntrySheets) {

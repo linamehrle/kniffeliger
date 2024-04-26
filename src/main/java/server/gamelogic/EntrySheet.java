@@ -265,6 +265,8 @@ public class EntrySheet {
      * @param finalDiceValues the dice values after the player is done rolling.
      */
     public static void entryValidation(EntrySheet entrySheet, String nameOfEntry, Dice[] finalDiceValues) {
+        //TODO: check if entry is frozen or not
+
         // checks if all dice have been saved, if one is not, then save them
         for (Dice d : finalDiceValues) {
             if (d.getSavingStatus() == false) {
