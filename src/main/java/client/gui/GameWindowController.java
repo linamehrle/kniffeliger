@@ -75,6 +75,8 @@ public class GameWindowController implements Initializable {
 
 
 
+
+
 //    @FXML
 //    private TableView<EntrySheetGUImplementation> entrySheet;
 //    //Score column of entry sheet
@@ -97,8 +99,11 @@ public class GameWindowController implements Initializable {
     private static Image[]  diceFaces = new Image[13];
     //List with dice selected for saving in GUI, but not yet saved
     private String[] diceStashedList = new String[]{"", "", "", "", ""};
-    //
     private HashMap<String, Integer> entrySheetNameIndexMap = new HashMap<>();
+    //List of players
+    private ArrayList<String> playerList;
+
+
 
 
 
@@ -343,6 +348,9 @@ public class GameWindowController implements Initializable {
     public void startGameAction(ActionEvent event) {
         ClientOutput.send(CommandsClientToServer.STRG, "lets start the game :)");
         logger.info("Game Start initialized by GUI");
+        //Adds entry sheets of other players to second tab
+        //TODO: Update player list
+        initTabOther();
     }
 
     /**
@@ -559,7 +567,28 @@ public class GameWindowController implements Initializable {
     /*
     Entry sheet controls
      */
-    public void entryClickAction(){
+    public void entryClickAction(MouseEvent event){
+
+    }
+
+    @FXML
+    public void entryEnterButtonAction(MouseEvent event){
+        EntrySheetGUImplementation entry = entrySheet.getSelectionModel().getSelectedItem();
+        if (entry != null && !entry.getSavingStatus()){
+            String entryIDName = entry.getIDname();
+            ClientOutput.send(CommandsClientToServer.ENTY,  entryIDName);
+            displayInformationText("You selected: " + entryIDName);
+        } else {
+            displayInformationText("No valid entry field selected. Please select a valid entry field.");
+        }
+
+    }
+
+
+    public void initTabOther() {
+        for (String player : playerList){
+            //initEntrySheet();
+        }
 
     }
 
