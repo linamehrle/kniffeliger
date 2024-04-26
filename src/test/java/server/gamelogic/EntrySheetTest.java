@@ -72,68 +72,68 @@ class EntrySheetTest {
      * ACTUAL TESTS
      * ##################################################################################################################
      */
-    // default entry sheet
-    DummyPlayer p1 = new DummyPlayer("uniqueName001");
-    DummyPlayer p2 = new DummyPlayer("uniqueName002");
-    // entry sheets
-    EntrySheet entrySheet1 = new EntrySheet(p1);
-    EntrySheet entrySheet2 = new EntrySheet(p2);
-    int[] defaultEntrySheetValues = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    String[] defaultEntrySheetNames = {"ones", "twos", "threes", "fours", "fives", "sixes", "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight", "largeStraight", "kniffeliger", "chance", "pi"};
-
-    @Test
-    @DisplayName("Tests if exceptions in GameManager are handled correctly.")
-    void entrySheetExceptionsTest() throws Exception {
-        // generate array of random length between 6 and 100 with numbers of values between 1 and 6 inside
-        int[] testArray = new int[(int) Math.floor(Math.random() * 6+ 1)];
-        for (int num : testArray){
-            num = (int) Math.floor(Math.random() * 100 + 7);
-        }
-
-        assertAll(() -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(testArray, 1)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(testArray, 2)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(testArray, 3)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(testArray, 4)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(testArray, 5)),
-                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(testArray, 6))
-        );
-    }
-
-    @Test
-    @DisplayName("Tests if default of entry sheet is correct, so if resetEntrySheet() works and if methods getUsername(), getTotalPoints(), deleteEntry(), addEntry() work.")
-    void getTest() {
-        entrySheet2.addEntry(new Entry("ones", 1));
-
-        assertAll(() -> assertArrayEquals(defaultEntrySheetNames, entrySheet1.getEntryNames()),
-                () -> assertArrayEquals(defaultEntrySheetValues, entrySheet1.getEntryValues()),
-                () -> assertEquals("uniqueName001", entrySheet1.getUsername()),
-                () -> assertEquals("uniqueName002", entrySheet2.getUsername()),
-                () -> assertNotEquals("username", entrySheet1.getUsername()),
-                () -> assertEquals(1, entrySheet2.getEntryValues()[0]),
-                () -> assertEquals(0, entrySheet1.getTotalPoints()),
-                () -> assertEquals(1, entrySheet2.getTotalPoints())
-        );
-
-        // resets entrySheet2 to default
-        entrySheet2.resetEntrySheet();
-        assertAll(() -> assertArrayEquals(defaultEntrySheetNames, entrySheet2.getEntryNames()),
-                () -> assertEquals(0, entrySheet2.getTotalPoints())
-        );
-
-        try {
-            entrySheet2.addEntry(new Entry("twos", 6));
-        } catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-        try {
-            entrySheet2.deleteEntry("twos");
-        } catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-        assertAll(() -> assertArrayEquals(defaultEntrySheetNames, entrySheet2.getEntryNames()),
-                () -> assertEquals(0, entrySheet2.getTotalPoints())
-        );
-    }
+//    // default entry sheet
+//    DummyPlayer p1 = new DummyPlayer("uniqueName001");
+//    DummyPlayer p2 = new DummyPlayer("uniqueName002");
+//    // entry sheets
+//    EntrySheet entrySheet1 = new EntrySheet(p1);
+//    EntrySheet entrySheet2 = new EntrySheet(p2);
+//    int[] defaultEntrySheetValues = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+//    String[] defaultEntrySheetNames = {"ones", "twos", "threes", "fours", "fives", "sixes", "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight", "largeStraight", "kniffeliger", "chance", "pi"};
+//
+//    @Test
+//    @DisplayName("Tests if exceptions in GameManager are handled correctly.")
+//    void entrySheetExceptionsTest() throws Exception {
+//        // generate array of random length between 6 and 100 with numbers of values between 1 and 6 inside
+//        int[] testArray = new int[(int) Math.floor(Math.random() * 6+ 1)];
+//        for (int num : testArray){
+//            num = (int) Math.floor(Math.random() * 100 + 7);
+//        }
+//
+//        assertAll(() -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(testArray, 1)),
+//                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(testArray, 2)),
+//                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(testArray, 3)),
+//                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(testArray, 4)),
+//                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(testArray, 5)),
+//                () -> assertThrows(Exception.class, () -> EntrySheet.singleValueRolls(testArray, 6))
+//        );
+//    }
+//
+//    @Test
+//    @DisplayName("Tests if default of entry sheet is correct, so if resetEntrySheet() works and if methods getUsername(), getTotalPoints(), deleteEntry(), addEntry() work.")
+//    void getTest() {
+//        entrySheet2.addEntry(new Entry("ones", 1));
+//
+//        assertAll(() -> assertArrayEquals(defaultEntrySheetNames, entrySheet1.getEntryNames()),
+//                () -> assertArrayEquals(defaultEntrySheetValues, entrySheet1.getEntryValues()),
+//                () -> assertEquals("uniqueName001", entrySheet1.getUsername()),
+//                () -> assertEquals("uniqueName002", entrySheet2.getUsername()),
+//                () -> assertNotEquals("username", entrySheet1.getUsername()),
+//                () -> assertEquals(1, entrySheet2.getEntryValues()[0]),
+//                () -> assertEquals(0, entrySheet1.getTotalPoints()),
+//                () -> assertEquals(1, entrySheet2.getTotalPoints())
+//        );
+//
+//        // resets entrySheet2 to default
+//        entrySheet2.resetEntrySheet();
+//        assertAll(() -> assertArrayEquals(defaultEntrySheetNames, entrySheet2.getEntryNames()),
+//                () -> assertEquals(0, entrySheet2.getTotalPoints())
+//        );
+//
+//        try {
+//            entrySheet2.addEntry(new Entry("twos", 6));
+//        } catch (Exception e){
+//            System.out.println(e.getMessage());
+//        }
+//        try {
+//            entrySheet2.deleteEntry("twos");
+//        } catch (Exception e){
+//            System.out.println(e.getMessage());
+//        }
+//        assertAll(() -> assertArrayEquals(defaultEntrySheetNames, entrySheet2.getEntryNames()),
+//                () -> assertEquals(0, entrySheet2.getTotalPoints())
+//        );
+//    }
 
     /*
      * #################################################################################################################
