@@ -30,7 +30,7 @@ import java.util.ResourceBundle;
 
 /**
  * This class implements the controller for the chatwindow GUI
- * the names for the @FXML variables can be found in the corresponding FXML file under fx:id
+ * the names for the @FXML variables can be found in the corresponding chatwindow.FXML file under fx:id
  */
 public class CWcontroller implements Initializable {
     @FXML
@@ -49,6 +49,11 @@ public class CWcontroller implements Initializable {
     //ArrayList<Player> playerList;
     //private ClientOutput networkManager;
 
+    /**
+     * Initializer for the ChatWindow is called when FXML is loaded
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 

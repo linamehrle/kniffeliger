@@ -28,6 +28,9 @@ import client.networking.CommandsClientToServer;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import org.apache.logging.log4j.Logger;
 import starter.Starter;
 
@@ -244,7 +247,7 @@ public class GameWindowController implements Initializable {
                 }
             }
         });
-
+        
 
     }
 
@@ -525,8 +528,17 @@ public class GameWindowController implements Initializable {
      * Method to display text in information VBox of Game Window
      * @param informationText
      */
+    //TODO: Move layout (font, colours) to CSS?
     public void displayInformationText(String informationText) {
-        //TODO
+        TextFlow textFlow = new TextFlow();
+        //Background colour
+        textFlow.setStyle(
+                "-fx-background-color: rgb(233, 233, 235);");
+        Text displayText = new Text(informationText);
+        //Font
+        displayText.setFont(Font.font("Courier New"));
+        textFlow.getChildren().add(displayText);
+        informationBox.getChildren().add(textFlow);
     }
 
 
