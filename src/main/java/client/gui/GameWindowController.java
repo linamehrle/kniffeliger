@@ -357,6 +357,9 @@ public class GameWindowController implements Initializable {
     public void startGameAction(ActionEvent event) {
         ClientOutput.send(CommandsClientToServer.STRG, "lets start the game :)");
         logger.info("Game Start initialized by GUI");
+        //Adds entry sheets of other players to second tab
+        //TODO: Update player list
+        initTabOther();
     }
 
     /**
@@ -573,7 +576,28 @@ public class GameWindowController implements Initializable {
     /*
     Entry sheet controls
      */
-    public void entryClickAction(){
+    public void entryClickAction(MouseEvent event){
+
+    }
+
+    @FXML
+    public void entryEnterButtonAction(MouseEvent event){
+        EntrySheetGUImplementation entry = entrySheet.getSelectionModel().getSelectedItem();
+        if (entry != null && !entry.getSavingStatus()){
+            String entryIDName = entry.getIDname();
+            ClientOutput.send(CommandsClientToServer.ENTY,  entryIDName);
+            displayInformationText("You selected: " + entryIDName);
+        } else {
+            displayInformationText("No valid entry field selected. Please select a valid entry field.");
+        }
+
+    }
+
+
+    public void initTabOther() {
+        for (String player : playersInLobby){
+            //initEntrySheet();
+        }
 
     }
 
