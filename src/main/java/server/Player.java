@@ -28,8 +28,6 @@ public class Player {
     private ArrayList<Player> playerList;
     private Lobby lobby;
 
-    //potenziell felder für aktivität etc?
-
     /**
      * The constructor for the Player class. It starts a new ClientThread per Player.
      * @param socket
@@ -43,6 +41,14 @@ public class Player {
         playerThreadManager = new ClientThread(socket, this);
         Thread playerThread = new Thread(playerThreadManager);
         playerThread.start();
+    }
+
+    /**
+     * Second constructor for the Player, used for testing
+     * @param username
+     */
+    public Player(String username) {
+        this.username = username;
     }
 
     /**
