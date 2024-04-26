@@ -68,12 +68,10 @@ public class GameManager implements Runnable {
         }
 
         // starting the game and sending all players in lobby a message
-        Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "STRG");
         logger.log(gameLogic, "Game lobby with " + playerArraysList + " started.");
 
         // starting 14 rounds
         for (int round = 0; round < ROUNDS; round++) {
-            Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "NRND " + (round + 1));
             logger.log(gameLogic, "Round " + (round + 1) + " started");
 
             // loop through all the players
@@ -108,7 +106,7 @@ public class GameManager implements Runnable {
                 }
 
                 // notify players which turn is
-                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "STRT " + currentPlayer.getUsername() + "Main");
+                Communication.broadcastToAll(CommandsServerToClient.STRT, playerArraysList, currentPlayer.getUsername() + " Main");
                 logger.log(gameLogic, currentPlayer.getUsername() + "'s turn.");
 
                 while (!entryMade || !endTurn) {
@@ -136,8 +134,6 @@ public class GameManager implements Runnable {
                                 rollDice(allDice);
                                 logger.log(gameLogic, "Dices were rolled");
 
-                                // TODO: SAVE AND GET TO SAVE DICE
-                                // TODO: get saved dice as SVDI <numbers of dice asl String>
                                 // get rolled dice values as string (1stDiceVal, 2ndDiceVal, ...)
                                 String rolledDice = "";
 
@@ -150,7 +146,7 @@ public class GameManager implements Runnable {
                                 logger.log(gameLogic, "Rolled: " + rolledDice);
 
                                 // send dices to all players
-                                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "ROLL " + rolledDice);
+                                Communication.broadcastToAll(CommandsServerToClient.ROLL, playerArraysList, rolledDice);
 
                                 // wait for current player to choose dices to save
                                 wait();
@@ -172,7 +168,6 @@ public class GameManager implements Runnable {
                                     logger.log(gameLogic, "All dices of " + currentPlayer.getUsername() + " were saved.");
 
                                     // wait for player selecting entry
-                                    Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer, "ENTY");
                                     wait();
 
                                     logger.log(gameLogic, currentPlayer.getUsername() + " chose " + selectedEntry);
@@ -184,7 +179,7 @@ public class GameManager implements Runnable {
                                     EntrySheet.entryValidation(currentEntrySheet, entryChoice, allDice);
 
                                     // sent updated entry sheet to all players
-                                    Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "ENTY " + currentPlayer.getUsername() + " " + entryChoice + " "
+                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentPlayer.getUsername() + " " + entryChoice + " "
                                             + currentEntrySheet.getEntryByName(entryChoice).getValue());
 
                                     logger.log(gameLogic, "Save entry "+ entryChoice + "(" + currentEntrySheet.getEntryByName(entryChoice).getValue() + ") of " + currentPlayer.getUsername());
@@ -195,7 +190,7 @@ public class GameManager implements Runnable {
 
                                     // TODO SEND ACTION DICES TO PLAYER
                                     // sends the new action dice to player
-                                    Communication.sendToPlayer(CommandsServerToClient.GAME, currentPlayer, ActionDice.printActionDice(currentActionDice));
+                                    Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentActionDice));
 
                                     entryMade = true;
                                 }
@@ -210,11 +205,11 @@ public class GameManager implements Runnable {
                                 logger.log(gameLogic, currentPlayer.getUsername() + " has stolen entry " + selectedEntry + " from " + victimPlayerName);
 
                                 // send player stolen entry
-                                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "ENTY " + currentPlayer.getUsername() + " " + selectedEntry + " "
+                                Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + " "
                                             + currentEntrySheet.getEntryByName(selectedEntry).getValue());
 
                                 // send player crossed out entry
-                                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "ENTY " + currentPlayer.getUsername() + " " + selectedEntry + " "
+                                Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + " "
                                             + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
 
                                 entryMade = true;
@@ -229,7 +224,7 @@ public class GameManager implements Runnable {
                                 logger.log(gameLogic, currentPlayer.getUsername() + " has frozen entry " + selectedEntry + " from " + victimPlayerName);
 
                                 // send freeze state
-                                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "FRZE " + victimPlayerName + " " + selectedEntry);
+                                Communication.broadcastToAll(CommandsServerToClient.FRZE, playerArraysList, victimPlayerName + " " + selectedEntry);
 
                                 freezeCount = freezeCount - 1;
                             }
@@ -243,7 +238,7 @@ public class GameManager implements Runnable {
                                 logger.log(gameLogic, currentPlayer + " has crossed out entry " + selectedEntry + " from " + victimPlayerName);
 
                                 // send cross out state
-                                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "ENTY " + victimPlayerName + " " + selectedEntry + " "
+                                Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, victimPlayerName + " " + selectedEntry + " "
                                         + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
 
                                 crossOutCount = crossOutCount - 1;
@@ -286,7 +281,7 @@ public class GameManager implements Runnable {
                 }
 
                 // notify players which turn is
-                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "STRT " + currentPlayer.getUsername() + "ShiftSwap");
+                Communication.broadcastToAll(CommandsServerToClient.STRT, playerArraysList, currentPlayer.getUsername() + " ShiftSwap");
 
                 logger.log(gameLogic, currentPlayer.getUsername() + "'s turn.");
 
@@ -306,7 +301,7 @@ public class GameManager implements Runnable {
 
                             if (shiftCount > 0) {
                                 ActionDice.shift(allEntrySheets);
-                                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "SHFT");
+                                Communication.broadcastToAll(CommandsServerToClient.SHFT, playerArraysList, "");
                                 logger.log(gameLogic, "Shifting");
 
                                 shiftCount = shiftCount - 1;
@@ -317,7 +312,7 @@ public class GameManager implements Runnable {
 
                             if (swapCount > 0) {
                                 ActionDice.swap(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, inputArr[1]));
-                                Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, "SWAP " + currentPlayer.getUsername() + " " + inputArr[1]);
+                                Communication.broadcastToAll(CommandsServerToClient.SWAP, playerArraysList, currentPlayer.getUsername() + " " + inputArr[1]);
 
                                 logger.log(gameLogic, "Swapping " + currentPlayer.getUsername() + " <-> " + inputArr[1]);
 
@@ -347,7 +342,7 @@ public class GameManager implements Runnable {
         logger.log(gameLogic, "Ranking: " + rankingMsg);
 
         // sends ranking to all players in lobby
-        Communication.broadcastToAll(CommandsServerToClient.GAME, playerArraysList, rankingMsg);
+        Communication.broadcastToAll(CommandsServerToClient.RANK, playerArraysList, rankingMsg);
 
         // send the scores to the high score class to possibly update the highscore
         HighScore.updateHighScore(returnScoreAsString(allEntrySheets));

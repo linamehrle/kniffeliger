@@ -100,9 +100,11 @@ public enum CommandsServerToClient {
 
     SHFT,
 
-    SWAP
+    SWAP,
 
+    ACTN,
 
+    RANK
 
 
 }
