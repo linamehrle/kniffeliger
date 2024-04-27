@@ -1,8 +1,12 @@
 package client.gui;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 
@@ -10,6 +14,10 @@ import java.util.stream.IntStream;
  * Class that contains helper function for GameWindow for loading data (images) and formatting and conversions
  */
 public class GameWindowHelper {
+
+    public static final String[] entryNames = {"ones", "twos", "threes", "fours", "fives", "sixes",
+            "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight", "largeStraight",
+            "kniffeliger", "chance", "pi"};
 
     /**
      * Loads dice images to Image array, such that images have only to be loaded once
@@ -59,6 +67,33 @@ public class GameWindowHelper {
         return saveMsgString.toString();
     }
 
+    public static HashMap<String, Integer> makeEntryToIntMap () {
+        HashMap<String, Integer> entrySheetNameIndexMap = new HashMap<>();
+        for (int k = 0; k < entryNames.length; k++){
+            //Begin ID number of entries at 1, such that ones = 1, twos = 2 etc.
+
+            entrySheetNameIndexMap.put(entryNames[k], k);
+        }
+
+        return entrySheetNameIndexMap;
+    }
+
+    /**
+     * Method to construct elements of entry sheet
+     * @return Observable list of entries in entry sheet (objects of EntrySheetGUImplementation)
+     */
+    public static ObservableList<EntrySheetGUImplementation> makeEntrySheet(){
+        String[] entryNames = GameWindowHelper.entryNames;
+        EntrySheetGUImplementation[] entryElements = new EntrySheetGUImplementation[entryNames.length];
+        int k = 0;
+        for (String name : entryNames){
+            //Begin ID number of entries at 1, such that ones = 1, twos = 2 etc.
+            entryElements[k] = new EntrySheetGUImplementation(k+1, name);
+            k++;
+        }
+        ObservableList<EntrySheetGUImplementation> observableEntryList = FXCollections.observableArrayList(entryElements);
+        return observableEntryList;
+    }
 
 
     /**

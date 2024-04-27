@@ -3,6 +3,7 @@ package client.gui;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -28,6 +29,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import org.apache.logging.log4j.Logger;
 import starter.Starter;
+
+import static client.gui.GameWindowHelper.entryNames;
 
 /**
  * This is the Controller class for the Game window, i.e. the window in which the gameplay happens.
@@ -96,15 +99,13 @@ public class GameWindowController implements Initializable {
     //List with dice selected for saving in GUI, but not yet saved
     private String[] diceStashedList = new String[]{"", "", "", "", ""};
     //
-    private HashMap<String, Integer> entrySheetNameIndexMap = new HashMap<>();
+    private HashMap<String, Integer> entrySheetNameIndexMap = GameWindowHelper.makeEntryToIntMap();
     private ArrayList<String> playersInLobby;
 //    private ListView<Map<String, String>> entrySheet1;
 //    private ListView<EntrySheetGUImplementation> entrySheet2;
 //    private ListView<EntrySheetGUImplementation> entrySheet3;
 //    private ListView<EntrySheetGUImplementation> entrySheet4;
-    private static final String[] entryNames = {"ones", "twos", "threes", "fours", "fives", "sixes",
-            "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight", "largeStraight",
-            "kniffeliger", "chance", "pi"};
+
     private ArrayList<ObservableList<EntrySheetGUImplementation>> playersSheets = new ArrayList<>();
 
 
@@ -130,7 +131,7 @@ public class GameWindowController implements Initializable {
         usernameLabel.setText("username"); //TODO usernames of players for the sheets
 
         //Initialize entry sheet
-        entryList = makeEntrySheetElements(true);
+        entryList = GameWindowHelper.makeEntrySheet();
 
         entrySheet.setItems(entryList);
 
@@ -517,7 +518,7 @@ public class GameWindowController implements Initializable {
         hBoxEntries.getChildren().clear();
         for (String player : playersInLobby){
             //initEntrySheet();
-            ObservableList<EntrySheetGUImplementation> entryElements = makeEntrySheetElements(false);
+            ObservableList<EntrySheetGUImplementation> entryElements = GameWindowHelper.makeEntrySheet();
             //playersEntrySheets
             playersSheets.add(entryElements);
             ListView<EntrySheetGUImplementation> otherPlayerSheet = new ListView<>();
@@ -552,30 +553,6 @@ public class GameWindowController implements Initializable {
         }
 
     }
-
-    /**
-     * Method to construct elements of entry sheet
-     * @return Array of objects of EntrySheetGUImplementation class
-     */
-    public ObservableList<EntrySheetGUImplementation> makeEntrySheetElements(Boolean makeMap){
-
-
-
-        EntrySheetGUImplementation[] entryElements = new EntrySheetGUImplementation[entryNames.length];
-
-        int k = 0;
-        for (String name : entryNames){
-            //Begin ID number of entries at 1, such that ones = 1, twos = 2 etc.
-            entryElements[k] = new EntrySheetGUImplementation(k+1, name);
-            if (makeMap) {
-                entrySheetNameIndexMap.put(name, k);
-            }
-            k++;
-        }
-        ObservableList<EntrySheetGUImplementation> observableEntryList = FXCollections.observableArrayList(entryElements);
-        return observableEntryList;
-    }
-
 
 
 }
