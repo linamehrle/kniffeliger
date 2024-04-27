@@ -140,7 +140,7 @@ public class Main extends Application {
      */
     public static void sendDiceToGUI(String diceValues) {
         int[] diceValueArray = parseIntArray(diceValues);
-        Main.gameWindowController.receiveRoll(diceValueArray);
+        Main.gameWindowController.receiveRoll(gameWindowController.diceList, diceValueArray);
     }
 
     public static void sendEntrySheetToGUI (String entrySheetString) {
