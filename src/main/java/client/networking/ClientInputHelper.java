@@ -63,7 +63,10 @@ public class ClientInputHelper implements Runnable {
                 System.out.println(input[1]);
                 Main.sendToChatWindow(input[1]);
             }
-            case BRCT -> logger.info("Alfred: " + input[1]);
+            case BRCT -> {
+                logger.info("Alfred: " + input[1]);
+                Main.displayInGameWindow(input[1]);
+            }
             case LOLI -> {
                 Print.printLobbies(input[1]);
                 Main.lobbyList(input[1]);

@@ -70,6 +70,9 @@ public class GameManager implements Runnable {
         // starting the game and sending all players in lobby a message
         logger.log(gameLogic, "Game lobby with " + playerArraysList + " started.");
 
+        Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "The game has started!");
+        System.out.println("game started");
+
         // starting 14 rounds
         for (int round = 0; round < ROUNDS; round++) {
             logger.log(gameLogic, "Round " + (round + 1) + " started");
