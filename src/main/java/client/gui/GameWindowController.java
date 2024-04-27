@@ -101,6 +101,7 @@ public class GameWindowController implements Initializable {
     //
     private HashMap<String, Integer> entrySheetNameIndexMap = GameWindowHelper.makeEntryToIntMap();
     private ArrayList<String> playersInLobby;
+    private PlayerGUImplementation[] playersWithSheets = new PlayerGUImplementation[4];
 //    private ListView<Map<String, String>> entrySheet1;
 //    private ListView<EntrySheetGUImplementation> entrySheet2;
 //    private ListView<EntrySheetGUImplementation> entrySheet3;
@@ -516,13 +517,12 @@ public class GameWindowController implements Initializable {
 
     public void initTabOther() {
         hBoxEntries.getChildren().clear();
-        for (String player : playersInLobby){
-            //initEntrySheet();
-            ObservableList<EntrySheetGUImplementation> entryElements = GameWindowHelper.makeEntrySheet();
-            //playersEntrySheets
-            playersSheets.add(entryElements);
+
+        for (int i=0; i < playersInLobby.size() && i < playersWithSheets.length; i++){
+            playersWithSheets[i] = new PlayerGUImplementation(playersInLobby.get(i));
+
             ListView<EntrySheetGUImplementation> otherPlayerSheet = new ListView<>();
-            otherPlayerSheet.setItems(entryElements);
+            otherPlayerSheet.setItems(playersWithSheets[i].getEntrySheet());
             otherPlayerSheet.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
                 @Override
                 public void updateItem(EntrySheetGUImplementation entry, boolean empty) {
@@ -545,7 +545,7 @@ public class GameWindowController implements Initializable {
 
             VBox playerVBox = new VBox();
             TextFlow playerTitle = new TextFlow();
-            playerTitle.getChildren().add(new Text(player));
+            playerTitle.getChildren().add(new Text(playersWithSheets[i].getUsername()));
             playerVBox.getChildren().add(playerTitle);
             playerVBox.getChildren().add(otherPlayerSheet);
             hBoxEntries.getChildren().add(playerVBox);
