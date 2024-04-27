@@ -99,6 +99,7 @@ public class ClientInputHelper implements Runnable {
             //case INFM -> Main.sendInformationTextToGUI(input[1]);
             case LOPL -> Main.updateGamePlayerList(input[1]);
             case RANK -> SceneController.showWinnerWindow(input[1]);
+            case ACTN -> Main.updateActionDice(input[1]);
             default -> logger.info("unknown command received from server " + message);
         }
     }

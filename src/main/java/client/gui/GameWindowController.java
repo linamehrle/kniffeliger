@@ -1,15 +1,13 @@
 package client.gui;
 
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.stream.IntStream;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,10 +17,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import client.networking.ClientOutput;
@@ -72,10 +66,18 @@ public class GameWindowController implements Initializable {
     private ListView<DiceGUImplementation> diceBoxOther;
     @FXML
     private HBox hBoxEntries;
-
-
     @FXML
     private Button highScoreButton;
+    @FXML
+    private Label stealLabel;
+    @FXML
+    private Label freezeLabel;
+    @FXML
+    private Label deleteLabel;
+    @FXML
+    private Label swapLabel;
+    @FXML
+    private Label rotateLabel;
 
 
 
@@ -88,6 +90,7 @@ public class GameWindowController implements Initializable {
 //    private TableColumn<EntrySheetGUImplementation, String> entrySheetNames;
 //    @FXML
 //    private TableColumn<EntrySheetGUImplementation, String> entrySheetIcons;
+
     @FXML
     private ListView<EntrySheetGUImplementation> entrySheet;
 
@@ -238,6 +241,14 @@ public class GameWindowController implements Initializable {
 
         //initiate the arraylist that has all usernames of the players in the lobby
         ClientOutput.send(CommandsClientToServer.LOPL, "getting the players in the lobby");
+
+        createActionDiceListener();
+
+        freezeLabel.setText("0");
+        stealLabel.setText("0");
+        swapLabel.setText("0");
+        deleteLabel.setText("0");
+        rotateLabel.setText("0");
     }
 
     /**
@@ -272,6 +283,8 @@ public class GameWindowController implements Initializable {
         swapButton.setDisable(true);
         deleteButton.setDisable(true);
         rollButton.setDisable(true);
+        endTurnButton.setDisable(true);
+        entryEnterButton.setDisable(true);
 
     }
 
@@ -557,6 +570,78 @@ public class GameWindowController implements Initializable {
             hBoxEntries.getChildren().add(playerVBox);
 
         }
+
+    }
+
+    /**
+     * Updates the action dice counter
+     * @param actionDice
+     */
+    public void updateActionDice(String actionDice) {
+        int freezeCounter = 0;
+        int swapCounter = 0;
+        int stealCounter = 0;
+        int shiftCounter = 0;
+        int crossOutCounter = 0;
+
+        String[] actions = actionDice.split(" ");
+
+        for (String action : actions) {
+            switch (action) {
+                case "steal" -> stealCounter++;
+                case "freeze" -> freezeCounter++;
+                case "crossOut" -> crossOutCounter++;
+                case "shift" -> shiftCounter++;
+                case "swap" -> swapCounter++;
+            }
+        }
+
+        swapLabel.setText(Integer.toString(swapCounter));
+        freezeLabel.setText(Integer.toString(freezeCounter));
+        stealLabel.setText(Integer.toString(stealCounter));
+        rotateLabel.setText(Integer.toString(shiftCounter));
+        deleteLabel.setText(Integer.toString(crossOutCounter));
+    }
+
+    /**
+     * Disables the action dice buttons if the counter is 0, enables the button if the counter is
+     * positive.
+     */
+    private void createActionDiceListener() {
+        swapLabel.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                swapButton.setDisable(swapLabel.getText().equals("0"));
+            }
+        });
+
+        freezeLabel.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                freezeButton.setDisable(freezeLabel.getText().equals("0"));
+            }
+        });
+
+        stealLabel.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                stealButton.setDisable(stealLabel.getText().equals("0"));
+            }
+        });
+
+        rotateLabel.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                rotateButton.setDisable(rotateLabel.getText().equals("0"));
+            }
+        });
+
+        deleteLabel.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                deleteButton.setDisable(deleteLabel.getText().equals("0"));
+            }
+        });
 
     }
 

@@ -205,6 +205,14 @@ public class Main extends Application {
     }
 
     /**
+     * Sends the current action dice to the game window to update the counter
+     * @param actionDice
+     */
+    public static void updateActionDice(String actionDice) {
+        Main.gameWindowController.updateActionDice(actionDice);
+    }
+
+    /**
      * Communicates to the server that a player wants to leave the game
      */
     public static void exit() {

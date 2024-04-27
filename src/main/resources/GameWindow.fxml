@@ -22,9 +22,9 @@
                         <Label fx:id="usernameLabel" layoutX="225.0" layoutY="28.0" text="Username" />
                         <Label layoutX="42.0" layoutY="500.0" text="Total points:" />
                         <Button fx:id="freezeButton" layoutX="698.0" layoutY="181.0" mnemonicParsing="false" onAction="#freezeEntryButton" text="freeze" />
-                        <Button fx:id="rotateButton" layoutX="494.0" layoutY="181.0" mnemonicParsing="false" onAction="#rotateSheetsAction" text="rotate" />
-                        <Button fx:id="swapButton" layoutX="422.0" layoutY="181.0" mnemonicParsing="false" onAction="#swapSheetsAction" text="swap" />
-                        <Button fx:id="deleteButton" layoutX="566.0" layoutY="181.0" mnemonicParsing="false" onAction="#deleteEntryAction" text="delete" />
+                        <Button fx:id="rotateButton" layoutX="512.0" layoutY="181.0" mnemonicParsing="false" onAction="#rotateSheetsAction" text="rotate" />
+                        <Button fx:id="swapButton" layoutX="432.0" layoutY="181.0" mnemonicParsing="false" onAction="#swapSheetsAction" text="swap" />
+                        <Button fx:id="deleteButton" layoutX="606.0" layoutY="181.0" mnemonicParsing="false" onAction="#deleteEntryAction" text="delete" />
                         <Button fx:id="startButton" layoutX="989.0" layoutY="26.0" mnemonicParsing="false" onAction="#startGameAction" text="START" />
                         <Button fx:id="leaveGameButton" layoutX="978.0" layoutY="500.0" mnemonicParsing="false" onAction="#leaveGameAction" text="leave game" />
                         <Button fx:id="leaveLobbyButton" layoutX="835.0" layoutY="500.0" mnemonicParsing="false" onAction="#leaveLobbyAction" text="leave Lobby" />
@@ -34,10 +34,15 @@
                         <Button fx:id="highScoreButton" layoutX="978.0" layoutY="78.0" mnemonicParsing="false" onAction="#highScoreAction" text="High Score" />
                         <ListView fx:id="entrySheet" layoutX="42.0" layoutY="54.0" onMouseClicked="#enterToEntrySheetAction" prefHeight="430.0" prefWidth="262.0" />
                         <Button fx:id="endTurnButton" layoutX="723.0" layoutY="436.0" mnemonicParsing="false" onMouseClicked="#endTurnAction" text="END TURN" />
-                        <VBox fx:id="informationBox" layoutX="350.0" layoutY="234.0" prefHeight="137.0" prefWidth="400.0" />
-                        <Button fx:id="stealButton" layoutX="346.0" layoutY="181.0" mnemonicParsing="false" onAction="#stealEntryAction" text="steal" />
+                        <VBox fx:id="informationBox" layoutX="350.0" layoutY="286.0" prefHeight="137.0" prefWidth="400.0" />
+                        <Button fx:id="stealButton" layoutX="354.0" layoutY="181.0" mnemonicParsing="false" onAction="#stealEntryAction" text="steal" />
                         <Label layoutX="350.0" layoutY="28.0" text="Dice" />
                         <Button fx:id="entryEnterButton" layoutX="226.0" layoutY="496.0" mnemonicParsing="false" onMouseClicked="#entryEnterButtonAction" text="Enter" />
+                        <Label fx:id="stealLabel" layoutX="362.0" layoutY="222.0" text="Label" />
+                        <Label fx:id="swapLabel" layoutX="440.0" layoutY="222.0" text="Label" />
+                        <Label fx:id="rotateLabel" layoutX="522.0" layoutY="222.0" text="Label" />
+                        <Label fx:id="deleteLabel" layoutX="617.0" layoutY="222.0" text="Label" />
+                        <Label fx:id="freezeLabel" layoutX="709.0" layoutY="222.0" text="Label" />
                      </children>
                   </AnchorPane>
                </content></Tab>
