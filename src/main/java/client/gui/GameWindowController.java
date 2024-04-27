@@ -82,6 +82,18 @@ public class GameWindowController implements Initializable {
     private ListView<DiceGUImplementation> getDiceBoxOther;
     @ FXML
     private Button endTurnButton;
+    //Labels to indicate number of action dice
+    @FXML
+    private Label stealNumberLabel;
+    @FXML
+    private Label swapNumberLabel;
+    @FXML
+    private Label rotateNumberLabel;
+    @FXML
+    private Label delteNumberLabel;
+    @FXML
+    private Label freezeNumberLabel;
+
     private ObservableList<EntrySheetGUImplementation> entryList = FXCollections.observableArrayList();
     public ObservableList<DiceGUImplementation> diceList = FXCollections.observableArrayList();
     public ObservableList<DiceGUImplementation> diceListOther = FXCollections.observableArrayList();
@@ -217,6 +229,7 @@ public class GameWindowController implements Initializable {
 
         //initiate the arraylist that has all usernames of the players in the lobby
         ClientOutput.send(CommandsClientToServer.LOPL, "getting the players in the lobby");
+
     }
 
     /**
@@ -517,6 +530,10 @@ public class GameWindowController implements Initializable {
         System.out.println(event);
     }
 
+    public void updateActionDiceNumberLabels(String numberOfActionDice) {
+        //TODO
+    }
+
 
     /**
      * Method to initialize second tab:
@@ -530,39 +547,41 @@ public class GameWindowController implements Initializable {
         //Clear HBox before adding players
         hBoxEntries.getChildren().clear();
 
-        for (int i=0; i < playersInLobby.size() && i < playersWithSheets.length; i++){
-            playersWithSheets[i] = new PlayerGUImplementation(playersInLobby.get(i));
+        if (playersInLobby != null && !playersInLobby.isEmpty()) {
+            for (int i = 0; i < playersInLobby.size() && i < playersWithSheets.length; i++) {
+                playersWithSheets[i] = new PlayerGUImplementation(playersInLobby.get(i));
 
-            ListView<EntrySheetGUImplementation> otherPlayerSheetListView = new ListView<>();
-            otherPlayerSheetListView.setItems(playersWithSheets[i].getEntrySheet());
-            otherPlayerSheetListView.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
-                @Override
-                public void updateItem(EntrySheetGUImplementation entry, boolean empty) {
-                    super.updateItem(entry, empty);
-                    if (empty) {
-                        setText(null);
-                        setGraphic(null);
-                    } else {
-                        if (entry.getSavingStatus() ) {
-                            setDisable(true);
+                ListView<EntrySheetGUImplementation> otherPlayerSheetListView = new ListView<>();
+                otherPlayerSheetListView.setItems(playersWithSheets[i].getEntrySheet());
+                otherPlayerSheetListView.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
+                    @Override
+                    public void updateItem(EntrySheetGUImplementation entry, boolean empty) {
+                        super.updateItem(entry, empty);
+                        if (empty) {
+                            setText(null);
+                            setGraphic(null);
+                        } else {
+                            if (entry.getSavingStatus()) {
+                                setDisable(true);
+                            }
+                            String title = entry.getIDname();
+                            String separation = GameWindowHelper.fillWithTabulators(title, 4);
+
+                            setText(title + separation + entry.getScore());
+                            //setGraphic(imageView);
                         }
-                        String title = entry.getIDname();
-                        String separation = GameWindowHelper.fillWithTabulators(title, 4);
-
-                        setText(title + separation + entry.getScore());
-                        //setGraphic(imageView);
                     }
-                }
-            });
-            //playersWithSheets[i].setEntrySheetListView(otherPlayerSheetListView);
+                });
+                //playersWithSheets[i].setEntrySheetListView(otherPlayerSheetListView);
 
-            VBox playerVBox = new VBox();
-            TextFlow playerTitle = new TextFlow();
-            playerTitle.getChildren().add(new Text(playersWithSheets[i].getUsername()));
-            playerVBox.getChildren().add(playerTitle);
-            playerVBox.getChildren().add(otherPlayerSheetListView);
-            hBoxEntries.getChildren().add(playerVBox);
+                VBox playerVBox = new VBox();
+                TextFlow playerTitle = new TextFlow();
+                playerTitle.getChildren().add(new Text(playersWithSheets[i].getUsername()));
+                playerVBox.getChildren().add(playerTitle);
+                playerVBox.getChildren().add(otherPlayerSheetListView);
+                hBoxEntries.getChildren().add(playerVBox);
 
+            }
         }
         logger.info("second tab initialized");
 
