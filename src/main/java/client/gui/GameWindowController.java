@@ -93,7 +93,6 @@ public class GameWindowController implements Initializable {
 
     @FXML
     private ListView<EntrySheetGUImplementation> entrySheet;
-
     @FXML
     private ListView<DiceGUImplementation> diceBox;
     @FXML
@@ -111,12 +110,6 @@ public class GameWindowController implements Initializable {
     private HashMap<String, Integer> entrySheetNameIndexMap = GameWindowHelper.makeEntryToIntMap();
     private ArrayList<String> playersInLobby;
     private PlayerGUImplementation[] playersWithSheets = new PlayerGUImplementation[4];
-//    private ListView<Map<String, String>> entrySheet1;
-//    private ListView<EntrySheetGUImplementation> entrySheet2;
-//    private ListView<EntrySheetGUImplementation> entrySheet3;
-//    private ListView<EntrySheetGUImplementation> entrySheet4;
-
-    private ArrayList<ObservableList<EntrySheetGUImplementation>> playersSheets = new ArrayList<>();
 
 
     /**
@@ -342,6 +335,7 @@ public class GameWindowController implements Initializable {
     /**
      * Method that handles when the startGame Button is pressed to start a game
      * @param event
+     * Mouse click on startButton
      */
     @FXML
     public void startGameAction(ActionEvent event) {
@@ -373,17 +367,18 @@ public class GameWindowController implements Initializable {
         SceneController.switchToLobbyWindow(event);
     }
 
-    /**
-     * Method that handles when an entry is selected (clicked on) in entry sheet
-     * @param event
-     */
-    @FXML
-    public void enterToEntrySheetAction(MouseEvent event) {
-        EntrySheetGUImplementation entry = entrySheet.getSelectionModel().getSelectedItem();
-        //send entry selection to gamelogic
-        ClientOutput.send(CommandsClientToServer.ENTY,  entry.getIDname());
-        entrySheet.refresh();
-    }
+//     Will now be handled by enterEntryButton
+//    /**
+//     * Method that handles when an entry is selected (clicked on) in entry sheet
+//     * @param event
+//     */
+//    @FXML
+//    public void enterToEntrySheetAction(MouseEvent event) {
+//        EntrySheetGUImplementation entry = entrySheet.getSelectionModel().getSelectedItem();
+//        //send entry selection to gamelogic
+//        ClientOutput.send(CommandsClientToServer.ENTY,  entry.getIDname());
+//        entrySheet.refresh();
+//    }
 
     /**
      * Method that handles when the saveDice Button is pressed to save certain dice before re rolling
@@ -419,8 +414,9 @@ public class GameWindowController implements Initializable {
      * if dicedStashedList is empty, command 'none' is sent to server
      * roll command is sent to server
      * @param event
+     * Mouse click on rollButton
      */
-    public void rollActionSend(ActionEvent event){
+    public void rollActionSend(MouseEvent event){
         String saveDiceString = GameWindowHelper.diceStashedArrToString(diceStashedList);
         //Saved dice are automatically transmitted before dice are rolled again
         if ( !saveDiceString.isEmpty()) {
@@ -450,6 +446,7 @@ public class GameWindowController implements Initializable {
      * if dice is clicked, the saving status of the dice is changed
      * the index of the dice is added (if not in array) or removed (if already in array) to the array of dice stashed for saving
      * @param event
+     * Mouse click on dice
      */
     @FXML
     public void diceClick (MouseEvent event) {
@@ -469,7 +466,8 @@ public class GameWindowController implements Initializable {
 
     /**
      * Method to update values of dices in GUI
-     * @param diceValues integer array of values (1-6) for 5 dices (usually provided by game logic engine)
+     * @param diceValues
+     * Integer array of values (1-6) for 5 dices (usually provided by game logic engine)
      */
     public void receiveRoll( ObservableList<DiceGUImplementation> diceListToUpdate, int[] diceValues) {
         int i = 0;
@@ -483,11 +481,19 @@ public class GameWindowController implements Initializable {
     }
 
 
-    //TODO: maybe add exception handling for null pointers and invalid strings
-    public void receiveEntrySheet(ArrayList<String[]> entryElementList) {
-        int i = 0;
-        for (String[] elem: entryElementList) {
-            entryList.get(entrySheetNameIndexMap.get(elem[0])).setScore(Integer.parseInt(elem[1]));
+    /**
+     * Method to receive String of updated entries (arbitrary length) from GameLogic
+     * @param listOfEntries
+     * ArrayList that contains entries as String arrays of size 2 with format {<entry name>, <score>}
+     */
+    public void receiveEntrySheet(ArrayList<String[]> listOfEntries) {
+        for (String[] elem: listOfEntries) {
+            //Check if string array has correct format: {<entry name>, <score>}
+            if (elem.length == 2) {
+                entryList.get(entrySheetNameIndexMap.get(elem[0])).setScore(Integer.parseInt(elem[1]));
+            } else {
+                logger.info("entry sheet cannot be updated due to invalid input format");
+            }
         }
         entrySheet.refresh();
     }
@@ -495,6 +501,7 @@ public class GameWindowController implements Initializable {
     /**
      * Method to display text in information VBox of Game Window
      * @param informationText
+     * String to be displayed in information box
      */
     //TODO: Move layout (font, colours) to CSS?
     public void displayInformationText(String informationText) {
@@ -516,10 +523,14 @@ public class GameWindowController implements Initializable {
     /*
     Entry sheet controls
      */
-    public void entryClickAction(MouseEvent event){
 
-    }
 
+    /**
+     * Method to enter entry selection when entryEnterButton is clicked
+     * 1. Gets selected field
+     * 2. When selection is valid (field is still available) sends name of entry (e.g. "ones") to server
+     * Mouse click of entryEnterButton
+     */
     @FXML
     public void entryEnterButtonAction(MouseEvent event){
         EntrySheetGUImplementation entry = entrySheet.getSelectionModel().getSelectedItem();
@@ -530,46 +541,63 @@ public class GameWindowController implements Initializable {
         } else {
             displayInformationText("No valid entry field selected. Please select a valid entry field.");
         }
+        System.out.println(event);
+    }
 
+    public void updateActionDiceNumberLabels(String numberOfActionDice) {
+        //TODO
     }
 
 
+    /**
+     * Method to initialize second tab:
+     * Iterates through playersInLobby list and creates for each player in list new instance of PlayerGUImplementation
+     * 1. userName is set to the userName in playersInLobby list
+     * 2. new ObservableList with entries is created
+     * 3. new ListView representing entry sheet is created with ObservableList as items
+     * 4. ListView is added to Hbox hBoxEntries on tab 2
+     */
     public void initTabOther() {
+        //Clear HBox before adding players
         hBoxEntries.getChildren().clear();
 
-        for (int i=0; i < playersInLobby.size() && i < playersWithSheets.length; i++){
-            playersWithSheets[i] = new PlayerGUImplementation(playersInLobby.get(i));
+        if (playersInLobby != null && !playersInLobby.isEmpty()) {
+            for (int i = 0; i < playersInLobby.size() && i < playersWithSheets.length; i++) {
+                playersWithSheets[i] = new PlayerGUImplementation(playersInLobby.get(i));
 
-            ListView<EntrySheetGUImplementation> otherPlayerSheet = new ListView<>();
-            otherPlayerSheet.setItems(playersWithSheets[i].getEntrySheet());
-            otherPlayerSheet.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
-                @Override
-                public void updateItem(EntrySheetGUImplementation entry, boolean empty) {
-                    super.updateItem(entry, empty);
-                    if (empty) {
-                        setText(null);
-                        setGraphic(null);
-                    } else {
-                        if (entry.getSavingStatus() ) {
-                            setDisable(true);
+                ListView<EntrySheetGUImplementation> otherPlayerSheetListView = new ListView<>();
+                otherPlayerSheetListView.setItems(playersWithSheets[i].getEntrySheet());
+                otherPlayerSheetListView.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
+                    @Override
+                    public void updateItem(EntrySheetGUImplementation entry, boolean empty) {
+                        super.updateItem(entry, empty);
+                        if (empty) {
+                            setText(null);
+                            setGraphic(null);
+                        } else {
+                            if (entry.getSavingStatus()) {
+                                setDisable(true);
+                            }
+                            String title = entry.getIDname();
+                            String separation = GameWindowHelper.fillWithTabulators(title, 4);
+
+                            setText(title + separation + entry.getScore());
+                            //setGraphic(imageView);
                         }
-                        String title = entry.getIDname();
-                        String separation = GameWindowHelper.fillWithTabulators(title, 4);
-
-                        setText(title + separation + entry.getScore());
-                        //setGraphic(imageView);
                     }
-                }
-            });
+                });
+                //playersWithSheets[i].setEntrySheetListView(otherPlayerSheetListView);
 
-            VBox playerVBox = new VBox();
-            TextFlow playerTitle = new TextFlow();
-            playerTitle.getChildren().add(new Text(playersWithSheets[i].getUsername()));
-            playerVBox.getChildren().add(playerTitle);
-            playerVBox.getChildren().add(otherPlayerSheet);
-            hBoxEntries.getChildren().add(playerVBox);
+                VBox playerVBox = new VBox();
+                TextFlow playerTitle = new TextFlow();
+                playerTitle.getChildren().add(new Text(playersWithSheets[i].getUsername()));
+                playerVBox.getChildren().add(playerTitle);
+                playerVBox.getChildren().add(otherPlayerSheetListView);
+                hBoxEntries.getChildren().add(playerVBox);
 
+            }
         }
+        logger.info("second tab initialized");
 
     }
 
