@@ -3,6 +3,7 @@ package client.networking;
 import client.Print;
 import client.Client;
 import client.gui.Main;
+import client.gui.SceneController;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import server.networking.CommandsServerToClient;
@@ -97,6 +98,7 @@ public class ClientInputHelper implements Runnable {
             //case ENTS -> Main.sendEntrySheetToGUI(input[1]);
             //case INFM -> Main.sendInformationTextToGUI(input[1]);
             case LOPL -> Main.updateGamePlayerList(input[1]);
+            case RANK -> SceneController.showWinnerWindow(input[1]);
             default -> logger.info("unknown command received from server " + message);
         }
     }

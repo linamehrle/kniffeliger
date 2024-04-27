@@ -25,6 +25,7 @@ public class SceneController {
 
     private static ActionDicePlayerAndFieldController actionDicePlayerAndFieldWindow;
     private static ActionDicePlayerWindow actionDicePlayerWindow;
+    private static WinnerController winnerController;
 
     /**
      * Switchen from the game window back to the lobby window when a player leaves a lobby
@@ -117,6 +118,26 @@ public class SceneController {
     }
 
     /**
+     * Opens the WinnerWindow once the game is over
+     * @param winner the winner to be displayed in the window
+     */
+    public static void showWinnerWindow(String winner) {
+        logger.info("trying to open the winner window");
+        try {
+            FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/WinnerWindow.fxml"));
+            Parent root3 = loader.load();
+            Stage stage = new Stage();
+            scene = new Scene(root3);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            logger.warn(e.getMessage());
+        }
+
+        winnerController.setWinner(winner);
+    }
+
+    /**
      * Setter for the main Window of the game
      * @param mainWindow
      */
@@ -139,4 +160,14 @@ public class SceneController {
     public static void setActionDicePlayerWindow(ActionDicePlayerWindow actionDicePlayerWindow) {
         SceneController.actionDicePlayerWindow = actionDicePlayerWindow;
     }
+
+    /**
+     * Setter for the winnerController
+     * @param winnerController
+     */
+    public static void setWinnerController(WinnerController winnerController) {
+        SceneController.winnerController = winnerController;
+    }
+
+
 }

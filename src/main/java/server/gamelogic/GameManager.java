@@ -336,7 +336,7 @@ public class GameManager implements Runnable {
         String rankingMsg = "";
         for (int i = 0; i < rankedPlayer.length; i++) {
             rankingMsg = rankingMsg + rankedPlayer[i].getUsername() + " "
-                         + EntrySheet.getEntrySheetByName(allEntrySheets, rankedPlayer[i].getUsername()).getTotalPoints();
+                         + EntrySheet.getEntrySheetByName(allEntrySheets, rankedPlayer[i].getUsername()).getTotalPoints() + ",";
         }
 
         logger.log(gameLogic, "Ranking: " + rankingMsg);
