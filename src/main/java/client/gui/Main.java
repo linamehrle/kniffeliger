@@ -143,7 +143,12 @@ public class Main extends Application {
         Main.gameWindowController.receiveRoll(gameWindowController.diceList, diceValueArray);
     }
 
-    public static void sendEntrySheetToGUI (String entrySheetString) {
+    public static void updateOtherDiceBox(String diceValues){
+        int[] diceValueArray = parseIntArray(diceValues);
+        Main.gameWindowController.receiveRoll(gameWindowController.diceListOther, diceValueArray);
+    }
+
+    public static void updatePrimaryEntrySheet (String entrySheetString) {
         //First split results at spaces giving entryFieldName:score
         String[] nameValueStrings = entrySheetString.split(" ");
         ArrayList<String[]> listOfEntries = new ArrayList<>();
@@ -153,6 +158,20 @@ public class Main extends Application {
             listOfEntries.add(nameValuePairs);
         }
         Main.gameWindowController.receiveEntrySheet(listOfEntries);
+    }
+
+    public static void updateOtherEntrySheets (String entrySheetString) {
+        //First split results at spaces giving entryFieldName:score
+        String[] nameValueStrings = entrySheetString.split(" ");
+        String userName = nameValueStrings[0];
+        ArrayList<String[]> listOfEntries = new ArrayList<>();
+
+        for (int i=1; i < nameValueStrings.length; i++){
+            //Split at : giving arrays containing {entryFieldName, score}
+            String[] nameValuePairs = nameValueStrings[i].split(":");
+            listOfEntries.add(nameValuePairs);
+        }
+        Main.gameWindowController.updateEntrySheetTab2(userName, listOfEntries);
     }
 
     public static void sendInformationTextToGUI(String informationText) {

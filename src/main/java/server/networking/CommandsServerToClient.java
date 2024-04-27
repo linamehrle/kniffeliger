@@ -125,7 +125,17 @@ public enum CommandsServerToClient {
     /**
      * Returns a list of all players that are in a certain lobby
      */
-    LOPL
+    LOPL,
+
+    /**
+     * Updates tab 2 of GUI (non-active players) with result of ROLL (dice values)
+     */
+    ALDI,
+
+    /**
+     * Updates entries in tab 2 of GUI (non-active players)
+     */
+    ALES
 
 
 }

@@ -466,6 +466,7 @@ public class GameWindowController implements Initializable {
             i++;
         }
         diceBox.refresh();
+        diceBoxOther.refresh();
     }
 
 
