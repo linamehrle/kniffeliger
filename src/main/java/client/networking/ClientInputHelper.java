@@ -80,10 +80,6 @@ public class ClientInputHelper implements Runnable {
                 Main.removePlayer(input[1]);
                 logger.debug("LELO received with message: " + input[1]);
             }
-            case GAME -> {
-                System.out.println("Game: " + input[1]);
-                //Main.sendGameToGUI()
-            }
             case ROLL -> {
                 System.out.println("Game: Your dice: " + input[1]);
                 Main.sendDiceToGUI(input[1]);
@@ -98,8 +94,6 @@ public class ClientInputHelper implements Runnable {
             }
             case LOST -> Main.updateLobby(input[1]);
             // TODO: FIX LIFE
-            //case ENTS -> Main.sendEntrySheetToGUI(input[1]);
-            //case INFM -> Main.sendInformationTextToGUI(input[1]);
             case LOPL -> Main.updateGamePlayerList(input[1]);
             case RANK -> SceneController.showWinnerWindow(input[1]);
             case ACTN -> Main.updateActionDice(input[1]);
