@@ -6,7 +6,6 @@ import javafx.scene.image.Image;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.IntStream;
 
 
@@ -67,6 +66,11 @@ public class GameWindowHelper {
         return saveMsgString.toString();
     }
 
+    /**
+     * Method create HashMap that has names of entries (e.g. "ones", "FourOfAKind" ...) as key and integer enumeration as values
+     * used to get indices of entries in ObservableList representing entry sheet
+     * @return HashMap of entry name - integer pairs
+     */
     public static HashMap<String, Integer> makeEntryToIntMap () {
         HashMap<String, Integer> entrySheetNameIndexMap = new HashMap<>();
         for (int k = 0; k < entryNames.length; k++){
@@ -91,8 +95,7 @@ public class GameWindowHelper {
             entryElements[k] = new EntrySheetGUImplementation(k+1, name);
             k++;
         }
-        ObservableList<EntrySheetGUImplementation> observableEntryList = FXCollections.observableArrayList(entryElements);
-        return observableEntryList;
+        return FXCollections.observableArrayList(entryElements);
     }
 
 
@@ -103,7 +106,7 @@ public class GameWindowHelper {
      * @return String of containing a number of \t (tabulators), the number depends on the length of the layouted string
      */
     public static String fillWithTabulators(String title, int baselength) {
-        String separation = "";
+        String separation;
         //Align the scores by adjusting separation
         int titleLength = title.length();
         if ( title.equals("kniffeliger") ){
