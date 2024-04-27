@@ -1,10 +1,13 @@
 package client.gui;
 
 import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
 
 public class PlayerGUImplementation {
     private String username;
     private ObservableList<EntrySheetGUImplementation> entrySheet;
+
+    private ListView<EntrySheetGUImplementation> entrySheetListView;
 
     public PlayerGUImplementation (String username) {
         this.username = username;
@@ -28,4 +31,11 @@ public class PlayerGUImplementation {
     }
 
 
+    public ListView<EntrySheetGUImplementation> getEntrySheetListView() {
+        return entrySheetListView;
+    }
+
+    public void setEntrySheetListView(ListView<EntrySheetGUImplementation> entrySheetListView) {
+        this.entrySheetListView = entrySheetListView;
+    }
 }

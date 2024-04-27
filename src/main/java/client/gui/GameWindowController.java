@@ -72,25 +72,10 @@ public class GameWindowController implements Initializable {
     private ListView<DiceGUImplementation> diceBoxOther;
     @FXML
     private HBox hBoxEntries;
-
-
     @FXML
     private Button highScoreButton;
-
-
-
-//    @FXML
-//    private TableView<EntrySheetGUImplementation> entrySheet;
-//    //Score column of entry sheet
-//    @FXML
-//    private TableColumn<EntrySheetGUImplementation, Integer> entrySheetScores;
-//    @FXML
-//    private TableColumn<EntrySheetGUImplementation, String> entrySheetNames;
-//    @FXML
-//    private TableColumn<EntrySheetGUImplementation, String> entrySheetIcons;
     @FXML
     private ListView<EntrySheetGUImplementation> entrySheet;
-
     @FXML
     private ListView<DiceGUImplementation> diceBox;
     @FXML
@@ -108,11 +93,6 @@ public class GameWindowController implements Initializable {
     private HashMap<String, Integer> entrySheetNameIndexMap = GameWindowHelper.makeEntryToIntMap();
     private ArrayList<String> playersInLobby;
     private PlayerGUImplementation[] playersWithSheets = new PlayerGUImplementation[4];
-//    private ListView<Map<String, String>> entrySheet1;
-//    private ListView<EntrySheetGUImplementation> entrySheet2;
-//    private ListView<EntrySheetGUImplementation> entrySheet3;
-//    private ListView<EntrySheetGUImplementation> entrySheet4;
-
     private ArrayList<ObservableList<EntrySheetGUImplementation>> playersSheets = new ArrayList<>();
 
 
@@ -470,11 +450,18 @@ public class GameWindowController implements Initializable {
     }
 
 
-    //TODO: maybe add exception handling for null pointers and invalid strings
-    public void receiveEntrySheet(ArrayList<String[]> entryElementList) {
-        int i = 0;
-        for (String[] elem: entryElementList) {
-            entryList.get(entrySheetNameIndexMap.get(elem[0])).setScore(Integer.parseInt(elem[1]));
+    /**
+     * Method to receive String of updated entries (arbitrary length) from GameLogic
+     * @param listOfEntries ArrayList that contains entries as String arrays of size 2 with format {<entry name>, <score>}
+     */
+    public void receiveEntrySheet(ArrayList<String[]> listOfEntries) {
+        for (String[] elem: listOfEntries) {
+            //Check if string array has correct format: {<entry name>, <score>}
+            if (elem.length == 2) {
+                entryList.get(entrySheetNameIndexMap.get(elem[0])).setScore(Integer.parseInt(elem[1]));
+            } else {
+                logger.info("entry sheet cannot be updated due to invalid input format");
+            }
         }
         entrySheet.refresh();
     }
@@ -522,14 +509,15 @@ public class GameWindowController implements Initializable {
 
 
     public void initTabOther() {
+        //Clear HBox before adding players
         hBoxEntries.getChildren().clear();
 
         for (int i=0; i < playersInLobby.size() && i < playersWithSheets.length; i++){
             playersWithSheets[i] = new PlayerGUImplementation(playersInLobby.get(i));
 
-            ListView<EntrySheetGUImplementation> otherPlayerSheet = new ListView<>();
-            otherPlayerSheet.setItems(playersWithSheets[i].getEntrySheet());
-            otherPlayerSheet.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
+            ListView<EntrySheetGUImplementation> otherPlayerSheetListView = new ListView<>();
+            otherPlayerSheetListView.setItems(playersWithSheets[i].getEntrySheet());
+            otherPlayerSheetListView.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
                 @Override
                 public void updateItem(EntrySheetGUImplementation entry, boolean empty) {
                     super.updateItem(entry, empty);
@@ -548,12 +536,13 @@ public class GameWindowController implements Initializable {
                     }
                 }
             });
+            playersWithSheets[i].setEntrySheetListView(otherPlayerSheetListView);
 
             VBox playerVBox = new VBox();
             TextFlow playerTitle = new TextFlow();
             playerTitle.getChildren().add(new Text(playersWithSheets[i].getUsername()));
             playerVBox.getChildren().add(playerTitle);
-            playerVBox.getChildren().add(otherPlayerSheet);
+            playerVBox.getChildren().add(otherPlayerSheetListView);
             hBoxEntries.getChildren().add(playerVBox);
 
         }
