@@ -1,6 +1,8 @@
 package client.gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,6 +22,9 @@ public class SceneController {
     private static Scene highScoreWindow;
     private static Scene scene;
     private static Parent root;
+
+    private static ActionDicePlayerAndFieldController actionDicePlayerAndFieldWindow;
+    private static ActionDicePlayerWindow actionDicePlayerWindow;
 
     /**
      * Switchen from the game window back to the lobby window when a player leaves a lobby
@@ -55,6 +60,9 @@ public class SceneController {
         }
     }
 
+    /**
+     * Method that opens the high score pup up window.
+     */
     public static void showHighScoreWindow() {
         logger.info("trying to open the high score window");
         try {
@@ -70,10 +78,65 @@ public class SceneController {
     }
 
     /**
+     * Opens the ActionDicePlayerAndFieldWindow
+     * @param playerList
+     * @param action
+     */
+    public static void showActionPlayerAndFieldWindow(ArrayList<String> playerList, String action) {
+        logger.info("trying to open the action dice window");
+        try {
+            FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/ActionDicePlayerAndFieldWindow.fxml"));
+            Parent root3 = loader.load();
+            Stage stage = new Stage();
+            scene = new Scene(root3);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            logger.warn(e.getMessage());
+        }
+        actionDicePlayerAndFieldWindow.setUp(playerList, action);
+    }
+
+    /**
+     * Opens the ActionDicePlayerWindow
+     * @param playerList
+     */
+    public static void showActionPlayerWindow(ArrayList<String> playerList) {
+        logger.info("trying to open the action dice window");
+        try {
+            FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/ActionDicePlayerWindow.fxml"));
+            Parent root3 = loader.load();
+            Stage stage = new Stage();
+            scene = new Scene(root3);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            logger.warn(e.getMessage());
+        }
+        actionDicePlayerWindow.setUp(playerList);
+    }
+
+    /**
      * Setter for the main Window of the game
      * @param mainWindow
      */
     public static void setMainWindow(Stage mainWindow) {
         SceneController.mainWindow = mainWindow;
+    }
+
+    /**
+     * Setter for the ActionDicePlayerAndFieldWindow
+     * @param actionDicePlayerAndFieldWindow
+     */
+    public static void setActionDicePlayerAndFieldWindow(ActionDicePlayerAndFieldController actionDicePlayerAndFieldWindow) {
+        SceneController.actionDicePlayerAndFieldWindow = actionDicePlayerAndFieldWindow;
+    }
+
+    /**
+     * Setter for the ActionDicePlayerWindow
+     * @param actionDicePlayerWindow
+     */
+    public static void setActionDicePlayerWindow(ActionDicePlayerWindow actionDicePlayerWindow) {
+        SceneController.actionDicePlayerWindow = actionDicePlayerWindow;
     }
 }
