@@ -9,22 +9,32 @@ be used in which context. On the server side, no commands can be input in the te
 
 ### Commands from the client to the server:
 
-| command | parameter                              | functionality                                                              | terminal input                              |
-|---------|----------------------------------------|----------------------------------------------------------------------------|---------------------------------------------|
-| CHAT    | message                                | sends the given message to the server to redistribute to all other clients | \chat message                               |         
-| WHSP    | name of one other client and a message | sends the message to the server to redistribute to the given other client  | \whisper username message                   |            
-| CHNA    | new username                           | sends the new username to the server, server changes the username          | \changeUsername newUsername                 |         
-| PONG    | time send by the server                | returns a ping send by the server to the server                            | there is no terminal input for this command |         
- | PING    | current system time                    | sends a ping to the server to check for connection losses                  | there is no terminal input for this command |
-| QUIT    | no parameter                           | used to disconnect the client                                              | \quit                                       |
-| LOLI    | no parameter                           | requests a list of all lobbies and players in lobbies from the server      | \showLobbies                                | 
-| CRLO    | name of the lobby                      | creates a new lobby with the given name                                    | \newLobby name                              |
-| ENLO    | name of the lobby                      | the player enters the lobby with the given name                            | \enterLobby name                            |
-| LELO    | name of the lobby                      | the player leaves the lobby with the given name                            | \leaveLobby name                            |
-| LOCH    | message                                | used to send a chat message only to players in the same lobby              | \lobbyChat message                          |
-| STRT    | no parameter                           | used to start a game in a lobby                                            | \start                                      |
-| GAME    | game action                            | used to send information related to an ongoing game to the server          | \gameAction gameAction                      |
-| PLLI    | no parameter                           | requests a list of all players that are connected to the server            | \showPlayers                                |
+| command | parameter                              | functionality                                                              | terminal input                               |
+|---------|----------------------------------------|----------------------------------------------------------------------------|----------------------------------------------|
+| CHAT    | message                                | sends the given message to the server to redistribute to all other clients | \chat message                                |         
+| WHSP    | name of one other client and a message | sends the message to the server to redistribute to the given other client  | \whisper username message                    |            
+| CHNA    | new username                           | sends the new username to the server, server changes the username          | \changeUsername newUsername                  |         
+| PONG    | time send by the server                | returns a ping send by the server to the server                            | there is no terminal input for this command  |         
+ | PING    | current system time                    | sends a ping to the server to check for connection losses                  | there is no terminal input for this command  |
+| QUIT    | no parameter                           | used to disconnect the client                                              | \quit                                        |
+| LOLI    | no parameter                           | requests a list of all lobbies and players in lobbies from the server      | \showLobbies                                 | 
+| CRLO    | name of the lobby                      | creates a new lobby with the given name                                    | \newLobby name                               |
+| ENLO    | name of the lobby                      | the player enters the lobby with the given name                            | \enterLobby name                             |
+| LELO    | name of the lobby                      | the player leaves the lobby with the given name                            | \leaveLobby name                             |
+| LOCH    | message                                | used to send a chat message only to players in the same lobby              | \lobbyChat message                           |
+| STRG    | no parameter                           | used to start a game in a lobby                                            | \start                                       |
+| PLLI    | no parameter                           | requests a list of all players that are connected to the server            | \showPlayers                                 |
+| HGSC    | no parameter                           | requests the current high score list from the server                       | \showHighScores                              |
+| ROLL    | no parameter                           | communicates that a player wants to roll the dice                          | there is no terminal input for this command  |
+| ENTY    | entry name                             | gives the chosen entry to the game logic to enter the dice                 | there is no terminal input for this command  |
+| STEA    | username of a player and entry name    | used by the player to steal an entry from another player                   | there is no terminal input for this command  |
+| FRZE    | username of a player and entry name    | used by the player to freeze an entry of another player                    | there is no terminal input for this command  |
+| COUT    | username of a player and entry name    | used by the player to cross out an entry of another player                 | there is no terminal input for this command  |
+| SHFT    | no parameter                           | used by the player to shift the entry sheet by one person                  | there is no terminal input for this command  |
+| SWAP    | username of a player                   | used by the player to swap their sheet with another player                 | there is no terminal input for this command  |
+| ENDT    | no parameter                           | used to indicate that a player ends their round                            | there is no terminal input for this command  |
+| SAVE    | numbers of the dice                    | used to save dice the player does not want to re-roll                      | there is no terminal input for this command  |
+| LOPL    | no parameter                           | requests the list of players in the same lobby as the asking player        | there is no terminal input for this command  |
 
 ### Commands from the server to the client:
 
@@ -40,8 +50,20 @@ be used in which context. On the server side, no commands can be input in the te
 | CRLO    | lobby name                 | returns the created lobby to the client to update the list in the gui and confirm creation                                       |
 | ENLO    | lobby name and player name | update the gui                                                                                                                   |
 | LELO    | lobby name and player name | update the gui                                                                                                                   |
-| GAME    | information from the game  | prints game related information for the clients to see                                                                           |
 | PLLI    | list of all players        | returns the list of all connected players to the client to print put                                                             |
+| HGSC    | current high score list    | returns the current high score list to the client                                                                                |
+| ROLL    | rolled dice                | returns the rolled dice to the player                                                                                            |
+| LOST    | lobby and status           | informs the clients about a change in lobby status to update the gui                                                             |
+| STRT    | round number and username  | informs the players about a new round and whos turn it is                                                                        |
+| STEA    | username and entry name    | informs the client about a stolen entry to update the gui                                                                        |
+| FRZE    | username and entry name    | informs the client about a frozen entry to update the gui                                                                        |
+| COUT    | username and entry name    | informs the client about a crossed out entry to update the gui                                                                   |
+| SHFT    | no parameter               | informs the client about a shift in entry sheet to update the gui                                                                |
+| SWAP    | username                   | informs the client about a swap in entry sheets to update the gui                                                                |
+| ENTY    | entry name and points      | informs the client about a new entry made and about the points to update the gui                                                 |
+| ACTN    | list of actions            | informs the client about an update of actions they have                                                                          |
+| RANK    | rank of the players        | returns the final rank at the end of the game to display the winner                                                              |
+| LOPL    | player list                | returns a list of players in a given lobby                                                                                       |
 
 ### Examples:
 
@@ -113,3 +135,5 @@ The player for example receives the messages "Game: It is your turn!" and then "
 you want to roll the dice? Answer 'want to steal' or 'want to roll'". The player can then enter "\gameAction want to roll"
 to indicate that they want to roll the dice. The client then sends "GAME want to roll" to the server which sends the String
 "want to roll" to the GameManager to handle in the game.
+
+//TODO update the examples
