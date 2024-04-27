@@ -470,7 +470,8 @@ public class GameWindowController implements Initializable {
 
 
     /**
-     * Method to receive String of updated entries (arbitrary length) from GameLogic
+     * Method to receive ArrayList &lt; String[] &gt;  of updated entries (arbitrary length) from GameLogic
+     * and update ObservableList of primary EntrySheet
      * @param listOfEntries
      * ArrayList that contains entries as String arrays of size 2 with format {&lt; entry name &gt;, &lt; score &gt;}
      */
@@ -480,10 +481,34 @@ public class GameWindowController implements Initializable {
             if (elem != null && elem.length == 2) {
                 entryList.get(entrySheetNameIndexMap.get(elem[0])).setScore(Integer.parseInt(elem[1]));
             } else {
-                logger.info("entry sheet cannot be updated due to invalid input format");
+                logger.info("entry sheet cannot be updated due to invalid input format.");
             }
         }
         entrySheet.refresh();
+    }
+
+    /**
+     * Method to receive ArrayList &lt; String[] &gt;  of updated entries (arbitrary length) from GameLogic
+     * and update ObservableList of entry sheet of respective user on tab 2
+     * @param userName
+     * Name of user whose entry sheet is changed
+     * @param listOfEntries
+     * ArrayList of changed entries
+     */
+    public void updateEntrySheetTab2 (String userName, ArrayList<String[]> listOfEntries) {
+        for (PlayerGUImplementation player : playersWithSheets){
+            if ( player.getUsername().equals(userName) ){
+                for (String[] elem : listOfEntries){
+                    if (elem != null && elem.length == 2) {
+                        player.getEntrySheet().get(entrySheetNameIndexMap.get(elem[0])).setScore(Integer.parseInt(elem[1]));
+                    } else {
+                        logger.info("entry sheet cannot be updated due to invalid input format.");
+                    }
+
+                }
+                player.getEntrySheetListView().refresh();
+            }
+        }
     }
 
     /**
@@ -529,7 +554,6 @@ public class GameWindowController implements Initializable {
         } else {
             displayInformationText("No valid entry field selected. Please select a valid entry field.");
         }
-        System.out.println(event);
     }
 
 
