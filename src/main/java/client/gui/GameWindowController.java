@@ -472,11 +472,11 @@ public class GameWindowController implements Initializable {
     /**
      * Method to receive String of updated entries (arbitrary length) from GameLogic
      * @param listOfEntries
-     * ArrayList that contains entries as String arrays of size 2 with format {<entry name>, <score>}
+     * ArrayList that contains entries as String arrays of size 2 with format {&lt; entry name &gt;, &lt; score &gt;}
      */
     public void receiveEntrySheet(ArrayList<String[]> listOfEntries) {
         for (String[] elem: listOfEntries) {
-            //Check if string array has correct format: {<entry name>, <score>}
+            //Check if string array has correct format: {&lt; entry name &gt;, &lt; score &gt;}
             if (elem != null && elem.length == 2) {
                 entryList.get(entrySheetNameIndexMap.get(elem[0])).setScore(Integer.parseInt(elem[1]));
             } else {

@@ -85,7 +85,7 @@ public enum CommandsClientToServer {
     ROLL,
 
     /**
-     * Sends entry sheet selection to server, usually followed by String &lt name of entry field &gt
+     * Sends entry sheet selection to server, usually followed by String &lt; name of entry field &gt;
      */
     ENTY,
 
