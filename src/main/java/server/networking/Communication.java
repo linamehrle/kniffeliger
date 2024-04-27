@@ -119,10 +119,6 @@ public class Communication {
         for (Player playerInList : playersInLobby) {
             if (!playerInList.equals(player)) {
                 switch (cmd) {
-                    case GAME -> {
-                        ServerOutput serverOutput = playerInList.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
-                        serverOutput.send(cmd, message);
-                    }
                     case CHAT -> {
                         ServerOutput serverOutput = playerInList.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
                         serverOutput.send(CommandsServerToClient.CHAT, player.getUsername() + " to Lobby : " + message);

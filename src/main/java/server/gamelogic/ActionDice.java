@@ -1,7 +1,6 @@
 package server.gamelogic;
 import server.Player;
 
-// TODO javadoc for class
 
 /**
  * Class that contains the action dice and all the methods that enforce the actions of the action dice.

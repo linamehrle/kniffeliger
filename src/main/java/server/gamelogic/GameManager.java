@@ -70,6 +70,9 @@ public class GameManager implements Runnable {
         // starting the game and sending all players in lobby a message
         logger.log(gameLogic, "Game lobby with " + playerArraysList + " started.");
 
+        Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "The game has started!");
+        System.out.println("game started");
+
         // starting 14 rounds
         for (int round = 0; round < ROUNDS; round++) {
             logger.log(gameLogic, "Round " + (round + 1) + " started");
@@ -213,6 +216,9 @@ public class GameManager implements Runnable {
                                             + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
 
                                 entryMade = true;
+
+                                //send updated action dice to player
+                                Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
                             }
                             break;
                         case "FRZE":
@@ -227,6 +233,9 @@ public class GameManager implements Runnable {
                                 Communication.broadcastToAll(CommandsServerToClient.FRZE, playerArraysList, victimPlayerName + " " + selectedEntry);
 
                                 freezeCount = freezeCount - 1;
+
+                                //send updated action dice to player
+                                Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
                             }
                             break;
                         case "COUT":
@@ -242,6 +251,9 @@ public class GameManager implements Runnable {
                                         + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
 
                                 crossOutCount = crossOutCount - 1;
+
+                                //send updated action dice to player
+                                Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
                             }
                             break;
                         case "ENDT":
@@ -305,6 +317,9 @@ public class GameManager implements Runnable {
                                 logger.log(gameLogic, "Shifting");
 
                                 shiftCount = shiftCount - 1;
+
+                                //send updated action dice to player
+                                Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
                             }
                             break;
                         case "SWAP":
@@ -317,6 +332,9 @@ public class GameManager implements Runnable {
                                 logger.log(gameLogic, "Swapping " + currentPlayer.getUsername() + " <-> " + inputArr[1]);
 
                                 swapCount = swapCount - 1;
+
+                                //send updated action dice to player
+                                Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
                             }
                             break;
                         case "ENDT":
