@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.IntStream;
 
@@ -17,6 +18,13 @@ public class GameWindowHelper {
     public static final String[] entryNames = {"ones", "twos", "threes", "fours", "fives", "sixes",
             "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight", "largeStraight",
             "kniffeliger", "chance", "pi"};
+
+
+    /* #################################################################################################################
+
+    Image loading and processing methods
+
+     ################################################################################################################ */
 
     /**
      * Loads dice images to Image array, such that images have only to be loaded once
@@ -31,7 +39,6 @@ public class GameWindowHelper {
             }
         });
     }
-
 
     /**
      * method to load images of dice faces
@@ -49,6 +56,8 @@ public class GameWindowHelper {
         }
         return new Image(String.valueOf(GameWindowController.class.getResource("/images/dice-" + saved + diceNumber  + ".png")), 64, 63.2, true, false);
     }
+
+
 
 
     /**
@@ -97,6 +106,23 @@ public class GameWindowHelper {
         }
         return FXCollections.observableArrayList(entryElements);
     }
+
+    /* #################################################################################################################
+
+    Conversion and parsing methods
+
+     ################################################################################################################ */
+
+
+    public static ArrayList<String[]> spaceColonToListSplit (String input) {
+        ArrayList<String[]> spaceColonSplittedList = new ArrayList<>();
+        String[] spaceSplit = input.split(" ");
+        for (String elem : spaceSplit){
+            spaceColonSplittedList.add(elem.split(":"));
+        }
+        return spaceColonSplittedList;
+    }
+
 
 
     /**

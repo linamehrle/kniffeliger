@@ -90,7 +90,7 @@ public class GameWindowController implements Initializable {
     @FXML
     private Label rotateNumberLabel;
     @FXML
-    private Label delteNumberLabel;
+    private Label deleteNumberLabel;
     @FXML
     private Label freezeNumberLabel;
 
@@ -133,10 +133,12 @@ public class GameWindowController implements Initializable {
 
         entrySheet.setItems(entryList);
 
-        //Initialize observable list of dice
+        //Initialize observable lists of dice
+        //Main dice list
         diceList.addAll(new DiceGUImplementation[]{new DiceGUImplementation(0), new DiceGUImplementation(1), new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4) });
         diceBox.setItems(diceList);
 
+        //Dice list on tab 2
         diceListOther.addAll(new DiceGUImplementation[]{new DiceGUImplementation(0), new DiceGUImplementation(1), new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4) });
         diceBoxOther.setItems(diceListOther);
 
@@ -439,11 +441,11 @@ public class GameWindowController implements Initializable {
         DiceGUImplementation dice = diceBox.getSelectionModel().getSelectedItem();
         if (!dice.getSavingStatus() && !dice.getStashStatus() && (dice.getDiceValue() != 0)) {
             //ClientOutput.send(CommandsClientToServer.GAME, String.valueOf(dice.getID()));
-            diceStashedList[dice.getID() - 1] = String.valueOf(dice.getID());
+            diceStashedList[dice.getID()] = String.valueOf(dice.getID());
             dice.setStashStatus(true);
         } else if (!dice.getSavingStatus() && dice.getStashStatus() ) {
             //ClientOutput.send(CommandsClientToServer.GAME, String.valueOf(dice.getID()));
-            diceStashedList[dice.getID() - 1] = "";
+            diceStashedList[dice.getID()] = "";
             dice.setStashStatus(false);
         }
         diceBox.refresh();
@@ -475,7 +477,7 @@ public class GameWindowController implements Initializable {
     public void receiveEntrySheet(ArrayList<String[]> listOfEntries) {
         for (String[] elem: listOfEntries) {
             //Check if string array has correct format: {<entry name>, <score>}
-            if (elem.length == 2) {
+            if (elem != null && elem.length == 2) {
                 entryList.get(entrySheetNameIndexMap.get(elem[0])).setScore(Integer.parseInt(elem[1]));
             } else {
                 logger.info("entry sheet cannot be updated due to invalid input format");
@@ -530,8 +532,21 @@ public class GameWindowController implements Initializable {
         System.out.println(event);
     }
 
-    public void updateActionDiceNumberLabels(String numberOfActionDice) {
-        //TODO
+    public void updateActionDiceNumberLabels(ArrayList<String[]> numberOfActionDice) {
+        for (String[] elem : numberOfActionDice)
+            if (elem != null && elem.length == 2) {
+                String numberOfActions = elem[1];
+                switch (elem[0]) {
+                    case "steal" -> stealNumberLabel.setText(numberOfActions);
+                    case "swap" -> swapNumberLabel.setText(numberOfActions);
+                    case "rotate" -> rotateNumberLabel.setText(numberOfActions);
+                    case "delete" -> deleteNumberLabel.setText(numberOfActions);
+                    case "freeze" -> freezeNumberLabel.setText(numberOfActions);
+                    default -> logger.info("invalid action name: " + elem[0]);
+                }
+            } else {
+                logger.info("invalid format to update number of action dice entered. Required format {<action dice name>, <number>}");
+            }
     }
 
 
