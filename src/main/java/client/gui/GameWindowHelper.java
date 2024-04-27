@@ -114,11 +114,19 @@ public class GameWindowHelper {
      ################################################################################################################ */
 
 
+    /**
+     * Splits String first at spaces and then at colons
+     * @param input
+     * String to split: expected format "username key1:value1 key2:value2 etc."
+     * @return
+     * ArrayList containing String arrays of key value pairs (except for first element which is String[1]
+     */
     public static ArrayList<String[]> spaceColonToListSplit (String input) {
         ArrayList<String[]> spaceColonSplittedList = new ArrayList<>();
         String[] spaceSplit = input.split(" ");
-        for (String elem : spaceSplit){
-            spaceColonSplittedList.add(elem.split(":"));
+        spaceColonSplittedList.add(new String[]{spaceSplit[0]});
+        for (int i=1; i < spaceSplit.length; i++){
+            spaceColonSplittedList.add(spaceSplit[i].split(":"));
         }
         return spaceColonSplittedList;
     }
