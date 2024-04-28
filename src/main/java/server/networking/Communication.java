@@ -48,7 +48,7 @@ public class Communication {
      */
     public static void sendToPlayer(CommandsServerToClient cmd, Player player, String message) {
         Starter.getLogger().trace("Sent message <" + message + "> to " + player.getUsername());
-        
+
         ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
         serverOutput.send(cmd, message);
     }
