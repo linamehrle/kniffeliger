@@ -154,7 +154,7 @@ public class GameManager implements Runnable {
                                 for (Dice dice : allDice) {
                                     // if dice was not saved
                                     if (!dice.getSavingStatus()) {
-                                        rolledDice = rolledDice + dice.getDiceValue();
+                                        rolledDice = rolledDice + dice.getDiceValue() + " ";
                                     }
                                 }
                                 logger.log(gameLogic, "Rolled: " + rolledDice);
