@@ -111,9 +111,11 @@ Case Lobbies: <br>
 Tha commands "CRLO", "ENLO" and "LELO" are used to handle creating and entering/leaving lobbies. The Player for example inputs
 "\newLobby exampleName" into the console, the client then sends "CRLO exampleName" to the server, which creates a new lobby
 and informs all other clients with the same command about this change. The lobby window in the gui then updates the list
-of existing lobbies. If the player then enters "\enterLobby exampleName" / "\leaveLobby examoleName", the client sends
+of existing lobbies. If the player then enters "\enterLobby exampleName" / "\leaveLobby exampleName", the client sends
 "ENLO exampleName" / "LELO exampleName" to the server which enters/takes the player out of the lobby and again informs the 
 clients about this change with the same commands.
+<br> Everytime the lobby status changes, e.g. if the lobby is full or a game is started, this is communicated to the clients 
+via "LOST lobbyname (status)". The clients then update the lobby status in the lobby list in the lobby gui window.
 
 Case Lists: <br>
 The player can request a list of all connected players as well as a list with all existing lobbies and players in those lobbies
@@ -121,19 +123,35 @@ with the commands "\showLobbies" and "\showPlayers". The client then sends the r
 "LOLI" and "PLLI". The server gets the lists as a String from the ListManager class (for example "Lina,Anisja,Riccardo,Dominique,"
 for a list of Players, analogously for the lobbies) and sends "PLLI Lina,Anisja,Riccardo,Dominique," back to the client which 
 prints the list to the terminal after formatting the string in the Print class.
+<br> The client can also request a list with all players in the same lobby as the player. This happens via the command "LOPL"
+everytime a player enters a lobby so the game window controller has an updated list of all players that are part of the game.
 
-Case start: <br>
-Once a player is in a lobby with at most one other player, they can start a game in this lobby. For this the player inputs "\start"
-to the console. The client then send the request to the server using "STRT". The server receives this command and calls the starter() function
-in the GameManager class, which handles the game.
+Case in game: <br>
+Once a player is in a lobby with at least one other player, they can start a game in this lobby. For this the player inputs "\start"
+to the console or presses the start button in the gui. The client then send the request to the server using "STRG". 
+The server receives this command and calls the starter() function in the GameManager class, which handles the game.
+<br> At the beginning of each turn, the GameManager class informs the players about the current round and whos turn it is.
+This happens via e.g. "STRT 3 Lina" to indicate that it is Lina's turn in round three.
+<br> A usual play move goes like this: the player first rolls the dice using the roll button. This is send to the server
+via the command "ROLL", the server gives the information to the gameManager to handle and then returns the rolled dice, e.g.
+"ROLL 1 4 5 3 5". The player can roll again or save one or multiple dice. This is handled via "SAVE diceNumbers". nce all dice are saved
+or the player has rolled three times, the player can choose an entry to insert the dice. The choice is send to the server via
+the command "ENTY entryName". The server confirms this via the same command and the gui then updates the entry sheet list.
+Once the player wants to end their turn, they press the "end turn" button and the server send "ENDT" to the server to communicate
+that the next phase of the game is started.
+<br> At the end of the game, the server send the final ranking to the players. This for example looks like "RANK 350:Benni,200:Anisja"
+if Benni scored 350 points and Anisja scored 200 points. The client then opens a pop-up window to display the winner of the game.
 
-Case game: <br>
-Once the starter() function is called to start the game, the method sends all necessary information (like which round it is, 
-whos turn it is etc.) to the players in the lobby using "GAME information about the game". This is then printed out in the console
-of the players.
-The player for example receives the messages "Game: It is your turn!" and then "Game: Do you want to steal an entry or do 
-you want to roll the dice? Answer 'want to steal' or 'want to roll'". The player can then enter "\gameAction want to roll"
-to indicate that they want to roll the dice. The client then sends "GAME want to roll" to the server which sends the String
-"want to roll" to the GameManager to handle in the game.
+Case action dice: <br>
+Throughout the game, players can gain action dices that grant them special play moves. Everytime a player gets a new action dice 
+or uses one, the server sends the whole list of current action dices to the player via "ACTN actionName actionName ...". The 
+gui then updates the counter and enables/disables the action dice buttons accordingly. If a player has a certain action dice and 
+wants to use it, they press the button and choose a victim and an entry if necessary. In the cases of the steal, freeze and cross out
+actions, this is communicated to the server via "STEA/FRZE/COUT username entryName". In the case of the swap action via 
+"SWAP username" and in the case of the shift action via "SHFT". The server handles the action and confirms this using the same 
+commands. The gui then updates the information.
 
-//TODO update the examples
+Case high score: <br>
+Everytime a player pushes the high score button in the lobby window or the game window of the gui, the command "HGSC" is
+send to the server. The server then returns the current list (which is saved in the file highscore.txt) back to the player 
+via "HGSC points:username,points:username,...". The gui then opens the high score pop-up window and displays the list.
