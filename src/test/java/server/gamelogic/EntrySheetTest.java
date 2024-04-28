@@ -115,6 +115,109 @@ class EntrySheetTest {
         );
     }
 
+    @Test
+    @DisplayName("Checks if entry sheets are properly set when given an int array of values.")
+    void setEntrySheetTest(){
+        // generate a random array for the entries
+        int[] randomArray = new int[14];
+        for (int i = 0; i < 14; i++){
+            randomArray[i] = (int) Math.floor(Math.random() * 100 + 5);
+        }
+
+        // initiate player and corresponding entry sheet
+        DummyPlayer lina = new DummyPlayer("lina");
+        EntrySheet linasEntrySheet = new EntrySheet(lina);
+
+        // set entry sheet values to random int array generated before
+        linasEntrySheet.setEntrySheet(randomArray);
+
+        for (int i = 0; i < 14; i++) {
+            // System.out.println();
+            // System.out.println();
+            int randomValue = randomArray[i];
+            int linasValue = linasEntrySheet.getEntryValues()[i];
+            assertEquals(randomValue, linasValue);
+        }
+
+    }
+
+    @Test
+    @DisplayName("Test if defreezing works properly.")
+    void defreezeTest() {
+        // generate dummy player and its entry sheet to test defreezing
+        DummyPlayer lina = new DummyPlayer("lina");
+        EntrySheet linasEntrySheet = new EntrySheet(lina);
+
+        // random index between 0 and 13 to access an entry of the entry sheet and freeze and defreeze it
+        int randomIndex = (int) Math.floor(Math.random() * 13);
+
+        linasEntrySheet.getAsArray()[randomIndex].setFrozenStatus(true);
+
+        assertAll(() -> assertTrue(linasEntrySheet.getAsArray()[randomIndex].getFrozenStatus())
+        );
+
+        linasEntrySheet.defreeze();
+
+        assertFalse(linasEntrySheet.getAsArray()[randomIndex].getFrozenStatus());
+    }
+
+    @Test
+    @DisplayName("Checks if entry is properly added and if it is set final.")
+    void addEntryTest() {
+        // generate dummy player and its entry sheet to test adding entries
+        DummyPlayer lina = new DummyPlayer("lina");
+        EntrySheet linasEntrySheet = new EntrySheet(lina);
+
+        // random index between 0 and 13 to access a random entry of the entry sheet and add an entry value (aka set its value)
+        int randomIndex = (int) Math.floor(Math.random() * 13);
+        int randomValue = (int) Math.floor(Math.random() * 100 + 5);
+        Entry[] defaultEntrySheet = EntrySheet.getDefaultEntrySheet();
+        Entry randomEntry = defaultEntrySheet[randomIndex];
+        randomEntry.setValue(randomValue);
+        linasEntrySheet.addEntry(randomEntry);
+
+        // test
+        assertAll(() -> assertEquals(randomEntry.getValue(), linasEntrySheet.getEntryByName(randomEntry.getName()).getValue()),
+                () -> assertTrue(linasEntrySheet.getEntryByName(randomEntry.getName()).getIsFinal())
+        );
+    }
+
+    @Test
+    @DisplayName("Checks if entries are properly deleted and if setEntrySheet and deleteEntry properly set final status.")
+    void deleteEntryTest() {
+        // generate dummy player and its entry sheet to test deleting entries
+        DummyPlayer lina = new DummyPlayer("lina");
+        EntrySheet linasEntrySheet = new EntrySheet(lina);
+
+        // generate a random array for the entry values
+        int[] randomArray = new int[14];
+        for (int i = 0; i < 14; i++){
+            randomArray[i] = (int) Math.floor(Math.random() * 100 + 5);
+        }
+
+        // set entry sheet values to random int array generated before
+        linasEntrySheet.setEntrySheet(randomArray);
+
+        // random index so random entry will be deleted
+        int randomlyDeletedEntryIndex = (int) Math.floor(Math.random() * 13);
+        // get name of random entry
+        String randomlyDeletedEntryName = EntrySheet.getDefaultEntrySheet()[randomlyDeletedEntryIndex].getName();
+
+        // deletes random entry
+        linasEntrySheet.deleteEntry(randomlyDeletedEntryName);
+
+        // tests if all values are set properly and if the deleted one is zero
+        // also tests if all entries are final
+        for (int i = 0; i < 14; i++) {
+            if (i == randomlyDeletedEntryIndex) {
+                assertEquals(0, linasEntrySheet.getEntryByName(randomlyDeletedEntryName).getValue());
+            } else {
+                assertEquals(randomArray[i], linasEntrySheet.getAsArray()[i].getValue());
+            }
+            assertTrue(linasEntrySheet.getEntryByName(randomlyDeletedEntryName).getIsFinal());
+        }
+    }
+
     /*
      * #################################################################################################################
      * TESTS FOR ENTRY CHECKS
@@ -139,6 +242,57 @@ class EntrySheetTest {
     int[] largeStraight2 = {2, 3, 4, 5, 6};
     int[] pi1 = {1, 3, 1, 4, 5};
     int[] pi2 = {1, 1, 3, 4, 5};
+
+    @Test
+    @DisplayName("Checks if an entry is properly validated and is set to 0 if it is not of this pattern.")
+    void entryValidationTest() {
+        // generate dummy player and its entry sheet to test deleting entries
+        DummyPlayer lina = new DummyPlayer("lina");
+        EntrySheet linasEntrySheet = new EntrySheet(lina);
+
+        // genereate dice and also saves them as int array
+
+        // generate a game manager, so we can use entry validation method
+        GameManager gm = new GameManager();
+        Dice d1 = new Dice();
+        Dice d2 = new Dice();
+        Dice d3 = new Dice();
+        Dice d4 = new Dice();
+        Dice d5 = new Dice();
+        Dice[] allDice = new Dice[]{d1, d2, d3, d4, d5};
+        // roll dice for random values
+        gm.rollDice(allDice);
+        int[] allDiceAsIntArray = Dice.getAsIntArray(allDice);
+
+        // takes rolled dice value and makes entry validation for every single possible pattern
+        for (String entryName : linasEntrySheet.getEntryNames()) {
+            EntrySheet.entryValidation(linasEntrySheet, entryName, allDice);
+        }
+        // saves entries in an array, so we can address the values in our test and compare them to the values we get
+        // from the already tested methods like singleValueRoll, fullHouse, etc.
+        int[] linasEntryValues = linasEntrySheet.getEntryValues();
+
+//        for (int i : allDiceAsIntArray) {
+//            System.out.println(i);
+//        }
+
+        // since the single methods are tested and function already we can test entry validation with these already tested methods
+        assertAll(() -> assertEquals(EntrySheet.singleValueRolls(allDiceAsIntArray, 1), linasEntryValues[0]),
+                () -> assertEquals(EntrySheet.singleValueRolls(allDiceAsIntArray, 2), linasEntryValues[1]),
+                () -> assertEquals(EntrySheet.singleValueRolls(allDiceAsIntArray, 3), linasEntryValues[2]),
+                () -> assertEquals(EntrySheet.singleValueRolls(allDiceAsIntArray, 4), linasEntryValues[3]),
+                () -> assertEquals(EntrySheet.singleValueRolls(allDiceAsIntArray, 5), linasEntryValues[4]),
+                () -> assertEquals(EntrySheet.singleValueRolls(allDiceAsIntArray, 6), linasEntryValues[5]),
+                () -> assertEquals(EntrySheet.threeOfAKind(allDiceAsIntArray), linasEntryValues[6]),
+                () -> assertEquals(EntrySheet.fourOfAKind(allDiceAsIntArray), linasEntryValues[7]),
+                () -> assertEquals(EntrySheet.fullHouse(allDiceAsIntArray), linasEntryValues[8]),
+                () -> assertEquals(EntrySheet.smallStraight(allDiceAsIntArray), linasEntryValues[9]),
+                () -> assertEquals(EntrySheet.largeStraight(allDiceAsIntArray), linasEntryValues[10]),
+                () -> assertEquals(EntrySheet.kniffeliger(allDiceAsIntArray), linasEntryValues[11]),
+                () -> assertEquals(EntrySheet.chance(allDiceAsIntArray), linasEntryValues[12]),
+                () -> assertEquals(EntrySheet.pi(allDiceAsIntArray), linasEntryValues[13])
+        );
+    }
 
     @Test
     @DisplayName("Checks if single value entries work.")
@@ -244,74 +398,4 @@ class EntrySheetTest {
         );
     }
 
-    @Test
-    @DisplayName("Checks if entry sheets are properly set when given an int array of values.")
-    void setEntrySheetTest(){
-        // generate a random array for the entries
-        int[] randomArray = new int[14];
-        for (int i = 0; i < 14; i++){
-            randomArray[i] = (int) Math.floor(Math.random() * 100 + 5);
-        }
-
-        // initiate player and corresponding entry sheet
-        DummyPlayer lina = new DummyPlayer("lina");
-        EntrySheet linasEntrySheet = new EntrySheet(lina);
-
-        // set entry sheet values to random int array generated before
-        linasEntrySheet.setEntrySheet(randomArray);
-
-        for (int i = 0; i < 14; i++) {
-            // System.out.println();
-            // System.out.println();
-            int randomValue = randomArray[i];
-            int linasValue = linasEntrySheet.getEntryValues()[i];
-            assertAll(() -> assertEquals(randomValue, linasValue)
-            );
-        }
-
-    }
-
-    @Test
-    @DisplayName("Test if defreezing works properly.")
-    void defreezeTest() {
-        // generate dummy player and its entry sheet to test defreezing
-        DummyPlayer lina = new DummyPlayer("lina");
-        EntrySheet linasEntrySheet = new EntrySheet(lina);
-
-        // random index between 0 and 13 to access an entry of the entry sheet and freeze and defreeze it
-        int randomIndex = (int) Math.floor(Math.random() * 13);
-
-        linasEntrySheet.getAsArray()[randomIndex].setFrozenStatus(true);
-
-        assertAll(() -> assertTrue(linasEntrySheet.getAsArray()[randomIndex].getFrozenStatus())
-        );
-
-        linasEntrySheet.defreeze();
-
-        assertAll(() -> assertFalse(linasEntrySheet.getAsArray()[randomIndex].getFrozenStatus())
-        );
-    }
-
-    @Test
-    @DisplayName("Checks if entry is properly added.")
-    void addEntryTest() {
-        // generate dummy player and its entry sheet to test adding entries
-        DummyPlayer lina = new DummyPlayer("lina");
-        EntrySheet linasEntrySheet = new EntrySheet(lina);
-
-        // random index between 0 and 13 to access a random entry of the entry sheet and add an entry value (aka set its value)
-        int randomIndex = (int) Math.floor(Math.random() * 13);
-        int randomValue = (int) Math.floor(Math.random() * 100 + 5);
-        Entry[] defaultEntrySheet = EntrySheet.getDefaultEntrySheet();
-        Entry randomEntry = defaultEntrySheet[randomIndex];
-        randomEntry.setValue(randomValue);
-        linasEntrySheet.addEntry(randomEntry);
-
-        assertAll(() -> assertEquals(randomEntry.getValue(), linasEntrySheet.getEntryByName(randomEntry.getName()).getValue())
-        );
-    }
-
-    // TODO: deleteEntry test
-
-    // TODO: entryValidation test
 }
