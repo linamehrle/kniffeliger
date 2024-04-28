@@ -101,6 +101,8 @@ public class GameWindowController implements Initializable {
     private ArrayList<String> playersInLobby;
     private PlayerGUImplementation[] playersWithSheets = new PlayerGUImplementation[4];
 
+    int rollCounter = 0;
+
 
     /**
      * The initialize function for the Game Window, it sets everything up.
@@ -370,6 +372,7 @@ public class GameWindowController implements Initializable {
 
             default -> logger.info("Invalid game phase received: " + phase);
         }
+        rollCounter = 0;
     }
 
     /**
@@ -430,6 +433,7 @@ public class GameWindowController implements Initializable {
         ClientOutput.send(CommandsClientToServer.ENDT,  "ended turn");
         informationBox.getChildren().clear();
         displayInformationText("You ended your turn ");
+        rollCounter = 0;
     }
 
 
@@ -466,7 +470,10 @@ public class GameWindowController implements Initializable {
         else {
             ClientOutput.send(CommandsClientToServer.SAVE,  "none");
         }
-        ClientOutput.send(CommandsClientToServer.ROLL, "roll" );
+        if (rollCounter <= 3) {
+            ClientOutput.send(CommandsClientToServer.ROLL, "roll");
+        }
+        rollCounter++;
         diceBox.refresh();
 
     }
@@ -503,7 +510,7 @@ public class GameWindowController implements Initializable {
      */
     public void receiveRoll( ObservableList<DiceGUImplementation> diceListToUpdate, int[] diceValues) {
 
-        for (int i=1; i < diceListToUpdate.size() && i < diceValues.length; i++) {
+        for (int i=0; i < diceListToUpdate.size() && i < diceValues.length; i++) {
             DiceGUImplementation dice = diceListToUpdate.get(i);
             if ( !dice.getSavingStatus() ) {
                 dice.setDiceValue(diceValues[i]);
