@@ -35,6 +35,8 @@ public class GameManager implements Runnable {
     private Logger logger = Starter.getLogger();
     private Level gameLogic = Level.getLevel("GAME_LOGIC");
 
+    private Player currentPlayer;
+
     /**
      * Game gets constructed; dices get initiated in constructor.
      */
@@ -73,8 +75,7 @@ public class GameManager implements Runnable {
         // starting the game and sending all players in lobby a message
         logger.log(gameLogic, "Game lobby with " + playerArraysList + " started.");
 
-        //Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "The game has started!");
-        System.out.println("game started");
+        Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "The game starts.");
 
         // starting 14 rounds
         for (int round = 0; round < ROUNDS; round++) {
@@ -83,7 +84,7 @@ public class GameManager implements Runnable {
             // loop through all the players
             for (EntrySheet currentEntrySheet : allEntrySheets) {
                 // saves values of current entry sheet, so player and current action dice, so we can access it easily
-                Player currentPlayer = currentEntrySheet.getPlayer();
+                currentPlayer = currentEntrySheet.getPlayer();
                 ActionDice[] currentActionDice = currentPlayer.getActionDice();
 
                 // conditions to check if game needs to go on or stop; this includes:
@@ -117,13 +118,16 @@ public class GameManager implements Runnable {
 
                 // notify players which turn is
                 Communication.broadcastToAll(CommandsServerToClient.STRT, playerArraysList, currentPlayer.getUsername() + " Main");
+                Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, currentPlayer.getUsername() + "'s turn.");
+                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "-- It's your turn!");
+
                 logger.log(gameLogic, currentPlayer.getUsername() + "'s turn.");
 
                 while (!entryMade || !endTurn) {
                     // wait for input
                     wait();
                     String[] inputArr = input.split("\\s+");
-                    logger.log(gameLogic, "Input received: " + inputArr);
+                    logger.log(gameLogic, "Input received: " + Arrays.toString(inputArr));
 
                     // check if input has more parameters
                     if (inputArr.length == 3) {
@@ -150,13 +154,14 @@ public class GameManager implements Runnable {
                                 for (Dice dice : allDice) {
                                     // if dice was not saved
                                     if (!dice.getSavingStatus()) {
-                                        rolledDice = rolledDice + dice.getDiceValue();
+                                        rolledDice = rolledDice + dice.getDiceValue() + " ";
                                     }
                                 }
                                 logger.log(gameLogic, "Rolled: " + rolledDice);
 
                                 // send dices to all players
                                 Communication.broadcastToAll(CommandsServerToClient.ROLL, playerArraysList, rolledDice);
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "Choose which dice to save.");
 
                                 // wait for current player to choose dices to save
                                 wait();
@@ -166,19 +171,22 @@ public class GameManager implements Runnable {
 
                                 // TODO: SAVES DICE WITH NUMBER BY 0 1 2 3 4 (not like in terminal version with 1 2 3 4 5)
                                 // saves the rolled dice; if player does not want to save one, then "none" is sent
-                                if (!savedDice[0].equals("none")) {
+                                if (!savedDice[1].equals("none")) {
                                     // turns the single String array entries into int and save the corresponding dice
-                                    for (String s : savedDice) {
-                                        int i = Integer.parseInt(s);
-                                        allDice[i].saveDice();
+                                    for (int idx = 1; idx < savedDice.length - 1; idx++) {
+                                        int idxDice = Integer.parseInt(savedDice[idx]);
+                                        allDice[idxDice].saveDice();
                                     }
                                 }
 
                                 if (allDiceSaved(allDice)) {
                                     logger.log(gameLogic, "All dices of " + currentPlayer.getUsername() + " were saved.");
 
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "Select the entry to save dices to.");
+
                                     // wait for player selecting entry
                                     wait();
+                                    selectedEntry = input.split("\\s+")[1];
 
                                     logger.log(gameLogic, currentPlayer.getUsername() + " chose " + selectedEntry);
 
@@ -198,9 +206,9 @@ public class GameManager implements Runnable {
                                     addActionDice(allDice, currentPlayer);
                                     currentActionDice = currentPlayer.getActionDice();
 
-                                    // TODO SEND ACTION DICES TO PLAYER
                                     // sends the new action dice to player
                                     Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentActionDice));
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You received " + ActionDice.printActionDice(currentActionDice));
 
                                     entryMade = true;
                                 }
@@ -286,7 +294,7 @@ public class GameManager implements Runnable {
 
             for (EntrySheet currentEntrySheet : allEntrySheets) {
                 // saves values of current entry sheet, so player and current action dice, so we can access it easily
-                Player currentPlayer = currentEntrySheet.getPlayer();
+                currentPlayer = currentEntrySheet.getPlayer();
                 ActionDice[] currentActionDice = currentPlayer.getActionDice();
 
                 // counts the shifts and swaps the current player has
@@ -604,9 +612,14 @@ public class GameManager implements Runnable {
      * @param input answer of player
      */
     public synchronized void getAnswer(String input, Player player) {
-        //TODO only update input if it is the players turn
-        this.input = input;
-        notify();
+        logger.info("Message from " + player.getUsername() + " with <" + input + "> received.");
+
+        // Only update input if the message comes from currentPlayer
+        if (player.equals(currentPlayer) || currentPlayer != null) {
+            logger.info("Message from " + player.getUsername() + " accepted.");
+            this.input = input;
+            notify();
+        }
     }
 
     /**

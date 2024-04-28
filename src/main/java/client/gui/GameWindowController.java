@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -50,6 +51,7 @@ public class GameWindowController implements Initializable {
     private Button swapButton;
     @FXML
     private Button deleteButton;
+
     @FXML
     private Button rollButton;
     @FXML
@@ -72,6 +74,10 @@ public class GameWindowController implements Initializable {
     @FXML
     private Button highScoreButton;
     @FXML
+    private Button leaveGameButton;
+    @FXML
+    private Button leaveLobbyButton;
+    @FXML
     private Label stealLabel;
     @FXML
     private Label freezeLabel;
@@ -81,10 +87,11 @@ public class GameWindowController implements Initializable {
     private Label swapLabel;
     @FXML
     private Label rotateLabel;
+
     @FXML
     private ListView<EntrySheetGUImplementation> entrySheet;
 
-    @ FXML
+    @FXML
     private Button endTurnButton;
     private ObservableList<EntrySheetGUImplementation> entryList = FXCollections.observableArrayList();
     public ObservableList<DiceGUImplementation> diceList = FXCollections.observableArrayList();
@@ -97,6 +104,8 @@ public class GameWindowController implements Initializable {
     private HashMap<String, Integer> entrySheetNameIndexMap = GameWindowHelper.makeEntryToIntMap();
     private ArrayList<String> playersInLobby;
     private PlayerGUImplementation[] playersWithSheets = new PlayerGUImplementation[4];
+
+    int rollCounter = 0;
 
 
     /**
@@ -271,6 +280,7 @@ public class GameWindowController implements Initializable {
 
     }
 
+
     /**
      * Method enables all game fields except special action fields
      * can be used to enable button's when it is a player's turn
@@ -279,6 +289,16 @@ public class GameWindowController implements Initializable {
         entrySheet.setDisable(false);
         diceBox.setDisable(false);
         rollButton.setDisable(false);
+    }
+
+
+    /**
+     * Method enables swap and shift actions if action dices available
+     * can be used to enable button's when it is a player's turn in SwapAndShift phase
+     */
+    public void enableSwapAndShift () {
+        swapButton.setDisable(swapLabel.getText().equals("0"));
+        rotateButton.setDisable(rotateLabel.getText().equals("0"));
     }
 
 
@@ -322,6 +342,8 @@ public class GameWindowController implements Initializable {
         SceneController.showActionPlayerAndFieldWindow(playersInLobby, "delete");
     }
 
+
+
     /**
      * Method that handles when the startGame Button is pressed to start a game
      * @param event
@@ -335,6 +357,29 @@ public class GameWindowController implements Initializable {
         //Update list of players
         ClientOutput.send(CommandsClientToServer.LOPL, "getting the players in the lobby");
         logger.info("List of Players in Lobby updated");
+        leaveGameButton.setDisable(true);
+    }
+
+    /**
+     * Starts a turn
+     * @param userName
+     * Player whose turn it is
+     * @param phase
+     * Main (normal round) or ShiftAndSwap (only shift and swap actions can be played)
+     */
+    public void initiateTurn(String userName, String phase) {
+        //Clear information box before each turn
+        clearInformationBox();
+        displayInformationText("It is " + userName + "'s turn. May the power be with them.");
+        switch (phase) {
+            case "Main" -> displayInformationText("The phase is: " + phase + "\nThis is a normal round. SWAP and ROTATE actions cannot be played");
+            case "SwapAndShift" -> displayInformationText("The phase is: " + phase + "\nIn this round only SWAP and ROTATE actions can be played.");
+
+            default -> logger.info("Invalid game phase received: " + phase);
+        }
+        leaveGameButton.setDisable(true);
+        leaveLobbyButton.setDisable(true);
+        rollCounter = 0;
     }
 
     /**
@@ -385,6 +430,10 @@ public class GameWindowController implements Initializable {
         SceneController.showHighScoreWindow();
     }
 
+    /**
+     * Signals to server that player ends turn
+     * @param event
+     */
     @FXML
     public void endTurnAction(MouseEvent event) {
         //TODO: adapt message if necessary
@@ -408,10 +457,12 @@ public class GameWindowController implements Initializable {
      * @param event
      * Mouse click on rollButton
      */
-    public void rollActionSend(MouseEvent event){
+    public void rollActionSend(ActionEvent event){
         String saveDiceString = GameWindowHelper.diceStashedArrToString(diceStashedList);
         //Saved dice are automatically transmitted before dice are rolled again
         if ( !saveDiceString.isEmpty()) {
+            logger.info("The following dices are selected to be saved: " + saveDiceString);
+
             ClientOutput.send(CommandsClientToServer.SAVE,  saveDiceString);
 
             //Set dice to saved
@@ -425,10 +476,16 @@ public class GameWindowController implements Initializable {
             }
         }
         else {
+            logger.info("No dices are selected to be saved.");
+
             ClientOutput.send(CommandsClientToServer.SAVE,  "none");
         }
+        if (rollCounter <= 3) {
+            ClientOutput.send(CommandsClientToServer.ROLL, "roll");
+        } else {
+            rollButton.setDisable(true);
+        }
         diceBox.refresh();
-        ClientOutput.send(CommandsClientToServer.ROLL, "roll" );
     }
 
 
@@ -462,14 +519,14 @@ public class GameWindowController implements Initializable {
      * Integer array of values (1-6) for 5 dices (usually provided by game logic engine)
      */
     public void receiveRoll( ObservableList<DiceGUImplementation> diceListToUpdate, int[] diceValues) {
-        int i = 0;
-        for (DiceGUImplementation dice : diceListToUpdate) {
+
+        for (int i=0; i < diceListToUpdate.size() && i < diceValues.length; i++) {
+            DiceGUImplementation dice = diceListToUpdate.get(i);
             if ( !dice.getSavingStatus() ) {
                 dice.setDiceValue(diceValues[i]);
             }
-            i++;
         }
-        displayInformationText("🎲 ALEA IACTA EST! 🎲 \n(the die is cast)");
+        displayInformationText("ALEA IACTA EST!  \n(the die is cast)");
         diceBox.refresh();
         diceBoxOther.refresh();
     }
@@ -531,9 +588,29 @@ public class GameWindowController implements Initializable {
         Text displayText = new Text(informationText);
         //Font
         displayText.setFont(Font.font("Courier New"));
-        textFlow.getChildren().add(displayText);
-        informationBox.getChildren().add(textFlow);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                textFlow.getChildren().add(displayText);
+                informationBox.getChildren().add(textFlow);
+            }
+        });
+
     }
+
+    /**
+     * Clears information box
+     */
+    public void clearInformationBox() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                informationBox.getChildren().clear();
+            }
+        });
+    }
+
 
 
 
@@ -685,6 +762,8 @@ public class GameWindowController implements Initializable {
                 deleteButton.setDisable(deleteLabel.getText().equals("0"));
             }
         });
+
+
 
     }
 

@@ -27,6 +27,7 @@ public class Server {
 
             // connection established
             logger.info("Waiting for connection on " + port);
+            System.out.println("Waiting for connection on " + port);
 
             while(true) {
                 // wait for connections and create new player

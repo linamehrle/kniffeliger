@@ -76,7 +76,7 @@ public class Player {
         //informs the players about the name changes.
         setUsername(username);
         playerThreadManager.sendToServerOutput(CommandsServerToClient.BRCT, "Your username is now " + username);
-        Communication.broadcast(this.getPlayerList(), this, "Player " + savedUsername + " has changed their name to " + username);
+        //Communication.broadcast(this.getPlayerList(), this, "Player " + savedUsername + " has changed their name to " + username);
         Communication.broadcastToAll(CommandsServerToClient.PLLI, ListManager.getPlayerList(), ListManager.getPlayerListAsString());
 
         logger.info("Player " + savedUsername + " has changed their name to " + username);
