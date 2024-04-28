@@ -585,7 +585,12 @@ public class GameWindowController implements Initializable {
      * Clears information box
      */
     public void clearInformationBox() {
-        informationBox.getChildren().clear();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                informationBox.getChildren().clear();
+            }
+        });
     }
 
 
