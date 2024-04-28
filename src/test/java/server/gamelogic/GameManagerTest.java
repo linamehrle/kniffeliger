@@ -2,10 +2,12 @@ package server.gamelogic;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import server.Player;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+// get methods are not tested separately since they are used in tests anyway and tested with the other tests
+// not all set methods are tested since some of them are very simple
 class GameManagerTest {
     // starter method cannot be tested with unit tests but only with play-through
 
@@ -172,7 +174,6 @@ class GameManagerTest {
         }
     }
 
-
     // depends on constant DIVISIBLE_BY field in GameManager
     // at the moment it is DIVISIBLE_BY = 1
     @Test
@@ -249,9 +250,36 @@ class GameManagerTest {
     @Test
     @DisplayName("Checks if ranking is properly done.")
     void rankingTest() {
+        // generate game manager
+        GameManager gm = new GameManager();
+
+        // generate two players with random entry sheets with one clearly having more total points (since range of randomly generated numbers is different)
+        // save entry sheets in an array
+        DummyPlayer lina = new DummyPlayer("lina");
+        EntrySheet linasEntrySheet = new EntrySheet(lina);
+        DummyPlayer loris = new DummyPlayer("loris");
+        EntrySheet  lorisEntrySheet = new EntrySheet(loris);
+        EntrySheet[] allEntrySheets = new EntrySheet[]{linasEntrySheet, lorisEntrySheet};
+
+        // random values for entry sheets
+        int[] winnerSheet = new int[14];
+        int[] loserSheet = new int[14];
+        for (int i = 0; i < winnerSheet.length; i++) {
+            winnerSheet[i] = (int) (Math.random() * 100 + 16);
+            loserSheet[i] = (int) (Math.random() * 15 + 1);
+        }
+
+        // add values to entry sheets
+        linasEntrySheet.setEntrySheet(winnerSheet);
+        lorisEntrySheet.setEntrySheet(loserSheet);
+
+        // get ranking
+        Player[] rankedPlayers = gm.ranking(allEntrySheets);
+
+        assertAll(() -> assertEquals("lina", rankedPlayers[1].getUsername()),
+                () -> assertEquals("loris", rankedPlayers[0].getUsername())
+        );
 
     }
-
-    // TODO: returnScoreAsStringTest
 
 }

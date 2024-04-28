@@ -655,6 +655,4 @@ public class GameManager implements Runnable {
         return ranking;
     }
 
-
-
 }
