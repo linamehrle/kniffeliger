@@ -20,6 +20,8 @@ public class Communication {
      */
     public static void broadcastToAll(CommandsServerToClient cmd, ArrayList<Player> playerList, String message) {
         for (Player player : playerList) {
+            Starter.getLogger().trace("Sent message <" + message + "> to " + player.getUsername());
+
             ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
             serverOutput.send(cmd, message);
         }
@@ -45,6 +47,8 @@ public class Communication {
      * @param message
      */
     public static void sendToPlayer(CommandsServerToClient cmd, Player player, String message) {
+        Starter.getLogger().trace("Sent message <" + message + "> to " + player.getUsername());
+        
         ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
         serverOutput.send(cmd, message);
     }
