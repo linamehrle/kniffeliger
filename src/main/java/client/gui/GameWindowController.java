@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -569,8 +570,15 @@ public class GameWindowController implements Initializable {
         Text displayText = new Text(informationText);
         //Font
         displayText.setFont(Font.font("Courier New"));
-        textFlow.getChildren().add(displayText);
-        informationBox.getChildren().add(textFlow);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                textFlow.getChildren().add(displayText);
+                informationBox.getChildren().add(textFlow);
+            }
+        });
+
     }
 
     /**
