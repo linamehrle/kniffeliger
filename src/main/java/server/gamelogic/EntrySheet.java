@@ -391,7 +391,6 @@ public class EntrySheet {
      * @param rolledDice are the dice that have been rolled and saved
      * @param value      method dice for this value (for example checks how many 6 it has, so value = 6)
      * @return the sum of dice
-     * @throws Exception if the value we need to compare the dice value with is not between 1 and 6
      */
     public static int singleValueRolls(int[] rolledDice, int value) {
         // checks if we inserted a valid value for dice
