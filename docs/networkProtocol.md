@@ -60,10 +60,14 @@ be used in which context. On the server side, no commands can be input in the te
 | COUT    | username and entry name    | informs the client about a crossed out entry to update the gui                                                                   |
 | SHFT    | no parameter               | informs the client about a shift in entry sheet to update the gui                                                                |
 | SWAP    | username                   | informs the client about a swap in entry sheets to update the gui                                                                |
-| ENTY    | entry name and points      | informs the client about a new entry made and about the points to update the gui                                                 |
+| ENTY    | entry name and score       | informs the client about a new entry made and about the score to update the gui                                                  |
 | ACTN    | list of actions            | informs the client about an update of actions they have                                                                          |
 | RANK    | rank of the players        | returns the final rank at the end of the game to display the winner                                                              |
 | LOPL    | player list                | returns a list of players in a given lobby                                                                                       |
+| ALDI    | rolled dice                | returns the rolled dice to tab 2 of the gui (similar to ROLL)                                                                    |
+| ALES    | entry name and score       | informs the client about a new entry made and its score to update tab 2 the gui (similar to ENTY)                                |
+| INES    | no paramter                | initializes the entry sheets in tab 2 of the gui (passive sheets of other players)                                               |
+
 
 ### Examples:
 
