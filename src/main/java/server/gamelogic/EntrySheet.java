@@ -297,8 +297,7 @@ public class EntrySheet {
      * @param finalDiceValues the dice values after the player is done rolling.
      */
     public static void entryValidation(EntrySheet entrySheet, String nameOfEntry, Dice[] finalDiceValues) {
-        // TODO: entry validation: if entry is made on a frozen entry, then it is zero
-        // TODO: if entry is not valid: enter in 0
+        // if entry is not valid it enters 0 for this entry (this is handled in single methods for entries)
         // checks if all dice have been saved, if one is not, then save them
         for (Dice d : finalDiceValues) {
             if (d.getSavingStatus() == false) {
@@ -603,7 +602,6 @@ public class EntrySheet {
      * @param rolledDice are the dice that have been rolled and saved
      * @return 31, if it is pi, 0 otherwise
      */
-    //TODO: write unit test for method
     public static int pi(int[] rolledDice){
         int res = 0;
         // sorts rolled dice in ascending order, so we can loop over it and check conditions for a large straight.
