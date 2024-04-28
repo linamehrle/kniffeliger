@@ -12,9 +12,10 @@ class EntryTest {
     @Test
     @DisplayName("Checks if value can be set.")
     void setValueTest(){
-        entry2.setValue(6);
+        int randomNumber = (int) Math.floor(Math.random() * 50 + 5);
+        entry2.setValue(randomNumber);
         assertAll(() -> assertEquals(0, entry1.getValue()),
-                () -> assertEquals(6, entry2.getValue())
+                () -> assertEquals(randomNumber, entry2.getValue())
         );
 
     }
