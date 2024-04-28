@@ -482,8 +482,9 @@ public class GameWindowController implements Initializable {
         }
         if (rollCounter <= 3) {
             ClientOutput.send(CommandsClientToServer.ROLL, "roll");
+        } else {
+            rollButton.setDisable(true);
         }
-        rollCounter++;
         diceBox.refresh();
     }
 
@@ -761,6 +762,8 @@ public class GameWindowController implements Initializable {
                 deleteButton.setDisable(deleteLabel.getText().equals("0"));
             }
         });
+
+
 
     }
 
