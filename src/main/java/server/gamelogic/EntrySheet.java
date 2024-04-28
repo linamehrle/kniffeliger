@@ -198,6 +198,7 @@ public class EntrySheet {
         // change values in entry sheet to those in int-array
         for (int i = 0; i < entrySheet.length; i++){
             entrySheet[i].setValue(valuesEntries[i]);
+            entrySheet[i].setFinal();
         }
     }
 
