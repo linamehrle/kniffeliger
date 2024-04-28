@@ -447,7 +447,7 @@ public class GameWindowController implements Initializable {
      * @param event
      * Mouse click on rollButton
      */
-    public void rollActionSend(MouseEvent event){
+    public void rollActionSend(ActionEvent event){
         String saveDiceString = GameWindowHelper.diceStashedArrToString(diceStashedList);
         //Saved dice are automatically transmitted before dice are rolled again
         if ( !saveDiceString.isEmpty()) {
@@ -466,8 +466,9 @@ public class GameWindowController implements Initializable {
         else {
             ClientOutput.send(CommandsClientToServer.SAVE,  "none");
         }
-        diceBox.refresh();
         ClientOutput.send(CommandsClientToServer.ROLL, "roll" );
+        diceBox.refresh();
+
     }
 
 
@@ -501,12 +502,12 @@ public class GameWindowController implements Initializable {
      * Integer array of values (1-6) for 5 dices (usually provided by game logic engine)
      */
     public void receiveRoll( ObservableList<DiceGUImplementation> diceListToUpdate, int[] diceValues) {
-        int i = 0;
-        for (DiceGUImplementation dice : diceListToUpdate) {
+
+        for (int i=1; i < diceListToUpdate.size() && i < diceValues.length; i++) {
+            DiceGUImplementation dice = diceListToUpdate.get(i);
             if ( !dice.getSavingStatus() ) {
                 dice.setDiceValue(diceValues[i]);
             }
-            i++;
         }
         displayInformationText("🎲 ALEA IACTA EST! 🎲 \n(the die is cast)");
         diceBox.refresh();
