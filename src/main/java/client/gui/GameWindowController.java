@@ -28,6 +28,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import org.apache.logging.log4j.Logger;
+import server.networking.Communication;
 import starter.Starter;
 
 import static client.gui.GameWindowHelper.entryNames;
@@ -230,6 +231,7 @@ public class GameWindowController implements Initializable {
         swapLabel.setText("0");
         deleteLabel.setText("0");
         rotateLabel.setText("0");
+
     }
 
     /**
@@ -333,7 +335,6 @@ public class GameWindowController implements Initializable {
         //Update list of players
         ClientOutput.send(CommandsClientToServer.LOPL, "getting the players in the lobby");
         logger.info("List of Players in Lobby updated");
-        initTabOther();
     }
 
     /**
@@ -386,7 +387,10 @@ public class GameWindowController implements Initializable {
 
     @FXML
     public void endTurnAction(MouseEvent event) {
-        //action
+        //TODO: adapt message if necessary
+        ClientOutput.send(CommandsClientToServer.ENDT,  "ended turn");
+        informationBox.getChildren().clear();
+        displayInformationText("You ended your turn ");
     }
 
 
@@ -465,6 +469,7 @@ public class GameWindowController implements Initializable {
             }
             i++;
         }
+        displayInformationText("🎲 ALEA IACTA EST! 🎲 \n(the die is cast)");
         diceBox.refresh();
         diceBoxOther.refresh();
     }
@@ -527,8 +532,6 @@ public class GameWindowController implements Initializable {
         //Font
         displayText.setFont(Font.font("Courier New"));
         textFlow.getChildren().add(displayText);
-        //Clear field first (alternative scrollplane with old information at the bottom?)
-        informationBox.getChildren().clear();
         informationBox.getChildren().add(textFlow);
     }
 
@@ -608,6 +611,7 @@ public class GameWindowController implements Initializable {
 
             }
         }
+        displayInformationText(" \uD83C\uDFC1 LET THE GAME BEGIN \uD83C\uDFC1");
         logger.info("second tab initialized");
 
     }

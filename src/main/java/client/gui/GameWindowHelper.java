@@ -15,6 +15,7 @@ import java.util.stream.IntStream;
  */
 public class GameWindowHelper {
 
+    //Name of entries, is used to initialize EntrySheets
     public static final String[] entryNames = {"ones", "twos", "threes", "fours", "fives", "sixes",
             "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight", "largeStraight",
             "kniffeliger", "chance", "pi"};
