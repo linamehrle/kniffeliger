@@ -35,6 +35,8 @@ public class GameManager implements Runnable {
     private Logger logger = Starter.getLogger();
     private Level gameLogic = Level.getLevel("GAME_LOGIC");
 
+    private Player currentPlayer;
+
     /**
      * Game gets constructed; dices get initiated in constructor.
      */
@@ -83,7 +85,7 @@ public class GameManager implements Runnable {
             // loop through all the players
             for (EntrySheet currentEntrySheet : allEntrySheets) {
                 // saves values of current entry sheet, so player and current action dice, so we can access it easily
-                Player currentPlayer = currentEntrySheet.getPlayer();
+                currentPlayer = currentEntrySheet.getPlayer();
                 ActionDice[] currentActionDice = currentPlayer.getActionDice();
 
                 // conditions to check if game needs to go on or stop; this includes:
@@ -286,7 +288,7 @@ public class GameManager implements Runnable {
 
             for (EntrySheet currentEntrySheet : allEntrySheets) {
                 // saves values of current entry sheet, so player and current action dice, so we can access it easily
-                Player currentPlayer = currentEntrySheet.getPlayer();
+                currentPlayer = currentEntrySheet.getPlayer();
                 ActionDice[] currentActionDice = currentPlayer.getActionDice();
 
                 // counts the shifts and swaps the current player has
@@ -604,9 +606,11 @@ public class GameManager implements Runnable {
      * @param input answer of player
      */
     public synchronized void getAnswer(String input, Player player) {
-        //TODO only update input if it is the players turn
-        this.input = input;
-        notify();
+        // Only update input if the message comes from currentPlayer
+        if (player.equals(currentPlayer) || currentPlayer != null) {
+            this.input = input;
+            notify();
+        }
     }
 
     /**
