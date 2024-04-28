@@ -76,7 +76,6 @@ class GameManagerTest {
         return result;
     }
 
-
     @Test
     @DisplayName("Tests if it properly checks if all dice are saved.")
     void allDiceSavedTest() {
@@ -117,7 +116,6 @@ class GameManagerTest {
 
     }
 
-
     @Test
     @DisplayName("Checks if dice are properly reset, so savingStatus is false and numberOfRolls and diceValue are 0.")
     void resetDiceTest() {
@@ -157,7 +155,21 @@ class GameManagerTest {
         }
     }
 
-    // TODO: rollDiceTest
+    @Test
+    @DisplayName("Checks if dice are rolled correctly.")
+    void rolledDiceTest() {
+        GameManager gm = new GameManager();
+        Dice d1 = new Dice();
+        Dice d2 = new Dice();
+        Dice d3 = new Dice();
+        Dice d4 = new Dice();
+        Dice d5 = new Dice();
+        Dice[] allDice = new Dice[]{d1, d2, d3, d4, d5};
+        gm.rollDice(allDice);
+
+        // TODO: finish test
+
+    }
 
 
     // TODO: addActionDiceTest
