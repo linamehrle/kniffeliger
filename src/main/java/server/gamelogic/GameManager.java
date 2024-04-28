@@ -182,6 +182,8 @@ public class GameManager implements Runnable {
                                 if (allDiceSaved(allDice)) {
                                     logger.log(gameLogic, "All dices of " + currentPlayer.getUsername() + " were saved.");
 
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "Select the entry to save dices to.");
+
                                     // wait for player selecting entry
                                     wait();
 

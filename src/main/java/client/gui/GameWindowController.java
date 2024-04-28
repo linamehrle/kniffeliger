@@ -105,6 +105,8 @@ public class GameWindowController implements Initializable {
     private ArrayList<String> playersInLobby;
     private PlayerGUImplementation[] playersWithSheets = new PlayerGUImplementation[4];
 
+    int rollCounter = 0;
+
 
     /**
      * The initialize function for the Game Window, it sets everything up.
@@ -377,6 +379,7 @@ public class GameWindowController implements Initializable {
         }
         leaveGameButton.setDisable(true);
         leaveLobbyButton.setDisable(true);
+        rollCounter = 0;
     }
 
     /**
@@ -458,6 +461,8 @@ public class GameWindowController implements Initializable {
         String saveDiceString = GameWindowHelper.diceStashedArrToString(diceStashedList);
         //Saved dice are automatically transmitted before dice are rolled again
         if ( !saveDiceString.isEmpty()) {
+            logger.info("The following dices are selected to be saved: " + saveDiceString);
+
             ClientOutput.send(CommandsClientToServer.SAVE,  saveDiceString);
 
             //Set dice to saved
@@ -471,11 +476,15 @@ public class GameWindowController implements Initializable {
             }
         }
         else {
+            logger.info("No dices are selected to be saved.");
+
             ClientOutput.send(CommandsClientToServer.SAVE,  "none");
         }
-        ClientOutput.send(CommandsClientToServer.ROLL, "roll" );
+        if (rollCounter <= 3) {
+            ClientOutput.send(CommandsClientToServer.ROLL, "roll");
+        }
+        rollCounter++;
         diceBox.refresh();
-
     }
 
 
