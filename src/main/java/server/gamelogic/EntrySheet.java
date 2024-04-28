@@ -232,6 +232,7 @@ public class EntrySheet {
             // if the correct entry has been detected, so if the names are the same, the value of this entry on entrySheet can be changed
             if (entry.getName().equals(newEntry.getName())) {
                 entry.setValue(newEntry.getValue());
+                entry.setFinal();
                 totalPoints = totalPoints + entry.getValue();
             } else {
                 notAppearedCounter = notAppearedCounter + 1;
@@ -380,7 +381,7 @@ public class EntrySheet {
                     entryValidation(entrySheet, entryName, finalDiceValues);
             }
         }
-        entrySheet.getEntryByName(nameOfEntry).setFinal();
+        // entrySheet.getEntryByName(nameOfEntry).setFinal();
     }
 
     /**
