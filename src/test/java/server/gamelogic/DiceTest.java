@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// get methods are not tested separately since they are used in tests anyway and tested with the other tests
+// not all set methods are tested since some of them are very simple
 class DiceTest {
 
     @Test
