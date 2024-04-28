@@ -525,7 +525,7 @@ public class GameWindowController implements Initializable {
                 dice.setDiceValue(diceValues[i]);
             }
         }
-        displayInformationText("🎲 ALEA IACTA EST! 🎲 \n(the die is cast)");
+        displayInformationText("ALEA IACTA EST!  \n(the die is cast)");
         diceBox.refresh();
         diceBoxOther.refresh();
     }
