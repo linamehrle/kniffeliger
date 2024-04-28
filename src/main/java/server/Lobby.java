@@ -1,7 +1,6 @@
 package server;
 
 import java.util.ArrayList;
-
 import org.apache.logging.log4j.Logger;
 import server.gamelogic.GameManager;
 import server.networking.CommandsServerToClient;
