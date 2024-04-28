@@ -15,7 +15,7 @@ be used in which context. On the server side, no commands can be input in the te
 | WHSP    | name of one other client and a message | sends the message to the server to redistribute to the given other client  | \whisper username message                   |            
 | CHNA    | new username                           | sends the new username to the server, server changes the username          | \changeUsername newUsername                 |         
 | PONG    | time send by the server                | returns a ping send by the server to the server                            | there is no terminal input for this command |         
- | PING    | current system time                    | sends a ping to the server to check for connection losses                  | there is no terminal input for this command |
+| PING    | current system time                    | sends a ping to the server to check for connection losses                  | there is no terminal input for this command |
 | QUIT    | no parameter                           | used to disconnect the client                                              | \quit                                       |
 | LOLI    | no parameter                           | requests a list of all lobbies and players in lobbies from the server      | \showLobbies                                | 
 | CRLO    | name of the lobby                      | creates a new lobby with the given name                                    | \newLobby name                              |

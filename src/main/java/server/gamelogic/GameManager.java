@@ -62,6 +62,9 @@ public class GameManager implements Runnable {
 
         // initializes entry sheets for each player and saves all in an array
         Player[] players = new Player[playerArraysList.size()];
+        for (int i = 0; i < playerArraysList.size(); i++) {
+            players[i] = playerArraysList.get(i);
+        }
         EntrySheet[] allEntrySheets = new EntrySheet[players.length];
         for (int i = 0; i < players.length; i++) {
             allEntrySheets[i] = new EntrySheet(players[i]);
@@ -70,7 +73,7 @@ public class GameManager implements Runnable {
         // starting the game and sending all players in lobby a message
         logger.log(gameLogic, "Game lobby with " + playerArraysList + " started.");
 
-        Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "The game has started!");
+        //Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "The game has started!");
         System.out.println("game started");
 
         // starting 14 rounds
@@ -100,11 +103,15 @@ public class GameManager implements Runnable {
                 int stealCount = 0;
                 int freezeCount = 0;
                 int crossOutCount = 0;
-                for (ActionDice actionDice : currentActionDice) {
-                    switch (actionDice.getActionName()) {
-                        case "steal" -> stealCount = stealCount + 1;
-                        case "freeze" -> freezeCount = freezeCount + 1;
-                        case "crossOut" -> crossOutCount = crossOutCount + 1;
+
+                // check if player has action dices (!= null)
+                if (currentActionDice != null) {
+                    for (ActionDice actionDice : currentActionDice) {
+                        switch (actionDice.getActionName()) {
+                            case "steal" -> stealCount = stealCount + 1;
+                            case "freeze" -> freezeCount = freezeCount + 1;
+                            case "crossOut" -> crossOutCount = crossOutCount + 1;
+                        }
                     }
                 }
 
