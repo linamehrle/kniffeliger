@@ -292,7 +292,24 @@ class EntrySheetTest {
         );
     }
 
-    // TODO: addEntry test
+    @Test
+    @DisplayName("Checks if entry is properly added.")
+    void addEntryTest() {
+        // generate dummy player and its entry sheet to test adding entries
+        DummyPlayer lina = new DummyPlayer("lina");
+        EntrySheet linasEntrySheet = new EntrySheet(lina);
+
+        // random index between 0 and 13 to access a random entry of the entry sheet and add an entry value (aka set its value)
+        int randomIndex = (int) Math.floor(Math.random() * 13);
+        int randomValue = (int) Math.floor(Math.random() * 100 + 5);
+        Entry[] defaultEntrySheet = EntrySheet.getDefaultEntrySheet();
+        Entry randomEntry = defaultEntrySheet[randomIndex];
+        randomEntry.setValue(randomValue);
+        linasEntrySheet.addEntry(randomEntry);
+
+        assertAll(() -> assertEquals(randomEntry.getValue(), linasEntrySheet.getEntryByName(randomEntry.getName()).getValue())
+        );
+    }
 
     // TODO: deleteEntry test
 
