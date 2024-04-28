@@ -127,7 +127,7 @@ public class GameManager implements Runnable {
                     // wait for input
                     wait();
                     String[] inputArr = input.split("\\s+");
-                    logger.log(gameLogic, "Input received: " + inputArr);
+                    logger.log(gameLogic, "Input received: " + Arrays.toString(inputArr));
 
                     // check if input has more parameters
                     if (inputArr.length == 3) {
@@ -186,6 +186,7 @@ public class GameManager implements Runnable {
 
                                     // wait for player selecting entry
                                     wait();
+                                    selectedEntry = input.split("\\s+")[1];
 
                                     logger.log(gameLogic, currentPlayer.getUsername() + " chose " + selectedEntry);
 
