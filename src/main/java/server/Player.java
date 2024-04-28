@@ -21,8 +21,8 @@ public class Player {
      * This variable counts all instances of connected players.
      */
     private static int counter = 0;
-    private int id;
-    private String username;
+    protected int id;
+    protected String username;
     private ActionDice[] actionDice;
     private ClientThread playerThreadManager;
     private ArrayList<Player> playerList;
