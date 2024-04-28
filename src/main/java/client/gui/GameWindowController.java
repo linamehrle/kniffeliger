@@ -74,6 +74,10 @@ public class GameWindowController implements Initializable {
     @FXML
     private Button highScoreButton;
     @FXML
+    private Button leaveGameButton;
+    @FXML
+    private Button leaveLobbyButton;
+    @FXML
     private Label stealLabel;
     @FXML
     private Label freezeLabel;
@@ -351,6 +355,7 @@ public class GameWindowController implements Initializable {
         //Update list of players
         ClientOutput.send(CommandsClientToServer.LOPL, "getting the players in the lobby");
         logger.info("List of Players in Lobby updated");
+        leaveGameButton.setDisable(true);
     }
 
     /**
@@ -370,6 +375,8 @@ public class GameWindowController implements Initializable {
 
             default -> logger.info("Invalid game phase received: " + phase);
         }
+        leaveGameButton.setDisable(true);
+        leaveLobbyButton.setDisable(true);
     }
 
     /**

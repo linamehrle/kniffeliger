@@ -11,6 +11,7 @@ import starter.Starter;
 import java.io.IOException;
 import java.net.Socket;
 import javafx.application.Application;
+import javafx.application.Platform;
 
 /**
  * This is the main class for the client. It contains the input thread for the console and from the server and the
@@ -104,8 +105,7 @@ public class Client {
             pong.stop();
             socket.close();
             clientOutput.stop();
-            //TODO how to stop the gui thread
-            //Platform.exit();
+            Platform.exit();
             System.out.println("Goodbye!");
         } catch (IOException e) {
             logger.warn(e.getMessage());
