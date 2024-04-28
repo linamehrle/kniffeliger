@@ -241,6 +241,15 @@ public class Main extends Application {
         }
     }
 
+    public static void changeTurn(String usernameAndPhase) {
+        String[] userPhaseSplit = usernameAndPhase.split(" ");
+
+        if ( userPhaseSplit.length >= 2) {
+            gameWindowController.initiateTurn(userPhaseSplit[0], userPhaseSplit[1]);
+        }
+
+    }
+
     /**
      * Method to relay to the GUI that Tab 2 has to be initialized with entry sheets of other players
      */
