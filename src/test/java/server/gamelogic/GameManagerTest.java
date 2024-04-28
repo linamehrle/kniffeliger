@@ -167,12 +167,57 @@ class GameManagerTest {
         Dice[] allDice = new Dice[]{d1, d2, d3, d4, d5};
         gm.rollDice(allDice);
 
-        // TODO: finish test
-
+        for (Dice dice : allDice) {
+            assertTrue(0 != dice.getDiceValue());
+        }
     }
 
 
-    // TODO: addActionDiceTest
+    // depends on constant DIVISIBLE_BY field in GameManager
+    // at the moment it is DIVISIBLE_BY = 1
+    @Test
+    @DisplayName("Adds action dice to players action dice set.")
+    void addActionDiceTest() {
+        // initiate game manager to test methods
+        GameManager gm = new GameManager();
+        // divisible by DIVIDABLE_BY constant in game manager, then get an action dice
+        int DIVIDABLE_BY = gm.getDIVIDABLE_BYE();
+        Dice d1 = new Dice();
+        Dice d2 = new Dice();
+        Dice d3 = new Dice();
+        Dice d4 = new Dice();
+        Dice d5 = new Dice();
+        Dice[] allDice = new Dice[]{d1, d2, d3, d4, d5};
+        gm.rollDice(allDice);
+
+        // get false if sum of dice is not dividable by DIVIDABLE_BY and true if it is dividable by DIVIDABLE_BY
+        boolean res = false;
+        int sum = 0;
+        for (Dice dice : allDice) {
+            sum += dice.getDiceValue();
+        }
+        if (sum % DIVIDABLE_BY == 0) {
+            res = true;
+        }
+
+        // generate players which have action dice
+        DummyPlayer lina = new DummyPlayer("lina");
+        DummyPlayer riccardo = new DummyPlayer("riccardo");
+
+        // set linas action dice to array below, riccardo's action dice stay 0
+        ActionDice[] actionDiceLina = new ActionDice[]{new ActionDice("steal"), new ActionDice("freeze"), new ActionDice("crossOut"), new ActionDice("shift"), new ActionDice("swap")};
+        lina.setActionDices(actionDiceLina);
+
+        // add action dice
+        boolean addedToLinasActionDice = gm.addActionDice(allDice, lina);
+        boolean addedToRiccardosActionDice = gm.addActionDice(allDice, riccardo);
+
+        // test if action dice can be added
+        assertEquals(res, addedToLinasActionDice);
+        assertTrue(6 <= lina.getActionDice().length && lina.getActionDice().length <= 11);
+        assertEquals(res, addedToRiccardosActionDice);
+        assertTrue(1 <= riccardo.getActionDice().length && riccardo.getActionDice().length <= 5);
+    }
 
     @Test
     @DisplayName("Tests the method that deletes an action dice out of an array")
@@ -201,7 +246,11 @@ class GameManagerTest {
         );
     }
 
-    // TODO: rankingTest
+    @Test
+    @DisplayName("Checks if ranking is properly done.")
+    void rankingTest() {
+
+    }
 
     // TODO: returnScoreAsStringTest
 
