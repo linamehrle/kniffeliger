@@ -51,6 +51,7 @@ public class GameWindowController implements Initializable {
     private Button swapButton;
     @FXML
     private Button deleteButton;
+
     @FXML
     private Button rollButton;
     @FXML
@@ -82,10 +83,11 @@ public class GameWindowController implements Initializable {
     private Label swapLabel;
     @FXML
     private Label rotateLabel;
+
     @FXML
     private ListView<EntrySheetGUImplementation> entrySheet;
 
-    @ FXML
+    @FXML
     private Button endTurnButton;
     private ObservableList<EntrySheetGUImplementation> entryList = FXCollections.observableArrayList();
     public ObservableList<DiceGUImplementation> diceList = FXCollections.observableArrayList();
@@ -272,6 +274,7 @@ public class GameWindowController implements Initializable {
 
     }
 
+
     /**
      * Method enables all game fields except special action fields
      * can be used to enable button's when it is a player's turn
@@ -280,6 +283,16 @@ public class GameWindowController implements Initializable {
         entrySheet.setDisable(false);
         diceBox.setDisable(false);
         rollButton.setDisable(false);
+    }
+
+
+    /**
+     * Method enables swap and shift actions if action dices available
+     * can be used to enable button's when it is a player's turn in SwapAndShift phase
+     */
+    public void enableSwapAndShift () {
+        swapButton.setDisable(swapLabel.getText().equals("0"));
+        rotateButton.setDisable(rotateLabel.getText().equals("0"));
     }
 
 
@@ -323,6 +336,8 @@ public class GameWindowController implements Initializable {
         SceneController.showActionPlayerAndFieldWindow(playersInLobby, "delete");
     }
 
+
+
     /**
      * Method that handles when the startGame Button is pressed to start a game
      * @param event
@@ -336,6 +351,25 @@ public class GameWindowController implements Initializable {
         //Update list of players
         ClientOutput.send(CommandsClientToServer.LOPL, "getting the players in the lobby");
         logger.info("List of Players in Lobby updated");
+    }
+
+    /**
+     * Starts a turn
+     * @param userName
+     * Player whose turn it is
+     * @param phase
+     * Main (normal round) or ShiftAndSwap (only shift and swap actions can be played)
+     */
+    public void initiateTurn(String userName, String phase) {
+        //Clear information box before each turn
+        clearInformationBox();
+        displayInformationText("It is " + userName + "'s turn. May the power be with them.");
+        switch (phase) {
+            case "Main" -> displayInformationText("The phase is: " + phase + "\nThis is a normal round. SWAP and ROTATE actions cannot be played");
+            case "SwapAndShift" -> displayInformationText("The phase is: " + phase + "\nIn this round only SWAP and ROTATE actions can be played.");
+
+            default -> logger.info("Invalid game phase received: " + phase);
+        }
     }
 
     /**
@@ -386,6 +420,10 @@ public class GameWindowController implements Initializable {
         SceneController.showHighScoreWindow();
     }
 
+    /**
+     * Signals to server that player ends turn
+     * @param event
+     */
     @FXML
     public void endTurnAction(MouseEvent event) {
         //TODO: adapt message if necessary
@@ -542,6 +580,14 @@ public class GameWindowController implements Initializable {
         });
 
     }
+
+    /**
+     * Clears information box
+     */
+    public void clearInformationBox() {
+        informationBox.getChildren().clear();
+    }
+
 
 
 
