@@ -161,6 +161,7 @@ public class GameManager implements Runnable {
 
                                 // send dices to all players
                                 Communication.broadcastToAll(CommandsServerToClient.ROLL, playerArraysList, rolledDice);
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "Choose which dice to save.");
 
                                 // wait for current player to choose dices to save
                                 wait();
@@ -202,9 +203,9 @@ public class GameManager implements Runnable {
                                     addActionDice(allDice, currentPlayer);
                                     currentActionDice = currentPlayer.getActionDice();
 
-                                    // TODO SEND ACTION DICES TO PLAYER
                                     // sends the new action dice to player
                                     Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentActionDice));
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You received " + ActionDice.printActionDice(currentActionDice));
 
                                     entryMade = true;
                                 }
