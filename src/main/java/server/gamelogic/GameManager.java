@@ -610,6 +610,15 @@ public class GameManager implements Runnable {
     }
 
     /**
+     * Gets the number that the dice needs to be dividable to get an action dice.
+     *
+     * @return number that the dice sum needs to be dividable by (important for testing)
+     */
+    public int getDIVIDABLE_BYE() {
+        return DIVIDABLE_BY;
+    }
+
+    /**
      * Adds the connected players to the lobby to the game.
      *
      * @param players connected players
