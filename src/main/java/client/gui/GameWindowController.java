@@ -503,7 +503,7 @@ public class GameWindowController implements Initializable {
      */
     public void receiveRoll( ObservableList<DiceGUImplementation> diceListToUpdate, int[] diceValues) {
 
-        for (int i=1; i < diceListToUpdate.size() && i < diceValues.length; i++) {
+        for (int i=0; i < diceListToUpdate.size() && i < diceValues.length; i++) {
             DiceGUImplementation dice = diceListToUpdate.get(i);
             if ( !dice.getSavingStatus() ) {
                 dice.setDiceValue(diceValues[i]);
