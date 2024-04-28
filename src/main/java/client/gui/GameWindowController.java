@@ -455,6 +455,8 @@ public class GameWindowController implements Initializable {
         String saveDiceString = GameWindowHelper.diceStashedArrToString(diceStashedList);
         //Saved dice are automatically transmitted before dice are rolled again
         if ( !saveDiceString.isEmpty()) {
+            logger.info("The following dices are selected to be saved: " + saveDiceString);
+
             ClientOutput.send(CommandsClientToServer.SAVE,  saveDiceString);
 
             //Set dice to saved
@@ -468,6 +470,8 @@ public class GameWindowController implements Initializable {
             }
         }
         else {
+            logger.info("No dices are selected to be saved.");
+
             ClientOutput.send(CommandsClientToServer.SAVE,  "none");
         }
         if (rollCounter <= 3) {
@@ -475,7 +479,6 @@ public class GameWindowController implements Initializable {
         }
         rollCounter++;
         diceBox.refresh();
-
     }
 
 

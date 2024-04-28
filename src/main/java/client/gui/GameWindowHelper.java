@@ -3,9 +3,11 @@ package client.gui;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
+import starter.Starter;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.stream.IntStream;
 
@@ -67,6 +69,8 @@ public class GameWindowHelper {
      * @return New string containing the indices of the dice separated by spaces
      */
     public static String diceStashedArrToString(String[] diceStashedList){
+        Starter.getLogger().trace("Dices to save are " + Arrays.toString(diceStashedList));
+
         StringBuilder saveMsgString = new StringBuilder();
         for (String elem:diceStashedList){
             if (! elem.isEmpty() ){
