@@ -271,12 +271,26 @@ class EntrySheetTest {
 
     }
 
-    // TODO: defreeze test
-//    @Test
-//    @DisplayName("Test if defreezing works properly.")
-//    void defreezeTest() {
-//
-//    }
+    @Test
+    @DisplayName("Test if defreezing works properly.")
+    void defreezeTest() {
+        // generate dummy player and its entry sheet to test defreezing
+        DummyPlayer lina = new DummyPlayer("lina");
+        EntrySheet linasEntrySheet = new EntrySheet(lina);
+
+        // random index between 0 and 13 to access an entry of the entry sheet and freeze and defreeze it
+        int randomIndex = (int) Math.floor(Math.random() * 13);
+
+        linasEntrySheet.getAsArray()[randomIndex].setFrozenStatus(true);
+
+        assertAll(() -> assertTrue(linasEntrySheet.getAsArray()[randomIndex].getFrozenStatus())
+        );
+
+        linasEntrySheet.defreeze();
+
+        assertAll(() -> assertFalse(linasEntrySheet.getAsArray()[randomIndex].getFrozenStatus())
+        );
+    }
 
     // TODO: addEntry test
 
