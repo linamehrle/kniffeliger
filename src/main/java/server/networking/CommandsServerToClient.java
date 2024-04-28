@@ -135,7 +135,12 @@ public enum CommandsServerToClient {
     /**
      * Updates entries in tab 2 of GUI (non-active players)
      */
-    ALES
+    ALES,
+
+    /**
+     * Communicates the GUI to initialize the entry sheets of the other players on tab 2
+     */
+    INES
 
 
 }

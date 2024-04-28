@@ -242,6 +242,13 @@ public class Main extends Application {
     }
 
     /**
+     * Method to relay to the GUI that Tab 2 has to be initialized with entry sheets of other players
+     */
+    public static void initOtherTab() {
+        gameWindowController.initTabOther();
+    }
+
+    /**
      * Communicates to the server that a player wants to leave the game
      */
     public static void exit() {
