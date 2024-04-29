@@ -77,6 +77,9 @@ public class GameManager implements Runnable {
 
         Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "The game starts.");
 
+        // request to initialize clients
+        Communication.broadcastToAll(CommandsServerToClient.INES, playerArraysList, "");
+
         // starting 14 rounds
         for (int round = 0; round < ROUNDS; round++) {
             logger.log(gameLogic, "Round " + (round + 1) + " started");
@@ -190,8 +193,12 @@ public class GameManager implements Runnable {
                                 // validate entry
                                 EntrySheet.entryValidation(currentEntrySheet, selectedEntry, allDice);
 
-                                // sent updated entry sheet to all players
-                                Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + ":"
+                                // sent updated entry sheet to currentPlayer
+                                Communication.sendToPlayer(CommandsServerToClient.ENTY, currentPlayer, currentPlayer.getUsername() + " " + selectedEntry + ":"
+                                        + currentEntrySheet.getEntryByName(selectedEntry).getValue());
+
+                                // sent updated sheet of the currentPlayer
+                                Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + ":"
                                         + currentEntrySheet.getEntryByName(selectedEntry).getValue());
 
                                 logger.log(gameLogic, "Save entry " + selectedEntry + "(" + currentEntrySheet.getEntryByName(selectedEntry).getValue() + ") of " + currentPlayer.getUsername());
