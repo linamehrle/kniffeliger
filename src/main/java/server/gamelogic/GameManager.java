@@ -636,7 +636,7 @@ public class GameManager implements Runnable {
         logger.info("Message from " + player.getUsername() + " with <" + input + "> received");
 
         // Only update input if the message comes from currentPlayer
-        if (player.equals(currentPlayer) || currentPlayer != null) {
+        if (player.equals(currentPlayer) && currentPlayer != null) {
             logger.info("Message from " + player.getUsername() + " accepted.");
             this.input = input;
             notify();
