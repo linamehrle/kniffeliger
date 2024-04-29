@@ -452,6 +452,12 @@ public class GameWindowController implements Initializable {
         ClientOutput.send(CommandsClientToServer.ENDT,  "ended turn");
         informationBox.getChildren().clear();
         displayInformationText("You ended your turn ");
+        for (DiceGUImplementation dice : diceList){
+            dice.setStashStatus(false);
+            dice.setSavingStatus(false);
+            dice.setDiceValue(0);
+
+        }
     }
 
 
