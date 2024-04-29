@@ -735,7 +735,7 @@ public class GameWindowController implements Initializable {
         int shiftCounter = 0;
         int crossOutCounter = 0;
 
-        String[] actions = actionDice.split(" ");
+        String[] actions = actionDice.split("\\s+");
 
         for (String action : actions) {
             switch (action) {
