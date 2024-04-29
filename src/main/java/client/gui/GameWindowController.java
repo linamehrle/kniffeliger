@@ -712,7 +712,7 @@ public class GameWindowController implements Initializable {
         clearInformationBox();
 
 
-        if (playersInLobby != null && !playersInLobby.isEmpty()) {
+        if (playersInLobby != null ) {
             for (int i = 0; i < playersInLobby.size() && i < playersWithSheets.length; i++) {
                 playersWithSheets[i] = new PlayerGUImplementation(playersInLobby.get(i));
 
