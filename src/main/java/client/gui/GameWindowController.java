@@ -42,6 +42,8 @@ public class GameWindowController implements Initializable {
     private Logger logger = Starter.getLogger();
 
     @FXML
+    private Button startButton;
+    @FXML
     private Button stealButton;
     @FXML
     private Button freezeButton;
@@ -379,6 +381,8 @@ public class GameWindowController implements Initializable {
         }
         leaveGameButton.setDisable(true);
         leaveLobbyButton.setDisable(true);
+        startButton.setDisable(true);
+        entryEnterButton.setDisable(true);
         rollCounter = 0;
     }
 
@@ -484,6 +488,7 @@ public class GameWindowController implements Initializable {
             ClientOutput.send(CommandsClientToServer.ROLL, "");
         } else {
             rollButton.setDisable(true);
+            entryEnterButton.setDisable(false);
         }
         diceBox.refresh();
     }
