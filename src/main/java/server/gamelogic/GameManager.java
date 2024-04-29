@@ -189,7 +189,7 @@ public class GameManager implements Runnable {
                                 EntrySheet.entryValidation(currentEntrySheet, selectedEntry, allDice);
 
                                 // sent updated entry sheet to all players
-                                Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + " "
+                                Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + ":"
                                         + currentEntrySheet.getEntryByName(selectedEntry).getValue());
 
                                 logger.log(gameLogic, "Save entry " + selectedEntry + "(" + currentEntrySheet.getEntryByName(selectedEntry).getValue() + ") of " + currentPlayer.getUsername());
