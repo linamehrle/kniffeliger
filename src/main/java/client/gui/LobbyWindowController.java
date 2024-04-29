@@ -21,6 +21,7 @@ import org.apache.logging.log4j.Logger;
  * It implements Initializable
  */
 public class LobbyWindowController implements Initializable {
+    
     private Logger logger = LogManager.getLogger(LobbyWindowController.class);
 
     @FXML
@@ -33,7 +34,19 @@ public class LobbyWindowController implements Initializable {
     private Button enterLobbyButton;
 
     @FXML
+    private Button leaveGameButton;
+    
+    @FXML
+    private Button changeUsernameButton;
+
+    @FXML
+    private Button highScoreButton;
+
+    @FXML
     private TextField lobbyTextField;
+    
+    @FXML
+    private TextField usernameTextField;
 
     private String selectedLobby = null;
 
@@ -63,6 +76,24 @@ public class LobbyWindowController implements Initializable {
     }
 
     /**
+     * Handles when the user changes their username via the gui to the name put in via the text field
+     * @param event
+     */
+    public void changeUsernameAction(ActionEvent event) {
+        String username = usernameTextField.getText();
+        ClientOutput.send(CommandsClientToServer.CHNA, username);
+        changeUsernameButton.setDisable(true);
+        usernameTextField.clear();
+    }
+
+    /**
+     * Opens the high score pup up window when the high score button is pressed
+     */
+    public void highScoreAction() {
+        SceneController.showHighScoreWindow();
+    }
+
+    /**
      * Handles when the button leaveGame is pressed
      */
     public void leaveGame() {
@@ -75,13 +106,14 @@ public class LobbyWindowController implements Initializable {
     public void selectLobby() {
         TreeItem<String> currentItem = lobbyList.getSelectionModel().getSelectedItem();
 
-        if (currentItem != null) {
+        if (currentItem != null && lobbyList.getTreeItemLevel(currentItem) == 1) {
             //selects the current lobby to possibly enter
             selectedLobby = currentItem.getValue();
+            //enables the button to enter the chosen lobby
+            enterLobbyButton.setDisable(false);
+        } else {
+            enterLobbyButton.setDisable(true);
         }
-
-        //enables the button to enter the chosen lobby
-        enterLobbyButton.setDisable(false);
     }
 
     /**
@@ -159,6 +191,20 @@ public class LobbyWindowController implements Initializable {
     }
 
     /**
+     * Updates the status of the lobby in the gui list if the status changes (e.g. a game is started or the lobby is full)
+     * @param lobbyWithNewStatus the name of the lobby and the new status in the form of "lobbyName (status)"
+     */
+    public void updateLobbyStatus(String lobbyWithNewStatus) {
+        String lobbyName = lobbyWithNewStatus.split(" ")[0];
+        for (TreeItem<String> treeItem : lobbyList.getRoot().getChildren()) {
+            String treeItemName = treeItem.getValue().split(" ")[0];
+            if (treeItemName.equals(lobbyName)) {
+                treeItem.setValue(lobbyWithNewStatus);
+            }
+        }
+    }
+
+    /**
      * The initialize Method for the Lobby Window
      * @param location
      * The location used to resolve relative paths for the root object, or
@@ -186,12 +232,21 @@ public class LobbyWindowController implements Initializable {
 
         createLobbyButton.setDisable(true);
         enterLobbyButton.setDisable(true);
+        changeUsernameButton.setDisable(true);
 
-        //TODO make this pretty
         lobbyTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(lobbyTextField.isFocused()){
+                if (lobbyTextField.isFocused()) {
                     createLobbyButton.setDisable(false);
+                }
+            }
+        });
+
+        usernameTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (usernameTextField.isFocused()) {
+                    changeUsernameButton.setDisable(false);
                 }
             }
         });
@@ -199,7 +254,6 @@ public class LobbyWindowController implements Initializable {
         hasBeenInitialized = true;
     }
 
-    //TODO only lobbies, not players can be selected
-    //TODO popUps when something is not done right
-    //TODO status of lobby is correct
+    //TODO popUps when something is not done right?
+    //TODO show personalized welcome, ie integrate username
 }

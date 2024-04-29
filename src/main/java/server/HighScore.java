@@ -67,8 +67,9 @@ public class HighScore {
 
         } catch (FileNotFoundException e) {
             //creates the file if it does not exist yet
-            new File("highscore.txt");
+            File highScore = new File("highscore.txt");
             logger.info("new file highscore.txt created");
+            writeInitialHighScore(highScore);
         } catch (Exception e) {
             logger.warn(e.getMessage());
         }
@@ -85,12 +86,29 @@ public class HighScore {
         try (BufferedReader reader = new BufferedReader(new FileReader("highscore.txt"))) {
             highScoreList = reader.readLine();
         } catch (FileNotFoundException e) {
-            logger.warn(e.getMessage() + ": no file highscore.txt found");
+            //creates the file if it does not exist yet
+            File highScore = new File("highscore.txt");
+            logger.info("new file highscore.txt created");
+            writeInitialHighScore(highScore);
+            return "353:Benni,";
         } catch (IOException e) {
             logger.warn(e.getMessage());
         }
         return highScoreList;
     }
 
+    /**
+     * Used to wirte an initial high score to the list (because Benni will always be the mvp <3)
+     * @param file
+     */
+    private static void writeInitialHighScore(File file) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            writer.write("353:Benni,");
+            writer.close();
+        } catch (IOException e) {
+            logger.warn(e.getMessage());
+        }
+    }
 
 }

@@ -3,10 +3,13 @@ package client.networking;
 import client.Print;
 import client.Client;
 import client.gui.Main;
+import client.gui.SceneController;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import server.networking.CommandsServerToClient;
 import starter.Starter;
+
+import java.util.Arrays;
 
 /**
  * This class handles the input read by the ClientInput class and processes it accordingly.
@@ -51,7 +54,6 @@ public class ClientInputHelper implements Runnable {
 
         //switch case for the different possible incoming commands
         switch (cmd) {
-
             case CHNA -> logger.info("Your username is now " + input[1]);
             case QUIT -> gameManager.disconnect();
             case PING -> clientOutput.send(CommandsClientToServer.PONG, input[1]);
@@ -60,7 +62,10 @@ public class ClientInputHelper implements Runnable {
                 System.out.println(input[1]);
                 Main.sendToChatWindow(input[1]);
             }
-            case BRCT -> logger.info("Alfred: " + input[1]);
+            case BRCT -> {
+                logger.info("Alfred: " + input[1]);
+                Main.displayInGameWindow(input[1]);
+            }
             case LOLI -> {
                 Print.printLobbies(input[1]);
                 Main.lobbyList(input[1]);
@@ -74,9 +79,30 @@ public class ClientInputHelper implements Runnable {
                 Main.removePlayer(input[1]);
                 logger.debug("LELO received with message: " + input[1]);
             }
-            case GAME -> System.out.println("Game: " + input[1]);
-            case PLLI -> Print.printPlayerList(input[1]);
-            case HGSC -> System.out.println(input[1]);
+            case ROLL -> {
+                System.out.println("Game: Your dice: " + input[1]);
+                Main.sendDiceToGUI(input[1]);
+            }
+            case PLLI -> {
+                //Print.printPlayerList(input[1]);
+                Main.updateChatPlayerList(input[1]);
+            }
+            case HGSC -> {
+                System.out.println(input[1]);
+                Main.updateHighScore(input[1]);
+            }
+            case LOST -> Main.updateLobby(input[1]);
+            // TODO: FIX LIFE
+            case LOPL -> Main.updateGamePlayerList(input[1]);
+            case RANK -> SceneController.showWinnerWindow(input[1]);
+            case ACTN -> Main.updateActionDice(input[1]);
+            case ENTY -> Main.updatePrimaryEntrySheet(input[1]);
+            case ALES -> Main.updateOtherEntrySheets(input[1]);
+            case ALDI -> Main.updateOtherDiceBox(input[1]);
+            case INES -> Main.initOtherTab(input[1]);
+            case STRT -> Main.changeTurn(input[1]);
+            case SWAP -> Main.swapEntrySheets(input[1]);
+            case TUSR -> Main.sendOwnNameToGUI(input[1]);
             default -> logger.info("unknown command received from server " + message);
         }
     }

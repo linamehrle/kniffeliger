@@ -1,7 +1,6 @@
 package server;
 
 import java.util.ArrayList;
-
 import org.apache.logging.log4j.Logger;
 import server.gamelogic.GameManager;
 import server.networking.CommandsServerToClient;
@@ -74,8 +73,10 @@ public class Lobby {
             player.setLobby(this);
             if (numbOfPlayers == 4) {
                 status = "full";
+                Communication.broadcastToAll(CommandsServerToClient.LOST, ListManager.getPlayerList(), name + " (full)");
             }
             Communication.sendToPlayer(CommandsServerToClient.BRCT, player, "You successfully entered the lobby " + name);
+            Communication.broadcastToAll(CommandsServerToClient.LOPL, playersInLobby, getPlayersInLobbyAsString());
         }
     }
 
@@ -93,6 +94,8 @@ public class Lobby {
             Communication.sendToPlayer(CommandsServerToClient.BRCT, player, "There are not enough players in this lobby to start a game");
         } else {
             status = "ongoing game";
+            Communication.broadcastToAll(CommandsServerToClient.LOST, ListManager.getPlayerList(), name + " (ongoing game)");
+
             // sets the player in the lobby
             gameManager.setPlayers(playersInLobby);
 
@@ -122,12 +125,13 @@ public class Lobby {
             player.setLobby(null);
             if (status.equals("full")) {
                 status = "open";
+                Communication.broadcastToAll(CommandsServerToClient.LOST, ListManager.getPlayerList(), name + " (open)");
             }
         }
+        Communication.broadcastToAll(CommandsServerToClient.LOPL, playersInLobby, getPlayersInLobbyAsString());
         //TODO how to handle leaving a lobby when a game is running?
     }
 
-    //TODO should you be able to rename a lobby?
 
     /**
      * Handles the lobby status at the end of the game
@@ -135,9 +139,23 @@ public class Lobby {
     public void gameEnded() {
         if(playersInLobby.size() == 4) {
             status = "full";
+            Communication.broadcastToAll(CommandsServerToClient.LOST, ListManager.getPlayerList(), name + " (full)");
         } else {
             status = "open";
+            Communication.broadcastToAll(CommandsServerToClient.LOST, ListManager.getPlayerList(), name + " (open)");
         }
+    }
+
+    /**
+     * Returns a list of the players in the lobby as a string in the following way: "username,username,..."
+     * @return
+     */
+    public String getPlayersInLobbyAsString() {
+        String playersInLobbyAsString = "";
+        for (Player player : playersInLobby) {
+            playersInLobbyAsString = playersInLobbyAsString + player.getUsername() + ",";
+        }
+        return playersInLobbyAsString;
     }
 
     /**

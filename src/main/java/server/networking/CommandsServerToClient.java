@@ -57,18 +57,95 @@ public enum CommandsServerToClient {
     LELO,
 
     /**
-     * Used to give out game related information to the client
-     */
-    GAME,
-
-    /**
      * Returns a list with all connected players to the client
      */
     PLLI,
 
     /**
-     * Returns a high score list to a client
+     * Requests a high score list from the server
      */
-    HGSC
+    HGSC,
+
+
+    /**
+     * Sends rolled dice to the client
+     */
+    ROLL,
+
+    /**
+     * Sends an update of a lobby status to the client to update the gui
+     */
+    LOST,
+
+    /**
+     * Starts a turn and communicates the player name and the game phase
+     */
+    STRT,
+
+    /**
+     * Communicates to the gui that a player has stolen an entry of another player
+     */
+    STEA,
+
+    /**
+     * Communicates to the gui that a player has frozen an entry of another player
+     */
+    FRZE,
+
+    /**
+     * Communicates to the gui that a player has crossed out an entry of another player
+     */
+    COUT,
+
+    /**
+     * Communicates the updated entry to the client to display in the gui
+     */
+    ENTY,
+
+    /**
+     * Communicates a shift of entry sheets to the gui
+     */
+    SHFT,
+
+    /**
+     * Communicates a swap of entry sheets to the gui
+     */
+    SWAP,
+
+    /**
+     * Communicates that a player has gotten an action die
+     */
+    ACTN,
+
+    /**
+     * Communicates the final score of the game to display
+     */
+    RANK,
+
+    /**
+     * Returns a list of all players that are in a certain lobby
+     */
+    LOPL,
+
+    /**
+     * Updates tab 2 of GUI (non-active players) with result of ROLL (dice values)
+     */
+    ALDI,
+
+    /**
+     * Updates entries in tab 2 of GUI (non-active players)
+     */
+    ALES,
+
+    /**
+     * Communicates the GUI to initialize the entry sheets of the other players on tab 2
+     */
+    INES,
+
+    /**
+     * Transmits username
+     */
+    TUSR
+
 
 }

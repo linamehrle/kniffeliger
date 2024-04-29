@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// get methods are not tested separately since they are used in tests anyway and tested with the other tests
+// not all set methods are tested since some of them are very simple
 class EntryTest {
     Entry entry1 = new Entry("ones", 0);
     Entry entry2 = new Entry("twos", 0);
@@ -12,9 +14,10 @@ class EntryTest {
     @Test
     @DisplayName("Checks if value can be set.")
     void setValueTest(){
-        entry2.setValue(6);
+        int randomNumber = (int) Math.floor(Math.random() * 100 + 5);
+        entry2.setValue(randomNumber);
         assertAll(() -> assertEquals(0, entry1.getValue()),
-                () -> assertEquals(6, entry2.getValue())
+                () -> assertEquals(randomNumber, entry2.getValue())
         );
 
     }

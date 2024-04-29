@@ -66,12 +66,7 @@ public enum CommandsClientToServer {
     /**
      * Used to start a game in a lobby
      */
-    STRT,
-
-    /**
-     * Gives all game related information to the GameManager on the server
-     */
-    GAME,
+    STRG,
 
     /**
      * Requests a list of all connected players from the server to print in the console
@@ -81,6 +76,64 @@ public enum CommandsClientToServer {
     /**
      * Requests a high score list from the server
      */
-    HGSC
+    HGSC,
 
+
+    /**
+     * Requests new dice values from server/gamelogic (roll the dice)
+     */
+    ROLL,
+
+    /**
+     * Sends entry sheet selection to server, usually followed by String &lt; name of entry field &gt;
+     */
+    ENTY,
+
+    /**
+     * Communicates that the player wants to steal an entry, command is followed by the name of the victim and then the
+     * name of the entry
+     */
+    STEA,
+
+    /**
+     * Communicates that the player wants to freeze an entry, command is followed by the name of the victim and then the
+     * name of the entry
+     */
+    FRZE,
+
+    /**
+     * Communicates that the player wants to cross out an entry, command is followed by the name of the victim and then the
+     * name of the entry
+     */
+    COUT,
+
+    /**
+     * Communicates that the player wants to shift the entry sheets
+     */
+    SHFT,
+
+    /**
+     * Communicates that the player wants to swap their entry sheet, command is followed by the name of the victim
+     */
+    SWAP,
+
+    /**
+     * Used to communicate that a player has ended their turn
+     */
+    ENDT,
+
+    /**
+     * Used to communicate the saved dice to the server, followed by a list of numbers from 0 to 4
+     */
+    SAVE,
+
+    /**
+     * Used to get a list of the players that are in the same lobby as the player asking
+     */
+    LOPL,
+
+    /**
+     *  Request username
+     */
+    RUSR
 }

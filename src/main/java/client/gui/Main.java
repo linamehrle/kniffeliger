@@ -4,12 +4,13 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
 import org.apache.logging.log4j.Logger;
 import starter.Starter;
+
+import java.util.ArrayList;
 
 /**
  * This is the main class for the gui, it handles the start and communication from the network to the gui.
@@ -19,8 +20,14 @@ public class Main extends Application {
 
     private static LobbyWindowController lobbyWindowController;
     private static CWcontroller cWcontroller;
+
+    private static GameWindowController gameWindowController;
+    private static HighScoreController highScoreController;
+
     Stage mainWidow;
     Stage chatWindow;
+
+
 
     /**
      * The start method for the gui
@@ -45,12 +52,6 @@ public class Main extends Application {
             mainWidow.show();
             logger.info("Lobby Window started");
 
-            chatWindow = new Stage();
-            FXMLLoader loaderChat = new FXMLLoader(getClass().getResource("/chatwindow.fxml"));
-            Parent rootChat = (Parent)loaderChat.load();
-            Scene scene = new Scene(rootChat, 600, 300, Color.BLACK);
-            this.chatWindow.setScene(scene);
-            this.chatWindow.show();
             logger.info("Chat Window started");
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -97,12 +98,24 @@ public class Main extends Application {
         Main.lobbyWindowController = lobbyWindowController;
     }
 
+    public static void setGameWindowController(GameWindowController controller) {
+        Main.gameWindowController = controller;
+    }
+
     /**
      * Setter for the cWcontroller
      * @param cWcontroller
      */
     public static void setcWcontroller(CWcontroller cWcontroller) {
         Main.cWcontroller = cWcontroller;
+    }
+
+    /**
+     * Setter for the highScoreController
+     * @param highScoreController
+     */
+    public static void setHighScoreController(HighScoreController highScoreController) {
+        Main.highScoreController = highScoreController;
     }
 
     /**
@@ -114,10 +127,158 @@ public class Main extends Application {
     }
 
     /**
+     * Sends the current high score list to the gui to display
+     * @param highScore
+     */
+    public static void updateHighScore(String highScore) {
+        Main.highScoreController.updateHighScore(highScore);
+    }
+
+    /**
+     * Method to relay dice values to GUI (Game Window Controller)
+     * @param diceValues string of 5 dice values separated by empty spaces
+     */
+    public static void sendDiceToGUI(String diceValues) {
+        int[] diceValueArray = parseIntArray(diceValues);
+        Main.gameWindowController.receiveRoll(gameWindowController.diceList, diceValueArray);
+    }
+
+    public static void updateOtherDiceBox(String diceValues){
+        int[] diceValueArray = parseIntArray(diceValues);
+        Main.gameWindowController.receiveRoll(gameWindowController.diceListOther, diceValueArray);
+    }
+
+    public static void updatePrimaryEntrySheet (String entrySheetString) {
+        //First split results at spaces giving entryFieldName:score
+        String[] nameValueStrings = entrySheetString.split(" ");
+        ArrayList<String[]> listOfEntries = new ArrayList<>();
+        for (String elem : nameValueStrings){
+            //Split at : giving arrays containing {entryFieldName, score}
+            String[] nameValuePairs = elem.split(":");
+            listOfEntries.add(nameValuePairs);
+        }
+        Main.gameWindowController.receiveEntrySheet(listOfEntries);
+    }
+
+    public static void updateOtherEntrySheets (String entrySheetString) {
+        //First split results at spaces giving entryFieldName:score
+        String[] nameValueStrings = entrySheetString.split(" ");
+        String userName = nameValueStrings[0];
+        ArrayList<String[]> listOfEntries = new ArrayList<>();
+
+        for (int i=1; i < nameValueStrings.length; i++){
+            //Split at : giving arrays containing {entryFieldName, score}
+            String[] nameValuePairs = nameValueStrings[i].split(":");
+            listOfEntries.add(nameValuePairs);
+        }
+        Main.gameWindowController.updateEntrySheetTab2(userName, listOfEntries);
+    }
+
+    public static void sendInformationTextToGUI(String informationText) {
+        Main.gameWindowController.displayInformationText(informationText);
+    }
+
+    /**
+     * Sends a new lobby status to the gui to update the list
+     * @param lobby
+     */
+    public static void updateLobby(String lobby) {
+        Main.lobbyWindowController.updateLobbyStatus(lobby);
+    }
+
+    //Put this in a separate file with helper functions?
+    /**
+     * Helper function to convert dice values received as string to array
+     * @param input
+     * @return
+     */
+    public static int[] parseIntArray(String input) {
+        String[] numbers = input.split(" ");
+        int[] array = new int[numbers.length];
+
+        for (int i = 0; i < numbers.length; i++) {
+            if (!numbers[i].isEmpty()) {
+                array[i] = Integer.parseInt(numbers[i]);
+            }
+        }
+
+        return array;
+    }
+
+    /**
+     * Used to update the player list in the drop-down of the chat window
+     * @param playerList
+     */
+    public static void updateChatPlayerList(String playerList) {
+        if (cWcontroller != null) {
+            Main.cWcontroller.updatePlayerList(playerList);
+        }
+    }
+
+    /**
+     * Used to update the list of players in the lobby in the game window controller
+     * @param playerList
+     */
+    public static void updateGamePlayerList(String playerList) {
+        if (gameWindowController != null) {
+            Main.gameWindowController.updatePlayerList(playerList);
+        }
+    }
+
+    /**
+     * Sends the current action dice to the game window to update the counter
+     * @param actionDice
+     */
+    public static void updateActionDice(String actionDice) {
+        Main.gameWindowController.updateActionDice(actionDice);
+    }
+
+    /**
+     * Gives a string to the game window to display in the information field
+     * @param text
+     */
+    public static void displayInGameWindow(String text) {
+        if (gameWindowController != null) {
+            gameWindowController.displayInformationText(text);
+        }
+    }
+
+    public static void changeTurn(String usernameAndPhase) {
+        String[] userPhaseSplit = usernameAndPhase.split(" ");
+
+        if ( userPhaseSplit.length >= 2) {
+            gameWindowController.initiateTurn(userPhaseSplit[0], userPhaseSplit[1]);
+        }
+
+    }
+
+    /**
+     * Method to relay to the GUI that Tab 2 has to be initialized with entry sheets of other players
+     */
+    public static void initOtherTab(String playerlist) {
+        gameWindowController.updatePlayerList(playerlist);
+        gameWindowController.initTabOther();
+    }
+
+    /**
      * Communicates to the server that a player wants to leave the game
      */
     public static void exit() {
         ClientOutput.send(CommandsClientToServer.QUIT, "leaving now");
+    }
+
+
+    public static void swapEntrySheets(String twoUsernames) {
+        String[] playersSwapped = twoUsernames.split(" ");
+
+        if (playersSwapped.length == 2){
+            gameWindowController.swapEntrySheets(playersSwapped[0], playersSwapped[1]);
+        }
+    }
+
+    public static void sendOwnNameToGUI(String ownUserName){
+        gameWindowController.setOwnUser(ownUserName);
+
     }
 }
 

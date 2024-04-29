@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
+    <CustomLevel name="GAME_LOGIC" intlevel="350"/>
     <Properties>
         <Property name="filename">./logs</Property>
     </Properties>

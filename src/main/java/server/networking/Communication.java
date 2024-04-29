@@ -20,6 +20,8 @@ public class Communication {
      */
     public static void broadcastToAll(CommandsServerToClient cmd, ArrayList<Player> playerList, String message) {
         for (Player player : playerList) {
+            Starter.getLogger().trace("Sent message <" + message + "> to " + player.getUsername());
+
             ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
             serverOutput.send(cmd, message);
         }
@@ -45,6 +47,8 @@ public class Communication {
      * @param message
      */
     public static void sendToPlayer(CommandsServerToClient cmd, Player player, String message) {
+        Starter.getLogger().trace("Sent message <" + message + "> to " + player.getUsername());
+
         ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
         serverOutput.send(cmd, message);
     }
@@ -119,14 +123,15 @@ public class Communication {
         for (Player playerInList : playersInLobby) {
             if (!playerInList.equals(player)) {
                 switch (cmd) {
-                    case GAME -> {
-                        ServerOutput serverOutput = playerInList.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
-                        serverOutput.send(cmd, message);
-                    }
                     case CHAT -> {
                         ServerOutput serverOutput = playerInList.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
                         serverOutput.send(CommandsServerToClient.CHAT, player.getUsername() + " to Lobby : " + message);
                         logger.debug("chat send to player " + player.getUsername());
+                    }
+                    //Added ROLL command
+                    case ROLL ->{
+                        ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
+                        serverOutput.send(CommandsServerToClient.ROLL, message);
                     }
                 }
             }
