@@ -281,9 +281,10 @@ public class GameWindowController implements Initializable {
         stealButton.setDisable(true);
         freezeButton.setDisable(true);
         rotateButton.setDisable(true);
-        rollButton.setDisable(true);
         swapButton.setDisable(true);
         deleteButton.setDisable(true);
+        rollButton.setDisable(true);
+
         rollButton.setDisable(true);
         endTurnButton.setDisable(true);
         entryEnterButton.setDisable(true);
@@ -387,6 +388,9 @@ public class GameWindowController implements Initializable {
 
             default -> logger.info("Invalid game phase received: " + phase);
         }
+        if (userName.equals(Main.getUsername())){
+            enableAllGameFields();
+        }
         leaveGameButton.setDisable(true);
         leaveLobbyButton.setDisable(true);
         startButton.setDisable(true);
@@ -458,6 +462,7 @@ public class GameWindowController implements Initializable {
             dice.setDiceValue(0);
 
         }
+        diceBox.refresh();
     }
 
 
