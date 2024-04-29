@@ -140,7 +140,7 @@ public class GameWindowController implements Initializable {
         Main.setGameWindowController(this);
 
         //set the username
-        usernameLabel.setText("username"); //TODO usernames of players for the sheets
+        usernameLabel.setText("username");
 
         //Initialize entry sheet
         entryList = GameWindowHelper.makeEntrySheet();
@@ -237,7 +237,11 @@ public class GameWindowController implements Initializable {
                     String title = entry.getIDname();
                     String separation = GameWindowHelper.fillWithTabulators(title, 4);
 
-                    setText(title + separation + entry.getScore());
+                    String scoreString = "";
+                    if (entry.getScore() != -1) {
+                        scoreString = String.valueOf(entry.getScore());
+                    }
+                    setText(title + separation + scoreString);
                     //setGraphic(imageView);
                 }
             }
@@ -627,6 +631,7 @@ public class GameWindowController implements Initializable {
                         }
                     } else{
                         logger.info("entry sheet cannot be updated due to invalid input format.");
+
                     }
                 }
 
