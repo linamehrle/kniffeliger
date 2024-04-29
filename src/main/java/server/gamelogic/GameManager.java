@@ -85,7 +85,7 @@ public class GameManager implements Runnable {
         Communication.broadcastToAll(CommandsServerToClient.INES, playerArraysList, playerList);
 
         // starting 14 rounds
-        for (int round = 0; round < ROUNDS; round++) {
+        for (int round = 0; round < 3; round++) {
             logger.log(gameLogic, "Round " + (round + 1) + " started");
 
             // loop through all the players
@@ -471,8 +471,10 @@ public class GameManager implements Runnable {
              */
             if (!dice.getSavingStatus()) {
                 dice.rollSingleDice();
-                rolledDice = rolledDice + dice.getDiceValue() + " ";
             }
+
+            // create string of all dice values
+            rolledDice = rolledDice + dice.getDiceValue() + " ";
         }
         return rolledDice;
     }

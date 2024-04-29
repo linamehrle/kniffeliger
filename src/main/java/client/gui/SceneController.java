@@ -3,6 +3,7 @@ package client.gui;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -126,10 +127,17 @@ public class SceneController {
         try {
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/WinnerWindow.fxml"));
             Parent root3 = loader.load();
-            Stage stage = new Stage();
-            scene = new Scene(root3);
-            stage.setScene(scene);
-            stage.show();
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    Stage stage = new Stage();
+                    scene = new Scene(root3);
+                    stage.setScene(scene);
+                    stage.show();
+                }
+            });
+
         } catch (IOException e) {
             logger.warn(e.getMessage());
         }

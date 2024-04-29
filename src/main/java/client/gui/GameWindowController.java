@@ -505,7 +505,7 @@ public class GameWindowController implements Initializable {
 
                 ClientOutput.send(CommandsClientToServer.SAVE, saveDiceString);
 
-                //Set dice to saved
+                //Set dice to save
                 for (int i = 0; i < diceStashedList.length; i++) {
                     if (!diceStashedList[i].isEmpty()) {
                         diceList.get(i).setSavingStatus(true);
@@ -567,16 +567,17 @@ public class GameWindowController implements Initializable {
     public void receiveRoll( ObservableList<DiceGUImplementation> diceListToUpdate, int[] diceValues) {
 
         //index of dices in diceValues[]
-        int i = 0;
-        for (DiceGUImplementation dice : diceListToUpdate) {
-            if (!dice.getSavingStatus() && i < diceValues.length){
-                dice.setDiceValue(diceValues[i]);
-                System.out.println(Arrays.toString(diceValues));
-                i++;
-            }
+        //int i = 0;
+        for (int i=0; i < diceListToUpdate.size() && i < diceValues.length; i++) {
+            diceListToUpdate.get(i).setDiceValue(diceValues[i]);
+            //if (!dice.getSavingStatus() && i < diceValues.length){
+                //dice.setDiceValue(diceValues[i]);
+                //System.out.println(Arrays.toString(diceValues));
+                //i++;
+           // }
         }
 
-        displayInformationText("ALEA IACTA EST!  \n(the die is cast)");
+        displayInformationText("ALEA IACTA EST! (the die is cast)");
         diceBox.refresh();
         diceBoxOther.refresh();
 
