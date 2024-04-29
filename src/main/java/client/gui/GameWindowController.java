@@ -520,12 +520,15 @@ public class GameWindowController implements Initializable {
      */
     public void receiveRoll( ObservableList<DiceGUImplementation> diceListToUpdate, int[] diceValues) {
 
-        for (int i=0; i < diceListToUpdate.size() && i < diceValues.length; i++) {
-            DiceGUImplementation dice = diceListToUpdate.get(i);
-            if ( !dice.getSavingStatus() ) {
+        //index of dices in diceValues[]
+        int i = 0;
+        for (DiceGUImplementation dice : diceListToUpdate) {
+            if (!dice.getSavingStatus() && i < diceValues.length){
                 dice.setDiceValue(diceValues[i]);
+                i++;
             }
         }
+
         displayInformationText("ALEA IACTA EST!  \n(the die is cast)");
         diceBox.refresh();
         diceBoxOther.refresh();
