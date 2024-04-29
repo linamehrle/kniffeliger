@@ -133,7 +133,8 @@ public class GameWindowController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         logger.info("Game Window initialized");
-
+        ownerUser = Main.getUsername();
+        System.out.println(ownerUser);
 
         //Set this instance of GameWindowController as controller in main
         Main.setGameWindowController(this);
@@ -261,7 +262,7 @@ public class GameWindowController implements Initializable {
      * @param playerList the list of players from the server, a String of the form "username,username,..."
      */
     public void updatePlayerList(String playerList) {
-        String[] players = playerList.split(",");
+        String[] players = playerList.split(" ");
         playersInLobby = new ArrayList<>();
         for (int i = 0; i < players.length; i++) {
             playersInLobby.add(players[i]);
@@ -391,7 +392,7 @@ public class GameWindowController implements Initializable {
 
             default -> logger.info("Invalid game phase received: " + phase);
         }
-        if (userName.equals(Main.getUsername())){
+        if (userName.equals(ownerUser)){
             enableAllGameFields();
         } else {
             //disableAllGameFields();
@@ -703,7 +704,6 @@ public class GameWindowController implements Initializable {
      */
     public void initTabOther() {
         clearInformationBox();
-
 
 
         if (playersInLobby != null && !playersInLobby.isEmpty()) {
