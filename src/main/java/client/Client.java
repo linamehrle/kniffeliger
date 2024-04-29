@@ -62,26 +62,26 @@ public class Client {
             return;
         }
 
-        // print welcome text
-        String welcomeText = "======================================================================\n" +
-                "====                        Kniffeliger                           ====\n" +
-                "======================================================================\n" +
-                "Welcome to Kniffeliger TestDemo.\n" +
-                "======================================================================\n" +
-                "You can use the following commands:\n" +
-                "\\changeUsername <new username> to change your username\n" +
-                "\\chat <message> to send a chat message to all other players\n" +
-                "\\whisper <username> <message> to send a chat to only one other player\n" +
-                "\\newLobby <name> to create a new lobby with the given name\n" +
-                "\\showLobbies to get a list of all existing lobbies\n" +
-                "\\showPlayers to et a list of all connected players\n" +
-                "\\showHighScores to get a high score list\n" +
-                "\\enterLobby <name> to enter a lobby of a given name\n" +
-                "\\start to start a game in a lobby\n" +
-                "\\gameAction to enter all commands belonging to the game\n" +
-                "\\quit to leave the game\n" +
-                "======================================================================\n";
-        System.out.println(welcomeText);
+//        // print welcome text
+//        String welcomeText = "======================================================================\n" +
+//                "====                        Kniffeliger                           ====\n" +
+//                "======================================================================\n" +
+//                "Welcome to Kniffeliger TestDemo.\n" +
+//                "======================================================================\n" +
+//                "You can use the following commands:\n" +
+//                "\\changeUsername <new username> to change your username\n" +
+//                "\\chat <message> to send a chat message to all other players\n" +
+//                "\\whisper <username> <message> to send a chat to only one other player\n" +
+//                "\\newLobby <name> to create a new lobby with the given name\n" +
+//                "\\showLobbies to get a list of all existing lobbies\n" +
+//                "\\showPlayers to et a list of all connected players\n" +
+//                "\\showHighScores to get a high score list\n" +
+//                "\\enterLobby <name> to enter a lobby of a given name\n" +
+//                "\\start to start a game in a lobby\n" +
+//                "\\gameAction to enter all commands belonging to the game\n" +
+//                "\\quit to leave the game\n" +
+//                "======================================================================\n";
+//        System.out.println(welcomeText);
 
         if (username.equals("default")) {
             String systemUsername = System.getProperty("user.name");

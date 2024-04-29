@@ -77,6 +77,9 @@ public class GameManager implements Runnable {
 
         Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "The game starts.");
 
+        // request to initialize clients
+        Communication.broadcastToAll(CommandsServerToClient.INES, playerArraysList, "");
+
         // starting 14 rounds
         for (int round = 0; round < ROUNDS; round++) {
             logger.log(gameLogic, "Round " + (round + 1) + " started");
@@ -139,28 +142,21 @@ public class GameManager implements Runnable {
                         case "ROLL":
                             logger.trace("Entered ROLL case");
 
-                            if (!entryMade) {
+                            if (!entryMade && !allDiceSaved(allDice)) {
                                 // if player did not steal yet then roll
                                 // set about to roll to true so player cannot steal anymore
                                 aboutToRoll = true;
 
                                 // rolls dice
-                                rollDice(allDice);
-                                logger.log(gameLogic, "Dices were rolled");
+                                String rolledDice = rollDice(allDice);
 
-                                // get rolled dice values as string (1stDiceVal, 2ndDiceVal, ...)
-                                String rolledDice = "";
-
-                                for (Dice dice : allDice) {
-                                    // if dice was not saved
-                                    if (!dice.getSavingStatus()) {
-                                        rolledDice = rolledDice + dice.getDiceValue() + " ";
-                                    }
-                                }
+                                logger.log(gameLogic, "Dices were rolled.");
                                 logger.log(gameLogic, "Rolled: " + rolledDice);
 
                                 // send dices to all players
                                 Communication.broadcastToAll(CommandsServerToClient.ROLL, playerArraysList, rolledDice);
+                            } else {
+                                logger.log(gameLogic, "Dices were not rolled.");
                             }
                             break;
                         case "SAVE":
@@ -178,10 +174,12 @@ public class GameManager implements Runnable {
                                     int idxDice = Integer.parseInt(savedDice[idx]);
                                     allDice[idxDice].saveDice();
                                 }
+                            } else {
+                                logger.trace("None dices are selected to be saved.");
                             }
                             break;
                         case "ENTY":
-                            logger.trace("Entered SAVE case");
+                            logger.trace("Entered ENTY case");
 
                             if (allDiceSaved(allDice)) {
                                 logger.log(gameLogic, "All dices of " + currentPlayer.getUsername() + " were saved.");
@@ -195,8 +193,12 @@ public class GameManager implements Runnable {
                                 // validate entry
                                 EntrySheet.entryValidation(currentEntrySheet, selectedEntry, allDice);
 
-                                // sent updated entry sheet to all players
-                                Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + " "
+                                // sent updated entry sheet to currentPlayer
+                                Communication.sendToPlayer(CommandsServerToClient.ENTY, currentPlayer, currentPlayer.getUsername() + " " + selectedEntry + ":"
+                                        + currentEntrySheet.getEntryByName(selectedEntry).getValue());
+
+                                // sent updated sheet of the currentPlayer
+                                Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + ":"
                                         + currentEntrySheet.getEntryByName(selectedEntry).getValue());
 
                                 logger.log(gameLogic, "Save entry " + selectedEntry + "(" + currentEntrySheet.getEntryByName(selectedEntry).getValue() + ") of " + currentPlayer.getUsername());
@@ -210,6 +212,8 @@ public class GameManager implements Runnable {
                                 Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You received " + ActionDice.printActionDice(currentActionDice));
 
                                 entryMade = true;
+                            } else {
+                                logger.log(gameLogic, "Not all dices are selected to be saved.");
                             }
                             break;
                         case "STEA":
@@ -232,6 +236,8 @@ public class GameManager implements Runnable {
 
                                 //send updated action dice to player
                                 Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
+                            } else {
+                                logger.log(gameLogic, "No steal: aboutToRoll=" + aboutToRoll + ", stealCount=" + stealCount);
                             }
                             break;
                         case "FRZE":
@@ -249,6 +255,8 @@ public class GameManager implements Runnable {
 
                                 //send updated action dice to player
                                 Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
+                            } else {
+                                logger.log(gameLogic, "No freeze: freezeCount=" + freezeCount);
                             }
                             break;
                         case "COUT":
@@ -267,6 +275,8 @@ public class GameManager implements Runnable {
 
                                 //send updated action dice to player
                                 Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
+                            } else {
+                                logger.log(gameLogic, "No cross out: crossOutCount=" + crossOutCount);
                             }
                             break;
                         case "ENDT":
@@ -275,6 +285,8 @@ public class GameManager implements Runnable {
                             if (entryMade) {
                                 logger.log(gameLogic, "Ending turn (" + currentPlayer.getUsername() + ")");
                                 endTurn = true;
+                            } else {
+                                logger.log(gameLogic, "No ending turn; no entry was made.");
                             }
                             break;
                         default:
@@ -309,6 +321,7 @@ public class GameManager implements Runnable {
 
                 // notify players which turn is
                 Communication.broadcastToAll(CommandsServerToClient.STRT, playerArraysList, currentPlayer.getUsername() + " ShiftSwap");
+                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "-- It's your turn!");
 
                 logger.log(gameLogic, currentPlayer.getUsername() + "'s turn.");
 
@@ -335,6 +348,8 @@ public class GameManager implements Runnable {
 
                                 //send updated action dice to player
                                 Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
+                            } else {
+                                logger.log(gameLogic, "No shift: shiftCount=" + shiftCount);
                             }
                             break;
                         case "SWAP":
@@ -350,6 +365,8 @@ public class GameManager implements Runnable {
 
                                 //send updated action dice to player
                                 Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
+                            } else {
+                                logger.log(gameLogic, "No swap: swapCount=" + swapCount);
                             }
                             break;
                         case "ENDT":
@@ -431,8 +448,10 @@ public class GameManager implements Runnable {
      * dice, so it has not been saved and if it has less than 3 rolls. Saves dice automatically if it has been rolled 3 times.
      *
      * @param playersDice dice client hands to server
+     * @return string with rolled dices
      */
-    public void rollDice(Dice[] playersDice) {
+    public String rollDice(Dice[] playersDice) {
+        String rolledDice = "";
         // handle NullPointerException if Dice array has only values null
         for (Dice dice : playersDice) {
             /* rollDice() already checks if dice has been saved or if it has been rolled 3 times already (because then dice
@@ -441,8 +460,10 @@ public class GameManager implements Runnable {
              */
             if (!dice.getSavingStatus()) {
                 dice.rollSingleDice();
+                rolledDice = rolledDice + dice.getDiceValue() + " ";
             }
         }
+        return rolledDice;
     }
 
     /**
@@ -612,7 +633,7 @@ public class GameManager implements Runnable {
      * @param input answer of player
      */
     public synchronized void getAnswer(String input, Player player) {
-        logger.info("Message from " + player.getUsername() + " with <" + input + "> received.");
+        logger.info("Message from " + player.getUsername() + " with <" + input + "> received");
 
         // Only update input if the message comes from currentPlayer
         if (player.equals(currentPlayer) && currentPlayer != null) {
@@ -669,5 +690,4 @@ public class GameManager implements Runnable {
         }
         return ranking;
     }
-
 }

@@ -2,6 +2,7 @@ package client.gui;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -106,6 +107,12 @@ public class GameWindowController implements Initializable {
     private HashMap<String, Integer> entrySheetNameIndexMap = GameWindowHelper.makeEntryToIntMap();
     private ArrayList<String> playersInLobby;
     private PlayerGUImplementation[] playersWithSheets = new PlayerGUImplementation[4];
+
+    int freezeCounter = 0;
+    int swapCounter = 0;
+    int stealCounter = 0;
+    int shiftCounter = 0;
+    int crossOutCounter = 0;
 
     int rollCounter = 0;
 
@@ -237,6 +244,7 @@ public class GameWindowController implements Initializable {
 
         createActionDiceListener();
 
+
         freezeLabel.setText("0");
         stealLabel.setText("0");
         swapLabel.setText("0");
@@ -273,9 +281,10 @@ public class GameWindowController implements Initializable {
         stealButton.setDisable(true);
         freezeButton.setDisable(true);
         rotateButton.setDisable(true);
-        rollButton.setDisable(true);
         swapButton.setDisable(true);
         deleteButton.setDisable(true);
+        rollButton.setDisable(true);
+
         rollButton.setDisable(true);
         endTurnButton.setDisable(true);
         entryEnterButton.setDisable(true);
@@ -379,6 +388,9 @@ public class GameWindowController implements Initializable {
 
             default -> logger.info("Invalid game phase received: " + phase);
         }
+        if (userName.equals(Main.getUsername())){
+            enableAllGameFields();
+        }
         leaveGameButton.setDisable(true);
         leaveLobbyButton.setDisable(true);
         startButton.setDisable(true);
@@ -444,6 +456,13 @@ public class GameWindowController implements Initializable {
         ClientOutput.send(CommandsClientToServer.ENDT,  "ended turn");
         informationBox.getChildren().clear();
         displayInformationText("You ended your turn ");
+        for (DiceGUImplementation dice : diceList){
+            dice.setStashStatus(false);
+            dice.setSavingStatus(false);
+            dice.setDiceValue(0);
+
+        }
+        diceBox.refresh();
     }
 
 
@@ -464,32 +483,46 @@ public class GameWindowController implements Initializable {
     public void rollActionSend(ActionEvent event){
         String saveDiceString = GameWindowHelper.diceStashedArrToString(diceStashedList);
         //Saved dice are automatically transmitted before dice are rolled again
-        if ( !saveDiceString.isEmpty()) {
-            logger.info("The following dices are selected to be saved: " + saveDiceString);
-
-            ClientOutput.send(CommandsClientToServer.SAVE,  saveDiceString);
-
-            //Set dice to saved
-            for (int i=0; i < diceStashedList.length; i++){
-                if ( !diceStashedList[i].isEmpty() ){
-                    diceList.get(i).setSavingStatus(true);
-                    diceList.get(i).setStashStatus(false);
-                }
-                //Reset values in arrays with stashed dice
-                diceStashedList[i] = "";
+        //Count number of saved dice
+        int diceSavedCounter = 0;
+        for (DiceGUImplementation dice : diceList){
+            if (dice.getSavingStatus()){
+                diceSavedCounter++;
             }
         }
-        else {
-            logger.info("No dices are selected to be saved.");
 
-            ClientOutput.send(CommandsClientToServer.SAVE,  "none");
+        if (diceSavedCounter < 5) {
+            if (!saveDiceString.isEmpty()) {
+                logger.info("The following dices are selected to be saved: " + saveDiceString);
+
+                ClientOutput.send(CommandsClientToServer.SAVE, saveDiceString);
+
+                //Set dice to saved
+                for (int i = 0; i < diceStashedList.length; i++) {
+                    if (!diceStashedList[i].isEmpty()) {
+                        diceList.get(i).setSavingStatus(true);
+                        diceList.get(i).setStashStatus(false);
+                        diceSavedCounter++;
+                    }
+                    //Reset values in arrays with stashed dice
+                    diceStashedList[i] = "";
+                }
+            } else {
+                logger.info("No dices are selected to be saved.");
+
+                ClientOutput.send(CommandsClientToServer.SAVE, "none");
+            }
         }
-        if (rollCounter <= 3) {
-            ClientOutput.send(CommandsClientToServer.ROLL, "");
-        } else {
+        if (rollCounter >= 2 || diceSavedCounter == 5) {
             rollButton.setDisable(true);
             entryEnterButton.setDisable(false);
         }
+
+        if (rollCounter <= 2 ) {
+            ClientOutput.send(CommandsClientToServer.ROLL, "");
+            rollCounter++;
+        }
+
         diceBox.refresh();
     }
 
@@ -530,6 +563,7 @@ public class GameWindowController implements Initializable {
         for (DiceGUImplementation dice : diceListToUpdate) {
             if (!dice.getSavingStatus() && i < diceValues.length){
                 dice.setDiceValue(diceValues[i]);
+                System.out.println(Arrays.toString(diceValues));
                 i++;
             }
         }
@@ -537,6 +571,13 @@ public class GameWindowController implements Initializable {
         displayInformationText("ALEA IACTA EST!  \n(the die is cast)");
         diceBox.refresh();
         diceBoxOther.refresh();
+
+        //TODO: is that needed?
+        //Save all dice on last roll
+        if (rollCounter == 3){
+            ClientOutput.send(CommandsClientToServer.SAVE, "0 1 2 3 4");
+        }
+
     }
 
 
@@ -706,13 +747,13 @@ public class GameWindowController implements Initializable {
      * @param actionDice
      */
     public void updateActionDice(String actionDice) {
-        int freezeCounter = 0;
-        int swapCounter = 0;
-        int stealCounter = 0;
-        int shiftCounter = 0;
-        int crossOutCounter = 0;
+        freezeCounter = 0;
+        swapCounter = 0;
+        stealCounter = 0;
+        shiftCounter = 0;
+        crossOutCounter = 0;
 
-        String[] actions = actionDice.split(" ");
+        String[] actions = actionDice.split("\\s+");
 
         for (String action : actions) {
             switch (action) {
@@ -723,12 +764,19 @@ public class GameWindowController implements Initializable {
                 case "swap" -> swapCounter++;
             }
         }
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                swapLabel.setText(Integer.toString(swapCounter));
+                freezeLabel.setText(Integer.toString(freezeCounter));
+                stealLabel.setText(Integer.toString(stealCounter));
+                rotateLabel.setText(Integer.toString(shiftCounter));
+                deleteLabel.setText(Integer.toString(crossOutCounter));
+            }
+        });
 
-        swapLabel.setText(Integer.toString(swapCounter));
-        freezeLabel.setText(Integer.toString(freezeCounter));
-        stealLabel.setText(Integer.toString(stealCounter));
-        rotateLabel.setText(Integer.toString(shiftCounter));
-        deleteLabel.setText(Integer.toString(crossOutCounter));
+
+
     }
 
     /**
@@ -773,6 +821,37 @@ public class GameWindowController implements Initializable {
 
 
 
+    }
+
+    /*
+    Dice actions
+     */
+    public void swapEntrySheets(String userName1, String userName2){
+
+        ObservableList<EntrySheetGUImplementation> temp1 = null;
+        ObservableList<EntrySheetGUImplementation> temp2 = null;
+        for (PlayerGUImplementation player : playersWithSheets) {
+            if (player.getUsername().equals(userName1)) {
+
+                temp1 = player.getEntrySheet();
+            }
+            if (player.getUsername().equals(userName2)) {
+
+                temp2 = player.getEntrySheet();
+            }
+        }
+        for (PlayerGUImplementation player : playersWithSheets) {
+            if (player.getUsername().equals(userName1) && temp2 != null) {
+                player.setEntrySheet(temp2);
+                player.getEntrySheetListView().setItems(player.getEntrySheet());
+                player.getEntrySheetListView().refresh();
+            }
+            if (player.getUsername().equals(userName2) && temp1 != null) {
+                player.setEntrySheet(temp1);
+                player.getEntrySheetListView().setItems(player.getEntrySheet());
+                player.getEntrySheetListView().refresh();
+            }
+        }
     }
 
 

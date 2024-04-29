@@ -54,8 +54,10 @@ public class ClientInputHelper implements Runnable {
 
         //switch case for the different possible incoming commands
         switch (cmd) {
-
-            case CHNA -> logger.info("Your username is now " + input[1]);
+            case CHNA -> {
+                logger.info("Your username is now " + input[1]);
+                Main.setUsername(input[1]);
+            }
             case QUIT -> gameManager.disconnect();
             case PING -> clientOutput.send(CommandsClientToServer.PONG, input[1]);
             case PONG -> pong.updatePong(input[1]);
@@ -100,8 +102,9 @@ public class ClientInputHelper implements Runnable {
             case ENTY -> Main.updatePrimaryEntrySheet(input[1]);
             case ALES -> Main.updateOtherEntrySheets(input[1]);
             case ALDI -> Main.updateOtherDiceBox(input[1]);
-            case INES -> Main.initOtherTab();
+            case INES -> Main.initOtherTab(input[1]);
             case STRT -> Main.changeTurn(input[1]);
+            case SWAP -> Main.swapEntrySheets(input[1]);
             default -> logger.info("unknown command received from server " + message);
         }
     }

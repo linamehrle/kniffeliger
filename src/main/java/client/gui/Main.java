@@ -24,6 +24,8 @@ public class Main extends Application {
     private static GameWindowController gameWindowController;
     private static HighScoreController highScoreController;
 
+    private static String username;
+
     Stage mainWidow;
     Stage chatWindow;
 
@@ -255,7 +257,8 @@ public class Main extends Application {
     /**
      * Method to relay to the GUI that Tab 2 has to be initialized with entry sheets of other players
      */
-    public static void initOtherTab() {
+    public static void initOtherTab(String playerlist) {
+        gameWindowController.updatePlayerList(playerlist);
         gameWindowController.initTabOther();
     }
 
@@ -266,6 +269,29 @@ public class Main extends Application {
         ClientOutput.send(CommandsClientToServer.QUIT, "leaving now");
     }
 
+
+    public static void swapEntrySheets(String twoUsernames) {
+        String[] playersSwapped = twoUsernames.split(" ");
+
+        if (playersSwapped.length == 2){
+            gameWindowController.swapEntrySheets(playersSwapped[0], playersSwapped[1]);
+    }
+    }
+
+    /**
+     * Sets the username.
+     * @param username name of the user
+     */
+    public static void setUsername(String username) {
+        Main.username = username;
+    }
+
+    /**
+     * Gets the username.
+     */
+    public static String getUsername() {
+        return Main.username;
+    }
 }
 
 
