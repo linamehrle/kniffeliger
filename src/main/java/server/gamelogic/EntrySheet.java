@@ -172,6 +172,15 @@ public class EntrySheet {
     public Player getPlayer() { return player;  }
 
     /**
+     * Access total points of entry sheet
+     *
+     * @return all the points of the entry sheet added together
+     */
+    public int getTotalPoints() {
+        return totalPoints;
+    }
+
+    /**
      * Access username which is also name of entry sheet.
      *
      * @return username
@@ -189,6 +198,7 @@ public class EntrySheet {
         // change values in entry sheet to those in int-array
         for (int i = 0; i < entrySheet.length; i++){
             entrySheet[i].setValue(valuesEntries[i]);
+            entrySheet[i].setFinal();
         }
     }
 
@@ -203,12 +213,12 @@ public class EntrySheet {
     }
 
     /**
-     * Access total points of entry sheet
-     *
-     * @return all the points of the entry sheet added together
+     * Sets all the entries in an entry sheet to not frozen.
      */
-    public int getTotalPoints() {
-        return totalPoints;
+    public void defreeze () {
+        for (Entry entry : entrySheet) {
+            entry.setFrozenStatus(false);
+        }
     }
 
     /**
@@ -223,6 +233,7 @@ public class EntrySheet {
             // if the correct entry has been detected, so if the names are the same, the value of this entry on entrySheet can be changed
             if (entry.getName().equals(newEntry.getName())) {
                 entry.setValue(newEntry.getValue());
+                entry.setFinal();
                 totalPoints = totalPoints + entry.getValue();
             } else {
                 notAppearedCounter = notAppearedCounter + 1;
@@ -284,9 +295,9 @@ public class EntrySheet {
      *
      * @param nameOfEntry     entry name which player wants to save the dice/points for.
      * @param finalDiceValues the dice values after the player is done rolling.
-     * @throws Exception if entry cannot be found in sheet
      */
-    public static void entryValidation(EntrySheet entrySheet, String nameOfEntry, Dice[] finalDiceValues) throws Exception {
+    public static void entryValidation(EntrySheet entrySheet, String nameOfEntry, Dice[] finalDiceValues) {
+        // if entry is not valid it enters 0 for this entry (this is handled in single methods for entries)
         // checks if all dice have been saved, if one is not, then save them
         for (Dice d : finalDiceValues) {
             if (d.getSavingStatus() == false) {
@@ -300,7 +311,7 @@ public class EntrySheet {
         // when entry player want to make is not final then add it to entry sheet
         // else: aks for different entry
         if (entrySheet.getEntryByName(nameOfEntry).getIsFinal() || entrySheet.getEntryByName(nameOfEntry).getFrozenStatus()) {
-            // TODO CHECK FOR SCANNER
+            // TODO REMOVE
             System.out.println("This is not a valid choice. Please try again.");
             Scanner scanner = new Scanner(System.in);
             entryValidation(entrySheet, scanner.nextLine(), finalDiceValues);
@@ -364,14 +375,14 @@ public class EntrySheet {
                     entrySheet.addEntry(pi);
                     break;
                 default:
-                    // TODO: ACHTUND, ÄNDERE DAS FÜR SPIEL AUSSERHALB DER KONSOLE
+                    // TODO: ACHTUNG, ÄNDERE DAS FÜR SPIEL AUSSERHALB DER KONSOLE
                     Scanner scanner = new Scanner(System.in);
                     System.out.println("Your entry name is wrong. Please try again.");
                     String entryName = scanner.nextLine();
                     entryValidation(entrySheet, entryName, finalDiceValues);
             }
         }
-        entrySheet.getEntryByName(nameOfEntry).setFinal();
+        // entrySheet.getEntryByName(nameOfEntry).setFinal();
     }
 
     /**
@@ -381,16 +392,11 @@ public class EntrySheet {
      * @param rolledDice are the dice that have been rolled and saved
      * @param value      method dice for this value (for example checks how many 6 it has, so value = 6)
      * @return the sum of dice
-     * @throws Exception if the value we need to compare the dice value with is not between 1 and 6
      */
-    public static int singleValueRolls(int[] rolledDice, int value) throws Exception {
+    public static int singleValueRolls(int[] rolledDice, int value) {
         // checks if we inserted a valid value for dice
         int sum = 0;
         for (int d : rolledDice) {
-            // if values of dice are not between 1 and 6 an Exception is thrown
-            if (!(d >= 1 && d <= 6)) {
-                throw new Exception("Only the values 1 to 6 can be checked.");
-            }
             if (d == value) {
                 sum = sum + d;
             }
@@ -596,7 +602,6 @@ public class EntrySheet {
      * @param rolledDice are the dice that have been rolled and saved
      * @return 31, if it is pi, 0 otherwise
      */
-    //TODO: write unit test for method
     public static int pi(int[] rolledDice){
         int res = 0;
         // sorts rolled dice in ascending order, so we can loop over it and check conditions for a large straight.

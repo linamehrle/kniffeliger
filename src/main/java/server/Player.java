@@ -21,14 +21,12 @@ public class Player {
      * This variable counts all instances of connected players.
      */
     private static int counter = 0;
-    private int id;
-    private String username;
+    protected int id;
+    protected String username;
     private ActionDice[] actionDice;
     private ClientThread playerThreadManager;
     private ArrayList<Player> playerList;
     private Lobby lobby;
-
-    //potenziell felder für aktivität etc?
 
     /**
      * The constructor for the Player class. It starts a new ClientThread per Player.
@@ -43,7 +41,14 @@ public class Player {
         playerThreadManager = new ClientThread(socket, this);
         Thread playerThread = new Thread(playerThreadManager);
         playerThread.start();
+    }
 
+    /**
+     * Second constructor for the Player, used for testing
+     * @param username
+     */
+    public Player(String username) {
+        this.username = username;
     }
 
     /**
@@ -71,7 +76,8 @@ public class Player {
         //informs the players about the name changes.
         setUsername(username);
         playerThreadManager.sendToServerOutput(CommandsServerToClient.BRCT, "Your username is now " + username);
-        Communication.broadcast(this.getPlayerList(), this, "Player " + savedUsername + " has changed their name to " + username);
+        //Communication.broadcast(this.getPlayerList(), this, "Player " + savedUsername + " has changed their name to " + username);
+        Communication.broadcastToAll(CommandsServerToClient.PLLI, ListManager.getPlayerList(), ListManager.getPlayerListAsString());
 
         logger.info("Player " + savedUsername + " has changed their name to " + username);
 

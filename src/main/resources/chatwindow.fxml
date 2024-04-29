@@ -39,18 +39,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.CWcontroller">
+<VBox prefHeight="338.0" prefWidth="294.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.CWcontroller">
   <children>
-    <AnchorPane fx:id="mainVBox" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <AnchorPane fx:id="mainVBox" maxHeight="-1.0" maxWidth="-1.0" prefHeight="338.0" prefWidth="294.0" VBox.vgrow="ALWAYS">
       <children>
-            <ScrollPane layoutX="34.0" layoutY="28.0" prefHeight="225.0" prefWidth="564.0">
+            <ScrollPane layoutX="34.0" layoutY="28.0" prefHeight="225.0" prefWidth="225.0">
                <content>
-                  <VBox fx:id="msgDisplayAll" prefHeight="223.0" prefWidth="556.0" />
+                  <VBox fx:id="msgDisplayAll" prefHeight="223.0" prefWidth="223.0" />
                </content>
             </ScrollPane>
-            <Button fx:id="buttonSend" layoutX="548.0" layoutY="269.0" mnemonicParsing="false" text="SEND" />
-            <TextField fx:id="msgAcceptor" layoutX="34.0" layoutY="269.0" prefHeight="26.0" prefWidth="364.0" promptText="Enter message ..." />
-            <ChoiceBox fx:id="recID" layoutX="398.0" layoutY="269.0" prefWidth="150.0" />
+            <Button fx:id="buttonSend" layoutX="172.0" layoutY="295.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="87.0" text="SEND" />
+            <TextField fx:id="msgAcceptor" layoutX="34.0" layoutY="269.0" prefHeight="26.0" prefWidth="225.0" promptText="Enter message ..." />
+            <ChoiceBox fx:id="recID" layoutX="34.0" layoutY="295.0" prefHeight="25.0" prefWidth="138.0" />
       </children>
     </AnchorPane>
   </children>

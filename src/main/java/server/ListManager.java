@@ -105,7 +105,7 @@ public class ListManager {
             getLobbyList().add(new Lobby(name));
             logger.info("Player " + player.getUsername() + " created a new lobby: " + name);
             Communication.sendToPlayer(CommandsServerToClient.BRCT, player, "You successfully created the lobby " + name); //to the player
-            Communication.broadcast(playerList, player, "Player " + player.getUsername() + " created a new lobby " + name); //to all other players
+            //Communication.broadcast(playerList, player, "Player " + player.getUsername() + " created a new lobby " + name); //to all other players
         }
 
         Communication.broadcastToAll(CommandsServerToClient.CRLO,getPlayerList(), name + " (open)");
