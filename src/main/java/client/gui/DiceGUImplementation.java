@@ -37,6 +37,7 @@ public class DiceGUImplementation {
 
     public void resetDice() {
         this.savingStatus = false;
+        this.stashedForSaving = false;
         this.diceValue = 0;
     }
 

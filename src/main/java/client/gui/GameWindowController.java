@@ -457,9 +457,7 @@ public class GameWindowController implements Initializable {
         informationBox.getChildren().clear();
         displayInformationText("You ended your turn ");
         for (DiceGUImplementation dice : diceList){
-            dice.setStashStatus(false);
-            dice.setSavingStatus(false);
-            dice.setDiceValue(0);
+            dice.resetDice();
 
         }
         diceBox.refresh();
@@ -698,8 +696,8 @@ public class GameWindowController implements Initializable {
      * 4. ListView is added to Hbox hBoxEntries on tab 2
      */
     public void initTabOther() {
-        //Clear HBox before adding players
-        hBoxEntries.getChildren().clear();
+        clearInformationBox();
+
 
         if (playersInLobby != null && !playersInLobby.isEmpty()) {
             for (int i = 0; i < playersInLobby.size() && i < playersWithSheets.length; i++) {
@@ -728,12 +726,21 @@ public class GameWindowController implements Initializable {
                 });
                 //playersWithSheets[i].setEntrySheetListView(otherPlayerSheetListView);
 
-                VBox playerVBox = new VBox();
-                TextFlow playerTitle = new TextFlow();
-                playerTitle.getChildren().add(new Text(playersWithSheets[i].getUsername()));
-                playerVBox.getChildren().add(playerTitle);
-                playerVBox.getChildren().add(otherPlayerSheetListView);
-                hBoxEntries.getChildren().add(playerVBox);
+                String username = playersWithSheets[i].getUsername();
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        VBox playerVBox = new VBox();
+                        TextFlow playerTitle = new TextFlow();
+                        playerTitle.getChildren().add(new Text(username));
+                        playerVBox.getChildren().add(playerTitle);
+                        playerVBox.getChildren().add(otherPlayerSheetListView);
+                        hBoxEntries.getChildren().add(playerVBox);
+                    }
+                });
+
+
 
             }
         }
