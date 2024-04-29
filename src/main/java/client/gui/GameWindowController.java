@@ -818,5 +818,36 @@ public class GameWindowController implements Initializable {
 
     }
 
+    /*
+    Dice actions
+     */
+    public void swapEntrySheets(String userName1, String userName2){
+
+        ObservableList<EntrySheetGUImplementation> temp1 = null;
+        ObservableList<EntrySheetGUImplementation> temp2 = null;
+        for (PlayerGUImplementation player : playersWithSheets) {
+            if (player.getUsername().equals(userName1)) {
+
+                temp1 = player.getEntrySheet();
+            }
+            if (player.getUsername().equals(userName2)) {
+
+                temp2 = player.getEntrySheet();
+            }
+        }
+        for (PlayerGUImplementation player : playersWithSheets) {
+            if (player.getUsername().equals(userName1) && temp2 != null) {
+                player.setEntrySheet(temp2);
+                player.getEntrySheetListView().setItems(player.getEntrySheet());
+                player.getEntrySheetListView().refresh();
+            }
+            if (player.getUsername().equals(userName2) && temp1 != null) {
+                player.setEntrySheet(temp1);
+                player.getEntrySheetListView().setItems(player.getEntrySheet());
+                player.getEntrySheetListView().refresh();
+            }
+        }
+    }
+
 
 }

@@ -102,6 +102,7 @@ public class ClientInputHelper implements Runnable {
             case ALDI -> Main.updateOtherDiceBox(input[1]);
             case INES -> Main.initOtherTab(input[1]);
             case STRT -> Main.changeTurn(input[1]);
+            case SWAP -> Main.swapEntrySheets(input[1]);
             default -> logger.info("unknown command received from server " + message);
         }
     }

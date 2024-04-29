@@ -267,6 +267,14 @@ public class Main extends Application {
         ClientOutput.send(CommandsClientToServer.QUIT, "leaving now");
     }
 
+    public static void swapEntrySheets(String twoUsernames) {
+        String[] playersSwapped = twoUsernames.split(" ");
+
+        if (playersSwapped.length == 2){
+            gameWindowController.swapEntrySheets(playersSwapped[0], playersSwapped[1]);
+    }
+    }
+
 }
 
 

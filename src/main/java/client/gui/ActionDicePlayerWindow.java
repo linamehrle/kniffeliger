@@ -38,6 +38,7 @@ public class ActionDicePlayerWindow implements Initializable {
 
         ClientOutput.send(CommandsClientToServer.SWAP, (String) playerChoiceBox.getValue());
 
+
         Stage stage = (Stage) okayButton.getScene().getWindow();
         stage.close();
     }
