@@ -139,78 +139,70 @@ public class GameManager implements Runnable {
                         case "ROLL":
                             logger.trace("Entered ROLL case");
 
-                            if (!entryMade) {
+                            if (!entryMade && !allDiceSaved(allDice)) {
                                 // if player did not steal yet then roll
                                 // set about to roll to true so player cannot steal anymore
                                 aboutToRoll = true;
 
                                 // rolls dice
-                                rollDice(allDice);
-                                logger.log(gameLogic, "Dices were rolled");
+                                String rolledDice = rollDice(allDice);
 
-                                // get rolled dice values as string (1stDiceVal, 2ndDiceVal, ...)
-                                String rolledDice = "";
-
-                                for (Dice dice : allDice) {
-                                    // if dice was not saved
-                                    if (!dice.getSavingStatus()) {
-                                        rolledDice = rolledDice + dice.getDiceValue() + " ";
-                                    }
-                                }
+                                logger.log(gameLogic, "Dices were rolled.");
                                 logger.log(gameLogic, "Rolled: " + rolledDice);
 
                                 // send dices to all players
                                 Communication.broadcastToAll(CommandsServerToClient.ROLL, playerArraysList, rolledDice);
-                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "Choose which dice to save.");
+                            }
+                            break;
+                        case "SAVE":
+                            logger.trace("Entered SAVE case");
 
-                                // wait for current player to choose dices to save
-                                wait();
-                                String[] savedDice = input.split("\\s+");
+                            String[] savedDice = inputArr;
 
-                                logger.log(gameLogic, "Save dices: " + Arrays.toString(savedDice));
+                            logger.log(gameLogic, "Save dices: " + Arrays.toString(savedDice));
 
-                                // saves the rolled dice; if player does not want to save one, then "none" is sent
-                                if (!savedDice[1].equals("none")) {
-                                    // turns the single String array entries into int and save the corresponding dice
-                                    for (int idx = 1; idx < savedDice.length - 1; idx++) {
-                                        int idxDice = Integer.parseInt(savedDice[idx]);
-                                        allDice[idxDice].saveDice();
-                                    }
+                            // saves the rolled dice; if player does not want to save one, then "none" is sent
+                            if (!savedDice[1].equals("none")) {
+                                // turns the single String array entries into int and save the corresponding dice
+                                for (int idx = 1; idx < savedDice.length; idx++) {
+                                    logger.trace("Save dice " + savedDice[idx]);
+                                    int idxDice = Integer.parseInt(savedDice[idx]);
+                                    allDice[idxDice].saveDice();
                                 }
+                            } else {
+                                logger.trace("None dices are selected to be saved.");
+                            }
+                            break;
+                        case "ENTY":
+                            logger.trace("Entered ENTY case");
 
-                                if (allDiceSaved(allDice)) {
-                                    logger.log(gameLogic, "All dices of " + currentPlayer.getUsername() + " were saved.");
+                            if (allDiceSaved(allDice)) {
+                                logger.log(gameLogic, "All dices of " + currentPlayer.getUsername() + " were saved.");
 
-                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "Select the entry to save dices to.");
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "Select the entry to save dices to.");
 
-                                    // wait for player selecting entry
-                                    wait();
-                                    selectedEntry = input.split("\\s+")[1];
+                                selectedEntry = inputArr[1];
 
-                                    logger.log(gameLogic, currentPlayer.getUsername() + " chose " + selectedEntry);
+                                logger.log(gameLogic, currentPlayer.getUsername() + " chose " + selectedEntry);
 
-                                    // extract entry
-                                    String entryChoice = input;
+                                // validate entry
+                                EntrySheet.entryValidation(currentEntrySheet, selectedEntry, allDice);
 
-                                    // validate entry
-                                    EntrySheet.entryValidation(currentEntrySheet, entryChoice, allDice);
+                                // sent updated entry sheet to all players
+                                Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + " "
+                                        + currentEntrySheet.getEntryByName(selectedEntry).getValue());
 
-                                    // sent updated entry sheet to all players
-                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentPlayer.getUsername() + " " + entryChoice + " "
-                                            + currentEntrySheet.getEntryByName(entryChoice).getValue());
+                                logger.log(gameLogic, "Save entry " + selectedEntry + "(" + currentEntrySheet.getEntryByName(selectedEntry).getValue() + ") of " + currentPlayer.getUsername());
 
-                                    logger.log(gameLogic, "Save entry "+ entryChoice + "(" + currentEntrySheet.getEntryByName(entryChoice).getValue() + ") of " + currentPlayer.getUsername());
+                                // adds action dice to player
+                                addActionDice(allDice, currentPlayer);
+                                currentActionDice = currentPlayer.getActionDice();
 
-                                    // adds action dice to player
-                                    addActionDice(allDice, currentPlayer);
-                                    currentActionDice = currentPlayer.getActionDice();
+                                // sends the new action dice to player
+                                Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentActionDice));
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You received " + ActionDice.printActionDice(currentActionDice));
 
-                                    // sends the new action dice to player
-                                    Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentActionDice));
-                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You received " + ActionDice.printActionDice(currentActionDice));
-
-                                    entryMade = true;
-                                }
+                                entryMade = true;
                             }
                             break;
                         case "STEA":
@@ -278,6 +270,8 @@ public class GameManager implements Runnable {
                                 endTurn = true;
                             }
                             break;
+                        default:
+                            logger.trace("Entered unknown case: " + input);
                     }
                 }
                 // defreeze at and of turn
@@ -430,8 +424,10 @@ public class GameManager implements Runnable {
      * dice, so it has not been saved and if it has less than 3 rolls. Saves dice automatically if it has been rolled 3 times.
      *
      * @param playersDice dice client hands to server
+     * @return string with rolled dices
      */
-    public void rollDice(Dice[] playersDice) {
+    public String rollDice(Dice[] playersDice) {
+        String rolledDice = "";
         // handle NullPointerException if Dice array has only values null
         for (Dice dice : playersDice) {
             /* rollDice() already checks if dice has been saved or if it has been rolled 3 times already (because then dice
@@ -440,8 +436,10 @@ public class GameManager implements Runnable {
              */
             if (!dice.getSavingStatus()) {
                 dice.rollSingleDice();
+                rolledDice = rolledDice + dice.getDiceValue() + " ";
             }
         }
+        return rolledDice;
     }
 
     /**
@@ -618,6 +616,8 @@ public class GameManager implements Runnable {
             logger.info("Message from " + player.getUsername() + " accepted.");
             this.input = input;
             notify();
+        } else {
+            logger.info("Message from " + player.getUsername() + " denied.");
         }
     }
 
