@@ -280,6 +280,10 @@ public class Main extends Application {
         gameWindowController.setOwnUser(ownUserName);
 
     }
+
+    public static void shiftEntrySheets(String playerList) {
+        gameWindowController.shiftEntrySheets(playerList);
+    }
 }
 
 

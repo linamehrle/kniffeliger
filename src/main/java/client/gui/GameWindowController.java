@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -250,7 +251,7 @@ public class GameWindowController implements Initializable {
         //initiate the arraylist that has all usernames of the players in the lobby
         ClientOutput.send(CommandsClientToServer.LOPL, "getting the players in the lobby");
 
-        createActionDiceListener();
+        //createActionDiceListener();
 
 
         freezeLabel.setText("0");
@@ -311,6 +312,11 @@ public class GameWindowController implements Initializable {
         diceBox.setDisable(false);
         rollButton.setDisable(false);
         endTurnButton.setDisable(false);
+        freezeButton.setDisable(freezeLabel.getText().equals("0"));
+        stealButton.setDisable(stealLabel.getText().equals("0"));
+        deleteButton.setDisable(deleteLabel.getText().equals("0"));
+
+
     }
 
 
@@ -321,6 +327,7 @@ public class GameWindowController implements Initializable {
     public void enableSwapAndShift () {
         swapButton.setDisable(swapLabel.getText().equals("0"));
         rotateButton.setDisable(rotateLabel.getText().equals("0"));
+        endTurnButton.setDisable(false);
     }
 
 
@@ -390,6 +397,9 @@ public class GameWindowController implements Initializable {
      * Main (normal round) or ShiftAndSwap (only shift and swap actions can be played)
      */
     public void initiateTurn(String userName, String phase) {
+        for (DiceGUImplementation dice : diceList) {
+            dice.resetDice();
+        }
         //Clear information box before each turn
         clearInformationBox();
         displayInformationText("It is " + userName + "'s turn. May the power be with them.");
@@ -399,8 +409,10 @@ public class GameWindowController implements Initializable {
 
             default -> logger.info("Invalid game phase received: " + phase);
         }
-        if (userName.equals(ownerUser)){
+        if (userName.equals(ownerUser) && phase.equals("Main")) {
             enableAllGameFields();
+        } else if (userName.equals(ownerUser) && phase.equals("ShiftSwap")) {
+            enableSwapAndShift();
         } else {
             disableAllGameFields();
         }
@@ -471,10 +483,7 @@ public class GameWindowController implements Initializable {
         ClientOutput.send(CommandsClientToServer.ENDT,  "ended turn");
         informationBox.getChildren().clear();
         displayInformationText("You ended your turn ");
-        for (DiceGUImplementation dice : diceList){
-            dice.resetDice();
 
-        }
         diceBox.refresh();
     }
 
@@ -529,6 +538,16 @@ public class GameWindowController implements Initializable {
                 logger.info("No dices are selected to be saved.");
 
                 ClientOutput.send(CommandsClientToServer.SAVE, "none");
+
+            }
+            //Pause for 100 ms
+            try {
+                logger.trace("Pause for 100 ms");
+                TimeUnit.MILLISECONDS.sleep(100);
+                logger.trace("Pause over");
+            } catch (InterruptedException e) {
+                logger.warn("Pause interrupted");
+                throw new RuntimeException(e);
             }
         }
         if (rollCounter >= 2 || diceSavedCounter == 5) {
@@ -558,14 +577,14 @@ public class GameWindowController implements Initializable {
     public void diceClick (MouseEvent event) {
         DiceGUImplementation dice = diceBox.getSelectionModel().getSelectedItem();
         if (!dice.getSavingStatus() && !dice.getStashStatus() && (dice.getDiceValue() != 0)) {
-            //ClientOutput.send(CommandsClientToServer.GAME, String.valueOf(dice.getID()));
             diceStashedList[dice.getID()] = String.valueOf(dice.getID());
             dice.setStashStatus(true);
         } else if (!dice.getSavingStatus() && dice.getStashStatus() ) {
-            //ClientOutput.send(CommandsClientToServer.GAME, String.valueOf(dice.getID()));
             diceStashedList[dice.getID()] = "";
             dice.setStashStatus(false);
         }
+        logger.trace("Dice stashed for saving: " + Arrays.toString(diceStashedList));
+
         diceBox.refresh();
     }
 
@@ -611,7 +630,7 @@ public class GameWindowController implements Initializable {
     public void receiveEntrySheet(ArrayList<String[]> listOfEntries) {
         for (String[] elem: listOfEntries) {
             //Check if string array has correct format: {&lt; entry name &gt;, &lt; score &gt;}
-            if (elem != null && elem.length == 2) {
+            if (elem != null && elem.length == 2 && entrySheetNameIndexMap.get(elem[0])!= null) {
                 entryList.get(entrySheetNameIndexMap.get(elem[0])).setScore(Integer.parseInt(elem[1]));
             } else {
                 logger.info("entry sheet cannot be updated due to invalid input format.");
@@ -761,7 +780,7 @@ public class GameWindowController implements Initializable {
                         }
                     }
                 });
-                //playersWithSheets[i].setEntrySheetListView(otherPlayerSheetListView);
+                playersWithSheets[i].setEntrySheetListView(otherPlayerSheetListView);
 
                 String username = playersWithSheets[i].getUsername();
                 Platform.runLater(new Runnable() {
@@ -827,75 +846,139 @@ public class GameWindowController implements Initializable {
      * Disables the action dice buttons if the counter is 0, enables the button if the counter is
      * positive.
      */
-    private void createActionDiceListener() {
-        swapLabel.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                swapButton.setDisable(swapLabel.getText().equals("0"));
-            }
-        });
+//    private void createActionDiceListener() {
+////        swapLabel.textProperty().addListener(new ChangeListener<String>() {
+////            @Override
+////            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+////                swapButton.setDisable(swapLabel.getText().equals("0"));
+////            }
+////        });
+//
+//        freezeLabel.textProperty().addListener(new ChangeListener<String>() {
+//            @Override
+//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//                freezeButton.setDisable(freezeLabel.getText().equals("0"));
+//            }
+//        });
+//
+//        stealLabel.textProperty().addListener(new ChangeListener<String>() {
+//            @Override
+//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//                stealButton.setDisable(stealLabel.getText().equals("0"));
+//            }
+//        });
+//
+////        rotateLabel.textProperty().addListener(new ChangeListener<String>() {
+////            @Override
+////            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+////                rotateButton.setDisable(rotateLabel.getText().equals("0"));
+////            }
+////        });
+//
+//        deleteLabel.textProperty().addListener(new ChangeListener<String>() {
+//            @Override
+//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//                deleteButton.setDisable(deleteLabel.getText().equals("0"));
+//            }
+//        });
+//
+//
+//
+//    }
 
-        freezeLabel.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                freezeButton.setDisable(freezeLabel.getText().equals("0"));
-            }
-        });
+    /*
+    Dice actions
+     */
+    public void shiftEntrySheets (String playerlist) {
+        String[] playerArray = playerlist.split("\\s+");      // LINA DOM RI
+        ArrayList<EntrySheetGUImplementation> sheetPlayer1TMP = null;
+        ArrayList<EntrySheetGUImplementation> sheetPlayer2TMP = null;
+        ArrayList<ArrayList<EntrySheetGUImplementation>> entrySheetsInOrder = new ArrayList<>();
 
-        stealLabel.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                stealButton.setDisable(stealLabel.getText().equals("0"));
+        // iterate over player names
+        for (int i = 0; i < playerArray.length; i++) {
+            for (PlayerGUImplementation player : playersWithSheets) {
+                if (player != null && player.getUsername().equals(playerArray[i])) {
+                    entrySheetsInOrder.add(observableListToArrayList(player.getEntrySheet()));
+                }
             }
-        });
+        }
 
-        rotateLabel.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                rotateButton.setDisable(rotateLabel.getText().equals("0"));
-            }
-        });
+        for (int i = 0; i < entrySheetsInOrder.size(); i++) {
+            PlayerGUImplementation player = playersWithSheets[i];
+            if ( player !=null && player.getUsername().equals(playerArray[i])){
+                int moduloIndex = (i+1) %  playersWithSheets.length;
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        player.getEntrySheet().clear();
+                        player.getEntrySheet().addAll(entrySheetsInOrder.get( moduloIndex));
+                        //player.getEntrySheetListView().setItems(player.getEntrySheet());
+                        player.getEntrySheetListView().refresh();
+                    }
+                });
 
-        deleteLabel.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                deleteButton.setDisable(deleteLabel.getText().equals("0"));
-            }
-        });
+
+
+        }
+    }
+
+
+
+
 
 
 
     }
 
-    /*
-    Dice actions
-     */
+
     public void swapEntrySheets(String userName1, String userName2){
 
-        ObservableList<EntrySheetGUImplementation> temp1 = null;
-        ObservableList<EntrySheetGUImplementation> temp2 = null;
+        ArrayList<EntrySheetGUImplementation> temp1 = null;
+        ArrayList<EntrySheetGUImplementation> temp2 = null;
         for (PlayerGUImplementation player : playersWithSheets) {
-            if (player.getUsername().equals(userName1)) {
+            if (player != null && player.getUsername().equals(userName1)) {
 
-                temp1 = player.getEntrySheet();
+                temp1 = observableListToArrayList(player.getEntrySheet());
             }
-            if (player.getUsername().equals(userName2)) {
+            if (player != null && player.getUsername().equals(userName2)) {
 
-                temp2 = player.getEntrySheet();
+                temp2 = observableListToArrayList(player.getEntrySheet());
             }
         }
         for (PlayerGUImplementation player : playersWithSheets) {
-            if (player.getUsername().equals(userName1) && temp2 != null) {
-                player.setEntrySheet(temp2);
-                player.getEntrySheetListView().setItems(player.getEntrySheet());
-                player.getEntrySheetListView().refresh();
+            if (player != null && player.getUsername().equals(userName1) && temp2 != null) {
+                ArrayList<EntrySheetGUImplementation> finalTemp2 = temp2;
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        player.getEntrySheet().clear();
+                        player.getEntrySheet().addAll(finalTemp2);
+                        //player.getEntrySheetListView().setItems(player.getEntrySheet());
+                        player.getEntrySheetListView().refresh();
+                    }
+                });
+
             }
-            if (player.getUsername().equals(userName2) && temp1 != null) {
-                player.setEntrySheet(temp1);
-                player.getEntrySheetListView().setItems(player.getEntrySheet());
-                player.getEntrySheetListView().refresh();
+            if (player != null && player.getUsername().equals(userName2) && temp1 != null) {
+                ArrayList<EntrySheetGUImplementation> finalTemp1 = temp1;
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        player.getEntrySheet().clear();
+                        player.getEntrySheet().addAll(finalTemp1);
+                        //player.getEntrySheetListView().setItems(player.getEntrySheet());
+                        player.getEntrySheetListView().refresh();
+                    }
+                });
             }
         }
+    }
+
+    private ArrayList<EntrySheetGUImplementation> observableListToArrayList (ObservableList<EntrySheetGUImplementation> observableEntries){
+        ArrayList<EntrySheetGUImplementation> arrayListOfEntries = new ArrayList<>();
+        arrayListOfEntries.addAll(observableEntries);
+        return arrayListOfEntries;
     }
 
     public void setOwnUser(String ownUserName) {
