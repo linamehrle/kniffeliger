@@ -291,9 +291,8 @@ public class GameWindowController implements Initializable {
         swapButton.setDisable(true);
         deleteButton.setDisable(true);
         rollButton.setDisable(true);
-
-        rollButton.setDisable(true);
         endTurnButton.setDisable(true);
+        rollButton.setDisable(true);
         entryEnterButton.setDisable(true);
 
     }
@@ -307,6 +306,7 @@ public class GameWindowController implements Initializable {
         entrySheet.setDisable(false);
         diceBox.setDisable(false);
         rollButton.setDisable(false);
+        endTurnButton.setDisable(false);
     }
 
 
@@ -621,12 +621,13 @@ public class GameWindowController implements Initializable {
                 for (String[] elem : listOfEntries){
                     if (elem != null && elem.length == 2) {
                         player.getEntrySheet().get(entrySheetNameIndexMap.get(elem[0])).setScore(Integer.parseInt(elem[1]));
+                        player.getEntrySheetListView().refresh();
                     } else {
                         logger.info("entry sheet cannot be updated due to invalid input format.");
                     }
 
                 }
-                player.getEntrySheetListView().refresh();
+
             }
         }
     }
