@@ -233,8 +233,11 @@ public class GameManager implements Runnable {
                                 logger.log(gameLogic, currentPlayer.getUsername() + " has stolen entry " + selectedEntry + " from " + victimPlayerName);
 
                                 // send player stolen entry
-                                Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + " "
+                                Communication.sendToPlayer(CommandsServerToClient.ENTY, currentPlayer, currentPlayer.getUsername() + " " + selectedEntry + ":"
                                             + currentEntrySheet.getEntryByName(selectedEntry).getValue());
+
+                                Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + ":"
+                                        + currentEntrySheet.getEntryByName(selectedEntry).getValue());
 
                                 // send player crossed out entry
                                 Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + " "
