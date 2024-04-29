@@ -620,8 +620,10 @@ public class GameWindowController implements Initializable {
             if ( player.getUsername().equals(userName) ){
                 for (String[] elem : listOfEntries){
                     if (elem != null && elem.length == 2) {
-                        player.getEntrySheet().get(entrySheetNameIndexMap.get(elem[0])).setScore(Integer.parseInt(elem[1]));
-                        player.getEntrySheetListView().refresh();
+                        if (player.getEntrySheet() != null && player.getEntrySheetListView() != null) {
+                            player.getEntrySheet().get(entrySheetNameIndexMap.get(elem[0])).setScore(Integer.parseInt(elem[1]));
+                            player.getEntrySheetListView().refresh();
+                        }
                     } else {
                         logger.info("entry sheet cannot be updated due to invalid input format.");
                     }
