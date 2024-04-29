@@ -108,6 +108,8 @@ public class GameWindowController implements Initializable {
     private ArrayList<String> playersInLobby;
     private PlayerGUImplementation[] playersWithSheets = new PlayerGUImplementation[4];
 
+    private String ownerUser;
+
     int freezeCounter = 0;
     int swapCounter = 0;
     int stealCounter = 0;
@@ -129,6 +131,7 @@ public class GameWindowController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         logger.info("Game Window initialized");
 
 
@@ -384,13 +387,16 @@ public class GameWindowController implements Initializable {
         displayInformationText("It is " + userName + "'s turn. May the power be with them.");
         switch (phase) {
             case "Main" -> displayInformationText("The phase is: " + phase + "\nThis is a normal round. SWAP and ROTATE actions cannot be played");
-            case "SwapAndShift" -> displayInformationText("The phase is: " + phase + "\nIn this round only SWAP and ROTATE actions can be played.");
+            case "ShiftSwap" -> displayInformationText("The phase is: " + phase + "\nIn this round only SWAP and ROTATE actions can be played.");
 
             default -> logger.info("Invalid game phase received: " + phase);
         }
         if (userName.equals(Main.getUsername())){
             enableAllGameFields();
+        } else {
+            //disableAllGameFields();
         }
+
         leaveGameButton.setDisable(true);
         leaveLobbyButton.setDisable(true);
         startButton.setDisable(true);
@@ -697,6 +703,7 @@ public class GameWindowController implements Initializable {
      */
     public void initTabOther() {
         clearInformationBox();
+
 
 
         if (playersInLobby != null && !playersInLobby.isEmpty()) {
