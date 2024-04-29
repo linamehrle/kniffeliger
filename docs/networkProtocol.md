@@ -25,7 +25,7 @@ be used in which context. On the server side, no commands can be input in the te
 | STRT    | no parameter                           | used to start a game in a lobby                                            | \start                                      |
 | GAME    | game action                            | used to send information related to an ongoing game to the server          | \gameAction gameAction                      |
 | PLLI    | no parameter                           | requests a list of all players that are connected to the server            | \showPlayers                                |
-
+| RUSR    | no parameter                           | requests the own username                                                  | -                                           |
 ### Commands from the server to the client:
 
 | command | parameter                  | functionality                                                                                                                    |
@@ -42,6 +42,7 @@ be used in which context. On the server side, no commands can be input in the te
 | LELO    | lobby name and player name | update the gui                                                                                                                   |
 | GAME    | information from the game  | prints game related information for the clients to see                                                                           |
 | PLLI    | list of all players        | returns the list of all connected players to the client to print put                                                             |
+| TUSR    | transmits username         | transmits the username                                                                                                           |
 
 ### Examples:
 
