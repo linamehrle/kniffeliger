@@ -321,6 +321,7 @@ public class GameManager implements Runnable {
 
                 // notify players which turn is
                 Communication.broadcastToAll(CommandsServerToClient.STRT, playerArraysList, currentPlayer.getUsername() + " ShiftSwap");
+                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "-- It's your turn!");
 
                 logger.log(gameLogic, currentPlayer.getUsername() + "'s turn.");
 
@@ -632,7 +633,7 @@ public class GameManager implements Runnable {
      * @param input answer of player
      */
     public synchronized void getAnswer(String input, Player player) {
-        logger.info("Message from " + player.getUsername() + " with <" + input + "> received.");
+        logger.info("Message from " + player.getUsername() + " with <" + input + "> received");
 
         // Only update input if the message comes from currentPlayer
         if (player.equals(currentPlayer) || currentPlayer != null) {
@@ -689,5 +690,4 @@ public class GameManager implements Runnable {
         }
         return ranking;
     }
-
 }
