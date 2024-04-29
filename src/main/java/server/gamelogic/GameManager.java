@@ -139,24 +139,15 @@ public class GameManager implements Runnable {
                         case "ROLL":
                             logger.trace("Entered ROLL case");
 
-                            if (!entryMade) {
+                            if (!entryMade && !allDiceSaved(allDice)) {
                                 // if player did not steal yet then roll
                                 // set about to roll to true so player cannot steal anymore
                                 aboutToRoll = true;
 
                                 // rolls dice
-                                rollDice(allDice);
-                                logger.log(gameLogic, "Dices were rolled");
+                                String rolledDice = rollDice(allDice);
 
-                                // get rolled dice values as string (1stDiceVal, 2ndDiceVal, ...)
-                                String rolledDice = "";
-
-                                for (Dice dice : allDice) {
-                                    // if dice was not saved
-                                    if (!dice.getSavingStatus()) {
-                                        rolledDice = rolledDice + dice.getDiceValue() + " ";
-                                    }
-                                }
+                                logger.log(gameLogic, "Dices were rolled.");
                                 logger.log(gameLogic, "Rolled: " + rolledDice);
 
                                 // send dices to all players
@@ -178,10 +169,12 @@ public class GameManager implements Runnable {
                                     int idxDice = Integer.parseInt(savedDice[idx]);
                                     allDice[idxDice].saveDice();
                                 }
+                            } else {
+                                logger.trace("None dices are selected to be saved.");
                             }
                             break;
                         case "ENTY":
-                            logger.trace("Entered SAVE case");
+                            logger.trace("Entered ENTY case");
 
                             if (allDiceSaved(allDice)) {
                                 logger.log(gameLogic, "All dices of " + currentPlayer.getUsername() + " were saved.");
@@ -431,8 +424,10 @@ public class GameManager implements Runnable {
      * dice, so it has not been saved and if it has less than 3 rolls. Saves dice automatically if it has been rolled 3 times.
      *
      * @param playersDice dice client hands to server
+     * @return string with rolled dices
      */
-    public void rollDice(Dice[] playersDice) {
+    public String rollDice(Dice[] playersDice) {
+        String rolledDice = "";
         // handle NullPointerException if Dice array has only values null
         for (Dice dice : playersDice) {
             /* rollDice() already checks if dice has been saved or if it has been rolled 3 times already (because then dice
@@ -441,8 +436,10 @@ public class GameManager implements Runnable {
              */
             if (!dice.getSavingStatus()) {
                 dice.rollSingleDice();
+                rolledDice = rolledDice + dice.getDiceValue() + " ";
             }
         }
+        return rolledDice;
     }
 
     /**
