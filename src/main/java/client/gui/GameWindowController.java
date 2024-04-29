@@ -133,8 +133,11 @@ public class GameWindowController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         logger.info("Game Window initialized");
-        ClientOutput.send(CommandsClientToServer.RUSR, "");
 
+
+
+        //Set this instance of GameWindowController as controller in main
+        Main.setGameWindowController(this);
 
         //set the username
         usernameLabel.setText("username"); //TODO usernames of players for the sheets
@@ -252,7 +255,8 @@ public class GameWindowController implements Initializable {
         deleteLabel.setText("0");
         rotateLabel.setText("0");
 
-        System.out.println(ownerUser);
+
+        ClientOutput.send(CommandsClientToServer.RUSR, "");
 
     }
 
