@@ -102,7 +102,7 @@ public class ClientInputHelper implements Runnable {
             case INES -> Main.initOtherTab(input[1]);
             case STRT -> Main.changeTurn(input[1]);
             case SWAP -> Main.swapEntrySheets(input[1]);
-            case TUSR -> logger.info("WHAT SHALL I DO???"); // TODO: ADD WHAT TO DO
+            case TUSR -> Main.sendOwnNameToGUI(input[1]);
             default -> logger.info("unknown command received from server " + message);
         }
     }
