@@ -157,8 +157,12 @@ public class GameManager implements Runnable {
                                 logger.log(gameLogic, "Dices were rolled.");
                                 logger.log(gameLogic, "Rolled: " + rolledDice);
 
-                                // send dices to all players
-                                Communication.broadcastToAll(CommandsServerToClient.ROLL, playerArraysList, rolledDice);
+                                // send dices to current player
+                                Communication.sendToPlayer(CommandsServerToClient.ROLL, currentPlayer, rolledDice);
+
+                                // send dices to all
+                                Communication.broadcastToAll(CommandsServerToClient.ALDI, playerArraysList, rolledDice);
+
                             } else {
                                 logger.log(gameLogic, "Dices were not rolled.");
                             }
