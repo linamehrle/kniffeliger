@@ -42,6 +42,8 @@ public class GameWindowController implements Initializable {
     private Logger logger = Starter.getLogger();
 
     @FXML
+    private Button startButton;
+    @FXML
     private Button stealButton;
     @FXML
     private Button freezeButton;
@@ -370,6 +372,7 @@ public class GameWindowController implements Initializable {
     public void initiateTurn(String userName, String phase) {
         //Clear information box before each turn
         clearInformationBox();
+        startButton.setDisable(true);
         displayInformationText("It is " + userName + "'s turn. May the power be with them.");
         switch (phase) {
             case "Main" -> displayInformationText("The phase is: " + phase + "\nThis is a normal round. SWAP and ROTATE actions cannot be played");
