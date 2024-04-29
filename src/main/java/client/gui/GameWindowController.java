@@ -410,6 +410,7 @@ public class GameWindowController implements Initializable {
         startButton.setDisable(true);
         entryEnterButton.setDisable(true);
         rollCounter = 0;
+        logger.trace("rollCounter: " + rollCounter);
     }
 
     /**
@@ -497,9 +498,12 @@ public class GameWindowController implements Initializable {
         //Saved dice are automatically transmitted before dice are rolled again
         //Count number of saved dice
         int diceSavedCounter = 0;
+        logger.trace("diceSavedCountr: " + diceSavedCounter);
         for (DiceGUImplementation dice : diceList){
             if (dice.getSavingStatus()){
                 diceSavedCounter++;
+                logger.trace("diceSavedCountr: " + diceSavedCounter);
+
             }
         }
 
@@ -515,6 +519,8 @@ public class GameWindowController implements Initializable {
                         diceList.get(i).setSavingStatus(true);
                         diceList.get(i).setStashStatus(false);
                         diceSavedCounter++;
+                        logger.trace("diceSavedCountr: " + diceSavedCounter);
+
                     }
                     //Reset values in arrays with stashed dice
                     diceStashedList[i] = "";
@@ -533,6 +539,7 @@ public class GameWindowController implements Initializable {
         if (rollCounter <= 2 ) {
             ClientOutput.send(CommandsClientToServer.ROLL, "");
             rollCounter++;
+            logger.trace("rollCounter: " + rollCounter);
         }
 
         diceBox.refresh();
@@ -588,6 +595,7 @@ public class GameWindowController implements Initializable {
         //TODO: is that needed?
         //Save all dice on last roll
         if (rollCounter == 3){
+            logger.trace("rollCounter: " + rollCounter);
             ClientOutput.send(CommandsClientToServer.SAVE, "0 1 2 3 4");
         }
 
