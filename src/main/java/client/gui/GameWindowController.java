@@ -498,10 +498,13 @@ public class GameWindowController implements Initializable {
         if (rollCounter >= 2 || diceSavedCounter == 5) {
             rollButton.setDisable(true);
             entryEnterButton.setDisable(false);
-        } else {
+        }
+
+        if (rollCounter <= 2 ) {
             ClientOutput.send(CommandsClientToServer.ROLL, "");
             rollCounter++;
         }
+
         diceBox.refresh();
     }
 
@@ -550,6 +553,13 @@ public class GameWindowController implements Initializable {
         displayInformationText("ALEA IACTA EST!  \n(the die is cast)");
         diceBox.refresh();
         diceBoxOther.refresh();
+
+        //TODO: is that needed?
+        //Save all dice on last roll
+        if (rollCounter == 3){
+            ClientOutput.send(CommandsClientToServer.SAVE, "0 1 2 3 4");
+        }
+
     }
 
 
