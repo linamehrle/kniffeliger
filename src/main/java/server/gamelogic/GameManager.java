@@ -152,6 +152,8 @@ public class GameManager implements Runnable {
 
                                 // send dices to all players
                                 Communication.broadcastToAll(CommandsServerToClient.ROLL, playerArraysList, rolledDice);
+                            } else {
+                                logger.log(gameLogic, "Dices were not rolled.");
                             }
                             break;
                         case "SAVE":
@@ -203,6 +205,8 @@ public class GameManager implements Runnable {
                                 Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You received " + ActionDice.printActionDice(currentActionDice));
 
                                 entryMade = true;
+                            } else {
+                                logger.log(gameLogic, "Not all dices are selected to be saved.");
                             }
                             break;
                         case "STEA":
@@ -225,6 +229,8 @@ public class GameManager implements Runnable {
 
                                 //send updated action dice to player
                                 Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
+                            } else {
+                                logger.log(gameLogic, "No steal: aboutToRoll=" + aboutToRoll + ", stealCount=" + stealCount);
                             }
                             break;
                         case "FRZE":
@@ -242,6 +248,8 @@ public class GameManager implements Runnable {
 
                                 //send updated action dice to player
                                 Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
+                            } else {
+                                logger.log(gameLogic, "No freeze: freezeCount=" + freezeCount);
                             }
                             break;
                         case "COUT":
@@ -260,6 +268,8 @@ public class GameManager implements Runnable {
 
                                 //send updated action dice to player
                                 Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
+                            } else {
+                                logger.log(gameLogic, "No cross out: crossOutCount=" + crossOutCount);
                             }
                             break;
                         case "ENDT":
@@ -268,6 +278,8 @@ public class GameManager implements Runnable {
                             if (entryMade) {
                                 logger.log(gameLogic, "Ending turn (" + currentPlayer.getUsername() + ")");
                                 endTurn = true;
+                            } else {
+                                logger.log(gameLogic, "No ending turn; no entry was made.");
                             }
                             break;
                         default:
@@ -328,6 +340,8 @@ public class GameManager implements Runnable {
 
                                 //send updated action dice to player
                                 Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
+                            } else {
+                                logger.log(gameLogic, "No shift: shiftCount=" + shiftCount);
                             }
                             break;
                         case "SWAP":
@@ -343,6 +357,8 @@ public class GameManager implements Runnable {
 
                                 //send updated action dice to player
                                 Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
+                            } else {
+                                logger.log(gameLogic, "No swap: swapCount=" + swapCount);
                             }
                             break;
                         case "ENDT":
