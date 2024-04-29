@@ -279,6 +279,8 @@ public class GameManager implements Runnable {
                                 endTurn = true;
                             }
                             break;
+                        default:
+                            logger.trace("Entered unknown case: " + input);
                     }
                 }
                 // defreeze at and of turn
