@@ -24,8 +24,6 @@ public class Main extends Application {
     private static GameWindowController gameWindowController;
     private static HighScoreController highScoreController;
 
-    private static String username;
-
     Stage mainWidow;
     Stage chatWindow;
 
@@ -275,22 +273,7 @@ public class Main extends Application {
 
         if (playersSwapped.length == 2){
             gameWindowController.swapEntrySheets(playersSwapped[0], playersSwapped[1]);
-    }
-    }
-
-    /**
-     * Sets the username.
-     * @param username name of the user
-     */
-    public static void setUsername(String username) {
-        Main.username = username;
-    }
-
-    /**
-     * Gets the username.
-     */
-    public static String getUsername() {
-        return Main.username;
+        }
     }
 }
 

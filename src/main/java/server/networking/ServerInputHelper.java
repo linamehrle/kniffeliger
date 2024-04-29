@@ -71,6 +71,7 @@ public class ServerInputHelper implements Runnable {
             case COUT, ENDT, ROLL, ENTY, STEA, FRZE, SWAP, SAVE  -> player.getLobby().getGameManager().getAnswer(cmd.toString() + " " + input[1], player);
             case SHFT -> player.getLobby().getGameManager().getAnswer(cmd.toString(), player);
             case LOPL -> Communication.sendToPlayer(CommandsServerToClient.LOPL, player, player.getLobby().getPlayersInLobbyAsString());
+            case RUSR -> Communication.sendToPlayer(CommandsServerToClient.TUSR, player, player.getUsername());
             default -> logger.info("unknown command received from client " + message);
 
         }

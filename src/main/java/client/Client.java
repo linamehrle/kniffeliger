@@ -85,17 +85,14 @@ public class Client {
 
         if (username.equals("default")) {
             String systemUsername = System.getProperty("user.name");
-            Main.setUsername(systemUsername);
             clientOutput.send(CommandsClientToServer.CHNA, systemUsername);
         } else {
-            Main.setUsername(username);
             clientOutput.send(CommandsClientToServer.CHNA, username);
         }
 
         //start the gui
         logger.debug("before main Launch");
         Application.launch(Main.class);
-        logger.debug("Username is: " + Main.getUsername());
     }
 
     /**

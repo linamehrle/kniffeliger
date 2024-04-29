@@ -130,8 +130,10 @@ public enum CommandsClientToServer {
     /**
      * Used to get a list of the players that are in the same lobby as the player asking
      */
-    LOPL
+    LOPL,
 
-
-
+    /**
+     *  Request username
+     */
+    RUSR
 }
