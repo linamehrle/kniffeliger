@@ -311,6 +311,7 @@ public class EntrySheet {
         // when entry player want to make is not final then add it to entry sheet
         // else: aks for different entry
         if (entrySheet.getEntryByName(nameOfEntry).getIsFinal() || entrySheet.getEntryByName(nameOfEntry).getFrozenStatus()) {
+            // TODO REMOVE
             System.out.println("This is not a valid choice. Please try again.");
             Scanner scanner = new Scanner(System.in);
             entryValidation(entrySheet, scanner.nextLine(), finalDiceValues);
