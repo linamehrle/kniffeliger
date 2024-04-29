@@ -78,7 +78,11 @@ public class GameManager implements Runnable {
         Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "The game starts.");
 
         // request to initialize clients
-        Communication.broadcastToAll(CommandsServerToClient.INES, playerArraysList, "");
+        String playerList = "";
+        for (Player player : playerArraysList) {
+            playerList += player.getUsername() + " ";
+        }
+        Communication.broadcastToAll(CommandsServerToClient.INES, playerArraysList, playerList);
 
         // starting 14 rounds
         for (int round = 0; round < ROUNDS; round++) {
@@ -167,7 +171,7 @@ public class GameManager implements Runnable {
                             logger.log(gameLogic, "Save dices: " + Arrays.toString(savedDice));
 
                             // saves the rolled dice; if player does not want to save one, then "none" is sent
-                            if (!savedDice[1].equals("none")) {
+                            if (!savedDice[1].equals("none") && aboutToRoll) {
                                 // turns the single String array entries into int and save the corresponding dice
                                 for (int idx = 1; idx < savedDice.length; idx++) {
                                     logger.trace("Save dice " + savedDice[idx]);
