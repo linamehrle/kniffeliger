@@ -2,6 +2,7 @@ package client.gui;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -464,31 +465,42 @@ public class GameWindowController implements Initializable {
     public void rollActionSend(ActionEvent event){
         String saveDiceString = GameWindowHelper.diceStashedArrToString(diceStashedList);
         //Saved dice are automatically transmitted before dice are rolled again
-        if ( !saveDiceString.isEmpty()) {
-            logger.info("The following dices are selected to be saved: " + saveDiceString);
-
-            ClientOutput.send(CommandsClientToServer.SAVE,  saveDiceString);
-
-            //Set dice to saved
-            for (int i=0; i < diceStashedList.length; i++){
-                if ( !diceStashedList[i].isEmpty() ){
-                    diceList.get(i).setSavingStatus(true);
-                    diceList.get(i).setStashStatus(false);
-                }
-                //Reset values in arrays with stashed dice
-                diceStashedList[i] = "";
+        //Count number of saved dice
+        int diceSavedCounter = 0;
+        for (DiceGUImplementation dice : diceList){
+            if (dice.getSavingStatus()){
+                diceSavedCounter++;
             }
         }
-        else {
-            logger.info("No dices are selected to be saved.");
 
-            ClientOutput.send(CommandsClientToServer.SAVE,  "none");
+        if (diceSavedCounter < 5) {
+            if (!saveDiceString.isEmpty()) {
+                logger.info("The following dices are selected to be saved: " + saveDiceString);
+
+                ClientOutput.send(CommandsClientToServer.SAVE, saveDiceString);
+
+                //Set dice to saved
+                for (int i = 0; i < diceStashedList.length; i++) {
+                    if (!diceStashedList[i].isEmpty()) {
+                        diceList.get(i).setSavingStatus(true);
+                        diceList.get(i).setStashStatus(false);
+                        diceSavedCounter++;
+                    }
+                    //Reset values in arrays with stashed dice
+                    diceStashedList[i] = "";
+                }
+            } else {
+                logger.info("No dices are selected to be saved.");
+
+                ClientOutput.send(CommandsClientToServer.SAVE, "none");
+            }
         }
-        if (rollCounter <= 3) {
-            ClientOutput.send(CommandsClientToServer.ROLL, "");
-        } else {
+        if (rollCounter >= 2 || diceSavedCounter == 5) {
             rollButton.setDisable(true);
             entryEnterButton.setDisable(false);
+        } else {
+            ClientOutput.send(CommandsClientToServer.ROLL, "");
+            rollCounter++;
         }
         diceBox.refresh();
     }
@@ -530,6 +542,7 @@ public class GameWindowController implements Initializable {
         for (DiceGUImplementation dice : diceListToUpdate) {
             if (!dice.getSavingStatus() && i < diceValues.length){
                 dice.setDiceValue(diceValues[i]);
+                System.out.println(Arrays.toString(diceValues));
                 i++;
             }
         }
