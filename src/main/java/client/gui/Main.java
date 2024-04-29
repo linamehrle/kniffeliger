@@ -255,7 +255,8 @@ public class Main extends Application {
     /**
      * Method to relay to the GUI that Tab 2 has to be initialized with entry sheets of other players
      */
-    public static void initOtherTab() {
+    public static void initOtherTab(String playerlist) {
+        gameWindowController.updatePlayerList(playerlist);
         gameWindowController.initTabOther();
     }
 
