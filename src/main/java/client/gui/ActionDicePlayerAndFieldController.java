@@ -36,7 +36,7 @@ public class ActionDicePlayerAndFieldController implements Initializable {
     private ArrayList<String> playerList;
     private String[] entryList = new String[] {"ones", "twos", "threes", "fours", "fives", "sixes",
                                                 "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight",
-                                                "largeStraight", "kniffeliger", "change", "pi"};
+                                                "largeStraight", "kniffeliger", "chance", "pi"};
 
     private String action;
 

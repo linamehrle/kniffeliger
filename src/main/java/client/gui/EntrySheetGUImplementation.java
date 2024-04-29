@@ -36,7 +36,7 @@ public class EntrySheetGUImplementation {
     EntrySheetGUImplementation (int entryNumber, String entryName){
         this.idNumber = entryNumber;
         this.idName = new SimpleStringProperty(entryName);
-        this.score = new SimpleIntegerProperty(0);
+        this.score = new SimpleIntegerProperty(-1);
         this.savingStatus = false;
         this.displayName = convertIDnameToDisplay(entryName);
     }

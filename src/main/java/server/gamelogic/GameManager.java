@@ -91,7 +91,7 @@ public class GameManager implements Runnable {
         Communication.broadcastToAll(CommandsServerToClient.INES, playerArraysList, playerList);
 
         // starting 14 rounds
-        for (int round = 0; round < ROUNDS; round++) {
+        for (int round = 0; round < 3; round++) {
             logger.log(gameLogic, "Round " + (round + 1) + " started");
 
             // loop through all the players
@@ -246,8 +246,11 @@ public class GameManager implements Runnable {
                                         + currentEntrySheet.getEntryByName(selectedEntry).getValue());
 
                                 // send player crossed out entry
-                                Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + " "
+                                Communication.sendToPlayer(CommandsServerToClient.ENTY, getPlayerByName(playerArraysList, victimPlayerName), victimPlayerName + ":" + selectedEntry + " "
                                             + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
+
+                                Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, victimPlayerName + " " + selectedEntry + ":"
+                                        + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
 
                                 entryMade = true;
 
@@ -285,7 +288,10 @@ public class GameManager implements Runnable {
                                 logger.log(gameLogic, currentPlayer + " has crossed out entry " + selectedEntry + " from " + victimPlayerName);
 
                                 // send cross out state
-                                Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, victimPlayerName + " " + selectedEntry + " "
+                                Communication.sendToPlayer(CommandsServerToClient.ENTY, getPlayerByName(playerArraysList, victimPlayerName), victimPlayerName + " " + selectedEntry + ":"
+                                        + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
+
+                                Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, victimPlayerName + " " + selectedEntry + ":"
                                         + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
 
                                 crossOutCount = crossOutCount - 1;
@@ -358,7 +364,13 @@ public class GameManager implements Runnable {
 
                             if (shiftCount > 0) {
                                 ActionDice.shift(allEntrySheets);
-                                Communication.broadcastToAll(CommandsServerToClient.SHFT, playerArraysList, "");
+                                // get player string
+                                String playerShift = "";
+                                for (Player player : playerArraysList) {
+                                    playerShift += player.getUsername() + " ";
+                                }
+
+                                Communication.broadcastToAll(CommandsServerToClient.SHFT, playerArraysList, playerShift);
                                 logger.log(gameLogic, "Shifting");
 
                                 shiftCount = shiftCount - 1;
@@ -477,8 +489,10 @@ public class GameManager implements Runnable {
              */
             if (!dice.getSavingStatus()) {
                 dice.rollSingleDice();
-                rolledDice = rolledDice + dice.getDiceValue() + " ";
             }
+
+            // create string of all dice values
+            rolledDice = rolledDice + dice.getDiceValue() + " ";
         }
         return rolledDice;
     }
@@ -669,6 +683,22 @@ public class GameManager implements Runnable {
      */
     public int getDIVIDABLE_BYE() {
         return DIVIDABLE_BY;
+    }
+
+    /**
+     * Gets Player by its name when given a list as well.
+     *
+     * @param players list with all players in it
+     * @param name of player that needs to be found
+     * @return player if player exists, else null
+     */
+    public Player getPlayerByName(ArrayList<Player> players, String name) {
+        for (Player player : players) {
+            if (player.getUsername().equals(name)) {
+                return player;
+            }
+        }
+        return null;
     }
 
     /**
