@@ -712,6 +712,16 @@ public class GameWindowController implements Initializable {
     public void initTabOther() {
         clearInformationBox();
 
+        //Set username label
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                usernameLabel.setText(ownerUser);
+
+            }
+        });
+
+
 
         if (playersInLobby != null ) {
             for (int i = 0; i < playersInLobby.size() && i < playersWithSheets.length; i++) {
