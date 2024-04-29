@@ -619,6 +619,8 @@ public class GameManager implements Runnable {
             logger.info("Message from " + player.getUsername() + " accepted.");
             this.input = input;
             notify();
+        } else {
+            logger.info("Message from " + player.getUsername() + " denied.");
         }
     }
 
