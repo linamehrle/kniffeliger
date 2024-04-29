@@ -169,11 +169,11 @@ public class GameManager implements Runnable {
 
                                 logger.log(gameLogic, "Save dices: " + Arrays.toString(savedDice));
 
-                                // TODO: SAVES DICE WITH NUMBER BY 0 1 2 3 4 (not like in terminal version with 1 2 3 4 5)
                                 // saves the rolled dice; if player does not want to save one, then "none" is sent
                                 if (!savedDice[1].equals("none")) {
                                     // turns the single String array entries into int and save the corresponding dice
-                                    for (int idx = 1; idx < savedDice.length - 1; idx++) {
+                                    for (int idx = 1; idx < savedDice.length; idx++) {
+                                        logger.trace("Save dice " + savedDice[idx]);
                                         int idxDice = Integer.parseInt(savedDice[idx]);
                                         allDice[idxDice].saveDice();
                                     }
