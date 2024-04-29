@@ -93,7 +93,7 @@ public class GameManager implements Runnable {
                 boolean entryMade = false;
                 boolean endTurn = false;
 
-                // checks if player already started to roll because then stealing is not allowed anymore
+                // checks if player already started to because then stealing is not allowed anymore
                 boolean aboutToRoll = false;
 
                 // saves input for steal/freeze/cout
@@ -625,6 +625,15 @@ public class GameManager implements Runnable {
     }
 
     /**
+     * Gets the number that the dice needs to be dividable to get an action dice.
+     *
+     * @return number that the dice sum needs to be dividable by (important for testing)
+     */
+    public int getDIVIDABLE_BYE() {
+        return DIVIDABLE_BY;
+    }
+
+    /**
      * Adds the connected players to the lobby to the game.
      *
      * @param players connected players
@@ -639,18 +648,18 @@ public class GameManager implements Runnable {
      * #################################################################################################################
      */
     /**
-     * Ranks the winners.
+     * Ranks the winners from lowest to highest (from loser to winner, so losers first rankedPlayer[0] and winner last).
      *
      * @param allEntrySheets final entry sheets of the players
      * @return Player-array with the ranked players
      */
     public Player[] ranking(EntrySheet[] allEntrySheets) {
-        Player[] rankedPlayer = new Player[allEntrySheets.length];
+        Player[] rankedPlayers = new Player[allEntrySheets.length];
         Arrays.sort(allEntrySheets, Comparator.comparing(EntrySheet::getTotalPoints));
-        for (int i = 0; i < rankedPlayer.length; i++){
-            rankedPlayer[i] = allEntrySheets[allEntrySheets.length - i - 1].getPlayer();
+        for (int i = 0; i < rankedPlayers.length; i++){
+            rankedPlayers[i] = allEntrySheets[allEntrySheets.length - i - 1].getPlayer();
         }
-        return rankedPlayer;
+        return rankedPlayers;
     }
 
     private String returnScoreAsString(EntrySheet[] allEntrySheets) {
@@ -660,7 +669,5 @@ public class GameManager implements Runnable {
         }
         return ranking;
     }
-
-
 
 }
