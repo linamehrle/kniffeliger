@@ -24,6 +24,8 @@ public class Main extends Application {
     private static GameWindowController gameWindowController;
     private static HighScoreController highScoreController;
 
+    private static String username;
+
     Stage mainWidow;
     Stage chatWindow;
 
@@ -267,6 +269,7 @@ public class Main extends Application {
         ClientOutput.send(CommandsClientToServer.QUIT, "leaving now");
     }
 
+
     public static void swapEntrySheets(String twoUsernames) {
         String[] playersSwapped = twoUsernames.split(" ");
 
@@ -275,6 +278,20 @@ public class Main extends Application {
     }
     }
 
+    /**
+     * Sets the username.
+     * @param username name of the user
+     */
+    public static void setUsername(String username) {
+        Main.username = username;
+    }
+
+    /**
+     * Gets the username.
+     */
+    public static String getUsername() {
+        return Main.username;
+    }
 }
 
 
