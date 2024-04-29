@@ -140,7 +140,12 @@ public enum CommandsServerToClient {
     /**
      * Communicates the GUI to initialize the entry sheets of the other players on tab 2
      */
-    INES
+    INES,
+
+    /**
+     * Transmits username
+     */
+    TUSR
 
 
 }
