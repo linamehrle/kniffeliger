@@ -292,6 +292,11 @@ public class Main extends Application {
     public static String getUsername() {
         return Main.username;
     }
+
+    public static void sendOwnNameToGUI(String ownUserName){
+        gameWindowController.setOwnUser(ownUserName);
+
+    }
 }
 
 

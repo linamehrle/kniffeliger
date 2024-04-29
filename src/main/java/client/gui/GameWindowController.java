@@ -133,8 +133,7 @@ public class GameWindowController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         logger.info("Game Window initialized");
-        ownerUser = Main.getUsername();
-        System.out.println(ownerUser);
+        ClientOutput.send(CommandsClientToServer.RUSR, "");
 
         //Set this instance of GameWindowController as controller in main
         Main.setGameWindowController(this);
@@ -395,7 +394,7 @@ public class GameWindowController implements Initializable {
         if (userName.equals(ownerUser)){
             enableAllGameFields();
         } else {
-            //disableAllGameFields();
+            disableAllGameFields();
         }
 
         leaveGameButton.setDisable(true);
@@ -866,6 +865,10 @@ public class GameWindowController implements Initializable {
                 player.getEntrySheetListView().refresh();
             }
         }
+    }
+
+    public void setOwnUser(String ownUserName) {
+        this.ownerUser = ownUserName;
     }
 
 
