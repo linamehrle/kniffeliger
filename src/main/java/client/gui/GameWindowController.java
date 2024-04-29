@@ -108,6 +108,12 @@ public class GameWindowController implements Initializable {
     private ArrayList<String> playersInLobby;
     private PlayerGUImplementation[] playersWithSheets = new PlayerGUImplementation[4];
 
+    int freezeCounter = 0;
+    int swapCounter = 0;
+    int stealCounter = 0;
+    int shiftCounter = 0;
+    int crossOutCounter = 0;
+
     int rollCounter = 0;
 
 
@@ -237,6 +243,7 @@ public class GameWindowController implements Initializable {
         ClientOutput.send(CommandsClientToServer.LOPL, "getting the players in the lobby");
 
         createActionDiceListener();
+
 
         freezeLabel.setText("0");
         stealLabel.setText("0");
@@ -729,11 +736,11 @@ public class GameWindowController implements Initializable {
      * @param actionDice
      */
     public void updateActionDice(String actionDice) {
-        int freezeCounter = 0;
-        int swapCounter = 0;
-        int stealCounter = 0;
-        int shiftCounter = 0;
-        int crossOutCounter = 0;
+        freezeCounter = 0;
+        swapCounter = 0;
+        stealCounter = 0;
+        shiftCounter = 0;
+        crossOutCounter = 0;
 
         String[] actions = actionDice.split(" ");
 
@@ -746,12 +753,19 @@ public class GameWindowController implements Initializable {
                 case "swap" -> swapCounter++;
             }
         }
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                swapLabel.setText(Integer.toString(swapCounter));
+                freezeLabel.setText(Integer.toString(freezeCounter));
+                stealLabel.setText(Integer.toString(stealCounter));
+                rotateLabel.setText(Integer.toString(shiftCounter));
+                deleteLabel.setText(Integer.toString(crossOutCounter));
+            }
+        });
 
-        swapLabel.setText(Integer.toString(swapCounter));
-        freezeLabel.setText(Integer.toString(freezeCounter));
-        stealLabel.setText(Integer.toString(stealCounter));
-        rotateLabel.setText(Integer.toString(shiftCounter));
-        deleteLabel.setText(Integer.toString(crossOutCounter));
+
+
     }
 
     /**
