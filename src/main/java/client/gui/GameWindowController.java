@@ -481,7 +481,7 @@ public class GameWindowController implements Initializable {
             ClientOutput.send(CommandsClientToServer.SAVE,  "none");
         }
         if (rollCounter <= 3) {
-            ClientOutput.send(CommandsClientToServer.ROLL, "roll");
+            ClientOutput.send(CommandsClientToServer.ROLL, "");
         } else {
             rollButton.setDisable(true);
         }
