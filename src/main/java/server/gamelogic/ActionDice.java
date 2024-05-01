@@ -36,97 +36,101 @@ public class ActionDice {
     }
 
     /**
-     * METHOD RETURNS STRING SO WE CAN PLAY IT IN CONSOLE ##############################################################
      * Lets you steal an entry from another player. Returns String with message, if entry could be stolen.
      *
      * @param entrySheetVillain player that steals entry
      * @param entrySheetVictim player that entry is stolen from
      * @param stolenEntry entry that thief wants to steal
+     * @return true if entry could be stolen and false else
      */
-    public static String steal (EntrySheet entrySheetVillain, EntrySheet entrySheetVictim, String stolenEntry) {
-        // assigns entry sheets to victim and thief
-        Entry[] entriesThief = entrySheetVictim.getAsArray();
+    public static boolean steal (EntrySheet entrySheetVillain, EntrySheet entrySheetVictim, String stolenEntry) {
+        // assigns names and entry sheets to villain and victim
+        String nameVillain = entrySheetVillain.getUsername();
+        String nameVictim = entrySheetVictim.getUsername();
+        Entry[] entriesVillain = entrySheetVictim.getAsArray();
         Entry[] entriesVictim = entrySheetVictim.getAsArray();
-        String message = entrySheetVillain.getUsername() + ", ";
+
+        // return value
+        boolean gotStolen = false;
+
         for (int i = 0; i < EntrySheet.getEntrySheetLength(); i++){
-            if (entriesVictim[i].getName().equals(stolenEntry) && entriesThief[i].getIsFinal()){
+            // entries can only be stolen if the following things are true:
+            // 1. Villain does not steal from his own sheet
+            // 2. Villain does not steal an entry that is already final on his or her (or their) entry sheet
+            // 3. Entry name is valid and exists on an entry sheet
+            // 4. Chosen entry is not final on victims entry sheet
+            if (!nameVictim.equals(nameVillain) && !entriesVillain[i].getIsFinal() && entriesVictim[i].getName().equals(stolenEntry) && entriesVictim[i].getIsFinal()){
                 entrySheetVillain.addEntry(entriesVictim[i]);
                 entrySheetVictim.deleteEntry(stolenEntry);
-                message = "you successfully stole the entry " + entriesVictim[i].getName() + " from " + entrySheetVillain.getUsername() + ".";
-            } else {
-                message = "this is not a valid entry or your entry is already final/taken/crossed out.";
+                gotStolen = true;
             }
         }
-        return message;
+        return gotStolen;
     }
 
     /**
-     * METHOD RETURNS STRING SO WE CAN PLAY IT IN CONSOLE ##############################################################
      * Freezes (aka blocks) a player from choosing a specific combination as an entry. If, for example, the full house
      * gets frozen, the victim cannot choose this entry for next round.
      *
-     * @return message for game in console
+     * @return true if entry could be frozen and false else
      */
-    public static String freeze (EntrySheet entrySheetVictim, String frozenEntry){
-        String message = "";
+    public static boolean freeze (EntrySheet entrySheetVillain, EntrySheet entrySheetVictim, String frozenEntry){
+        String nameVillain = entrySheetVillain.getUsername();
+        String nameVictim = entrySheetVictim.getUsername();
+
+        // return value
+        boolean gotFrozen = false;
         for (Entry entry : entrySheetVictim.getAsArray()){
-            if (entry.getName().equals(frozenEntry)){
+            if (!nameVictim.equals(nameVillain) &&entry.getName().equals(frozenEntry)){
                 entry.setFrozenStatus(true);
-                message = message + "The entry of " + entrySheetVictim.getUsername() + " has successfully been frozen.";
-            } else {
-                message = message + "Invalid entry. Try again.";
+                gotFrozen = true;
             }
         }
-        return message;
+        return gotFrozen;
     }
 
     /**
-     * METHOD RETURNS STRING SO WE CAN PLAY IT IN CONSOLE ##############################################################
      * Crosses out/deletes entry from another player.
      *
      * @param entrySheetVictim entry sheet of victim
      * @param crossedOutEntry entry to be deleted
-     * @return message for game in console
+     * @return true if entry could be crossed out and false else
      */
-    public static String crossOut(EntrySheet entrySheetVictim, String crossedOutEntry) {
-        // TODO: check if entry that needs to be crossed out is final because only made entries can be crossed out
+    public static boolean crossOut(EntrySheet entrySheetVictim, String crossedOutEntry) {
         entrySheetVictim.deleteEntry(crossedOutEntry);
-        return "You crossed out " + crossedOutEntry + " in " + entrySheetVictim.getUsername() + "'s entry sheet.";
+        return true;
     }
 
     /**
-     * METHOD RETURNS STRING SO WE CAN PLAY IT IN CONSOLE ##############################################################
      * Shifts all entries one player.
      *
      * @param playersSheets all entry sheets of players as EntrySheet[]-array.
      * @return message for game in console
      */
-    public static String shift(EntrySheet[] playersSheets){
+    public static boolean shift(EntrySheet[] playersSheets){
         Player helper = playersSheets[0].getPlayer();
         for (int i = 0; i < playersSheets.length - 1; i++) {
             playersSheets[i].setPlayer(playersSheets[i + 1].getPlayer());
         }
         playersSheets[playersSheets.length - 1].setPlayer(helper);
-        return "You successfully shifted the entry sheets.";
+        return true;
     }
 
     /**
-     * METHOD RETURNS STRING SO WE CAN PLAY IT IN CONSOLE ##############################################################
      * Swaps entry sheets of two players
      *
      * @param entrySheetVillain entry sheet of player who steals the entry.
      * @param entrySheetVictim entry sheet that gets stolen
      * @return message for game in console
      */
-    public static String swap(EntrySheet entrySheetVillain, EntrySheet entrySheetVictim){
+    public static boolean swap(EntrySheet entrySheetVillain, EntrySheet entrySheetVictim){
         Player helper = entrySheetVillain.getPlayer();
         entrySheetVillain.setPlayer(entrySheetVictim.getPlayer());
         entrySheetVictim.setPlayer(helper);
-        return entrySheetVillain.getUsername() + ", you successfully swap your entry sheets with " + entrySheetVictim.getUsername();
+        return true;
     }
 
     /**
-     * METHOD RETURNS STRING SO WE CAN PLAY IT IN CONSOLE ##############################################################
      * Prints the action dice array as String.
      *
      * @param actionDice to be printed

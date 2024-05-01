@@ -3,6 +3,7 @@ package server.gamelogic;
 import java.util.Arrays;
 import java.util.Scanner;
 import server.Player;
+import server.networking.Communication;
 
 /**
  * Entry sheet class to build entry sheets that are associated with a player.
@@ -247,13 +248,14 @@ public class EntrySheet {
 
     /**
      * Detects entry from sheet and deletes it. Sets entry as final since the value should not change now.
+     * Can only be deleted if it is final already so if it has a value.
      *
      * @param deletedEntry gives us name of entry that needs to be deleted
      */
     public void deleteEntry(String deletedEntry){
         for (Entry entry : entrySheet) {
-            // if the correct entry has been detected, so if the names are the same, delete value from total points and set the value of this entry on entrySheet to 0
-            if (entry.getName().equals(deletedEntry)) {
+            // if the correct entry has been detected, so if the names are the same and the entry is final (so there is a value in there), delete value from total points and set the value of this entry on entrySheet to 0
+            if (entry.getName().equals(deletedEntry) && getEntryByName(deletedEntry).getIsFinal()) {
                 totalPoints = totalPoints - entry.getValue();
                 entry.setValue(0);
                 entry.setFinal();
@@ -267,6 +269,7 @@ public class EntrySheet {
     public void resetEntrySheet() {
         for (Entry entry : entrySheet) {
             entry.setValue(DEFAULT_VALUE);
+            entry.resetFinal();
         }
         totalPoints = 0;
     }
@@ -274,6 +277,8 @@ public class EntrySheet {
     /**
      * METHOD RETURNS STRING SO WE CAN PLAY IT IN CONSOLE ###############################################################
      * Method to print entry sheet (only used to play it in console).
+     *
+     * @return String with entry sheet values
      */
     public String printEntrySheet() {
         String message = "Name: " + username + ",";
@@ -312,6 +317,7 @@ public class EntrySheet {
         // else: aks for different entry
         if (entrySheet.getEntryByName(nameOfEntry).getIsFinal() || entrySheet.getEntryByName(nameOfEntry).getFrozenStatus()) {
             // TODO REMOVE
+
             System.out.println("This is not a valid choice. Please try again.");
             Scanner scanner = new Scanner(System.in);
             entryValidation(entrySheet, scanner.nextLine(), finalDiceValues);

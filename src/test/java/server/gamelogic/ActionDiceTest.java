@@ -95,6 +95,7 @@ class ActionDiceTest {
         return playersEntrySheet;
     }
 
+    // TODO: test steal when no entry was made
     @Test
     @DisplayName("Checks steal method.")
     void stealTest(){
@@ -139,7 +140,7 @@ class ActionDiceTest {
         riccardosHelpersEntrySheet.setEntrySheet(riccardosEntrySheet.getEntryValues());
 
         int randomIndex = (int) Math.floor(Math.random() * 13 + 0);
-        ActionDice.freeze(riccardosEntrySheet, riccardosEntrySheet.getEntryNames()[randomIndex]);
+        ActionDice.freeze(linasEntrySheet, riccardosEntrySheet, riccardosEntrySheet.getEntryNames()[randomIndex]);
         assertAll(() -> assertTrue(riccardosEntrySheet.getAsArray()[randomIndex].getFrozenStatus())
         );
     }
