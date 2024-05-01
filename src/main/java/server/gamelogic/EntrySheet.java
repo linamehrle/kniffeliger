@@ -16,21 +16,21 @@ public class EntrySheet {
     private static final int DEFAULT_VALUE = 0;
 
     // default entry sheet as Entry-array
-    private static Entry defaultOnes = new Entry("ones", DEFAULT_VALUE);
-    private static Entry defaultTwos = new Entry("twos", DEFAULT_VALUE);
-    private static Entry defaultThrees = new Entry("threes", DEFAULT_VALUE);
-    private static Entry defaultFours = new Entry("fours", DEFAULT_VALUE);
-    private static Entry defaultFives = new Entry("fives", DEFAULT_VALUE);
-    private static Entry defaultSixes = new Entry("sixes", DEFAULT_VALUE);
-    private static Entry defaultThreeOfAKind = new Entry("threeOfAKind", DEFAULT_VALUE);
-    private static Entry defaultFourOfAKind = new Entry("fourOfAKind", DEFAULT_VALUE);
-    private static Entry defaultFullHouse = new Entry("fullHouse", DEFAULT_VALUE);
-    private static Entry defaultSmallStraight = new Entry("smallStraight", DEFAULT_VALUE);
-    private static Entry defaultLargeStraight = new Entry("largeStraight", DEFAULT_VALUE);
-    private static Entry defaultKniffeliger = new Entry("kniffeliger", DEFAULT_VALUE);
-    private static Entry defaultChance = new Entry("chance", DEFAULT_VALUE);
-    private static Entry defaultPi = new Entry("pi", DEFAULT_VALUE);
-    private static Entry[] defaultEntrySheet = new Entry[]{defaultOnes, defaultTwos, defaultThrees, defaultFours, defaultFives, defaultSixes, defaultThreeOfAKind, defaultFourOfAKind, defaultFullHouse, defaultSmallStraight, defaultLargeStraight, defaultKniffeliger, defaultChance, defaultPi};
+    private static final Entry defaultOnes = new Entry("ones", DEFAULT_VALUE);
+    private static final Entry defaultTwos = new Entry("twos", DEFAULT_VALUE);
+    private static final Entry defaultThrees = new Entry("threes", DEFAULT_VALUE);
+    private static final Entry defaultFours = new Entry("fours", DEFAULT_VALUE);
+    private static final Entry defaultFives = new Entry("fives", DEFAULT_VALUE);
+    private static final Entry defaultSixes = new Entry("sixes", DEFAULT_VALUE);
+    private static final Entry defaultThreeOfAKind = new Entry("threeOfAKind", DEFAULT_VALUE);
+    private static final Entry defaultFourOfAKind = new Entry("fourOfAKind", DEFAULT_VALUE);
+    private static final Entry defaultFullHouse = new Entry("fullHouse", DEFAULT_VALUE);
+    private static final Entry defaultSmallStraight = new Entry("smallStraight", DEFAULT_VALUE);
+    private static final Entry defaultLargeStraight = new Entry("largeStraight", DEFAULT_VALUE);
+    private static final Entry defaultKniffeliger = new Entry("kniffeliger", DEFAULT_VALUE);
+    private static final Entry defaultChance = new Entry("chance", DEFAULT_VALUE);
+    private static final Entry defaultPi = new Entry("pi", DEFAULT_VALUE);
+    private static final Entry[] defaultEntrySheet = new Entry[]{defaultOnes, defaultTwos, defaultThrees, defaultFours, defaultFives, defaultSixes, defaultThreeOfAKind, defaultFourOfAKind, defaultFullHouse, defaultSmallStraight, defaultLargeStraight, defaultKniffeliger, defaultChance, defaultPi};
 
 
     // player that is associated with entry sheet
@@ -105,9 +105,9 @@ public class EntrySheet {
      */
     public Entry getEntryByName(String entryName) {
         Entry result = null;
-        for (Entry e : entrySheet) {
-            if (e.getName().equals(entryName)){
-                result = e;
+        for (Entry entry : entrySheet) {
+            if (entry.getName().equals(entryName)){
+                result = entry;
             }
         }
         return result;
@@ -231,8 +231,12 @@ public class EntrySheet {
         // makes sure that we can throw an exception, if the entry does not appear in entrySheet array
         int notAppearedCounter = 0;
         for (Entry entry : entrySheet) {
-            // if the correct entry has been detected, so if the names are the same, the value of this entry on entrySheet can be changed
-            if (entry.getName().equals(newEntry.getName())) {
+            // if the correct entry has been detected, so if
+            // 1. the entry exists (name is valid)
+            // 2. it is not final
+            // 3. it is not forzen
+            // then the value of the entry on entrySheet can be changed to the value of the value of the newEntry
+            if (entry.getName().equals(newEntry.getName()) && !entry.getIsFinal() && !entry.getFrozenStatus()) {
                 entry.setValue(newEntry.getValue());
                 entry.setFinal();
                 totalPoints = totalPoints + entry.getValue();
@@ -296,31 +300,31 @@ public class EntrySheet {
      */
 
     /**
-     * Sees if entry is valid and adds it to entry sheet
+     * Sees if entry is valid and adds it to entry sheet.
      *
      * @param nameOfEntry     entry name which player wants to save the dice/points for.
      * @param finalDiceValues the dice values after the player is done rolling.
+     * @return returns true is entry was made, false else
      */
-    public static void entryValidation(EntrySheet entrySheet, String nameOfEntry, Dice[] finalDiceValues) {
+    public static boolean entryValidation(EntrySheet entrySheet, String nameOfEntry, Dice[] finalDiceValues) {
+        // return value
+        boolean entryAccepted = true;
+
         // if entry is not valid it enters 0 for this entry (this is handled in single methods for entries)
         // checks if all dice have been saved, if one is not, then save them
         for (Dice d : finalDiceValues) {
-            if (d.getSavingStatus() == false) {
+            if (!d.getSavingStatus()) {
                 d.saveDice();
             }
         }
 
-        // transforms Dice-array into int-array if all dice have been saved, so we can apply methods below to it
+        // transforms Dice-array into int-array when all dice have been saved, so we can apply methods below
         int[] finalDiceInt = Dice.getAsIntArray(finalDiceValues);
 
-        // when entry player want to make is not final then add it to entry sheet
-        // else: aks for different entry
+        // if entry is already final or frozen, then return false
+        // else go to switch-case to enter the entry
         if (entrySheet.getEntryByName(nameOfEntry).getIsFinal() || entrySheet.getEntryByName(nameOfEntry).getFrozenStatus()) {
-            // TODO REMOVE
-
-            System.out.println("This is not a valid choice. Please try again.");
-            Scanner scanner = new Scanner(System.in);
-            entryValidation(entrySheet, scanner.nextLine(), finalDiceValues);
+            return false;
         } else {
             switch (nameOfEntry) {
                 case "ones":
@@ -381,12 +385,9 @@ public class EntrySheet {
                     entrySheet.addEntry(pi);
                     break;
                 default:
-                    // TODO: ACHTUNG, ÄNDERE DAS FÜR SPIEL AUSSERHALB DER KONSOLE
-                    Scanner scanner = new Scanner(System.in);
-                    System.out.println("Your entry name is wrong. Please try again.");
-                    String entryName = scanner.nextLine();
-                    entryValidation(entrySheet, entryName, finalDiceValues);
+                    return false;
             }
+            return true;
         }
         // entrySheet.getEntryByName(nameOfEntry).setFinal();
     }
