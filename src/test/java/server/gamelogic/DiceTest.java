@@ -3,6 +3,8 @@ package server.gamelogic;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Random;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 // get methods are not tested separately since they are used in tests anyway and tested with the other tests
@@ -37,7 +39,11 @@ class DiceTest {
                 () -> assertTrue(dice3.getSavingStatus()),
                 () -> assertTrue(dice1.getDiceValue() <= 6 && dice1.getDiceValue() >= 1),
                 () -> assertTrue(dice2.getDiceValue() <= 6 && dice2.getDiceValue() >= 1),
-                () -> assertTrue(dice3.getDiceValue() <= 6 && dice3.getDiceValue() >= 1)
+                () -> assertTrue(dice3.getDiceValue() <= 6 && dice3.getDiceValue() >= 1),
+                // unhappy testing: check if dice values are not in the 1 to 6 range
+                () -> assertFalse(dice1.getDiceValue() > 6 || dice1.getDiceValue() < 1),
+                () -> assertFalse(dice2.getDiceValue() > 6 || dice2.getDiceValue() < 1),
+                () -> assertFalse(dice3.getDiceValue() > 6 || dice3.getDiceValue() < 1)
                 );
     }
 
