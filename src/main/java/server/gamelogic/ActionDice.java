@@ -102,7 +102,7 @@ public class ActionDice {
      * @param crossedOutEntry entry to be deleted
      * @return true if entry could be crossed out and false else
      */
-    public static boolean crossOut(EntrySheet entrySheetVillain, EntrySheet entrySheetVictim, String crossedOutEntry) {
+    public static boolean crossOut (EntrySheet entrySheetVillain, EntrySheet entrySheetVictim, String crossedOutEntry) {
         // saves name of villain and victim
         String nameVillain = entrySheetVillain.getUsername();
         String nameVictim = entrySheetVictim.getUsername();
