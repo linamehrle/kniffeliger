@@ -75,13 +75,19 @@ public class ActionDice {
      * @return true if entry could be frozen and false else
      */
     public static boolean freeze (EntrySheet entrySheetVillain, EntrySheet entrySheetVictim, String frozenEntry){
+        // saves name of villain and victim
         String nameVillain = entrySheetVillain.getUsername();
         String nameVictim = entrySheetVictim.getUsername();
 
         // return value
         boolean gotFrozen = false;
+
+        // entries can only be frozen if
+        // 1. it is not an entry of the villain
+        // 2. if the entry actually exists
+        // 3. if the entry is not final, so no value has been set by the victim
         for (Entry entry : entrySheetVictim.getAsArray()){
-            if (!nameVictim.equals(nameVillain) &&entry.getName().equals(frozenEntry)){
+            if (!nameVictim.equals(nameVillain) && entry.getName().equals(frozenEntry) && !entry.getIsFinal()){
                 entry.setFrozenStatus(true);
                 gotFrozen = true;
             }
@@ -96,9 +102,25 @@ public class ActionDice {
      * @param crossedOutEntry entry to be deleted
      * @return true if entry could be crossed out and false else
      */
-    public static boolean crossOut(EntrySheet entrySheetVictim, String crossedOutEntry) {
-        entrySheetVictim.deleteEntry(crossedOutEntry);
-        return true;
+    public static boolean crossOut(EntrySheet entrySheetVillain, EntrySheet entrySheetVictim, String crossedOutEntry) {
+        // saves name of villain and victim
+        String nameVillain = entrySheetVillain.getUsername();
+        String nameVictim = entrySheetVictim.getUsername();
+
+        // return value
+        boolean gotCrossedOut = false;
+
+        // entries can only be crossed out if
+        // 1. it is not an entry of the villain
+        // 2. if the entry actually exists
+        // 3. if the entry is final, so a value has been set
+        for (Entry entry : entrySheetVictim.getAsArray()){
+            if (!nameVictim.equals(nameVillain) && entry.getName().equals(crossedOutEntry) && entry.getIsFinal()) {
+                entrySheetVictim.deleteEntry(crossedOutEntry);
+                gotCrossedOut = true;
+            }
+        }
+        return gotCrossedOut;
     }
 
     /**
@@ -124,10 +146,14 @@ public class ActionDice {
      * @return message for game in console
      */
     public static boolean swap(EntrySheet entrySheetVillain, EntrySheet entrySheetVictim){
-        Player helper = entrySheetVillain.getPlayer();
-        entrySheetVillain.setPlayer(entrySheetVictim.getPlayer());
-        entrySheetVictim.setPlayer(helper);
-        return true;
+        boolean gotSwap = false;
+        if (!entrySheetVillain.getUsername().equals(entrySheetVictim.getUsername())) {
+            Player helper = entrySheetVillain.getPlayer();
+            entrySheetVillain.setPlayer(entrySheetVictim.getPlayer());
+            entrySheetVictim.setPlayer(helper);
+            gotSwap = true;
+        }
+        return gotSwap;
     }
 
     /**

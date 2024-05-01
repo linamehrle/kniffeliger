@@ -164,7 +164,7 @@ class ActionDiceTest {
         riccardosHelpersEntrySheet.setEntrySheet(riccardosEntrySheet.getEntryValues());
 
         int randomIndex = (int) Math.floor(Math.random() * 13 + 0);
-        ActionDice.crossOut(riccardosEntrySheet, riccardosEntrySheet.getEntryNames()[randomIndex]);
+        ActionDice.crossOut(linasEntrySheet, riccardosEntrySheet, riccardosEntrySheet.getEntryNames()[randomIndex]);
         assertAll(() -> assertEquals(0, riccardosEntrySheet.getAsArray()[randomIndex].getValue())
         );
     }

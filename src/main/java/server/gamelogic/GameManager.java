@@ -264,7 +264,7 @@ public class GameManager implements Runnable {
                             logger.trace("Entered FRZE case");
 
                             if (freezeCount > 0) {
-                                ActionDice.freeze(EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
+                                ActionDice.freeze(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
 
                                 logger.log(gameLogic, currentPlayer.getUsername() + " has frozen entry " + selectedEntry + " from " + victimPlayerName);
 
@@ -283,7 +283,7 @@ public class GameManager implements Runnable {
                             logger.trace("Entered COUT case");
 
                             if (crossOutCount > 0) {
-                                ActionDice.crossOut(EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
+                                ActionDice.crossOut(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
 
                                 logger.log(gameLogic, currentPlayer + " has crossed out entry " + selectedEntry + " from " + victimPlayerName);
 
