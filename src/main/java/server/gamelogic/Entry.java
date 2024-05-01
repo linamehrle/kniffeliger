@@ -67,6 +67,13 @@ public class Entry {
     }
 
     /**
+     * Sets final state to false.
+     */
+    public void resetFinal(){
+        isFinal = false;
+    }
+
+    /**
      * Sets entry to frozen or not frozen.
      *
      * @param newFrozenStatus is true, if the entry should be frozen and false if not
