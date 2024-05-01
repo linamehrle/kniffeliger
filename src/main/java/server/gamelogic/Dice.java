@@ -1,5 +1,7 @@
 package server.gamelogic;
 
+import java.util.Random;
+
 /**
  * This class builds dice with different attributes needed for the game just like rolling a dice, saving a dice, and
  * returning the values of a dice or dice array in different datatype-arrays.
@@ -71,7 +73,8 @@ public class Dice {
         if (!(savingStatus) && numberOfRolls < 3) {
             // adjusts variables after dice was rolled
             numberOfRolls = numberOfRolls + 1;
-            diceValue = (int) Math.floor(Math.random() * 6 + 1);
+            Random rand = new Random(System.nanoTime());
+            diceValue = rand.nextInt(6) + 1;
             // if dice has been rolled three times it gets saved automatically
             if (numberOfRolls == 3) {
                 saveDice();
