@@ -7,7 +7,6 @@ import server.Player;
 import server.networking.CommandsServerToClient;
 import server.networking.Communication;
 import starter.Starter;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -453,17 +452,6 @@ public class GameManager implements Runnable {
     }
 
     /**
-     * Prints values of all dice.
-     *
-     * @param playersDice plays all dice
-     */
-    public void printDice(Dice[] playersDice) {
-        for (Dice d : playersDice) {
-            System.out.println(d.getDiceValue() + " ");
-        }
-    }
-
-    /**
      * Resets all the five dice.
      */
     public void resetDice() {
@@ -495,19 +483,6 @@ public class GameManager implements Runnable {
             rolledDice = rolledDice + dice.getDiceValue() + " ";
         }
         return rolledDice;
-    }
-
-    /**
-     * Rolls players dice and returns them as String, so we can print it in console.
-     * This is only for playing the game in the console.
-     */
-    public String stringsAndRockNRoll() {
-        String res = "";
-        rollDice(allDice);
-        for (Dice dice : allDice) {
-            res = dice.getDiceValue() + "\n";
-        }
-        return res;
     }
 
     /*

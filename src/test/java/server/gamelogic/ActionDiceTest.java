@@ -23,8 +23,6 @@ class ActionDiceTest {
      * Dummy player class to test methods. Contains all important fields and methods of a player.
      */
     public class DummyPlayer extends server.Player{
-        private String username;
-        private int id;
         private ActionDice[] actionDice;
 
         /**
@@ -128,20 +126,18 @@ class ActionDiceTest {
         // this method only checks if methods work, if the entries have a valid value is not important
         DummyPlayer lina = new DummyPlayer("lina");
         DummyPlayer riccardo = new DummyPlayer("riccardo");
-        EntrySheet linasEntrySheet = initiateRandomEntrySheet(lina);
-        EntrySheet riccardosEntrySheet = initiateRandomEntrySheet(riccardo);
+        EntrySheet linasEntrySheet = new EntrySheet(lina);
+        EntrySheet riccardosEntrySheet = new EntrySheet(riccardo);
 
-        // helper entry sheet to assure right values are correct
-        DummyPlayer linasHelper = new DummyPlayer("linasHelper");
-        DummyPlayer riccardosHelper = new DummyPlayer("riccardosHelper");
-        EntrySheet linasHelpersEntrySheet = new EntrySheet(linasHelper);
-        EntrySheet riccardosHelpersEntrySheet = new EntrySheet(riccardosHelper);
-        linasHelpersEntrySheet.setEntrySheet(linasEntrySheet.getEntryValues());
-        riccardosHelpersEntrySheet.setEntrySheet(riccardosEntrySheet.getEntryValues());
-
+        // set random entry to a random value
         int randomIndex = (int) Math.floor(Math.random() * 13 + 0);
-        ActionDice.freeze(linasEntrySheet, riccardosEntrySheet, riccardosEntrySheet.getEntryNames()[randomIndex]);
-        assertAll(() -> assertTrue(riccardosEntrySheet.getAsArray()[randomIndex].getFrozenStatus())
+        int randomValue = (int) Math.floor(Math.random() * 133 + 0);
+        linasEntrySheet.getAsArray()[randomIndex].setValue(randomValue);
+
+
+        assertAll(() -> assertFalse(linasEntrySheet.getAsArray()[randomIndex + 1].getFrozenStatus()),
+                () -> assertTrue(ActionDice.freeze(riccardosEntrySheet, linasEntrySheet, linasEntrySheet.getEntryNames()[randomIndex])),
+                () -> assertTrue(linasEntrySheet.getAsArray()[randomIndex].getFrozenStatus())
         );
     }
 
