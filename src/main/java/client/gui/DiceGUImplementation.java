@@ -7,8 +7,10 @@ import client.networking.ClientOutput;
  */
 public class DiceGUImplementation {
     private int diceID;
+
     //True if dice is saved
     private boolean savingStatus;
+
     //True if dice is selected for saving, but save is not yet relayed to server
     private boolean stashedForSaving;
     private int diceValue;
@@ -41,7 +43,8 @@ public class DiceGUImplementation {
         this.diceValue = 0;
     }
 
-    public boolean getStashStatus() {return this.stashedForSaving;
+    public boolean getStashStatus() {
+        return this.stashedForSaving;
     }
 
     public void setStashStatus(boolean status) {

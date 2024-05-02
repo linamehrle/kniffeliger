@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * This is the main class for the gui, it handles the start and communication from the network to the gui.
  */
 public class Main extends Application {
-    private Logger logger = Starter.getLogger();
+    private static Logger logger = Starter.getLogger();
 
     private static LobbyWindowController lobbyWindowController;
     private static CWcontroller cWcontroller;
@@ -137,8 +137,9 @@ public class Main extends Application {
      * @param diceValues string of 5 dice values separated by empty spaces
      */
     public static void sendDiceToGUI(String diceValues) {
+        logger.info("Main: dice received from client input");
         int[] diceValueArray = parseIntArray(diceValues);
-        Main.gameWindowController.receiveRoll(gameWindowController.diceList, diceValueArray);
+        gameWindowController.receiveRoll(gameWindowController.diceList, diceValueArray);
     }
 
     public static void updateOtherDiceBox(String diceValues){

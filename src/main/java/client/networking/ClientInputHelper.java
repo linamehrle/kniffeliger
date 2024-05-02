@@ -80,7 +80,8 @@ public class ClientInputHelper implements Runnable {
                 logger.debug("LELO received with message: " + input[1]);
             }
             case ROLL -> {
-                System.out.println("Game: Your dice: " + input[1]);
+                //System.out.println("Game: Your dice: " + input[1]);
+                logger.debug("client input: dice received from server " + input[1]);
                 Main.sendDiceToGUI(input[1]);
             }
             case PLLI -> {
