@@ -10,6 +10,7 @@ import starter.Starter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Random;
 
 /**
  * This class handles the process during the game. It contains the starter method that handles the whole game including
@@ -511,7 +512,8 @@ public class GameManager implements Runnable {
             // if player does not have any action dice yet, then the first one gets initialized
             ActionDice[] newActionDice;
             if (currentActionDice == null) {
-                int random = (int) Math.floor(Math.random() * 6 + 1);
+                Random rand = new Random(System.nanoTime());
+                int random = rand.nextInt(6) + 1;
                 if (random == 6) {
                     newActionDice = new ActionDice[5];
                 } else {
