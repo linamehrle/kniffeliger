@@ -20,12 +20,10 @@ public class Main extends Application {
 
     private static LobbyWindowController lobbyWindowController;
     private static CWcontroller cWcontroller;
-
     private static GameWindowController gameWindowController;
     private static HighScoreController highScoreController;
 
-    Stage mainWidow;
-    Stage chatWindow;
+    private Stage mainWidow;
 
 
 
@@ -283,6 +281,10 @@ public class Main extends Application {
 
     public static void shiftEntrySheets(String playerList) {
         gameWindowController.shiftEntrySheets(playerList);
+    }
+
+    public static void sendEndOfGame() {
+        gameWindowController.endGame();
     }
 }
 

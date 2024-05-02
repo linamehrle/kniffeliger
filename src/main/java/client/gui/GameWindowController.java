@@ -985,5 +985,11 @@ public class GameWindowController implements Initializable {
         this.ownerUser = ownUserName;
     }
 
+    public void endGame() {
+        disableAllGameFields();
+        leaveGameButton.setDisable(false);
+        leaveLobbyButton.setDisable(false);
+    }
+
 
 }

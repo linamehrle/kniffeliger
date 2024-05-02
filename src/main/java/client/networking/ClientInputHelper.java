@@ -94,7 +94,10 @@ public class ClientInputHelper implements Runnable {
             case LOST -> Main.updateLobby(input[1]);
             // TODO: FIX LIFE
             case LOPL -> Main.updateGamePlayerList(input[1]);
-            case RANK -> SceneController.showWinnerWindow(input[1]);
+            case RANK -> {
+                SceneController.showWinnerWindow(input[1]);
+                Main.sendEndOfGame();
+            }
             case ACTN -> Main.updateActionDice(input[1]);
             case ENTY -> Main.updatePrimaryEntrySheet(input[1]);
             case ALES -> Main.updateOtherEntrySheets(input[1]);
@@ -104,7 +107,7 @@ public class ClientInputHelper implements Runnable {
             case SWAP -> Main.swapEntrySheets(input[1]);
             case TUSR -> Main.sendOwnNameToGUI(input[1]);
             case SHFT -> Main.shiftEntrySheets(input[1]);
-            //TODO ADD case SHFT and FRZE and SWAP
+            //TODO ADD case FRZE
             default -> logger.info("unknown command received from server " + message);
         }
     }

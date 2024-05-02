@@ -19,8 +19,6 @@ public class SceneController {
     private static Logger logger = Starter.getLogger();
 
     private static Stage mainWindow;
-
-    private static Scene highScoreWindow;
     private static Scene scene;
     private static Parent root;
 
@@ -54,7 +52,7 @@ public class SceneController {
         try {
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/LobbyWindow.fxml"));
             root = loader.load();
-            highScoreWindow = new Scene(root);
+            scene = new Scene(root);
             mainWindow.setScene(scene);
             mainWindow.show();
         } catch (IOException e) {
