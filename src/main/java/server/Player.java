@@ -29,6 +29,18 @@ public class Player {
     private Lobby lobby;
 
     /**
+     * Boolean that indicates if a player is in a running game, this is needed to handle disconnects accordingly
+     */
+    private boolean isInGame;
+
+    /**
+     * Boolean that indicates if a player that is in a game is actually online.
+     * This is needed so the game logic can "play for the player" in case of a connection loss to make
+     * reconnecting possible
+     */
+    private boolean isOnline;
+
+    /**
      * The constructor for the Player class. It starts a new ClientThread per Player.
      * @param socket
      * @param playerList
@@ -38,6 +50,8 @@ public class Player {
         this.id = counter;
         this.username = "user_" + id;
         this.playerList = playerList;
+        isInGame = false;
+        isOnline = true;
         playerThreadManager = new ClientThread(socket, this);
         Thread playerThread = new Thread(playerThreadManager);
         playerThread.start();
