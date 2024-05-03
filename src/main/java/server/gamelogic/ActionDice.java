@@ -36,7 +36,8 @@ public class ActionDice {
     }
 
     /**
-     * Lets you steal an entry from another player. Returns String with message, if entry could be stolen.
+     * Lets you steal an entry from another player. Returns String with message, if entry could be stolen. An entry can
+     * only be stolen if it is final on the victims sheet and not final on the villains sheet.
      *
      * @param entrySheetVillain player that steals entry
      * @param entrySheetVictim player that entry is stolen from
