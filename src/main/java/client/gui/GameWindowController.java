@@ -8,16 +8,14 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.Tab;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import client.networking.ClientOutput;
@@ -96,6 +94,10 @@ public class GameWindowController implements Initializable {
 
     @FXML
     private Button endTurnButton;
+    @FXML
+    private Slider volumeSlider;
+    @FXML
+    private ToggleButton muteButton;
 
     private ObservableList<EntrySheetGUImplementation> entryList = FXCollections.observableArrayList();
     public ObservableList<DiceGUImplementation> diceList = FXCollections.observableArrayList();
@@ -257,15 +259,15 @@ public class GameWindowController implements Initializable {
         //createActionDiceListener();
 
 
-        freezeLabel.setText("0");
-        stealLabel.setText("0");
-        swapLabel.setText("0");
-        deleteLabel.setText("0");
-        rotateLabel.setText("0");
+//        freezeLabel.setText("0");
+//        stealLabel.setText("0");
+//        swapLabel.setText("0");
+//        deleteLabel.setText("0");
+//        rotateLabel.setText("0");
 
         disableAllGameFields();
 
-        //Load sounds
+        // Load sounds
         try {
             gameMainThemePlayer = GameWindowHelper.loadMedia("gameTheme.mp3");
             gameMainThemePlayer.play();
@@ -273,6 +275,23 @@ public class GameWindowController implements Initializable {
         } catch (FileNotFoundException e) {
             logger.info("Audio file 'gameTheme.mp3' not found.");
         }
+
+        // Add listeners to sound controls
+        volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                                Number oldVal, Number newVal) {
+                gameMainThemePlayer.setVolume(volumeSlider.getValue());
+                if (volumeSlider.getValue() == 0 && !muteButton.isSelected()) {
+                    muteButton.fire();
+                } else if (volumeSlider.getValue() != 0 && muteButton.isSelected()){
+                    muteButton.fire();
+                }
+
+            }
+        });
+
+
+
 
 
 
@@ -403,6 +422,22 @@ public class GameWindowController implements Initializable {
         logger.debug("List of Players in Lobby updated");
         leaveGameButton.setDisable(true);
     }
+
+    @FXML
+    public void muteButtonAction(ActionEvent event) {
+        if (muteButton.isSelected()){
+            gameMainThemePlayer.pause();
+            gameMainThemePlayer.setMute(true);
+            volumeSlider.adjustValue(0.0);
+            muteButton.setText("Unmute");
+        } else {
+            gameMainThemePlayer.play();
+            gameMainThemePlayer.setMute(false);
+            volumeSlider.adjustValue(0.5);
+            muteButton.setText("Mute");
+        }
+    }
+
 
     /**
      * Starts a turn

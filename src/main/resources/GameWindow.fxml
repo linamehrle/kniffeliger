@@ -4,8 +4,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -38,16 +40,18 @@
                         <Button fx:id="stealButton" layoutX="350.0" layoutY="181.0" mnemonicParsing="false" onAction="#stealEntryAction" prefHeight="30.0" prefWidth="70.0" text="steal" />
                         <Label layoutX="350.0" layoutY="28.0" text="Dice" />
                         <Button fx:id="entryEnterButton" layoutX="226.0" layoutY="496.0" mnemonicParsing="false" onMouseClicked="#entryEnterButtonAction" text="Enter" />
-                        <Label fx:id="stealLabel" layoutX="362.0" layoutY="222.0" text="Label" />
-                        <Label fx:id="swapLabel" layoutX="440.0" layoutY="222.0" text="Label" />
-                        <Label fx:id="rotateLabel" layoutX="522.0" layoutY="222.0" text="Label" />
-                        <Label fx:id="deleteLabel" layoutX="617.0" layoutY="222.0" text="Label" />
-                        <Label fx:id="freezeLabel" layoutX="709.0" layoutY="222.0" text="Label" />
+                        <Label fx:id="stealLabel" layoutX="362.0" layoutY="222.0" text="0" />
+                        <Label fx:id="swapLabel" layoutX="440.0" layoutY="222.0" text="0" />
+                        <Label fx:id="rotateLabel" layoutX="522.0" layoutY="222.0" text="0" />
+                        <Label fx:id="deleteLabel" layoutX="617.0" layoutY="222.0" text="0" />
+                        <Label fx:id="freezeLabel" layoutX="709.0" layoutY="222.0" text="0" />
                         <ScrollPane hbarPolicy="NEVER" layoutX="350.0" layoutY="268.0">
                            <content>
                               <VBox fx:id="informationBox" prefHeight="150.0" prefWidth="400.0" />
                            </content>
                         </ScrollPane>
+                        <Slider fx:id="volumeSlider" blockIncrement="0.1" layoutX="14.0" layoutY="69.0" max="1.0" orientation="VERTICAL" prefHeight="341.0" prefWidth="16.0" value="0.5" />
+                        <ToggleButton fx:id="muteButton" layoutX="374.0" layoutY="500.0" mnemonicParsing="false" onAction="#muteButtonAction" text="Mute" />
                      </children>
                   </AnchorPane>
                </content></Tab>
