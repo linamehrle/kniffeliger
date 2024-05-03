@@ -257,6 +257,8 @@ public class GameWindowController implements Initializable {
         deleteLabel.setText("0");
         rotateLabel.setText("0");
 
+        disableAllGameFields();
+
 
         ClientOutput.send(CommandsClientToServer.RUSR, "");
 
@@ -601,7 +603,7 @@ public class GameWindowController implements Initializable {
         diceBox.refresh();
         diceBoxOther.refresh();
 
-        //TODO: is that needed?
+        //TODO: is that needed? YES! (setting the dice status solved the dice bug :) )
         //Save all dice on last roll
         if (rollCounter == 3){
             logger.trace("rollCounter: " + rollCounter);

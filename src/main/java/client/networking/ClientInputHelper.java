@@ -100,8 +100,14 @@ public class ClientInputHelper implements Runnable {
                 Main.sendEndOfGame();
             }
             case ACTN -> Main.updateActionDice(input[1]);
-            case ENTY -> Main.updatePrimaryEntrySheet(input[1]);
-            case ALES -> Main.updateOtherEntrySheets(input[1]);
+            case ENTY -> {
+                Main.updatePrimaryEntrySheet(input[1]);
+                logger.debug("Client received command ENTY with message: " + input[1]);
+            }
+            case ALES -> {
+                Main.updateOtherEntrySheets(input[1]);
+                logger.debug("Client received command ALES with message: " + input[1]);
+            }
             case ALDI -> Main.updateOtherDiceBox(input[1]);
             case INES -> Main.initOtherTab(input[1]);
             case STRT -> Main.changeTurn(input[1]);

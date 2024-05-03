@@ -61,7 +61,9 @@ public class Main extends Application {
      * @param name
      */
     public static void addNewLobby(String name) {
-        lobbyWindowController.addLobby(name);
+        if (lobbyWindowController != null) {
+            lobbyWindowController.addLobby(name);
+        }
     }
 
     /**
@@ -69,7 +71,9 @@ public class Main extends Application {
      * @param lobbyAndPlayer
      */
     public static void addNewPlayer(String lobbyAndPlayer) {
-        lobbyWindowController.addPlayerToLobby(lobbyAndPlayer);
+        if (lobbyWindowController != null) {
+            lobbyWindowController.addPlayerToLobby(lobbyAndPlayer);
+        }
     }
 
     /**
