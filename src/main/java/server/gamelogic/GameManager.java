@@ -234,28 +234,32 @@ public class GameManager implements Runnable {
 
                             if (!aboutToRoll && stealCount > 0) {
 
-                                ActionDice.steal(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
+                                boolean couldSteal = ActionDice.steal(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
 
-                                logger.log(gameLogic, currentPlayer.getUsername() + " has stolen entry " + selectedEntry + " from " + victimPlayerName);
+                                if (couldSteal) {
+                                    logger.log(gameLogic, currentPlayer.getUsername() + " has stolen entry " + selectedEntry + " from " + victimPlayerName);
 
-                                // send player stolen entry
-                                Communication.sendToPlayer(CommandsServerToClient.ENTY, currentPlayer, currentPlayer.getUsername() + " " + selectedEntry + ":"
+                                    // send player stolen entry
+                                    Communication.sendToPlayer(CommandsServerToClient.ENTY, currentPlayer, currentPlayer.getUsername() + " " + selectedEntry + ":"
                                             + currentEntrySheet.getEntryByName(selectedEntry).getValue());
 
-                                Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + ":"
-                                        + currentEntrySheet.getEntryByName(selectedEntry).getValue());
+                                    Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + ":"
+                                            + currentEntrySheet.getEntryByName(selectedEntry).getValue());
 
-                                // send player crossed out entry
-                                Communication.sendToPlayer(CommandsServerToClient.ENTY, getPlayerByName(playerArraysList, victimPlayerName), victimPlayerName + " " + selectedEntry + ":"
+                                    // send player crossed out entry
+                                    Communication.sendToPlayer(CommandsServerToClient.ENTY, getPlayerByName(playerArraysList, victimPlayerName), victimPlayerName + " " + selectedEntry + ":"
                                             + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
 
-                                Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, victimPlayerName + " " + selectedEntry + ":"
-                                        + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
+                                    Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, victimPlayerName + " " + selectedEntry + ":"
+                                            + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
 
-                                entryMade = true;
+                                    stealCount = stealCount - 1;
+                                    entryMade = true;
 
-                                //send updated action dice to player
-                                Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
+                                    //send updated action dice to player
+                                    Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
+                                }
+
                             } else {
                                 logger.log(gameLogic, "No steal: aboutToRoll=" + aboutToRoll + ", stealCount=" + stealCount);
                             }
@@ -512,8 +516,7 @@ public class GameManager implements Runnable {
             // if player does not have any action dice yet, then the first one gets initialized
             ActionDice[] newActionDice;
             if (currentActionDice == null) {
-                //int random = (int) Math.floor(Math.random() * 6 + 1);
-                int random = 1; //for debug purposes lol, remove later
+                int random = (int) Math.floor(Math.random() * 6 + 1);
                 if (random == 6) {
                     newActionDice = new ActionDice[5];
                 } else {

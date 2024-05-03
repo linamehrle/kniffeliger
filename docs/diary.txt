@@ -386,3 +386,26 @@ like it. Maybe we make some references to Roy Lichtenstein? We will see.
 Until next time!
 
 ########################################################################################################################
+
+FRI, 3.5.24 (Discord Meeting)
+
+Dear Diary
+
+Today we had our Discord meeting. These are our responsibilities for milestone 5:
+
+1. Lina: debug GUI, command line disabled, protocol code and document, ask Beni/Discord (headless, intro, chat input, professional documentation markdown, tutorial)
+2. Riccardo: QA concept report, outreach, game logic, connection loss handling, unit-testing edge cases
+3. Anisja: presentation, diary, game logic, connection loss handling, logo, GUI graphics, manual, screenshot of the game, game play video (twitchy), unit-testing edge cases
+4. Dominique: GUI, second library
+
+Bonus:
+1. Lina: reconnect, CI server
+2. Anisja: eye candy, trailer, tutorial
+3. Riccardo: bug tacker, TILT and cheat codes
+4. Dominique: music/sound (ear candy), eye candy, animated characters, full screen, website
+
+Game logic adjustments: check bug tracker.
+
+Until next time!
+
+########################################################################################################################
