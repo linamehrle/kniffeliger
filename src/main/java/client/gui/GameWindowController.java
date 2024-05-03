@@ -6,10 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
-
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,10 +28,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import org.apache.logging.log4j.Logger;
-import server.networking.Communication;
+import server.gamelogic.Dice;
 import starter.Starter;
 
-import static client.gui.GameWindowHelper.entryNames;
+//import static client.gui.GameWindowHelper.entryNames;
 
 /**
  * This is the Controller class for the Game window, i.e. the window in which the gameplay happens.
@@ -260,6 +257,8 @@ public class GameWindowController implements Initializable {
         deleteLabel.setText("0");
         rotateLabel.setText("0");
 
+        disableAllGameFields();
+
 
         ClientOutput.send(CommandsClientToServer.RUSR, "");
 
@@ -385,7 +384,7 @@ public class GameWindowController implements Initializable {
         //Adds entry sheets of other players to second tab
         //Update list of players
         ClientOutput.send(CommandsClientToServer.LOPL, "getting the players in the lobby");
-        logger.info("List of Players in Lobby updated");
+        logger.debug("List of Players in Lobby updated");
         leaveGameButton.setDisable(true);
     }
 
@@ -407,7 +406,7 @@ public class GameWindowController implements Initializable {
             case "Main" -> displayInformationText("The phase is: " + phase + "\nThis is a normal round. SWAP and ROTATE actions cannot be played");
             case "ShiftSwap" -> displayInformationText("The phase is: " + phase + "\nIn this round only SWAP and ROTATE actions can be played.");
 
-            default -> logger.info("Invalid game phase received: " + phase);
+            default -> logger.debug("Invalid game phase received: " + phase);
         }
         if (userName.equals(ownerUser) && phase.equals("Main")) {
             enableAllGameFields();
@@ -456,14 +455,6 @@ public class GameWindowController implements Initializable {
 //        ClientOutput.send(CommandsClientToServer.ENTY,  entry.getIDname());
 //        entrySheet.refresh();
 //    }
-
-    /**
-     * Method that handles when the saveDice Button is pressed to save certain dice before re rolling
-     * @param event
-     */
-    public void saveDiceAction(ActionEvent event) {
-        //TODO
-    }
 
 
     /**
@@ -608,14 +599,19 @@ public class GameWindowController implements Initializable {
         }
 
         displayInformationText("ALEA IACTA EST! (the die is cast)");
+        logger.info("send text to information window: ALEA IACTA EST");
         diceBox.refresh();
         diceBoxOther.refresh();
 
-        //TODO: is that needed?
+        //TODO: is that needed? YES! (setting the dice status solved the dice bug :) )
         //Save all dice on last roll
         if (rollCounter == 3){
             logger.trace("rollCounter: " + rollCounter);
             ClientOutput.send(CommandsClientToServer.SAVE, "0 1 2 3 4");
+
+            for (DiceGUImplementation dice : diceList) {
+                dice.setSavingStatus(true);
+            }
         }
 
     }
@@ -983,6 +979,12 @@ public class GameWindowController implements Initializable {
 
     public void setOwnUser(String ownUserName) {
         this.ownerUser = ownUserName;
+    }
+
+    public void endGame() {
+        disableAllGameFields();
+        leaveGameButton.setDisable(false);
+        leaveLobbyButton.setDisable(false);
     }
 
 

@@ -47,7 +47,7 @@ public class ActionDice {
         // assigns names and entry sheets to villain and victim
         String nameVillain = entrySheetVillain.getUsername();
         String nameVictim = entrySheetVictim.getUsername();
-        Entry[] entriesVillain = entrySheetVictim.getAsArray();
+        Entry[] entriesVillain = entrySheetVillain.getAsArray();
         Entry[] entriesVictim = entrySheetVictim.getAsArray();
 
         // return value

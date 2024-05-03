@@ -80,7 +80,8 @@ public class ClientInputHelper implements Runnable {
                 logger.debug("LELO received with message: " + input[1]);
             }
             case ROLL -> {
-                System.out.println("Game: Your dice: " + input[1]);
+                //System.out.println("Game: Your dice: " + input[1]);
+                logger.debug("client input: dice received from server " + input[1]);
                 Main.sendDiceToGUI(input[1]);
             }
             case PLLI -> {
@@ -94,17 +95,26 @@ public class ClientInputHelper implements Runnable {
             case LOST -> Main.updateLobby(input[1]);
             // TODO: FIX LIFE
             case LOPL -> Main.updateGamePlayerList(input[1]);
-            case RANK -> SceneController.showWinnerWindow(input[1]);
+            case RANK -> {
+                SceneController.showWinnerWindow(input[1]);
+                Main.sendEndOfGame();
+            }
             case ACTN -> Main.updateActionDice(input[1]);
-            case ENTY -> Main.updatePrimaryEntrySheet(input[1]);
-            case ALES -> Main.updateOtherEntrySheets(input[1]);
+            case ENTY -> {
+                Main.updatePrimaryEntrySheet(input[1]);
+                logger.debug("Client received command ENTY with message: " + input[1]);
+            }
+            case ALES -> {
+                Main.updateOtherEntrySheets(input[1]);
+                logger.debug("Client received command ALES with message: " + input[1]);
+            }
             case ALDI -> Main.updateOtherDiceBox(input[1]);
             case INES -> Main.initOtherTab(input[1]);
             case STRT -> Main.changeTurn(input[1]);
             case SWAP -> Main.swapEntrySheets(input[1]);
             case TUSR -> Main.sendOwnNameToGUI(input[1]);
             case SHFT -> Main.shiftEntrySheets(input[1]);
-            //TODO ADD case SHFT and FRZE and SWAP
+            //TODO ADD case FRZE
             default -> logger.info("unknown command received from server " + message);
         }
     }

@@ -16,16 +16,14 @@ import java.util.ArrayList;
  * This is the main class for the gui, it handles the start and communication from the network to the gui.
  */
 public class Main extends Application {
-    private Logger logger = Starter.getLogger();
+    private static Logger logger = Starter.getLogger();
 
     private static LobbyWindowController lobbyWindowController;
     private static CWcontroller cWcontroller;
-
     private static GameWindowController gameWindowController;
     private static HighScoreController highScoreController;
 
-    Stage mainWidow;
-    Stage chatWindow;
+    private Stage mainWidow;
 
 
 
@@ -63,7 +61,9 @@ public class Main extends Application {
      * @param name
      */
     public static void addNewLobby(String name) {
-        lobbyWindowController.addLobby(name);
+        if (lobbyWindowController != null) {
+            lobbyWindowController.addLobby(name);
+        }
     }
 
     /**
@@ -71,7 +71,9 @@ public class Main extends Application {
      * @param lobbyAndPlayer
      */
     public static void addNewPlayer(String lobbyAndPlayer) {
-        lobbyWindowController.addPlayerToLobby(lobbyAndPlayer);
+        if (lobbyWindowController != null) {
+            lobbyWindowController.addPlayerToLobby(lobbyAndPlayer);
+        }
     }
 
     /**
@@ -139,8 +141,9 @@ public class Main extends Application {
      * @param diceValues string of 5 dice values separated by empty spaces
      */
     public static void sendDiceToGUI(String diceValues) {
+        logger.info("Main: dice received from client input");
         int[] diceValueArray = parseIntArray(diceValues);
-        Main.gameWindowController.receiveRoll(gameWindowController.diceList, diceValueArray);
+        gameWindowController.receiveRoll(gameWindowController.diceList, diceValueArray);
     }
 
     public static void updateOtherDiceBox(String diceValues){
@@ -283,6 +286,10 @@ public class Main extends Application {
 
     public static void shiftEntrySheets(String playerList) {
         gameWindowController.shiftEntrySheets(playerList);
+    }
+
+    public static void sendEndOfGame() {
+        gameWindowController.endGame();
     }
 }
 

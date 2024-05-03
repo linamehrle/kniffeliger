@@ -10,7 +10,6 @@ import starter.Starter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Random;
 
 /**
  * This class handles the process during the game. It contains the starter method that handles the whole game including
@@ -234,6 +233,7 @@ public class GameManager implements Runnable {
                             logger.trace("Entered STEA case");
 
                             if (!aboutToRoll && stealCount > 0) {
+
                                 ActionDice.steal(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
 
                                 logger.log(gameLogic, currentPlayer.getUsername() + " has stolen entry " + selectedEntry + " from " + victimPlayerName);
@@ -246,7 +246,7 @@ public class GameManager implements Runnable {
                                         + currentEntrySheet.getEntryByName(selectedEntry).getValue());
 
                                 // send player crossed out entry
-                                Communication.sendToPlayer(CommandsServerToClient.ENTY, getPlayerByName(playerArraysList, victimPlayerName), victimPlayerName + ":" + selectedEntry + " "
+                                Communication.sendToPlayer(CommandsServerToClient.ENTY, getPlayerByName(playerArraysList, victimPlayerName), victimPlayerName + " " + selectedEntry + ":"
                                             + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
 
                                 Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, victimPlayerName + " " + selectedEntry + ":"
@@ -512,8 +512,7 @@ public class GameManager implements Runnable {
             // if player does not have any action dice yet, then the first one gets initialized
             ActionDice[] newActionDice;
             if (currentActionDice == null) {
-                Random rand = new Random(System.nanoTime());
-                int random = rand.nextInt(6) + 1;
+                int random = (int) Math.floor(Math.random() * 6 + 1);
                 if (random == 6) {
                     newActionDice = new ActionDice[5];
                 } else {
