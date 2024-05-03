@@ -1,5 +1,6 @@
 package client.gui;
 
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
@@ -13,6 +14,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
+import javafx.scene.media.MediaPlayer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -53,6 +55,8 @@ public class LobbyWindowController implements Initializable {
     private int lobbyCounter = 0;
 
     private boolean hasBeenInitialized = false;
+
+    MediaPlayer lobbyMainThemePlayer;
 
     /**
      * Handles when the button createLobby is pressed, sends the request to create a new lobby to the server
@@ -204,6 +208,10 @@ public class LobbyWindowController implements Initializable {
         }
     }
 
+    public void muteMainTheme() {
+        lobbyMainThemePlayer.pause();
+    }
+
     /**
      * The initialize Method for the Lobby Window
      * @param location
@@ -251,8 +259,20 @@ public class LobbyWindowController implements Initializable {
             }
         });
 
+        try {
+            lobbyMainThemePlayer = GameWindowHelper.loadMedia("lobbyTheme.mp3");
+            lobbyMainThemePlayer.play();
+            logger.trace("Audio file 'lobbyTheme.mp3' loaded.");
+        } catch (FileNotFoundException e) {
+            logger.info("Audio file 'lobbyTheme.mp3' not found.");
+        }
+
+
+
         hasBeenInitialized = true;
     }
+
+
 
     //TODO popUps when something is not done right?
     //TODO show personalized welcome, ie integrate username

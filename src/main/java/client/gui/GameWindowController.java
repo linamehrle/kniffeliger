@@ -1,5 +1,6 @@
 package client.gui;
 
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +25,7 @@ import client.networking.CommandsClientToServer;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -94,6 +96,7 @@ public class GameWindowController implements Initializable {
 
     @FXML
     private Button endTurnButton;
+
     private ObservableList<EntrySheetGUImplementation> entryList = FXCollections.observableArrayList();
     public ObservableList<DiceGUImplementation> diceList = FXCollections.observableArrayList();
     public ObservableList<DiceGUImplementation> diceListOther = FXCollections.observableArrayList();
@@ -105,6 +108,8 @@ public class GameWindowController implements Initializable {
     private HashMap<String, Integer> entrySheetNameIndexMap = GameWindowHelper.makeEntryToIntMap();
     private ArrayList<String> playersInLobby;
     private PlayerGUImplementation[] playersWithSheets = new PlayerGUImplementation[4];
+    // MediaPlayer for background music of game window
+    MediaPlayer gameMainThemePlayer;
 
     private String ownerUser;
 
@@ -115,6 +120,7 @@ public class GameWindowController implements Initializable {
     int crossOutCounter = 0;
 
     int rollCounter = 0;
+
 
 
     /**
@@ -258,6 +264,16 @@ public class GameWindowController implements Initializable {
         rotateLabel.setText("0");
 
         disableAllGameFields();
+
+        //Load sounds
+        try {
+            gameMainThemePlayer = GameWindowHelper.loadMedia("gameTheme.mp3");
+            gameMainThemePlayer.play();
+            logger.trace("Audio file 'gameTheme.mp3' loaded.");
+        } catch (FileNotFoundException e) {
+            logger.info("Audio file 'gameTheme.mp3' not found.");
+        }
+
 
 
         ClientOutput.send(CommandsClientToServer.RUSR, "");
@@ -988,4 +1004,10 @@ public class GameWindowController implements Initializable {
     }
 
 
+    /**
+     * Method to mute (pause) background music
+     */
+    public void muteMainTheme() {
+        gameMainThemePlayer.pause();
+    }
 }

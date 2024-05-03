@@ -3,12 +3,16 @@ package client.gui;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import starter.Starter;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 
@@ -80,6 +84,49 @@ public class GameWindowHelper {
         return saveMsgString.toString();
     }
 
+    /* #################################################################################################################
+
+    Sound loading and processing methods
+
+     ################################################################################################################ */
+
+    /**
+     * Loads audio file to MediaPlayer object
+     * File is buffered for playback (not entire file loaded into memory)
+     * Adequate method for large files with more playback controls and low demands on latency
+     * @param fileName
+     * Name of file including suffix (e.g. music.mp3), file must be in resources/audio/ folder
+     * @return
+     * Audio file transformed into MediaPlayer object
+     * @throws FileNotFoundException
+     * if file not found
+     */
+    public static MediaPlayer loadMedia(String fileName) throws FileNotFoundException {
+        Media audio = new Media(Objects.requireNonNull(GameWindowController.class.getResource("/audio/" + fileName)).toExternalForm());
+        return new MediaPlayer(audio);
+    }
+
+
+    /**
+     * Loads audio file to AudioClip object
+     * Entire file is loaded into memory
+     * Adequate for small files that require low latency with in turn little control over playback, especially sound effects
+     * @param fileName
+     * Name of file including suffix (e.g. music.mp3), file must be in resources/audio/ folder
+     * @return
+     * @throws FileNotFoundException
+     * if no such file in resources/audio/ folder
+     */
+    public static AudioClip loadSoundEffect(String fileName) throws FileNotFoundException {
+        return new AudioClip(Objects.requireNonNull(GameWindowController.class.getResource("/audio/" + fileName)).toExternalForm());
+    }
+
+    /* #################################################################################################################
+
+    Initialization and Creation of Game Elements
+
+     ################################################################################################################ */
+
     /**
      * Method create HashMap that has names of entries (e.g. "ones", "FourOfAKind" ...) as key and integer enumeration as values
      * used to get indices of entries in ObservableList representing entry sheet
@@ -111,6 +158,10 @@ public class GameWindowHelper {
         }
         return FXCollections.observableArrayList(entryElements);
     }
+
+
+
+
 
     /* #################################################################################################################
 

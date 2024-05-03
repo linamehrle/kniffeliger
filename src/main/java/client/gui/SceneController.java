@@ -33,6 +33,8 @@ public class SceneController {
     public static void switchToGameWindow(ActionEvent event) {
         logger.info("Switching to the game window");
         try {
+            LobbyWindowController lobbyWindowController = Main.getLobbyWindowController();
+            lobbyWindowController.muteMainTheme();
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/GameWindow.fxml"));
             root = loader.load();
             scene = new Scene(root);
@@ -50,6 +52,8 @@ public class SceneController {
     public static void switchToLobbyWindow(ActionEvent event) {
         logger.info("switching to the lobby window");
         try {
+            GameWindowController gameWindowController = Main.getGameWindowController();
+            gameWindowController.muteMainTheme();
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/LobbyWindow.fxml"));
             root = loader.load();
             scene = new Scene(root);

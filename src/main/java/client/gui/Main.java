@@ -100,8 +100,16 @@ public class Main extends Application {
         Main.lobbyWindowController = lobbyWindowController;
     }
 
+    public static LobbyWindowController getLobbyWindowController() {
+        return lobbyWindowController;
+    }
+
     public static void setGameWindowController(GameWindowController controller) {
         Main.gameWindowController = controller;
+    }
+
+    public static GameWindowController getGameWindowController() {
+        return gameWindowController;
     }
 
     /**
