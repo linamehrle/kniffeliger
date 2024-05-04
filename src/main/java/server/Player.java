@@ -2,8 +2,11 @@ package server;
 
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.apache.logging.log4j.Logger;
 import server.gamelogic.ActionDice;
+import server.gamelogic.ActionDiceEnum;
 import server.networking.ClientThread;
 import server.networking.CommandsServerToClient;
 import server.networking.Communication;
@@ -23,7 +26,7 @@ public class Player {
     private static int counter = 0;
     protected int id;
     protected String username;
-    private ActionDice[] actionDice;
+    private HashMap<ActionDiceEnum, Integer> actionDice = new HashMap<>();
     private ClientThread playerThreadManager;
     private ArrayList<Player> playerList;
     private Lobby lobby;
@@ -50,7 +53,6 @@ public class Player {
         this.id = counter;
         this.username = "user_" + id;
         this.playerList = playerList;
-        isInGame = false;
         isOnline = true;
         playerThreadManager = new ClientThread(socket, this);
         Thread playerThread = new Thread(playerThreadManager);
@@ -159,8 +161,37 @@ public class Player {
      *
      * @return all action dice of player saved in array.
      */
-    public ActionDice[] getActionDice() {
-        return actionDice;
+    public int getActionDiceCount(ActionDiceEnum diceName) {
+        return actionDice.get(diceName);
+    }
+
+    /**
+     * Increases the counter of the given action ba exactly one
+     * @param diceName
+     */
+    public void increaseActionDiceCount(ActionDiceEnum diceName) {
+        int currentCount = actionDice.get(diceName);
+        actionDice.replace(diceName, currentCount + 1);
+        Communication.sendToPlayer(CommandsServerToClient.BRCT, this, "You got a new action die: " + diceName.toString());
+        Communication.sendToPlayer(CommandsServerToClient.ACTN, this, getActionDiceAsString());
+    }
+
+    /**
+     * Decreases the counter of the given action ba exactly one
+     * @param diceName
+     */
+    public void decreaseActionDiceCount(ActionDiceEnum diceName) {
+        int currentCount = actionDice.get(diceName);
+        actionDice.replace(diceName, currentCount - 1);
+        Communication.sendToPlayer(CommandsServerToClient.ACTN, this, getActionDiceAsString());
+    }
+
+    public String getActionDiceAsString() {
+        String actionDiceAsString = "";
+        for (ActionDiceEnum actionDie : actionDice.keySet()) {
+            actionDiceAsString += actionDie.toString() + ":" + actionDice.get(actionDie) + ",";
+        }
+        return actionDiceAsString;
     }
 
     /**
@@ -168,7 +199,7 @@ public class Player {
      *
      * @param newActionDice new array of action dice a player can use.
      */
-    public void setActionDices(ActionDice[] newActionDice) {
+    public void setActionDices(HashMap<ActionDiceEnum, Integer> newActionDice) {
         actionDice = newActionDice;
     }
 
@@ -202,5 +233,15 @@ public class Player {
      */
     public void setLobby(Lobby lobby) {
         this.lobby = lobby;
+    }
+
+
+    public void prepareForGame() {
+        isInGame = true;
+        actionDice.put(ActionDiceEnum.STEAL, 0);
+        actionDice.put(ActionDiceEnum.FREEZE, 0);
+        actionDice.put(ActionDiceEnum.CROSSOUT, 0);
+        actionDice.put(ActionDiceEnum.SHIFT, 0);
+        actionDice.put(ActionDiceEnum.SWAP, 0);
     }
 }

@@ -852,37 +852,23 @@ public class GameWindowController implements Initializable {
 
     /**
      * Updates the action dice counter
-     * @param actionDice
+     * @param actionDice A list of the action dices with count, looks the following way: "actionName:count,actionName:count,..."
      */
     public void updateActionDice(String actionDice) {
 
         logger.debug("updateActionDice in GameWindow: " + actionDice);
 
-        freezeCounter = 0;
-        swapCounter = 0;
-        stealCounter = 0;
-        shiftCounter = 0;
-        crossOutCounter = 0;
+        //splits the whole list in the single action dices with count
+        String[] splitActionDice = actionDice.split(",");
 
-        String[] actions = actionDice.split("\\s+");
-
-        for (String action : actions) {
-            switch (action) {
-                case "steal" -> stealCounter++;
-                case "freeze" -> freezeCounter++;
-                case "crossOut" -> crossOutCounter++;
-                case "shift" -> shiftCounter++;
-                case "swap" -> swapCounter++;
-            }
-        }
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                swapLabel.setText(Integer.toString(swapCounter));
-                freezeLabel.setText(Integer.toString(freezeCounter));
-                stealLabel.setText(Integer.toString(stealCounter));
-                rotateLabel.setText(Integer.toString(shiftCounter));
-                deleteLabel.setText(Integer.toString(crossOutCounter));
+                swapLabel.setText(splitActionDice[4].split(":")[1]);
+                freezeLabel.setText(splitActionDice[1].split(":")[1]);
+                stealLabel.setText(splitActionDice[0].split(":")[1]);
+                rotateLabel.setText(splitActionDice[3].split(":")[1]);
+                deleteLabel.setText(splitActionDice[2].split(":")[1]);
             }
         });
 

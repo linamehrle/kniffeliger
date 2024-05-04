@@ -54,13 +54,16 @@ public class ActionDice {
         // return value
         boolean gotStolen = false;
 
-        for (int i = 0; i < EntrySheet.getEntrySheetLength(); i++){
+        for (int i = 0; i < EntrySheet.getEntrySheetLength(); i++) {
             // entries can only be stolen if the following things are true:
             // 1. Villain does not steal from his own sheet
             // 2. Villain does not steal an entry that is already final on his or her (or their) entry sheet
             // 3. Entry name is valid and exists on an entry sheet
             // 4. Chosen entry is not final on victims entry sheet
-            if (!nameVictim.equals(nameVillain) && !entriesVillain[i].getIsFinal() && entriesVictim[i].getName().equals(stolenEntry) && entriesVictim[i].getIsFinal()){
+            if (!nameVictim.equals(nameVillain)
+                    && !entriesVillain[i].getIsFinal()
+                    && entriesVictim[i].getName().equals(stolenEntry)
+                    && entriesVictim[i].getIsFinal()) {
                 entrySheetVillain.addEntry(entriesVictim[i]);
                 entrySheetVictim.deleteEntry(stolenEntry);
                 gotStolen = true;

@@ -67,6 +67,11 @@ public class GameManager implements Runnable {
     public synchronized void starter() throws InterruptedException {
         logger.trace("starter()");
 
+        //initializes the hashMap of action dices in the player and sets the boolean isInGame to true
+        for (Player player : playerArraysList) {
+            player.prepareForGame();
+        }
+
         // initializes entry sheets for each player and saves all in an array
         Player[] players = new Player[playerArraysList.size()];
         for (int i = 0; i < playerArraysList.size(); i++) {
@@ -97,7 +102,7 @@ public class GameManager implements Runnable {
             for (EntrySheet currentEntrySheet : allEntrySheets) {
                 // saves values of current entry sheet, so player and current action dice, so we can access it easily
                 currentPlayer = currentEntrySheet.getPlayer();
-                ActionDice[] currentActionDice = currentPlayer.getActionDice();
+                //ActionDice[] currentActionDice = currentPlayer.getActionDice();
 
                 // conditions to check if game needs to go on or stop; this includes:
                 // 1. if a cheat code has been played
@@ -111,22 +116,6 @@ public class GameManager implements Runnable {
                 // saves input for steal/freeze/cout
                 String victimPlayerName = "";
                 String selectedEntry = "";
-
-                // gets all the action dice of a player
-                int stealCount = 0;
-                int freezeCount = 0;
-                int crossOutCount = 0;
-
-                // check if player has action dices (!= null)
-                if (currentActionDice != null) {
-                    for (ActionDice actionDice : currentActionDice) {
-                        switch (actionDice.getActionName()) {
-                            case "steal" -> stealCount = stealCount + 1;
-                            case "freeze" -> freezeCount = freezeCount + 1;
-                            case "crossOut" -> crossOutCount = crossOutCount + 1;
-                        }
-                    }
-                }
 
                 // notify players which turn is
                 Communication.broadcastToAll(CommandsServerToClient.STRT, playerArraysList, currentPlayer.getUsername() + " Main");
@@ -218,11 +207,6 @@ public class GameManager implements Runnable {
 
                                 // adds action dice to player
                                 addActionDice(allDice, currentPlayer);
-                                currentActionDice = currentPlayer.getActionDice();
-
-                                // sends the new action dice to player
-                                Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentActionDice));
-                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You received " + ActionDice.printActionDice(currentActionDice));
 
                                 entryMade = true;
                             } else {
@@ -232,7 +216,7 @@ public class GameManager implements Runnable {
                         case "STEA":
                             logger.trace("Entered STEA case");
 
-                            if (!aboutToRoll && stealCount > 0) {
+                            if (!aboutToRoll && currentPlayer.getActionDiceCount(ActionDiceEnum.STEAL) > 0) {
 
                                 boolean couldSteal = ActionDice.steal(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
 
@@ -253,24 +237,21 @@ public class GameManager implements Runnable {
                                     Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, victimPlayerName + " " + selectedEntry + ":"
                                             + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
 
-                                    stealCount = stealCount - 1;
+                                    currentPlayer.decreaseActionDiceCount(ActionDiceEnum.STEAL);
                                     entryMade = true;
-
-                                    //send updated action dice to player
-                                    Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
                                 } else {
                                     Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "This is not a valid input, please try again!");
                                     logger.debug("false steal action tried");
                                 }
 
                             } else {
-                                logger.log(gameLogic, "No steal: aboutToRoll=" + aboutToRoll + ", stealCount=" + stealCount);
+                                logger.log(gameLogic, "No steal: aboutToRoll=" + aboutToRoll + ", stealCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.STEAL));
                             }
                             break;
                         case "FRZE":
                             logger.trace("Entered FRZE case");
 
-                            if (freezeCount > 0) {
+                            if (currentPlayer.getActionDiceCount(ActionDiceEnum.FREEZE) > 0) {
                                 ActionDice.freeze(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
 
                                 logger.log(gameLogic, currentPlayer.getUsername() + " has frozen entry " + selectedEntry + " from " + victimPlayerName);
@@ -278,18 +259,15 @@ public class GameManager implements Runnable {
                                 // send freeze state
                                 Communication.broadcastToAll(CommandsServerToClient.FRZE, playerArraysList, victimPlayerName + " " + selectedEntry);
 
-                                freezeCount = freezeCount - 1;
-
-                                //send updated action dice to player
-                                Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
+                                currentPlayer.decreaseActionDiceCount(ActionDiceEnum.FREEZE);
                             } else {
-                                logger.log(gameLogic, "No freeze: freezeCount=" + freezeCount);
+                                logger.log(gameLogic, "No freeze: freezeCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.FREEZE));
                             }
                             break;
                         case "COUT":
                             logger.trace("Entered COUT case");
 
-                            if (crossOutCount > 0) {
+                            if (currentPlayer.getActionDiceCount(ActionDiceEnum.CROSSOUT) > 0) {
                                 ActionDice.crossOut(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
 
                                 logger.log(gameLogic, currentPlayer + " has crossed out entry " + selectedEntry + " from " + victimPlayerName);
@@ -301,12 +279,9 @@ public class GameManager implements Runnable {
                                 Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, victimPlayerName + " " + selectedEntry + ":"
                                         + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
 
-                                crossOutCount = crossOutCount - 1;
-
-                                //send updated action dice to player
-                                Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
+                                currentPlayer.decreaseActionDiceCount(ActionDiceEnum.CROSSOUT);
                             } else {
-                                logger.log(gameLogic, "No cross out: crossOutCount=" + crossOutCount);
+                                logger.log(gameLogic, "No cross out: crossOutCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.CROSSOUT));
                             }
                             break;
                         case "ENDT":
@@ -337,17 +312,6 @@ public class GameManager implements Runnable {
             for (EntrySheet currentEntrySheet : allEntrySheets) {
                 // saves values of current entry sheet, so player and current action dice, so we can access it easily
                 currentPlayer = currentEntrySheet.getPlayer();
-                ActionDice[] currentActionDice = currentPlayer.getActionDice();
-
-                // counts the shifts and swaps the current player has
-                int shiftCount = 0;
-                int swapCount = 0;
-                for (ActionDice actionDice : currentActionDice) {
-                    switch (actionDice.getActionName()) {
-                        case "shift" -> shiftCount = shiftCount + 1;
-                        case "swap" -> swapCount = swapCount + 1;
-                    }
-                }
 
                 // notify players which turn is
                 Communication.broadcastToAll(CommandsServerToClient.STRT, playerArraysList, currentPlayer.getUsername() + " ShiftSwap");
@@ -369,7 +333,7 @@ public class GameManager implements Runnable {
                         case "SHFT":
                             logger.trace("Entered SHFT case");
 
-                            if (shiftCount > 0) {
+                            if (currentPlayer.getActionDiceCount(ActionDiceEnum.SHIFT) > 0) {
                                 ActionDice.shift(allEntrySheets);
                                 // get player string
                                 String playerShift = "";
@@ -380,29 +344,23 @@ public class GameManager implements Runnable {
                                 Communication.broadcastToAll(CommandsServerToClient.SHFT, playerArraysList, playerShift);
                                 logger.log(gameLogic, "Shifting");
 
-                                shiftCount = shiftCount - 1;
-
-                                //send updated action dice to player
-                                Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
+                                currentPlayer.decreaseActionDiceCount(ActionDiceEnum.SHIFT);
                             } else {
-                                logger.log(gameLogic, "No shift: shiftCount=" + shiftCount);
+                                logger.log(gameLogic, "No shift: shiftCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.SHIFT));
                             }
                             break;
                         case "SWAP":
                             logger.trace("Entered SWAP case");
 
-                            if (swapCount > 0) {
+                            if (currentPlayer.getActionDiceCount(ActionDiceEnum.SWAP) > 0) {
                                 ActionDice.swap(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, inputArr[1]));
                                 Communication.broadcastToAll(CommandsServerToClient.SWAP, playerArraysList, currentPlayer.getUsername() + " " + inputArr[1]);
 
                                 logger.log(gameLogic, "Swapping " + currentPlayer.getUsername() + " <-> " + inputArr[1]);
 
-                                swapCount = swapCount - 1;
-
-                                //send updated action dice to player
-                                Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
+                                currentPlayer.decreaseActionDiceCount(ActionDiceEnum.SWAP);
                             } else {
-                                logger.log(gameLogic, "No swap: swapCount=" + swapCount);
+                                logger.log(gameLogic, "No swap: swapCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.SWAP));
                             }
                             break;
                         case "ENDT":
@@ -505,7 +463,7 @@ public class GameManager implements Runnable {
      * @param playerDice final dice value of a player
      * @return true, if player gets action dice, false, if not
      */
-    public boolean addActionDice(Dice[] playerDice, Player player) {
+    /*public boolean addActionDice(Dice[] playerDice, Player player) {
         int sum = 0;
         for (Dice dice : playerDice) {
             sum = sum + dice.getDiceValue();
@@ -611,6 +569,44 @@ public class GameManager implements Runnable {
             }
             // add action dice to the array and replace associated action dice array of player with new action dice array
             player.setActionDices(newActionDice);
+            //TODO inform the gui and the player about the new action dice
+        }
+        return sum % DIVIDABLE_BY == 0;
+    }*/
+
+    /**
+     * Checks if sum of all dice is modulo 5 and randomly adds action dice, if so.
+     *
+     * @param playerDice final dice value of a player
+     * @return true, if player gets action dice, false, if not
+     */
+    public boolean addActionDice(Dice[] playerDice, Player player) {
+        int sum = 0;
+        for (Dice dice : playerDice) {
+            sum = sum + dice.getDiceValue();
+        }
+
+        // if the sum of all dice is dividable by 5 then add action dice
+        if (sum % DIVIDABLE_BY == 0 && sum != 0) {
+            // rolls action dice
+            int random = (int) Math.floor(Math.random() * 6 + 1);
+            //int random = 6;
+
+            // adds action dice to existing dice of player
+            switch (random) {
+                case 1 -> player.increaseActionDiceCount(ActionDiceEnum.STEAL);
+                case 2 -> player.increaseActionDiceCount(ActionDiceEnum.FREEZE);
+                case 3 -> player.increaseActionDiceCount(ActionDiceEnum.CROSSOUT);
+                case 4 -> player.increaseActionDiceCount(ActionDiceEnum.SHIFT);
+                case 5 -> player.increaseActionDiceCount(ActionDiceEnum.SWAP);
+                case 6 -> {
+                    player.increaseActionDiceCount(ActionDiceEnum.STEAL);
+                    player.increaseActionDiceCount(ActionDiceEnum.FREEZE);
+                    player.increaseActionDiceCount(ActionDiceEnum.CROSSOUT);
+                    player.increaseActionDiceCount(ActionDiceEnum.SHIFT);
+                    player.increaseActionDiceCount(ActionDiceEnum.SWAP);
+                }
+            }
         }
         return sum % DIVIDABLE_BY == 0;
     }
@@ -622,7 +618,7 @@ public class GameManager implements Runnable {
      * @param player            player whose dice we delete
      * @param deletedActionDice dice that needs to be deleted
      */
-    public void deleteActionDice(Player player, String deletedActionDice) {
+    /*public void deleteActionDice(Player player, String deletedActionDice) {
         ActionDice[] playersActionDice = player.getActionDice();
         if (playersActionDice != null) {
             // initiate new action dice array
@@ -641,7 +637,7 @@ public class GameManager implements Runnable {
             }
             player.setActionDices(newPlayersActionDice);
         }
-    }
+    }*/
 
     /**
      * Gets answer as String and saves it in answer field, so it can be accessed in starter-method.
