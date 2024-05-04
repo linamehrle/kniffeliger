@@ -99,7 +99,10 @@ public class ClientInputHelper implements Runnable {
                 SceneController.showWinnerWindow(input[1]);
                 Main.sendEndOfGame();
             }
-            case ACTN -> Main.updateActionDice(input[1]);
+            case ACTN -> {
+                Main.updateActionDice(input[1]);
+                logger.debug("Action dice update received at the client: " + input[1]);
+            }
             case ENTY -> {
                 Main.updatePrimaryEntrySheet(input[1]);
                 logger.debug("Client received command ENTY with message: " + input[1]);

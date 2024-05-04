@@ -15,7 +15,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
+import javafx.scene.control.Tab;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import client.networking.ClientOutput;
@@ -28,7 +34,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import org.apache.logging.log4j.Logger;
-import server.gamelogic.Dice;
 import starter.Starter;
 
 //import static client.gui.GameWindowHelper.entryNames;
@@ -139,8 +144,6 @@ public class GameWindowController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         logger.info("Game Window initialized");
-
-
 
         //Set this instance of GameWindowController as controller in main
         Main.setGameWindowController(this);
@@ -289,11 +292,6 @@ public class GameWindowController implements Initializable {
 
             }
         });
-
-
-
-
-
 
         ClientOutput.send(CommandsClientToServer.RUSR, "");
 
@@ -857,6 +855,9 @@ public class GameWindowController implements Initializable {
      * @param actionDice
      */
     public void updateActionDice(String actionDice) {
+
+        logger.debug("updateActionDice in GameWindow: " + actionDice);
+
         freezeCounter = 0;
         swapCounter = 0;
         stealCounter = 0;
@@ -884,8 +885,6 @@ public class GameWindowController implements Initializable {
                 deleteLabel.setText(Integer.toString(crossOutCounter));
             }
         });
-
-
 
     }
 

@@ -258,6 +258,9 @@ public class GameManager implements Runnable {
 
                                     //send updated action dice to player
                                     Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, ActionDice.printActionDice(currentPlayer.getActionDice()));
+                                } else {
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "This is not a valid input, please try again!");
+                                    logger.debug("false steal action tried");
                                 }
 
                             } else {
@@ -517,6 +520,7 @@ public class GameManager implements Runnable {
             ActionDice[] newActionDice;
             if (currentActionDice == null) {
                 int random = (int) Math.floor(Math.random() * 6 + 1);
+                //int random = 6;
                 if (random == 6) {
                     newActionDice = new ActionDice[5];
                 } else {
@@ -553,6 +557,7 @@ public class GameManager implements Runnable {
                 // add action dice to existing action dice
                 // rolls action dice
                 int random = (int) Math.floor(Math.random() * 6 + 1);
+                //int random = 6;
 
                 // new action dice array is 1 dice longer or 5 dice longer (if we get the "allAbove" method
                 if (random == 6) {
