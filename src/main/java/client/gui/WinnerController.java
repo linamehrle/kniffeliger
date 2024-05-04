@@ -2,6 +2,9 @@ package client.gui;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -20,7 +23,13 @@ public class WinnerController implements Initializable {
      */
     public void setWinner(String winner) {
         String winnerAndPoints = winner.split(",")[0];
-        winnerLabel.setText(winnerAndPoints.split(" ")[0]);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                winnerLabel.setText(winnerAndPoints.split(" ")[0]);
+            }
+        });
     }
 
     /**
