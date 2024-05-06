@@ -3,9 +3,7 @@ package server;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.apache.logging.log4j.Logger;
-import server.gamelogic.ActionDice;
 import server.gamelogic.ActionDiceEnum;
 import server.networking.ClientThread;
 import server.networking.CommandsServerToClient;
@@ -26,6 +24,11 @@ public class Player {
     private static int counter = 0;
     protected int id;
     protected String username;
+
+    /**
+     * This map saves all the action dice a player gets during the game, the first field is the name of the action dice
+     * and the second the current count of this specific action die
+     */
     private HashMap<ActionDiceEnum, Integer> actionDice = new HashMap<>();
     private ClientThread playerThreadManager;
     private ArrayList<Player> playerList;
@@ -186,6 +189,10 @@ public class Player {
         Communication.sendToPlayer(CommandsServerToClient.ACTN, this, getActionDiceAsString());
     }
 
+    /**
+     * Returns the list of action dices and how many the player has as a String
+     * @return a String in the form of: "actionName:count,actionName:count,..."
+     */
     public String getActionDiceAsString() {
         String actionDiceAsString = "";
         for (ActionDiceEnum actionDie : actionDice.keySet()) {
@@ -235,7 +242,9 @@ public class Player {
         this.lobby = lobby;
     }
 
-
+    /**
+     * Prepares all necessary variables in the player fo the game, i.e. the list of action dices and the boolean isInGame
+     */
     public void prepareForGame() {
         isInGame = true;
         actionDice.put(ActionDiceEnum.STEAL, 0);

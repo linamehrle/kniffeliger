@@ -16,9 +16,17 @@ public enum ActionDiceEnum {
     FREEZE,
 
     /**
-     * [TODO]
+     * Enables a player to cross out (or delete) an entry of another player. That player has to skip the next round.
      */
     CROSSOUT,
+
+    /**
+     * Enables a player to shift all entry sheets by one.
+     */
     SHIFT,
+
+    /**
+     * Enables a player to swap their entry sheet with another player of their choice
+     */
     SWAP
 }

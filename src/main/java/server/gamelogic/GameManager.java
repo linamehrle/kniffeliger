@@ -569,7 +569,6 @@ public class GameManager implements Runnable {
             }
             // add action dice to the array and replace associated action dice array of player with new action dice array
             player.setActionDices(newActionDice);
-            //TODO inform the gui and the player about the new action dice
         }
         return sum % DIVIDABLE_BY == 0;
     }*/
