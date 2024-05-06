@@ -166,7 +166,7 @@ public class ActionDice {
      * @param actionDice to be printed
      * @return String to display array
      */
-    public static String printActionDice(ActionDice[] actionDice){
+    /*public static String printActionDice(ActionDice[] actionDice){
         String result = "Your action dice is/are: ";
         if (actionDice == null) {
             result = result + "[]";
@@ -181,6 +181,6 @@ public class ActionDice {
             }
             return result;
         }
-    }
+    }*/
 
 }

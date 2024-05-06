@@ -252,14 +252,19 @@ public class GameManager implements Runnable {
                             logger.trace("Entered FRZE case");
 
                             if (currentPlayer.getActionDiceCount(ActionDiceEnum.FREEZE) > 0) {
-                                ActionDice.freeze(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
+                                boolean couldFreeze = ActionDice.freeze(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
 
-                                logger.log(gameLogic, currentPlayer.getUsername() + " has frozen entry " + selectedEntry + " from " + victimPlayerName);
+                                if (couldFreeze) {
+                                    logger.log(gameLogic, currentPlayer.getUsername() + " has frozen entry " + selectedEntry + " from " + victimPlayerName);
 
-                                // send freeze state
-                                Communication.broadcastToAll(CommandsServerToClient.FRZE, playerArraysList, victimPlayerName + " " + selectedEntry);
+                                    // send freeze state
+                                    Communication.broadcastToAll(CommandsServerToClient.FRZE, playerArraysList, victimPlayerName + " " + selectedEntry);
 
-                                currentPlayer.decreaseActionDiceCount(ActionDiceEnum.FREEZE);
+                                    currentPlayer.decreaseActionDiceCount(ActionDiceEnum.FREEZE);
+                                } else {
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "This is not a valid input, please try again!");
+                                    logger.debug("false freeze action tried");
+                                }
                             } else {
                                 logger.log(gameLogic, "No freeze: freezeCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.FREEZE));
                             }
@@ -268,18 +273,23 @@ public class GameManager implements Runnable {
                             logger.trace("Entered COUT case");
 
                             if (currentPlayer.getActionDiceCount(ActionDiceEnum.CROSSOUT) > 0) {
-                                ActionDice.crossOut(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
+                                boolean couldCrossOut = ActionDice.crossOut(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
 
-                                logger.log(gameLogic, currentPlayer + " has crossed out entry " + selectedEntry + " from " + victimPlayerName);
+                                if (couldCrossOut) {
+                                    logger.log(gameLogic, currentPlayer + " has crossed out entry " + selectedEntry + " from " + victimPlayerName);
 
-                                // send cross out state
-                                Communication.sendToPlayer(CommandsServerToClient.ENTY, getPlayerByName(playerArraysList, victimPlayerName), victimPlayerName + " " + selectedEntry + ":"
-                                        + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
+                                    // send cross out state
+                                    Communication.sendToPlayer(CommandsServerToClient.ENTY, getPlayerByName(playerArraysList, victimPlayerName), victimPlayerName + " " + selectedEntry + ":"
+                                            + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
 
-                                Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, victimPlayerName + " " + selectedEntry + ":"
-                                        + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
+                                    Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, victimPlayerName + " " + selectedEntry + ":"
+                                            + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
 
-                                currentPlayer.decreaseActionDiceCount(ActionDiceEnum.CROSSOUT);
+                                    currentPlayer.decreaseActionDiceCount(ActionDiceEnum.CROSSOUT);
+                                } else {
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "This is not a valid input, please try again!");
+                                    logger.debug("false cross out action tried");
+                                }
                             } else {
                                 logger.log(gameLogic, "No cross out: crossOutCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.CROSSOUT));
                             }
@@ -588,8 +598,8 @@ public class GameManager implements Runnable {
         // if the sum of all dice is dividable by 5 then add action dice
         if (sum % DIVIDABLE_BY == 0 && sum != 0) {
             // rolls action dice
-            int random = (int) Math.floor(Math.random() * 6 + 1);
-            //int random = 6;
+            //int random = (int) Math.floor(Math.random() * 6 + 1);
+            int random = 6; //for debugging purposes
 
             // adds action dice to existing dice of player
             switch (random) {
@@ -606,6 +616,7 @@ public class GameManager implements Runnable {
                     player.increaseActionDiceCount(ActionDiceEnum.SWAP);
                 }
             }
+            Communication.sendToPlayer(CommandsServerToClient.ACTN, player, player.getActionDiceAsString());
         }
         return sum % DIVIDABLE_BY == 0;
     }
