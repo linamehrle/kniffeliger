@@ -299,6 +299,10 @@ public class Main extends Application {
     public static void sendEndOfGame() {
         gameWindowController.endGame();
     }
+
+    public static void updateTotalScore(String points) {
+        gameWindowController.updateTotalPoints(points);
+    }
 }
 
 

@@ -52,6 +52,7 @@
                         </ScrollPane>
                         <Slider fx:id="volumeSlider" blockIncrement="0.1" layoutX="14.0" layoutY="69.0" max="1.0" orientation="VERTICAL" prefHeight="341.0" prefWidth="16.0" value="0.5" />
                         <ToggleButton fx:id="muteButton" layoutX="374.0" layoutY="500.0" mnemonicParsing="false" onAction="#muteButtonAction" text="Mute" />
+                        <Label fx:id="totalPointsLabel" layoutX="119.0" layoutY="500.0" text="0" />
                      </children>
                   </AnchorPane>
                </content></Tab>

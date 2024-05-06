@@ -95,6 +95,9 @@ public class GameWindowController implements Initializable {
     private Label shiftLabel;
 
     @FXML
+    private Label totalPointsLabel;
+
+    @FXML
     private ListView<EntrySheetGUImplementation> entrySheet;
 
     @FXML
@@ -1037,5 +1040,18 @@ public class GameWindowController implements Initializable {
      */
     public void muteMainTheme() {
         gameMainThemePlayer.pause();
+    }
+
+    /**
+     * This method updates the point score below the entry sheet to the new value
+     * @param points
+     */
+    public void updateTotalPoints(String points) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                totalPointsLabel.setText(points);
+            }
+        });
     }
 }

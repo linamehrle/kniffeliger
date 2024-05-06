@@ -204,6 +204,8 @@ public class GameManager implements Runnable {
                                 Communication.sendToPlayer(CommandsServerToClient.ENTY, currentPlayer, currentPlayer.getUsername() + " " + selectedEntry + ":"
                                         + currentEntrySheet.getEntryByName(selectedEntry).getValue());
 
+                                Communication.sendToPlayer(CommandsServerToClient.PONT, currentPlayer, String.valueOf(currentEntrySheet.getTotalPoints()));
+
                                 // sent updated sheet of the currentPlayer
                                 Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + ":"
                                         + currentEntrySheet.getEntryByName(selectedEntry).getValue());
