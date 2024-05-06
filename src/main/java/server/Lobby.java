@@ -41,6 +41,7 @@ public class Lobby {
      * @param name
      */
     public Lobby(String name) {
+        //name.replaceAll(" ", "_");
         this.name = name;
         this.status = "open";
         this.gameManager = new GameManager();
