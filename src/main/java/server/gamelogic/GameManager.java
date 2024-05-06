@@ -183,10 +183,15 @@ public class GameManager implements Runnable {
                         case "ENTY":
                             logger.trace("Entered ENTY case");
 
+                            if (entryMade == true) {
+                                logger.info("ENTY case: player has already made an entry");
+                                break;
+                            }
+
                             if (allDiceSaved(allDice)) {
                                 logger.log(gameLogic, "All dices of " + currentPlayer.getUsername() + " were saved.");
 
-                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "Select the entry to save dices to.");
+                                //Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "Select the entry to save dices to."); //TODO where to inform the player to choose an entry?
 
                                 selectedEntry = inputArr[1];
 
