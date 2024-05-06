@@ -16,7 +16,7 @@ public enum ActionDiceEnum {
     FREEZE,
 
     /**
-     * Enables a player to cross out (or delete) an entry of another player. That player has to skip the next round.
+     * Enables a player to cross out (or delete) an already filled entry of another player
      */
     CROSSOUT,
 

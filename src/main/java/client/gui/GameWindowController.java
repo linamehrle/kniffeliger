@@ -88,11 +88,11 @@ public class GameWindowController implements Initializable {
     @FXML
     private Label freezeLabel;
     @FXML
-    private Label deleteLabel;
+    private Label crossOutLabel;
     @FXML
     private Label swapLabel;
     @FXML
-    private Label rotateLabel;
+    private Label shiftLabel;
 
     @FXML
     private ListView<EntrySheetGUImplementation> entrySheet;
@@ -346,7 +346,7 @@ public class GameWindowController implements Initializable {
         endTurnButton.setDisable(false);
         freezeButton.setDisable(freezeLabel.getText().equals("0"));
         stealButton.setDisable(stealLabel.getText().equals("0"));
-        deleteButton.setDisable(deleteLabel.getText().equals("0"));
+        deleteButton.setDisable(crossOutLabel.getText().equals("0"));
 
 
     }
@@ -358,7 +358,7 @@ public class GameWindowController implements Initializable {
      */
     public void enableSwapAndShift () {
         swapButton.setDisable(swapLabel.getText().equals("0"));
-        rotateButton.setDisable(rotateLabel.getText().equals("0"));
+        rotateButton.setDisable(shiftLabel.getText().equals("0"));
         endTurnButton.setDisable(false);
     }
 
@@ -864,11 +864,19 @@ public class GameWindowController implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                swapLabel.setText(splitActionDice[4].split(":")[1]);
-                freezeLabel.setText(splitActionDice[1].split(":")[1]);
-                stealLabel.setText(splitActionDice[0].split(":")[1]);
-                rotateLabel.setText(splitActionDice[3].split(":")[1]);
-                deleteLabel.setText(splitActionDice[2].split(":")[1]);
+                for (String actionAndCount : splitActionDice) {
+                    String action = actionAndCount.split(":")[0];
+                    String count = actionAndCount.split(":")[1];
+
+                    switch (action) {
+                        case "SHIFT" -> shiftLabel.setText(count);
+                        case "SWAP" -> swapLabel.setText(count);
+                        case "FREEZE" -> freezeLabel.setText(count);
+                        case "CROSSOUT" -> crossOutLabel.setText(count);
+                        case "STEAL" -> stealLabel.setText(count);
+                        default -> logger.info("update of the action dice did not work as planned");
+                    }
+                }
             }
         });
 
