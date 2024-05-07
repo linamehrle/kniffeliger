@@ -118,7 +118,7 @@ public class ClientInputHelper implements Runnable {
             case TUSR -> Main.sendOwnNameToGUI(input[1]);
             case SHFT -> Main.shiftEntrySheets(input[1]);
             case PONT -> Main.updateTotalScore(input[1]);
-            //TODO ADD case FRZE
+            case FRZE -> Main.freezeOrDefreeze(input[1]);
             default -> logger.info("unknown command received from server " + message);
         }
     }

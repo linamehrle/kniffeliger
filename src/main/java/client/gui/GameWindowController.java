@@ -960,18 +960,8 @@ public class GameWindowController implements Initializable {
                         player.getEntrySheetListView().refresh();
                     }
                 });
-
-
-
+            }
         }
-    }
-
-
-
-
-
-
-
     }
 
 
@@ -1053,5 +1043,13 @@ public class GameWindowController implements Initializable {
                 totalPointsLabel.setText(points);
             }
         });
+    }
+
+    public void freezeEntry(String entry) {
+        //TODO make the entry red or cross out or something?
+    }
+
+    public void defreezeEntrys() {
+        //TODO reset the frozen entries, i.e. remove the cross out etc.
     }
 }

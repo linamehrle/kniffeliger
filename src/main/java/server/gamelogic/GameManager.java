@@ -265,7 +265,9 @@ public class GameManager implements Runnable {
                                     logger.log(gameLogic, currentPlayer.getUsername() + " has frozen entry " + selectedEntry + " from " + victimPlayerName);
 
                                     // send freeze state
-                                    Communication.broadcastToAll(CommandsServerToClient.FRZE, playerArraysList, victimPlayerName + " " + selectedEntry);
+                                    Communication.sendToPlayer(CommandsServerToClient.FRZE, getPlayerByName(playerArraysList, victimPlayerName), "freeze:" + selectedEntry);
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, getPlayerByName(playerArraysList, victimPlayerName),
+                                            currentPlayer.getUsername() + " has frozen your " + selectedEntry + "!");
 
                                     currentPlayer.decreaseActionDiceCount(ActionDiceEnum.FREEZE);
                                 } else {
@@ -317,6 +319,7 @@ public class GameManager implements Runnable {
                 }
                 // defreeze at and of turn
                 currentEntrySheet.defreeze();
+                Communication.sendToPlayer(CommandsServerToClient.FRZE, currentPlayer, "defreeze");
                 logger.log(gameLogic, "Defreeze all entries of " + currentPlayer.getUsername());
 
                 // reset all dice
