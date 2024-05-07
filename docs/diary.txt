@@ -409,3 +409,25 @@ Game logic adjustments: check bug tracker.
 Until next time!
 
 ########################################################################################################################
+
+TUE, 7.5.24 (exercise lesson)
+
+Dear Diary
+
+Beni's advice:
+It is all about the game: play the game, fix the game! Play the game, simplify the game!
+Bug Tracker: add a library that looks for bugs in our code.
+Add second library: animateFX. A picture that is moved is not an animation.
+Spectator mode: easy - make a second client class and delete everything with inputs.
+GUI: add a css style sheet. There are online some.
+
+
+Sounds:
+1. Wilhelm Scream
+2. "Uhhh" for those getting a dice
+3. Song for lobby
+4. Song for game
+
+Until next time!
+
+########################################################################################################################
