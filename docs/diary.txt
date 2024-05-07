@@ -393,9 +393,11 @@ Dear Diary
 
 Today we had our Discord meeting. These are our responsibilities for milestone 5:
 
-1. Lina: debug GUI, command line disabled, protocol code and document, ask Beni/Discord (headless, intro, chat input, professional documentation markdown, tutorial)
+1. Lina: debug GUI, command line disabled, protocol code and document, ask Beni/Discord (headless, intro, chat input,
+   professional documentation markdown, tutorial)
 2. Riccardo: QA concept report, outreach, game logic, connection loss handling, unit-testing edge cases
-3. Anisja: presentation, diary, game logic, connection loss handling, logo, GUI graphics, manual, screenshot of the game, game play video (twitchy), unit-testing edge cases
+3. Anisja: presentation, diary, game logic, connection loss handling, logo, GUI graphics, manual, screenshot of the
+   game, game play video (twitchy), unit-testing edge cases
 4. Dominique: GUI, second library
 
 Bonus:
