@@ -88,11 +88,14 @@ public class GameWindowController implements Initializable {
     @FXML
     private Label freezeLabel;
     @FXML
-    private Label deleteLabel;
+    private Label crossOutLabel;
     @FXML
     private Label swapLabel;
     @FXML
-    private Label rotateLabel;
+    private Label shiftLabel;
+
+    @FXML
+    private Label totalPointsLabel;
 
     @FXML
     private ListView<EntrySheetGUImplementation> entrySheet;
@@ -116,16 +119,8 @@ public class GameWindowController implements Initializable {
     private ArrayList<String> playersInLobby;
     private PlayerGUImplementation[] playersWithSheets = new PlayerGUImplementation[4];
     // MediaPlayer for background music of game window
-    MediaPlayer gameMainThemePlayer;
-
+    private MediaPlayer gameMainThemePlayer;
     private String ownerUser;
-
-    int freezeCounter = 0;
-    int swapCounter = 0;
-    int stealCounter = 0;
-    int shiftCounter = 0;
-    int crossOutCounter = 0;
-
     int rollCounter = 0;
 
 
@@ -259,15 +254,6 @@ public class GameWindowController implements Initializable {
         //initiate the arraylist that has all usernames of the players in the lobby
         ClientOutput.send(CommandsClientToServer.LOPL, "getting the players in the lobby");
 
-        //createActionDiceListener();
-
-
-//        freezeLabel.setText("0");
-//        stealLabel.setText("0");
-//        swapLabel.setText("0");
-//        deleteLabel.setText("0");
-//        rotateLabel.setText("0");
-
         disableAllGameFields();
 
         // Load sounds
@@ -331,7 +317,6 @@ public class GameWindowController implements Initializable {
         endTurnButton.setDisable(true);
         rollButton.setDisable(true);
         entryEnterButton.setDisable(true);
-
     }
 
 
@@ -346,9 +331,7 @@ public class GameWindowController implements Initializable {
         endTurnButton.setDisable(false);
         freezeButton.setDisable(freezeLabel.getText().equals("0"));
         stealButton.setDisable(stealLabel.getText().equals("0"));
-        deleteButton.setDisable(deleteLabel.getText().equals("0"));
-
-
+        deleteButton.setDisable(crossOutLabel.getText().equals("0"));
     }
 
 
@@ -358,7 +341,7 @@ public class GameWindowController implements Initializable {
      */
     public void enableSwapAndShift () {
         swapButton.setDisable(swapLabel.getText().equals("0"));
-        rotateButton.setDisable(rotateLabel.getText().equals("0"));
+        rotateButton.setDisable(shiftLabel.getText().equals("0"));
         endTurnButton.setDisable(false);
     }
 
@@ -491,20 +474,6 @@ public class GameWindowController implements Initializable {
         //the scene switches again to the lobby window where the player can choose or create a new lobby
         SceneController.switchToLobbyWindow(event);
     }
-
-//     Will now be handled by enterEntryButton
-//    /**
-//     * Method that handles when an entry is selected (clicked on) in entry sheet
-//     * @param event
-//     */
-//    @FXML
-//    public void enterToEntrySheetAction(MouseEvent event) {
-//        EntrySheetGUImplementation entry = entrySheet.getSelectionModel().getSelectedItem();
-//        //send entry selection to gamelogic
-//        ClientOutput.send(CommandsClientToServer.ENTY,  entry.getIDname());
-//        entrySheet.refresh();
-//    }
-
 
     /**
      * Method to open the high score list as a new window when pushing the highScoreButton
@@ -775,9 +744,6 @@ public class GameWindowController implements Initializable {
         }
     }
 
-
-
-
     /**
      * Method to initialize second tab:
      * Iterates through playersInLobby list and creates for each player in list new instance of PlayerGUImplementation
@@ -797,7 +763,6 @@ public class GameWindowController implements Initializable {
 
             }
         });
-
 
 
         if (playersInLobby != null ) {
@@ -840,14 +805,10 @@ public class GameWindowController implements Initializable {
                         hBoxEntries.getChildren().add(playerVBox);
                     }
                 });
-
-
-
             }
         }
         displayInformationText(" \uD83C\uDFC1 LET THE GAME BEGIN \uD83C\uDFC1");
         logger.info("second tab initialized");
-
     }
 
     /**
@@ -864,59 +825,23 @@ public class GameWindowController implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                swapLabel.setText(splitActionDice[4].split(":")[1]);
-                freezeLabel.setText(splitActionDice[1].split(":")[1]);
-                stealLabel.setText(splitActionDice[0].split(":")[1]);
-                rotateLabel.setText(splitActionDice[3].split(":")[1]);
-                deleteLabel.setText(splitActionDice[2].split(":")[1]);
+                for (String actionAndCount : splitActionDice) {
+                    String action = actionAndCount.split(":")[0];
+                    String count = actionAndCount.split(":")[1];
+
+                    switch (action) {
+                        case "SHIFT" -> shiftLabel.setText(count);
+                        case "SWAP" -> swapLabel.setText(count);
+                        case "FREEZE" -> freezeLabel.setText(count);
+                        case "CROSSOUT" -> crossOutLabel.setText(count);
+                        case "STEAL" -> stealLabel.setText(count);
+                        default -> logger.info("update of the action dice did not work as planned");
+                    }
+                }
             }
         });
 
     }
-
-    /**
-     * Disables the action dice buttons if the counter is 0, enables the button if the counter is
-     * positive.
-     */
-//    private void createActionDiceListener() {
-////        swapLabel.textProperty().addListener(new ChangeListener<String>() {
-////            @Override
-////            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-////                swapButton.setDisable(swapLabel.getText().equals("0"));
-////            }
-////        });
-//
-//        freezeLabel.textProperty().addListener(new ChangeListener<String>() {
-//            @Override
-//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-//                freezeButton.setDisable(freezeLabel.getText().equals("0"));
-//            }
-//        });
-//
-//        stealLabel.textProperty().addListener(new ChangeListener<String>() {
-//            @Override
-//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-//                stealButton.setDisable(stealLabel.getText().equals("0"));
-//            }
-//        });
-//
-////        rotateLabel.textProperty().addListener(new ChangeListener<String>() {
-////            @Override
-////            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-////                rotateButton.setDisable(rotateLabel.getText().equals("0"));
-////            }
-////        });
-//
-//        deleteLabel.textProperty().addListener(new ChangeListener<String>() {
-//            @Override
-//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-//                deleteButton.setDisable(deleteLabel.getText().equals("0"));
-//            }
-//        });
-//
-//
-//
-//    }
 
     /*
     Dice actions
@@ -949,18 +874,8 @@ public class GameWindowController implements Initializable {
                         player.getEntrySheetListView().refresh();
                     }
                 });
-
-
-
+            }
         }
-    }
-
-
-
-
-
-
-
     }
 
 
@@ -1029,5 +944,33 @@ public class GameWindowController implements Initializable {
      */
     public void muteMainTheme() {
         gameMainThemePlayer.pause();
+    }
+
+    /**
+     * This method updates the point score below the entry sheet to the new value
+     * @param points
+     */
+    public void updateTotalPoints(String points) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                totalPointsLabel.setText(points);
+            }
+        });
+    }
+
+    /**
+     * Visually shows that the given entry has been frozen.
+     * @param entry
+     */
+    public void freezeEntry(String entry) {
+        //TODO make the entry red or cross out or something?
+    }
+
+    /**
+     * Resets the prior frozen entries back to the normal listView
+     */
+    public void defreezeEntrys() {
+        //TODO reset the frozen entries, i.e. remove the cross out etc.
     }
 }

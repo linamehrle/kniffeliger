@@ -145,7 +145,12 @@ public enum CommandsServerToClient {
     /**
      * Transmits username
      */
-    TUSR
+    TUSR,
+
+    /**
+     * Communicates the current total points of a player to show in the console
+     */
+    PONT
 
 
 }

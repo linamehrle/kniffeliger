@@ -299,6 +299,22 @@ public class Main extends Application {
     public static void sendEndOfGame() {
         gameWindowController.endGame();
     }
+
+    public static void updateTotalScore(String points) {
+        gameWindowController.updateTotalPoints(points);
+    }
+
+    /**
+     * Gives a freeze or defreeze command to the game window to cross out an entry or return back to normal
+     * @param freezeInformation this string is either "defreeze" or "freeze:entry"
+     */
+    public static void freezeOrDefreeze(String freezeInformation) {
+        if (freezeInformation.equals("defreeze")) {
+            gameWindowController.defreezeEntrys();
+        } else {
+            gameWindowController.freezeEntry(freezeInformation.split(":")[1]);
+        }
+    }
 }
 
 

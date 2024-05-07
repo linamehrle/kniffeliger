@@ -42,8 +42,8 @@
                         <Button fx:id="entryEnterButton" layoutX="226.0" layoutY="496.0" mnemonicParsing="false" onMouseClicked="#entryEnterButtonAction" text="Enter" />
                         <Label fx:id="stealLabel" layoutX="362.0" layoutY="222.0" text="0" />
                         <Label fx:id="swapLabel" layoutX="440.0" layoutY="222.0" text="0" />
-                        <Label fx:id="rotateLabel" layoutX="522.0" layoutY="222.0" text="0" />
-                        <Label fx:id="deleteLabel" layoutX="617.0" layoutY="222.0" text="0" />
+                        <Label fx:id="shiftLabel" layoutX="522.0" layoutY="222.0" text="0" />
+                        <Label fx:id="crossOutLabel" layoutX="617.0" layoutY="222.0" text="0" />
                         <Label fx:id="freezeLabel" layoutX="709.0" layoutY="222.0" text="0" />
                         <ScrollPane hbarPolicy="NEVER" layoutX="350.0" layoutY="268.0">
                            <content>
@@ -52,6 +52,7 @@
                         </ScrollPane>
                         <Slider fx:id="volumeSlider" blockIncrement="0.1" layoutX="14.0" layoutY="69.0" max="1.0" orientation="VERTICAL" prefHeight="341.0" prefWidth="16.0" value="0.5" />
                         <ToggleButton fx:id="muteButton" layoutX="374.0" layoutY="500.0" mnemonicParsing="false" onAction="#muteButtonAction" text="Mute" />
+                        <Label fx:id="totalPointsLabel" layoutX="119.0" layoutY="500.0" text="0" />
                      </children>
                   </AnchorPane>
                </content></Tab>

@@ -183,10 +183,15 @@ public class GameManager implements Runnable {
                         case "ENTY":
                             logger.trace("Entered ENTY case");
 
+                            if (entryMade == true) {
+                                logger.info("ENTY case: player has already made an entry");
+                                break;
+                            }
+
                             if (allDiceSaved(allDice)) {
                                 logger.log(gameLogic, "All dices of " + currentPlayer.getUsername() + " were saved.");
 
-                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "Select the entry to save dices to.");
+                                //Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "Select the entry to save dices to."); //TODO where to inform the player to choose an entry?
 
                                 selectedEntry = inputArr[1];
 
@@ -198,6 +203,8 @@ public class GameManager implements Runnable {
                                 // sent updated entry sheet to currentPlayer
                                 Communication.sendToPlayer(CommandsServerToClient.ENTY, currentPlayer, currentPlayer.getUsername() + " " + selectedEntry + ":"
                                         + currentEntrySheet.getEntryByName(selectedEntry).getValue());
+
+                                Communication.sendToPlayer(CommandsServerToClient.PONT, currentPlayer, String.valueOf(currentEntrySheet.getTotalPoints()));
 
                                 // sent updated sheet of the currentPlayer
                                 Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + ":"
@@ -258,7 +265,9 @@ public class GameManager implements Runnable {
                                     logger.log(gameLogic, currentPlayer.getUsername() + " has frozen entry " + selectedEntry + " from " + victimPlayerName);
 
                                     // send freeze state
-                                    Communication.broadcastToAll(CommandsServerToClient.FRZE, playerArraysList, victimPlayerName + " " + selectedEntry);
+                                    Communication.sendToPlayer(CommandsServerToClient.FRZE, getPlayerByName(playerArraysList, victimPlayerName), "freeze:" + selectedEntry);
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, getPlayerByName(playerArraysList, victimPlayerName),
+                                            currentPlayer.getUsername() + " has frozen your " + selectedEntry + "!");
 
                                     currentPlayer.decreaseActionDiceCount(ActionDiceEnum.FREEZE);
                                 } else {
@@ -320,6 +329,7 @@ public class GameManager implements Runnable {
                 }
                 // defreeze at and of turn
                 currentEntrySheet.defreeze();
+                Communication.sendToPlayer(CommandsServerToClient.FRZE, currentPlayer, "defreeze");
                 logger.log(gameLogic, "Defreeze all entries of " + currentPlayer.getUsername());
 
                 // reset all dice
@@ -373,12 +383,18 @@ public class GameManager implements Runnable {
                             logger.trace("Entered SWAP case");
 
                             if (currentPlayer.getActionDiceCount(ActionDiceEnum.SWAP) > 0) {
-                                ActionDice.swap(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, inputArr[1]));
-                                Communication.broadcastToAll(CommandsServerToClient.SWAP, playerArraysList, currentPlayer.getUsername() + " " + inputArr[1]);
+                                boolean couldSwap = ActionDice.swap(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, inputArr[1]));
 
-                                logger.log(gameLogic, "Swapping " + currentPlayer.getUsername() + " <-> " + inputArr[1]);
+                                if (couldSwap) {
+                                    Communication.broadcastToAll(CommandsServerToClient.SWAP, playerArraysList, currentPlayer.getUsername() + " " + inputArr[1]);
 
-                                currentPlayer.decreaseActionDiceCount(ActionDiceEnum.SWAP);
+                                    logger.log(gameLogic, "Swapping " + currentPlayer.getUsername() + " <-> " + inputArr[1]);
+
+                                    currentPlayer.decreaseActionDiceCount(ActionDiceEnum.SWAP);
+                                } else {
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "This is not a valid input, please try again!");
+                                    logger.debug("false swap action tried");
+                                }
                             } else {
                                 logger.log(gameLogic, "No swap: swapCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.SWAP));
                             }
