@@ -98,7 +98,7 @@ public enum CommandsServerToClient {
     COUT,
 
     /**
-     * Communicates the updated entry to the client to display in the gui
+     * Communicates the updated entry sheet to the client to display in the gui
      */
     ENTY,
 

@@ -159,19 +159,21 @@ public class Main extends Application {
         Main.gameWindowController.receiveRoll(gameWindowController.diceListOther, diceValueArray);
     }
 
-    public static void updatePrimaryEntrySheet (String entrySheetString) {
+    public static void updateEntrySheet (String entrySheetString) {
         //First split results at spaces giving entryFieldName:score
-        String[] nameValueStrings = entrySheetString.split(" ");
+        /*String[] nameValueStrings = entrySheetString.split(" ");
         ArrayList<String[]> listOfEntries = new ArrayList<>();
         for (String elem : nameValueStrings){
             //Split at : giving arrays containing {entryFieldName, score}
             String[] nameValuePairs = elem.split(":");
             listOfEntries.add(nameValuePairs);
         }
-        Main.gameWindowController.receiveEntrySheet(listOfEntries);
+        Main.gameWindowController.receiveEntrySheet(listOfEntries);*/
+
+        gameWindowController.updateEntrySheet(entrySheetString);
     }
 
-    public static void updateOtherEntrySheets (String entrySheetString) {
+    /*public static void updateOtherEntrySheets (String entrySheetString) {
         //First split results at spaces giving entryFieldName:score
         String[] nameValueStrings = entrySheetString.split(" ");
         String userName = nameValueStrings[0];
@@ -183,11 +185,11 @@ public class Main extends Application {
             listOfEntries.add(nameValuePairs);
         }
         Main.gameWindowController.updateEntrySheetTab2(userName, listOfEntries);
-    }
+    }*/
 
-    public static void sendInformationTextToGUI(String informationText) {
+    /*public static void sendInformationTextToGUI(String informationText) {
         Main.gameWindowController.displayInformationText(informationText);
-    }
+    }*/
 
     /**
      * Sends a new lobby status to the gui to update the list
@@ -279,22 +281,22 @@ public class Main extends Application {
     }
 
 
-    public static void swapEntrySheets(String twoUsernames) {
+    /*public static void swapEntrySheets(String twoUsernames) {
         String[] playersSwapped = twoUsernames.split(" ");
 
         if (playersSwapped.length == 2){
             gameWindowController.swapEntrySheets(playersSwapped[0], playersSwapped[1]);
         }
-    }
+    }*/
 
     public static void sendOwnNameToGUI(String ownUserName){
         gameWindowController.setOwnUser(ownUserName);
 
     }
 
-    public static void shiftEntrySheets(String playerList) {
+    /*public static void shiftEntrySheets(String playerList) {
         gameWindowController.shiftEntrySheets(playerList);
-    }
+    }*/
 
     public static void sendEndOfGame() {
         gameWindowController.endGame();

@@ -80,7 +80,9 @@ public class GameManager implements Runnable {
         EntrySheet[] allEntrySheets = new EntrySheet[players.length];
         for (int i = 0; i < players.length; i++) {
             allEntrySheets[i] = new EntrySheet(players[i]);
+            Communication.sendToPlayer(CommandsServerToClient.ENTY, players[i], allEntrySheets[i].printEntrySheet());
         }
+
 
         // starting the game and sending all players in lobby a message
         logger.log(gameLogic, "Game lobby with " + playerArraysList + " started.");
@@ -198,22 +200,29 @@ public class GameManager implements Runnable {
                                 logger.log(gameLogic, currentPlayer.getUsername() + " chose " + selectedEntry);
 
                                 // validate entry
-                                EntrySheet.entryValidation(currentEntrySheet, selectedEntry, allDice);
+                                boolean madeEntry = EntrySheet.entryValidation(currentEntrySheet, selectedEntry, allDice);
 
-                                // sent updated entry sheet to currentPlayer
-                                Communication.sendToPlayer(CommandsServerToClient.ENTY, currentPlayer, currentPlayer.getUsername() + " " + selectedEntry + ":"
-                                        + currentEntrySheet.getEntryByName(selectedEntry).getValue());
+                                if (madeEntry) {
+                                    // sent updated entry sheet to currentPlayer
+                                    //Communication.sendToPlayer(CommandsServerToClient.ENTY, currentPlayer, currentPlayer.getUsername() + " " + selectedEntry + ":"
+                                    //+ currentEntrySheet.getEntryByName(selectedEntry).getValue());
 
-                                Communication.sendToPlayer(CommandsServerToClient.PONT, currentPlayer, String.valueOf(currentEntrySheet.getTotalPoints()));
+                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
 
-                                // sent updated sheet of the currentPlayer
-                                Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + ":"
-                                        + currentEntrySheet.getEntryByName(selectedEntry).getValue());
+                                    Communication.sendToPlayer(CommandsServerToClient.PONT, currentPlayer, String.valueOf(currentEntrySheet.getTotalPoints()));
 
-                                logger.log(gameLogic, "Save entry " + selectedEntry + "(" + currentEntrySheet.getEntryByName(selectedEntry).getValue() + ") of " + currentPlayer.getUsername());
+                                    // sent updated sheet of the currentPlayer
+                                    //Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + ":"
+                                    //+ currentEntrySheet.getEntryByName(selectedEntry).getValue());
 
-                                // adds action dice to player
-                                addActionDice(allDice, currentPlayer);
+                                    logger.log(gameLogic, "Save entry " + selectedEntry + "(" + currentEntrySheet.getEntryByName(selectedEntry).getValue() + ") of " + currentPlayer.getUsername());
+
+                                    // adds action dice to player
+                                    addActionDice(allDice, currentPlayer);
+                                } else {
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You can't choose this entry, please try again!");
+                                    logger.debug("false enter action tried");
+                                }
 
                                 entryMade = true;
                             } else {
@@ -231,7 +240,7 @@ public class GameManager implements Runnable {
                                     logger.log(gameLogic, currentPlayer.getUsername() + " has stolen entry " + selectedEntry + " from " + victimPlayerName);
 
                                     // send player stolen entry
-                                    Communication.sendToPlayer(CommandsServerToClient.ENTY, currentPlayer, currentPlayer.getUsername() + " " + selectedEntry + ":"
+                                    /*Communication.sendToPlayer(CommandsServerToClient.ENTY, currentPlayer, currentPlayer.getUsername() + " " + selectedEntry + ":"
                                             + currentEntrySheet.getEntryByName(selectedEntry).getValue());
 
                                     Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + ":"
@@ -242,7 +251,11 @@ public class GameManager implements Runnable {
                                             + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
 
                                     Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, victimPlayerName + " " + selectedEntry + ":"
-                                            + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
+                                            + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());*/
+
+                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
+                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList,
+                                            EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).printEntrySheet());
 
                                     currentPlayer.decreaseActionDiceCount(ActionDiceEnum.STEAL);
                                     entryMade = true;
@@ -288,11 +301,15 @@ public class GameManager implements Runnable {
                                     logger.log(gameLogic, currentPlayer + " has crossed out entry " + selectedEntry + " from " + victimPlayerName);
 
                                     // send cross out state
-                                    Communication.sendToPlayer(CommandsServerToClient.ENTY, getPlayerByName(playerArraysList, victimPlayerName), victimPlayerName + " " + selectedEntry + ":"
+                                    /*Communication.sendToPlayer(CommandsServerToClient.ENTY, getPlayerByName(playerArraysList, victimPlayerName), victimPlayerName + " " + selectedEntry + ":"
                                             + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
 
                                     Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, victimPlayerName + " " + selectedEntry + ":"
-                                            + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
+                                            + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());*/
+
+                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
+                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList,
+                                            EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).printEntrySheet());
 
                                     currentPlayer.decreaseActionDiceCount(ActionDiceEnum.CROSSOUT);
                                 } else {
@@ -356,12 +373,17 @@ public class GameManager implements Runnable {
                             if (currentPlayer.getActionDiceCount(ActionDiceEnum.SHIFT) > 0) {
                                 ActionDice.shift(allEntrySheets);
                                 // get player string
-                                String playerShift = "";
+                                /*String playerShift = "";
                                 for (Player player : playerArraysList) {
                                     playerShift += player.getUsername() + " ";
+                                }*/
+
+                                //Communication.broadcastToAll(CommandsServerToClient.SHFT, playerArraysList, playerShift);
+
+                                for (EntrySheet sheet : allEntrySheets) {
+                                    Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, sheet.printEntrySheet());
                                 }
 
-                                Communication.broadcastToAll(CommandsServerToClient.SHFT, playerArraysList, playerShift);
                                 logger.log(gameLogic, "Shifting");
 
                                 currentPlayer.decreaseActionDiceCount(ActionDiceEnum.SHIFT);
@@ -376,7 +398,11 @@ public class GameManager implements Runnable {
                                 boolean couldSwap = ActionDice.swap(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, inputArr[1]));
 
                                 if (couldSwap) {
-                                    Communication.broadcastToAll(CommandsServerToClient.SWAP, playerArraysList, currentPlayer.getUsername() + " " + inputArr[1]);
+                                    //Communication.broadcastToAll(CommandsServerToClient.SWAP, playerArraysList, currentPlayer.getUsername() + " " + inputArr[1]);
+
+                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
+                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList,
+                                            EntrySheet.getEntrySheetByName(allEntrySheets, inputArr[1]).printEntrySheet());
 
                                     logger.log(gameLogic, "Swapping " + currentPlayer.getUsername() + " <-> " + inputArr[1]);
 

@@ -121,7 +121,9 @@ public class GameWindowController implements Initializable {
     // MediaPlayer for background music of game window
     private MediaPlayer gameMainThemePlayer;
     private String ownerUser;
-    int rollCounter = 0;
+    int rollCounter = 0; //TODO we should not need this!!
+
+    private HashMap<String, ObservableList<String>> playerToEntrySheetMap = new HashMap<>();
 
 
 
@@ -153,17 +155,18 @@ public class GameWindowController implements Initializable {
 
         //Initialize observable lists of dice
         //Main dice list
-        diceList.addAll(new DiceGUImplementation[]{new DiceGUImplementation(0), new DiceGUImplementation(1), new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4) });
+        diceList.addAll(new DiceGUImplementation[]{new DiceGUImplementation(0), new DiceGUImplementation(1),
+                new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4) });
         diceBox.setItems(diceList);
 
         //Dice list on tab 2
-        diceListOther.addAll(new DiceGUImplementation[]{new DiceGUImplementation(0), new DiceGUImplementation(1), new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4) });
+        diceListOther.addAll(new DiceGUImplementation[]{new DiceGUImplementation(0), new DiceGUImplementation(1),
+                new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4) });
         diceBoxOther.setItems(diceListOther);
 
         //Load images
         GameWindowHelper.loadImagesToArray(diceFaces);
         logger.info("Dice images loaded into GUI");
-
 
         //Cell factory for primary dice selection box
         diceBox.setCellFactory(param -> new ListCell<DiceGUImplementation>() {
@@ -226,6 +229,7 @@ public class GameWindowController implements Initializable {
         });
         logger.info("Cell factory for DiceBox set");
 
+        //TODO how to initialize the entry sheets?
 
         entrySheet.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
             @Override
@@ -294,8 +298,6 @@ public class GameWindowController implements Initializable {
             playersInLobby.add(players[i]);
         }
     }
-
-
 
     /*
     Methods for enabling/disabling buttons
@@ -386,8 +388,6 @@ public class GameWindowController implements Initializable {
         SceneController.showActionPlayerAndFieldWindow(playersInLobby, "delete");
     }
 
-
-
     /**
      * Method that handles when the startGame Button is pressed to start a game
      * @param event
@@ -402,6 +402,11 @@ public class GameWindowController implements Initializable {
         ClientOutput.send(CommandsClientToServer.LOPL, "getting the players in the lobby");
         logger.debug("List of Players in Lobby updated");
         leaveGameButton.setDisable(true);
+
+        for (String player : playersInLobby) {
+            playerToEntrySheetMap.put(player, FXCollections.observableArrayList());
+        }
+
     }
 
     @FXML
@@ -492,7 +497,6 @@ public class GameWindowController implements Initializable {
         ClientOutput.send(CommandsClientToServer.ENDT,  "ended turn");
         informationBox.getChildren().clear();
         displayInformationText("You ended your turn ");
-
         diceBox.refresh();
     }
 
@@ -641,7 +645,7 @@ public class GameWindowController implements Initializable {
      * @param listOfEntries
      * ArrayList that contains entries as String arrays of size 2 with format {&lt; entry name &gt;, &lt; score &gt;}
      */
-    public void receiveEntrySheet(ArrayList<String[]> listOfEntries) {
+    /*public void receiveEntrySheet(ArrayList<String[]> listOfEntries) {
         for (String[] elem: listOfEntries) {
             //Check if string array has correct format: {&lt; entry name &gt;, &lt; score &gt;}
             if (elem != null && elem.length == 2 && entrySheetNameIndexMap.get(elem[0])!= null) {
@@ -651,17 +655,17 @@ public class GameWindowController implements Initializable {
             }
         }
         entrySheet.refresh();
-    }
+    }*/
 
     /**
      * Method to receive ArrayList &lt; String[] &gt;  of updated entries (arbitrary length) from GameLogic
      * and update ObservableList of entry sheet of respective user on tab 2
-     * @param userName
+     * //@param userName
      * Name of user whose entry sheet is changed
-     * @param listOfEntries
+     * //@param listOfEntries
      * ArrayList of changed entries
      */
-    public void updateEntrySheetTab2 (String userName, ArrayList<String[]> listOfEntries) {
+    /*public void updateEntrySheetTab2 (String userName, ArrayList<String[]> listOfEntries) {
         for (PlayerGUImplementation player : playersWithSheets){
             if ( player != null && player.getUsername().equals(userName) ) {
                 for (String[] elem : listOfEntries) {
@@ -679,6 +683,16 @@ public class GameWindowController implements Initializable {
             }
 
         }
+    }*/
+
+    public void updateEntrySheet(String entrySheetString) {
+        String name = entrySheetString.split(":")[0];
+        String entries = entrySheetString.split(":")[1];
+
+        //TODO
+
+        //update the observable list according to the name
+        //update the listviews in the main tab and second tab
     }
 
     /**
@@ -846,7 +860,7 @@ public class GameWindowController implements Initializable {
     /*
     Dice actions
      */
-    public void shiftEntrySheets (String playerlist) {
+    /*public void shiftEntrySheets (String playerlist) {
         String[] playerArray = playerlist.split("\\s+");      // LINA DOM RI
         ArrayList<EntrySheetGUImplementation> sheetPlayer1TMP = null;
         ArrayList<EntrySheetGUImplementation> sheetPlayer2TMP = null;
@@ -926,7 +940,7 @@ public class GameWindowController implements Initializable {
         ArrayList<EntrySheetGUImplementation> arrayListOfEntries = new ArrayList<>();
         arrayListOfEntries.addAll(observableEntries);
         return arrayListOfEntries;
-    }
+    }*/
 
     public void setOwnUser(String ownUserName) {
         this.ownerUser = ownUserName;
@@ -973,4 +987,5 @@ public class GameWindowController implements Initializable {
     public void defreezeEntrys() {
         //TODO reset the frozen entries, i.e. remove the cross out etc.
     }
+
 }
