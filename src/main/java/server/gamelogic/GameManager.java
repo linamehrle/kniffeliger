@@ -373,12 +373,18 @@ public class GameManager implements Runnable {
                             logger.trace("Entered SWAP case");
 
                             if (currentPlayer.getActionDiceCount(ActionDiceEnum.SWAP) > 0) {
-                                ActionDice.swap(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, inputArr[1]));
-                                Communication.broadcastToAll(CommandsServerToClient.SWAP, playerArraysList, currentPlayer.getUsername() + " " + inputArr[1]);
+                                boolean couldSwap = ActionDice.swap(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, inputArr[1]));
 
-                                logger.log(gameLogic, "Swapping " + currentPlayer.getUsername() + " <-> " + inputArr[1]);
+                                if (couldSwap) {
+                                    Communication.broadcastToAll(CommandsServerToClient.SWAP, playerArraysList, currentPlayer.getUsername() + " " + inputArr[1]);
 
-                                currentPlayer.decreaseActionDiceCount(ActionDiceEnum.SWAP);
+                                    logger.log(gameLogic, "Swapping " + currentPlayer.getUsername() + " <-> " + inputArr[1]);
+
+                                    currentPlayer.decreaseActionDiceCount(ActionDiceEnum.SWAP);
+                                } else {
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "This is not a valid input, please try again!");
+                                    logger.debug("false swap action tried");
+                                }
                             } else {
                                 logger.log(gameLogic, "No swap: swapCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.SWAP));
                             }
