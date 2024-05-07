@@ -297,11 +297,21 @@ public class GameManager implements Runnable {
                         case "ENDT":
                             logger.trace("Entered ENDT case");
 
+                            // TODO: ENDT should always work: if no entry was made then make one entry 0 and continue the game
+
                             if (entryMade) {
                                 logger.log(gameLogic, "Ending turn (" + currentPlayer.getUsername() + ")");
                                 endTurn = true;
                             } else {
-                                logger.log(gameLogic, "No ending turn; no entry was made.");
+                                for (Entry entry : currentEntrySheet.getAsArray()) {
+                                    if (!entry.getIsFinal()){
+                                        Entry newEntry = new Entry(entry.getName(), 0);
+                                        currentEntrySheet.addEntry(newEntry);
+                                        endTurn = true;
+                                        break;
+                                    }
+                                }
+                                logger.log(gameLogic, "Ending turn (" + currentPlayer.getUsername() + ")");
                             }
                             break;
                         default:
