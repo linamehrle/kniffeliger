@@ -266,6 +266,7 @@ public class GameManager implements Runnable {
 
                             } else {
                                 logger.log(gameLogic, "No steal: aboutToRoll=" + aboutToRoll + ", stealCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.STEAL));
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You don't have this action die!");
                             }
                             break;
                         case "FRZE":
@@ -289,6 +290,7 @@ public class GameManager implements Runnable {
                                 }
                             } else {
                                 logger.log(gameLogic, "No freeze: freezeCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.FREEZE));
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You don't have this action die!");
                             }
                             break;
                         case "COUT":
@@ -318,6 +320,7 @@ public class GameManager implements Runnable {
                                 }
                             } else {
                                 logger.log(gameLogic, "No cross out: crossOutCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.CROSSOUT));
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You don't have this action die!");
                             }
                             break;
                         case "ENDT":
@@ -389,6 +392,7 @@ public class GameManager implements Runnable {
                                 currentPlayer.decreaseActionDiceCount(ActionDiceEnum.SHIFT);
                             } else {
                                 logger.log(gameLogic, "No shift: shiftCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.SHIFT));
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You don't have this action die!");
                             }
                             break;
                         case "SWAP":
@@ -419,6 +423,7 @@ public class GameManager implements Runnable {
                                     logger.debug("false swap action tried");
                                 }
                             } else {
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You don't have this action die!");
                                 logger.log(gameLogic, "No swap: swapCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.SWAP));
                             }
                             break;
