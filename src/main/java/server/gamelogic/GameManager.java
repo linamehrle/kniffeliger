@@ -499,122 +499,6 @@ public class GameManager implements Runnable {
      * @param playerDice final dice value of a player
      * @return true, if player gets action dice, false, if not
      */
-    /*public boolean addActionDice(Dice[] playerDice, Player player) {
-        int sum = 0;
-        for (Dice dice : playerDice) {
-            sum = sum + dice.getDiceValue();
-        }
-
-        // current action dice and the number
-        ActionDice[] currentActionDice = player.getActionDice();
-
-        // if the sum of all dice is dividable by 5 then add action dice
-        if (sum % DIVIDABLE_BY == 0 && sum != 0) {
-            // if player does not have any action dice yet, then the first one gets initialized
-            ActionDice[] newActionDice;
-            if (currentActionDice == null) {
-                int random = (int) Math.floor(Math.random() * 6 + 1);
-                //int random = 6;
-                if (random == 6) {
-                    newActionDice = new ActionDice[5];
-                } else {
-                    newActionDice = new ActionDice[1];
-                }
-
-                switch (random) {
-                    case 1:
-                        newActionDice[0] = new ActionDice("steal");
-                        break;
-                    case 2:
-                        newActionDice[0] = new ActionDice("freeze");
-                        break;
-                    case 3:
-                        newActionDice[0] = new ActionDice("crossOut");
-                        break;
-                    case 4:
-                        newActionDice[0] = new ActionDice("shift");
-                        break;
-                    case 5:
-                        newActionDice[0] = new ActionDice("swap");
-                        break;
-                    case 6:
-                        newActionDice[0] = new ActionDice("steal");
-                        newActionDice[1] = new ActionDice("freeze");
-                        newActionDice[2] = new ActionDice("crossOut");
-                        newActionDice[3] = new ActionDice("shift");
-                        newActionDice[4] = new ActionDice("swap");
-                        break;
-                }
-            } else {
-                // number of action dice the player has
-                int currentNumberOfActionDice = currentActionDice.length;
-                // add action dice to existing action dice
-                // rolls action dice
-                int random = (int) Math.floor(Math.random() * 6 + 1);
-                //int random = 6;
-
-                // new action dice array is 1 dice longer or 5 dice longer (if we get the "allAbove" method
-                if (random == 6) {
-                    newActionDice = new ActionDice[currentNumberOfActionDice + 5];
-                } else {
-                    newActionDice = new ActionDice[currentNumberOfActionDice + 1];
-                }
-
-                // adds action dice to existing dice of player
-                switch (random) {
-                    case 1:
-                        for (int i = 0; i < currentNumberOfActionDice; i++) {
-                            newActionDice[i] = currentActionDice[i];
-                        }
-                        newActionDice[newActionDice.length - 1] = new ActionDice("steal");
-                        break;
-                    case 2:
-                        for (int i = 0; i < currentNumberOfActionDice; i++) {
-                            newActionDice[i] = currentActionDice[i];
-                        }
-                        newActionDice[newActionDice.length - 1] = new ActionDice("freeze");
-                        break;
-                    case 3:
-                        for (int i = 0; i < currentNumberOfActionDice; i++) {
-                            newActionDice[i] = currentActionDice[i];
-                        }
-                        newActionDice[newActionDice.length - 1] = new ActionDice("crossOut");
-                        break;
-                    case 4:
-                        for (int i = 0; i < currentNumberOfActionDice; i++) {
-                            newActionDice[i] = currentActionDice[i];
-                        }
-                        newActionDice[newActionDice.length - 1] = new ActionDice("shift");
-                    case 5:
-                        for (int i = 0; i < currentNumberOfActionDice; i++) {
-                            newActionDice[i] = currentActionDice[i];
-                        }
-                        newActionDice[newActionDice.length - 1] = new ActionDice("swap");
-                        break;
-                    case 6:
-                        for (int i = 0; i < currentNumberOfActionDice; i++) {
-                            newActionDice[i] = currentActionDice[i];
-                        }
-                        newActionDice[newActionDice.length - 5] = new ActionDice("steal");
-                        newActionDice[newActionDice.length - 4] = new ActionDice("freeze");
-                        newActionDice[newActionDice.length - 3] = new ActionDice("crossOut");
-                        newActionDice[newActionDice.length - 2] = new ActionDice("shift");
-                        newActionDice[newActionDice.length - 1] = new ActionDice("swap");
-                        break;
-                }
-            }
-            // add action dice to the array and replace associated action dice array of player with new action dice array
-            player.setActionDices(newActionDice);
-        }
-        return sum % DIVIDABLE_BY == 0;
-    }*/
-
-    /**
-     * Checks if sum of all dice is modulo 5 and randomly adds action dice, if so.
-     *
-     * @param playerDice final dice value of a player
-     * @return true, if player gets action dice, false, if not
-     */
     public boolean addActionDice(Dice[] playerDice, Player player) {
         int sum = 0;
         for (Dice dice : playerDice) {
@@ -648,34 +532,6 @@ public class GameManager implements Runnable {
     }
 
     /**
-     * Deletes an action dice of players action dice list and assigns player the new list as action dice list.
-     * Only one action dice gets deleted.
-     *
-     * @param player            player whose dice we delete
-     * @param deletedActionDice dice that needs to be deleted
-     */
-    /*public void deleteActionDice(Player player, String deletedActionDice) {
-        ActionDice[] playersActionDice = player.getActionDice();
-        if (playersActionDice != null) {
-            // initiate new action dice array
-            ActionDice[] newPlayersActionDice = new ActionDice[playersActionDice.length - 1];
-            // variable that checks if only one entry gets deleted
-            boolean deleteOnce = false;
-            // index of new array
-            int newIndex = 0;
-            for (int i = 0; i < playersActionDice.length; i++) {
-                if (!(playersActionDice[i].getActionName().equals(deletedActionDice)) || deleteOnce) {
-                    newPlayersActionDice[newIndex] = new ActionDice(playersActionDice[i].getActionName());
-                    newIndex = newIndex + 1;
-                } else {
-                    deleteOnce = true;
-                }
-            }
-            player.setActionDices(newPlayersActionDice);
-        }
-    }*/
-
-    /**
      * Gets answer as String and saves it in answer field, so it can be accessed in starter-method.
      *
      * @param input answer of player
@@ -698,7 +554,7 @@ public class GameManager implements Runnable {
      *
      * @return number that the dice sum needs to be dividable by (important for testing)
      */
-    public int getDIVIDABLE_BYE() {
+    public int getDIVIDABLE_BY() {
         return DIVIDABLE_BY;
     }
 
