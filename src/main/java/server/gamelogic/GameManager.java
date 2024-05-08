@@ -213,7 +213,9 @@ public class GameManager implements Runnable {
                                 logger.log(gameLogic, "Save entry " + selectedEntry + "(" + currentEntrySheet.getEntryByName(selectedEntry).getValue() + ") of " + currentPlayer.getUsername());
 
                                 // adds action dice to player
-                                addActionDice(allDice, currentPlayer);
+                                if (addActionDice(allDice, currentPlayer)) {
+                                    Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, currentPlayer.getActionDiceAsString());
+                                }
 
                                 entryMade = true;
                             } else {
@@ -526,9 +528,9 @@ public class GameManager implements Runnable {
                     player.increaseActionDiceCount(ActionDiceEnum.SWAP);
                 }
             }
-            Communication.sendToPlayer(CommandsServerToClient.ACTN, player, player.getActionDiceAsString());
+            return true;
         }
-        return sum % DIVIDABLE_BY == 0;
+        return false;
     }
 
     /**
