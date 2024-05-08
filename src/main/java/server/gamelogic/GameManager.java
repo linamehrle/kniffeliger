@@ -59,6 +59,15 @@ public class GameManager implements Runnable {
      * #################################################################################################################
      */
 
+    public void prepareForStart() {
+        logger.info("Preparing for hte game start");
+        //initializes the hashMap of action dices in the player and sets the boolean isInGame to true
+        for (Player player : playerArraysList) {
+            player.prepareForGame();
+            Communication.sendToPlayer(CommandsServerToClient.STRG, player, "prepare the game start");
+        }
+    }
+
     /**
      * This method runs the whole game, keeps the game play in the right order and checks all inputs.
      *
@@ -66,11 +75,6 @@ public class GameManager implements Runnable {
      */
     public synchronized void starter() throws InterruptedException {
         logger.trace("starter()");
-
-        //initializes the hashMap of action dices in the player and sets the boolean isInGame to true
-        for (Player player : playerArraysList) {
-            player.prepareForGame();
-        }
 
         // initializes entry sheets for each player and saves all in an array
         Player[] players = new Player[playerArraysList.size()];
@@ -80,7 +84,8 @@ public class GameManager implements Runnable {
         EntrySheet[] allEntrySheets = new EntrySheet[players.length];
         for (int i = 0; i < players.length; i++) {
             allEntrySheets[i] = new EntrySheet(players[i]);
-            Communication.sendToPlayer(CommandsServerToClient.ENTY, players[i], allEntrySheets[i].printEntrySheet());
+            //initiates all entry sheets in the gui
+            Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, allEntrySheets[i].printEntrySheet());
         }
 
 
@@ -90,11 +95,12 @@ public class GameManager implements Runnable {
         Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "The game starts.");
 
         // request to initialize clients
-        String playerList = "";
+        /*String playerList = "";
         for (Player player : playerArraysList) {
             playerList += player.getUsername() + " ";
-        }
-        Communication.broadcastToAll(CommandsServerToClient.INES, playerArraysList, playerList);
+        }*/
+
+        //Communication.broadcastToAll(CommandsServerToClient.INES, playerArraysList, playerList);
 
         // starting 14 rounds
         for (int round = 0; round < 3; round++) {

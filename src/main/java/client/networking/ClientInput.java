@@ -5,11 +5,15 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import client.Client;
+import org.apache.logging.log4j.Logger;
+import starter.Starter;
 
 /**
  * This is the thread that reads input from the server.
  */
 public class ClientInput implements Runnable {
+
+    Logger logger = Starter.getLogger();
 
     /**
      * This variable indicates whether the thread is running. It will be set true when the client disconnects.
@@ -41,8 +45,14 @@ public class ClientInput implements Runnable {
                 if(in.ready()) {
                     String message = in.readLine();
                     ClientInputHelper processor = new ClientInputHelper(gameManager, message);
-                    Thread processorThread = new Thread(processor);
-                    processorThread.start();
+                    if (!message.substring(0,4).equals("PING") && !message.substring(0,4).equals("PONG")) {
+                        Thread processorThread = new Thread(processor);
+                        processorThread.start();
+                        logger.debug("Client input received: " + message);
+                    } else {
+                        processor.run();
+                    }
+
                 }
             }
 

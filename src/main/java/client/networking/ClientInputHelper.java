@@ -25,6 +25,9 @@ public class ClientInputHelper implements Runnable {
      * @param message the input that was read by the ClientInput coming from the server
      */
     public ClientInputHelper(Client gameManager, String message) {
+        if (!message.substring(0,4).equals("PING") && !message.substring(0,4).equals("PONG")) {
+            logger.debug("New client input helper instantiated with message: " + message);
+        }
         this.gameManager = gameManager;
         this.message = message;
         this.pong = gameManager.getPong();
@@ -38,6 +41,10 @@ public class ClientInputHelper implements Runnable {
     @Override
     public void run() {
 
+        if (!message.substring(0,4).equals("PING") && !message.substring(0,4).equals("PONG")) {
+            logger.debug("run method with message: " + message);
+        }
+
         String[] input = message.split(" ", 2);
         CommandsServerToClient cmd;
 
@@ -47,6 +54,10 @@ public class ClientInputHelper implements Runnable {
             logger.info("Client: received invalid command " + input[0]);
             logger.error(e.getMessage());
             return;
+        }
+
+        if (cmd != CommandsServerToClient.PONG && cmd != CommandsServerToClient.PING) {
+            logger.debug("command before switch case: " + cmd);
         }
 
         //switch case for the different possible incoming commands
@@ -101,21 +112,22 @@ public class ClientInputHelper implements Runnable {
                 logger.debug("Action dice update received at the client: " + input[1]);
             }
             case ENTY -> {
-                Main.updateEntrySheet(input[1]);
                 logger.debug("Client received command ENTY with message: " + input[1]);
+                Main.updateEntrySheet(input[1]);
             }
             /*case ALES -> {
                 Main.updateOtherEntrySheets(input[1]);
                 logger.debug("Client received command ALES with message: " + input[1]);
             }*/
             case ALDI -> Main.updateOtherDiceBox(input[1]);
-            case INES -> Main.initOtherTab(input[1]);
+            //case INES -> Main.initOtherTab();
             case STRT -> Main.changeTurn(input[1]);
             //case SWAP -> Main.swapEntrySheets(input[1]);
             case TUSR -> Main.sendOwnNameToGUI(input[1]);
             //case SHFT -> Main.shiftEntrySheets(input[1]);
             case PONT -> Main.updateTotalScore(input[1]);
             case FRZE -> Main.freezeOrDefreeze(input[1]);
+            case STRG -> Main.initGame();
             default -> logger.info("unknown command received from server " + message);
         }
     }

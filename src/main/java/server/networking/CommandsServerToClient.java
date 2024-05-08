@@ -150,7 +150,13 @@ public enum CommandsServerToClient {
     /**
      * Communicates the current total points of a player to show in the console
      */
-    PONT
+    PONT,
+
+    /**
+     * Communicates to the gui to prepare for the game start, e.g. initiate the second tab and enable/disable the
+     * right buttons
+     */
+    STRG
 
 
 }

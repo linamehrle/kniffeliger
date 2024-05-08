@@ -38,7 +38,7 @@ public class ClientThread implements Runnable{
      */
     @Override
     public void run() {
-        serverOutput = new ServerOutput(socket);
+        serverOutput = new ServerOutput(socket, player);
 
         serverInput = new ServerInput(this);
         Thread thread = new Thread(serverInput);
