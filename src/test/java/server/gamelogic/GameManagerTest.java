@@ -4,6 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import server.Player;
 
+import java.util.HashMap;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 // get methods are not tested separately since they are used in tests anyway and tested with the other tests
@@ -27,10 +29,10 @@ class GameManagerTest {
         /**
          * Get the action dice of player.
          *
-         * @return all action dice of player saved in array.
+         * @return all action dice of player saved in a Hashmap.
          */
-        public ActionDice[] getActionDice() {
-            return actionDice;
+        public HashMap<ActionDiceEnum, Integer> getActionDice() {
+            return super.actionDice;
         }
 
         /**
@@ -43,23 +45,21 @@ class GameManagerTest {
         }
 
         /**
-         * Access private field id.
+         * Sets number of action dices according to the given number.
          *
-         * @return id of user
+         * @param stealCount
+         * @param freezeCount
+         * @param crossOutCount
+         * @param swapCount
+         * @param shiftCount
          */
-        public int getId() {
-            return super.id;
+        public void setActionDice(int stealCount, int freezeCount, int crossOutCount, int swapCount, int shiftCount) {
+            super.actionDice.put(ActionDiceEnum.STEAL, stealCount);
+            super.actionDice.put(ActionDiceEnum.FREEZE, freezeCount);
+            super.actionDice.put(ActionDiceEnum.CROSSOUT, crossOutCount);
+            super.actionDice.put(ActionDiceEnum.SHIFT, shiftCount);
+            super.actionDice.put(ActionDiceEnum.SWAP, swapCount);
         }
-
-        /**
-         * Set a new set of action dice.
-         *
-         * @param newActionDice new array of action dice a player can use.
-         */
-        public void setActionDices(ActionDice[] newActionDice) {
-            actionDice = newActionDice;
-        }
-
     }
 
     /**
@@ -206,8 +206,7 @@ class GameManagerTest {
         DummyPlayer riccardo = new DummyPlayer("riccardo");
 
         // set linas action dice to array below, riccardo's action dice stay 0
-        ActionDice[] actionDiceLina = new ActionDice[]{new ActionDice("steal"), new ActionDice("freeze"), new ActionDice("crossOut"), new ActionDice("shift"), new ActionDice("swap")};
-        lina.setActionDices(actionDiceLina);
+        lina.setActionDice(1, 1, 1,1 ,1);
 
         // add action dice
         boolean addedToLinasActionDice = gm.addActionDice(allDice, lina);
@@ -215,25 +214,34 @@ class GameManagerTest {
 
         // test if action dice can be added
         assertEquals(res, addedToLinasActionDice);
-        assertTrue(6 <= lina.getActionDice().length && lina.getActionDice().length <= 11);
+
+        // check number of actn dices
+        int linaNumActDice = 0;
+        for (ActionDiceEnum actDice : lina.getActionDice().keySet()) {
+            linaNumActDice += lina.getActionDice().get(actDice);
+        }
+
+        assertTrue(5 <= linaNumActDice && linaNumActDice <= 11);
         assertEquals(res, addedToRiccardosActionDice);
-        assertTrue(1 <= riccardo.getActionDice().length && riccardo.getActionDice().length <= 5);
+
+        // check number of actn dices
+        int riccardoActDice = 0;
+        for (ActionDiceEnum actDice : riccardo.getActionDice().keySet()) {
+            riccardoActDice += riccardo.getActionDice().get(actDice);
+        }
+        assertTrue(0 <= riccardoActDice && riccardoActDice <= 5);
     }
 
     @Test
     @DisplayName("Tests the method that deletes an action dice out of an array")
     void deleteActionDiceTest(){
-        // action dice for player
-        ActionDice[] actionDiceLina = new ActionDice[]{new ActionDice("steal"), new ActionDice("freeze"), new ActionDice("crossOut"), new ActionDice("shift"), new ActionDice("swap")};
-        ActionDice[] actionDiceRiccardo = new ActionDice[]{new ActionDice("crossOut"), new ActionDice("shift"), new ActionDice("swap")};
-
         // players that hold action dice (needed to apply the delete entry method)
         DummyPlayer lina = new DummyPlayer("lina");
         DummyPlayer riccardo = new DummyPlayer("riccardo");
-        lina.setActionDices(actionDiceLina);
-        riccardo.setActionDices(actionDiceRiccardo);
 
-
+        // action dice for player
+        lina.setActionDice(1, 1, 1,1,1);
+        riccardo.setActionDice(0, 0, 1, 1,1);
 
         // delete action dice
         GameManager gm = new GameManager();
@@ -241,11 +249,12 @@ class GameManagerTest {
         riccardo.decreaseActionDiceCount(ActionDiceEnum.CROSSOUT);
 
         // control action dice to check
-        ActionDice[] controlActionDiceLina = new ActionDice[]{new ActionDice("steal"), new ActionDice("freeze"), new ActionDice("crossOut"), new ActionDice("swap")};
-        ActionDice[] controlActionDiceRiccardo = new ActionDice[]{new ActionDice("shift"), new ActionDice("swap")};
 
-        assertAll(() -> assertEquals(turnActionDiceToString(controlActionDiceLina), turnActionDiceToString(lina.getActionDice())),
-                () -> assertEquals(turnActionDiceToString(controlActionDiceRiccardo), turnActionDiceToString(riccardo.getActionDice()))
+        HashMap<ActionDiceEnum, Integer> controlActionDiceLina = generateActionDice(1, 1, 1, 1, 0);
+        HashMap<ActionDiceEnum, Integer> controlActionDiceRiccardo = generateActionDice(0, 0, 0, 1, 1);
+
+        assertAll(() -> assertEquals(controlActionDiceLina, lina.getActionDice()),
+                () -> assertEquals(controlActionDiceRiccardo, riccardo.getActionDice())
         );
     }
 
@@ -284,4 +293,24 @@ class GameManagerTest {
 
     }
 
+    /**
+     * Method to create a Action Dice HashMap given counts.
+     * @param stealCount
+     * @param freezeCount
+     * @param crossOutCount
+     * @param swapCount
+     * @param shiftCount
+     * @return
+     */
+    public static HashMap<ActionDiceEnum, Integer> generateActionDice(int stealCount, int freezeCount, int crossOutCount, int swapCount, int shiftCount) {
+        HashMap<ActionDiceEnum, Integer> actionDice = new HashMap<>();
+
+        actionDice.put(ActionDiceEnum.STEAL, stealCount);
+        actionDice.put(ActionDiceEnum.FREEZE, freezeCount);
+        actionDice.put(ActionDiceEnum.CROSSOUT, crossOutCount);
+        actionDice.put(ActionDiceEnum.SHIFT, shiftCount);
+        actionDice.put(ActionDiceEnum.SWAP, swapCount);
+
+        return actionDice;
+    }
 }

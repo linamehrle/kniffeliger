@@ -29,7 +29,7 @@ public class Player {
      * This map saves all the action dice a player gets during the game, the first field is the name of the action dice
      * and the second the current count of this specific action die
      */
-    private HashMap<ActionDiceEnum, Integer> actionDice = new HashMap<>();
+    protected HashMap<ActionDiceEnum, Integer> actionDice = new HashMap<>();
     private ClientThread playerThreadManager;
     private ArrayList<Player> playerList;
     private Lobby lobby;
