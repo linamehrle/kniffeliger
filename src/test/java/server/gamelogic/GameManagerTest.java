@@ -182,7 +182,7 @@ class GameManagerTest {
         // initiate game manager to test methods
         GameManager gm = new GameManager();
         // divisible by DIVIDABLE_BY constant in game manager, then get an action dice
-        int DIVIDABLE_BY = gm.getDIVIDABLE_BYE();
+        int DIVIDABLE_BY = gm.getDIVIDABLE_BY();
         Dice d1 = new Dice();
         Dice d2 = new Dice();
         Dice d3 = new Dice();
@@ -233,10 +233,12 @@ class GameManagerTest {
         lina.setActionDices(actionDiceLina);
         riccardo.setActionDices(actionDiceRiccardo);
 
+
+
         // delete action dice
         GameManager gm = new GameManager();
-        gm.deleteActionDice(lina, "shift");
-        gm.deleteActionDice(riccardo, "crossOut");
+        lina.decreaseActionDiceCount(ActionDiceEnum.SHIFT);
+        riccardo.decreaseActionDiceCount(ActionDiceEnum.CROSSOUT);
 
         // control action dice to check
         ActionDice[] controlActionDiceLina = new ActionDice[]{new ActionDice("steal"), new ActionDice("freeze"), new ActionDice("crossOut"), new ActionDice("swap")};
