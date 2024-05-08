@@ -203,17 +203,9 @@ public class GameManager implements Runnable {
                                 boolean madeEntry = EntrySheet.entryValidation(currentEntrySheet, selectedEntry, allDice);
 
                                 if (madeEntry) {
-                                    // sent updated entry sheet to currentPlayer
-                                    //Communication.sendToPlayer(CommandsServerToClient.ENTY, currentPlayer, currentPlayer.getUsername() + " " + selectedEntry + ":"
-                                    //+ currentEntrySheet.getEntryByName(selectedEntry).getValue());
 
                                     Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
-
                                     Communication.sendToPlayer(CommandsServerToClient.PONT, currentPlayer, String.valueOf(currentEntrySheet.getTotalPoints()));
-
-                                    // sent updated sheet of the currentPlayer
-                                    //Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + ":"
-                                    //+ currentEntrySheet.getEntryByName(selectedEntry).getValue());
 
                                     logger.log(gameLogic, "Save entry " + selectedEntry + "(" + currentEntrySheet.getEntryByName(selectedEntry).getValue() + ") of " + currentPlayer.getUsername());
 
@@ -238,20 +230,6 @@ public class GameManager implements Runnable {
 
                                 if (couldSteal) {
                                     logger.log(gameLogic, currentPlayer.getUsername() + " has stolen entry " + selectedEntry + " from " + victimPlayerName);
-
-                                    // send player stolen entry
-                                    /*Communication.sendToPlayer(CommandsServerToClient.ENTY, currentPlayer, currentPlayer.getUsername() + " " + selectedEntry + ":"
-                                            + currentEntrySheet.getEntryByName(selectedEntry).getValue());
-
-                                    Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, currentPlayer.getUsername() + " " + selectedEntry + ":"
-                                            + currentEntrySheet.getEntryByName(selectedEntry).getValue());
-
-                                    // send player crossed out entry
-                                    Communication.sendToPlayer(CommandsServerToClient.ENTY, getPlayerByName(playerArraysList, victimPlayerName), victimPlayerName + " " + selectedEntry + ":"
-                                            + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
-
-                                    Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, victimPlayerName + " " + selectedEntry + ":"
-                                            + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());*/
 
                                     Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
                                     Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList,
@@ -301,13 +279,6 @@ public class GameManager implements Runnable {
 
                                 if (couldCrossOut) {
                                     logger.log(gameLogic, currentPlayer + " has crossed out entry " + selectedEntry + " from " + victimPlayerName);
-
-                                    // send cross out state
-                                    /*Communication.sendToPlayer(CommandsServerToClient.ENTY, getPlayerByName(playerArraysList, victimPlayerName), victimPlayerName + " " + selectedEntry + ":"
-                                            + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
-
-                                    Communication.broadcastToAll(CommandsServerToClient.ALES, playerArraysList, victimPlayerName + " " + selectedEntry + ":"
-                                            + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());*/
 
                                     Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
                                     Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList,
@@ -375,16 +346,10 @@ public class GameManager implements Runnable {
 
                             if (currentPlayer.getActionDiceCount(ActionDiceEnum.SHIFT) > 0) {
                                 ActionDice.shift(allEntrySheets);
-                                // get player string
-                                /*String playerShift = "";
-                                for (Player player : playerArraysList) {
-                                    playerShift += player.getUsername() + " ";
-                                }*/
-
-                                //Communication.broadcastToAll(CommandsServerToClient.SHFT, playerArraysList, playerShift);
 
                                 for (EntrySheet sheet : allEntrySheets) {
                                     Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, sheet.printEntrySheet());
+                                    Communication.sendToPlayer(CommandsServerToClient.PONT, sheet.getPlayer(), String.valueOf(sheet.getTotalPoints()));
                                 }
 
                                 logger.log(gameLogic, "Shifting");
@@ -401,7 +366,6 @@ public class GameManager implements Runnable {
                             if (currentPlayer.getActionDiceCount(ActionDiceEnum.SWAP) > 0) {
                                 boolean couldSwap = ActionDice.swap(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, inputArr[1]));
                                 if (couldSwap) {
-                                    //Communication.broadcastToAll(CommandsServerToClient.SWAP, playerArraysList, currentPlayer.getUsername() + " " + inputArr[1]);
 
                                     //Update the entry sheets
                                     Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList,
