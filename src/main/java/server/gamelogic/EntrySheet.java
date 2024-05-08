@@ -2,13 +2,19 @@ package server.gamelogic;
 
 import java.util.Arrays;
 import java.util.Scanner;
+
+import org.apache.logging.log4j.Logger;
 import server.Player;
 import server.networking.Communication;
+import starter.Starter;
 
 /**
  * Entry sheet class to build entry sheets that are associated with a player.
  */
 public class EntrySheet {
+
+    private static Logger logger = Starter.getLogger();
+
     // entry sheet length
     private static final int ENTRY_SHEET_LENGTH = 14;
 
@@ -214,6 +220,7 @@ public class EntrySheet {
     public void setPlayer(Player newPlayer) {
         player = newPlayer;
         username = newPlayer.getUsername();
+        logger.debug("New Player: " + username);
     }
 
     /**

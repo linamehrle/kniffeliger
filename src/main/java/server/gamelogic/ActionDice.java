@@ -1,11 +1,14 @@
 package server.gamelogic;
+import org.apache.logging.log4j.Logger;
 import server.Player;
-
+import starter.Starter;
 
 /**
  * Class that contains the action dice and all the methods that enforce the actions of the action dice.
  */
 public class ActionDice {
+
+    private static Logger logger = Starter.getLogger();
 
     // name of action player can perform
     private final String actionName;

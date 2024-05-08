@@ -396,13 +396,20 @@ public class GameManager implements Runnable {
 
                             if (currentPlayer.getActionDiceCount(ActionDiceEnum.SWAP) > 0) {
                                 boolean couldSwap = ActionDice.swap(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, inputArr[1]));
-
                                 if (couldSwap) {
                                     //Communication.broadcastToAll(CommandsServerToClient.SWAP, playerArraysList, currentPlayer.getUsername() + " " + inputArr[1]);
 
-                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
+                                    //Update the entry sheets
+                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList,
+                                            EntrySheet.getEntrySheetByName(allEntrySheets, currentPlayer.getUsername()).printEntrySheet());
                                     Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList,
                                             EntrySheet.getEntrySheetByName(allEntrySheets, inputArr[1]).printEntrySheet());
+
+                                    //update the points
+                                    Communication.sendToPlayer(CommandsServerToClient.PONT, currentPlayer,
+                                            String.valueOf(EntrySheet.getEntrySheetByName(allEntrySheets, currentPlayer.getUsername()).getTotalPoints()));
+                                    Communication.sendToPlayer(CommandsServerToClient.PONT, getPlayerByName(playerArraysList, inputArr[1]),
+                                            String.valueOf(EntrySheet.getEntrySheetByName(allEntrySheets, inputArr[1]).getTotalPoints()));
 
                                     logger.log(gameLogic, "Swapping " + currentPlayer.getUsername() + " <-> " + inputArr[1]);
 

@@ -98,7 +98,7 @@ public class GameWindowController implements Initializable {
     private Label totalPointsLabel;
 
     @FXML
-    private ListView<EntrySheetGUImplementation> entrySheet;
+    private ListView<String> entrySheet = new ListView<>();
 
     @FXML
     private Button endTurnButton;
@@ -149,19 +149,19 @@ public class GameWindowController implements Initializable {
         usernameLabel.setText("username");
 
         //Initialize entry sheet
-        entryList = GameWindowHelper.makeEntrySheet();
+        //entryList = GameWindowHelper.makeEntrySheet();
 
-        entrySheet.setItems(entryList);
+        //entrySheet.setItems(entryList);
 
         //Initialize observable lists of dice
         //Main dice list
-        diceList.addAll(new DiceGUImplementation[]{new DiceGUImplementation(0), new DiceGUImplementation(1),
-                new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4) });
+        diceList.addAll(new DiceGUImplementation[] {new DiceGUImplementation(0), new DiceGUImplementation(1),
+                new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4)});
         diceBox.setItems(diceList);
 
         //Dice list on tab 2
-        diceListOther.addAll(new DiceGUImplementation[]{new DiceGUImplementation(0), new DiceGUImplementation(1),
-                new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4) });
+        diceListOther.addAll(new DiceGUImplementation[] {new DiceGUImplementation(0), new DiceGUImplementation(1),
+                new DiceGUImplementation(2), new DiceGUImplementation(3), new DiceGUImplementation(4)});
         diceBoxOther.setItems(diceListOther);
 
         //Load images
@@ -180,17 +180,26 @@ public class GameWindowController implements Initializable {
                     //set baseIndex, such that different symbols are loaded for saved and unsaved dice
                     int baseIndex = 0;
                     if (dice.getSavingStatus() || dice.getStashStatus()) {
-                        baseIndex = 6;}
+                        baseIndex = 6;
+                    }
                     ImageView imageView = new ImageView();
                     switch (dice.getDiceValue()) {
-                        case 1 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 1]);
-                        case 2 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 2]);
-                        case 3 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 3]);
-                        case 4 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 4]);
-                        case 5 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 5]);
-                        case 6 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 6]);
-                        default -> imageView.setImage(GameWindowController.diceFaces[0]);
-                    };
+                        case 1 ->
+                                imageView.setImage(GameWindowController.diceFaces[baseIndex + 1]);
+                        case 2 ->
+                                imageView.setImage(GameWindowController.diceFaces[baseIndex + 2]);
+                        case 3 ->
+                                imageView.setImage(GameWindowController.diceFaces[baseIndex + 3]);
+                        case 4 ->
+                                imageView.setImage(GameWindowController.diceFaces[baseIndex + 4]);
+                        case 5 ->
+                                imageView.setImage(GameWindowController.diceFaces[baseIndex + 5]);
+                        case 6 ->
+                                imageView.setImage(GameWindowController.diceFaces[baseIndex + 6]);
+                        default ->
+                                imageView.setImage(GameWindowController.diceFaces[0]);
+                    }
+                    ;
 
                     setText(null);
                     setGraphic(imageView);
@@ -210,17 +219,26 @@ public class GameWindowController implements Initializable {
                     //set baseIndex, such that different symbols are loaded for saved and unsaved dice
                     int baseIndex = 0;
                     if (dice.getSavingStatus() || dice.getStashStatus()) {
-                        baseIndex = 6;}
+                        baseIndex = 6;
+                    }
                     ImageView imageView = new ImageView();
                     switch (dice.getDiceValue()) {
-                        case 1 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 1]);
-                        case 2 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 2]);
-                        case 3 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 3]);
-                        case 4 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 4]);
-                        case 5 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 5]);
-                        case 6 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 6]);
-                        default -> imageView.setImage(GameWindowController.diceFaces[0]);
-                    };
+                        case 1 ->
+                                imageView.setImage(GameWindowController.diceFaces[baseIndex + 1]);
+                        case 2 ->
+                                imageView.setImage(GameWindowController.diceFaces[baseIndex + 2]);
+                        case 3 ->
+                                imageView.setImage(GameWindowController.diceFaces[baseIndex + 3]);
+                        case 4 ->
+                                imageView.setImage(GameWindowController.diceFaces[baseIndex + 4]);
+                        case 5 ->
+                                imageView.setImage(GameWindowController.diceFaces[baseIndex + 5]);
+                        case 6 ->
+                                imageView.setImage(GameWindowController.diceFaces[baseIndex + 6]);
+                        default ->
+                                imageView.setImage(GameWindowController.diceFaces[0]);
+                    }
+                    ;
 
                     setText(null);
                     setGraphic(imageView);
@@ -231,7 +249,7 @@ public class GameWindowController implements Initializable {
 
         //TODO how to initialize the entry sheets?
 
-        entrySheet.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
+        /*entrySheet.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
             @Override
             public void updateItem(EntrySheetGUImplementation entry, boolean empty) {
                 super.updateItem(entry, empty);
@@ -253,6 +271,24 @@ public class GameWindowController implements Initializable {
                     //setGraphic(imageView);
                 }
             }
+        });*/
+
+        entrySheet.setCellFactory(param -> new ListCell<String>() {
+            @Override
+            public void updateItem(String entry, boolean empty) {
+                super.updateItem(entry, empty);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (empty) {
+                            setText(null);
+                            setGraphic(null);
+                        } else {
+                            setText(entry);
+                        }
+                    }
+                });
+            }
         });
 
         //initiate the arraylist that has all usernames of the players in the lobby
@@ -265,7 +301,8 @@ public class GameWindowController implements Initializable {
             gameMainThemePlayer = GameWindowHelper.loadMedia("gameTheme.mp3");
             gameMainThemePlayer.play();
             logger.trace("Audio file 'gameTheme.mp3' loaded.");
-        } catch (FileNotFoundException e) {
+        } catch (
+                FileNotFoundException e) {
             logger.info("Audio file 'gameTheme.mp3' not found.");
         }
 
@@ -276,15 +313,13 @@ public class GameWindowController implements Initializable {
                 gameMainThemePlayer.setVolume(volumeSlider.getValue());
                 if (volumeSlider.getValue() == 0 && !muteButton.isSelected()) {
                     muteButton.fire();
-                } else if (volumeSlider.getValue() != 0 && muteButton.isSelected()){
+                } else if (volumeSlider.getValue() != 0 && muteButton.isSelected()) {
                     muteButton.fire();
                 }
-
             }
         });
 
         ClientOutput.send(CommandsClientToServer.RUSR, "");
-
     }
 
     /**
@@ -402,11 +437,6 @@ public class GameWindowController implements Initializable {
         ClientOutput.send(CommandsClientToServer.LOPL, "getting the players in the lobby");
         logger.debug("List of Players in Lobby updated");
         leaveGameButton.setDisable(true);
-
-        for (String player : playersInLobby) {
-            playerToEntrySheetMap.put(player, FXCollections.observableArrayList());
-        }
-
     }
 
     @FXML
@@ -496,7 +526,7 @@ public class GameWindowController implements Initializable {
         //TODO: adapt message if necessary
         ClientOutput.send(CommandsClientToServer.ENDT,  "ended turn");
         informationBox.getChildren().clear();
-        displayInformationText("You ended your turn ");
+        //displayInformationText("You ended your turn "); //TODO display everything through the logic!!!!!
         diceBox.refresh();
     }
 
@@ -689,7 +719,21 @@ public class GameWindowController implements Initializable {
         String name = entrySheetString.split(":")[0];
         String entries = entrySheetString.split(":")[1];
 
-        //TODO
+        //Before the first round, all entry sheets are initialized for the first time
+        if (playerToEntrySheetMap.get(name) == null) {
+            ObservableList<String> entryList = FXCollections.observableArrayList();
+            entryList.addAll(entries.split(","));
+            playerToEntrySheetMap.put(name, entryList);
+        } else {
+            ObservableList<String> entryList = playerToEntrySheetMap.get(name);
+            entryList.clear();
+            entryList.addAll(entries.split(","));
+        }
+
+        if (name.equals(ownerUser)) {
+            entrySheet.setItems(playerToEntrySheetMap.get(ownerUser));
+            entrySheet.refresh();
+        }
 
         //update the observable list according to the name
         //update the listviews in the main tab and second tab
@@ -748,11 +792,10 @@ public class GameWindowController implements Initializable {
      */
     @FXML
     public void entryEnterButtonAction(MouseEvent event){
-        EntrySheetGUImplementation entry = entrySheet.getSelectionModel().getSelectedItem();
-        if (entry != null && !entry.getSavingStatus()){
-            String entryIDName = entry.getIDname();
-            ClientOutput.send(CommandsClientToServer.ENTY,  entryIDName);
-            displayInformationText("You selected: " + entryIDName);
+        String entry = entrySheet.getSelectionModel().getSelectedItem();
+        if (entry != null){
+            ClientOutput.send(CommandsClientToServer.ENTY,  entry);
+            displayInformationText("You selected: " + entry);
         } else {
             displayInformationText("No valid entry field selected. Please select a valid entry field.");
         }
@@ -768,16 +811,6 @@ public class GameWindowController implements Initializable {
      */
     public void initTabOther() {
         clearInformationBox();
-
-        //Set username label
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                usernameLabel.setText(ownerUser);
-
-            }
-        });
-
 
         if (playersInLobby != null ) {
             for (int i = 0; i < playersInLobby.size() && i < playersWithSheets.length; i++) {
@@ -944,6 +977,14 @@ public class GameWindowController implements Initializable {
 
     public void setOwnUser(String ownUserName) {
         this.ownerUser = ownUserName;
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                usernameLabel.setText(ownerUser);
+            }
+        });
+
     }
 
     public void endGame() {
