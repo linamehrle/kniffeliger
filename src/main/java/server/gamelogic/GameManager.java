@@ -248,6 +248,7 @@ public class GameManager implements Runnable {
                                             + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
 
                                     currentPlayer.decreaseActionDiceCount(ActionDiceEnum.STEAL);
+                                    Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, currentPlayer.getActionDiceAsString());
                                     entryMade = true;
                                 } else {
                                     Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "This is not a valid input, please try again!");
@@ -273,6 +274,7 @@ public class GameManager implements Runnable {
                                             currentPlayer.getUsername() + " has frozen your " + selectedEntry + "!");
 
                                     currentPlayer.decreaseActionDiceCount(ActionDiceEnum.FREEZE);
+                                    Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, currentPlayer.getActionDiceAsString());
                                 } else {
                                     Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "This is not a valid input, please try again!");
                                     logger.debug("false freeze action tried");
@@ -298,6 +300,7 @@ public class GameManager implements Runnable {
                                             + EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getEntryByName(selectedEntry).getValue());
 
                                     currentPlayer.decreaseActionDiceCount(ActionDiceEnum.CROSSOUT);
+                                    Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, currentPlayer.getActionDiceAsString());
                                 } else {
                                     Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "This is not a valid input, please try again!");
                                     logger.debug("false cross out action tried");
@@ -378,6 +381,7 @@ public class GameManager implements Runnable {
                                 logger.log(gameLogic, "Shifting");
 
                                 currentPlayer.decreaseActionDiceCount(ActionDiceEnum.SHIFT);
+                                Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, currentPlayer.getActionDiceAsString());
                             } else {
                                 logger.log(gameLogic, "No shift: shiftCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.SHIFT));
                             }
@@ -394,6 +398,7 @@ public class GameManager implements Runnable {
                                     logger.log(gameLogic, "Swapping " + currentPlayer.getUsername() + " <-> " + inputArr[1]);
 
                                     currentPlayer.decreaseActionDiceCount(ActionDiceEnum.SWAP);
+                                    Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, currentPlayer.getActionDiceAsString());
                                 } else {
                                     Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "This is not a valid input, please try again!");
                                     logger.debug("false swap action tried");

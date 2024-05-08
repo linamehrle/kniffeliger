@@ -185,7 +185,6 @@ public class Player {
     public void decreaseActionDiceCount(ActionDiceEnum diceName) {
         int currentCount = actionDice.get(diceName);
         actionDice.replace(diceName, currentCount - 1);
-        Communication.sendToPlayer(CommandsServerToClient.ACTN, this, getActionDiceAsString());
     }
 
     /**
