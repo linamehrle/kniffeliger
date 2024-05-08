@@ -176,7 +176,6 @@ public class Player {
     public void increaseActionDiceCount(ActionDiceEnum diceName) {
         int currentCount = actionDice.get(diceName);
         actionDice.replace(diceName, currentCount + 1);
-        Communication.sendToPlayer(CommandsServerToClient.BRCT, this, "You got a new action die: " + diceName.toString());
     }
 
     /**

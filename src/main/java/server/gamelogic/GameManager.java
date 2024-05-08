@@ -215,6 +215,7 @@ public class GameManager implements Runnable {
                                 // adds action dice to player
                                 if (addActionDice(allDice, currentPlayer)) {
                                     Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, currentPlayer.getActionDiceAsString());
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You got a new action die.");
                                 }
 
                                 entryMade = true;
