@@ -316,6 +316,10 @@ public class Main extends Application {
             gameWindowController.freezeEntry(freezeInformation.split(":")[1]);
         }
     }
+
+    public static void communicateSave(String savedDice) {
+        gameWindowController.handleSavedDice(savedDice);
+    }
 }
 
 

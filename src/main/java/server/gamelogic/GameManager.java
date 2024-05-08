@@ -176,8 +176,9 @@ public class GameManager implements Runnable {
 
                             logger.log(gameLogic, "Save dices: " + Arrays.toString(savedDice));
 
+                            logger.debug("abutToRoll: " + aboutToRoll);
                             // saves the rolled dice; if player does not want to save one, then "none" is sent
-                            if (!savedDice[1].equals("none") && aboutToRoll) {
+                            if (!savedDice[1].equals("none")) { //LINA: I removed aboutToRoll from the if, because it was false in wrong moments
                                 // turns the single String array entries into int and save the corresponding dice
                                 for (int idx = 1; idx < savedDice.length; idx++) {
                                     logger.trace("Save dice " + savedDice[idx]);
@@ -185,8 +186,18 @@ public class GameManager implements Runnable {
                                     allDice[idxDice].saveDice();
                                 }
                             } else {
-                                logger.trace("None dices are selected to be saved.");
+                                logger.trace("No dices are selected to be saved.");
                             }
+
+                            //return all dice that are currently saved to the client to possibly update the gui
+                            String allSavedDice = "";
+                            for (int i = 0; i < allDice.length; i++) {
+                                if (allDice[i].getSavingStatus()) {
+                                    allSavedDice = allSavedDice + i + " ";
+                                }
+                            }
+                            Communication.sendToPlayer(CommandsServerToClient.SAVE, currentPlayer, allSavedDice);
+
                             break;
                         case "ENTY":
                             logger.trace("Entered ENTY case");

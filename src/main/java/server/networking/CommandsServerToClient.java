@@ -156,7 +156,12 @@ public enum CommandsServerToClient {
      * Communicates to the gui to prepare for the game start, e.g. initiate the second tab and enable/disable the
      * right buttons
      */
-    STRG
+    STRG,
+
+    /**
+     * Communicates to the client, that the sent dice were saved successfully
+     */
+    SAVE
 
 
 }

@@ -42,9 +42,6 @@ public class ServerOutput {
      */
     public synchronized void send(CommandsServerToClient cmd, String message) {
         sendToClient(cmd.toString() + " " + message);
-        if (cmd != CommandsServerToClient.PING && cmd != CommandsServerToClient.PONG) {
-            logger.debug("Server Output send message to client " + player.getUsername() + ": " + cmd + " " + message);
-        }
     }
 
     /**

@@ -9,10 +9,10 @@ public class PlayerGUImplementation {
 
     private ListView<EntrySheetGUImplementation> entrySheetListView;
 
-    public PlayerGUImplementation (String username) {
+    /*public PlayerGUImplementation (String username) {
         this.username = username;
         entrySheet = GameWindowHelper.makeEntrySheet();
-    }
+    }*/
 
     public ObservableList<EntrySheetGUImplementation> getEntrySheet() {
         return entrySheet;

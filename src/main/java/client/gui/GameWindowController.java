@@ -174,9 +174,9 @@ public class GameWindowController implements Initializable {
             @Override
             public void updateItem(DiceGUImplementation dice, boolean empty) {
                 super.updateItem(dice, empty);
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
+                //Platform.runLater(new Runnable() {
+                    //@Override
+                    //public void run() {
                         if (empty) {
                             setText(null);
                             setGraphic(null);
@@ -188,28 +188,19 @@ public class GameWindowController implements Initializable {
                             }
                             ImageView imageView = new ImageView();
                             switch (dice.getDiceValue()) {
-                                case 1 ->
-                                        imageView.setImage(GameWindowController.diceFaces[baseIndex + 1]);
-                                case 2 ->
-                                        imageView.setImage(GameWindowController.diceFaces[baseIndex + 2]);
-                                case 3 ->
-                                        imageView.setImage(GameWindowController.diceFaces[baseIndex + 3]);
-                                case 4 ->
-                                        imageView.setImage(GameWindowController.diceFaces[baseIndex + 4]);
-                                case 5 ->
-                                        imageView.setImage(GameWindowController.diceFaces[baseIndex + 5]);
-                                case 6 ->
-                                        imageView.setImage(GameWindowController.diceFaces[baseIndex + 6]);
-                                default ->
-                                        imageView.setImage(GameWindowController.diceFaces[0]);
+                                case 1 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 1]);
+                                case 2 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 2]);
+                                case 3 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 3]);
+                                case 4 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 4]);
+                                case 5 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 5]);
+                                case 6 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 6]);
+                                default -> imageView.setImage(GameWindowController.diceFaces[0]);
                             }
-                            ;
-
                             setText(null);
                             setGraphic(imageView);
                         }
-                    }
-                });
+                    //}
+                //});
             }
         });
 
@@ -218,9 +209,9 @@ public class GameWindowController implements Initializable {
             @Override
             public void updateItem(DiceGUImplementation dice, boolean empty) {
                 super.updateItem(dice, empty);
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
+                //Platform.runLater(new Runnable() {
+                    //@Override
+                    //public void run() {
                         if (empty) {
                             setText(null);
                             setGraphic(null);
@@ -232,28 +223,19 @@ public class GameWindowController implements Initializable {
                             }
                             ImageView imageView = new ImageView();
                             switch (dice.getDiceValue()) {
-                                case 1 ->
-                                        imageView.setImage(GameWindowController.diceFaces[baseIndex + 1]);
-                                case 2 ->
-                                        imageView.setImage(GameWindowController.diceFaces[baseIndex + 2]);
-                                case 3 ->
-                                        imageView.setImage(GameWindowController.diceFaces[baseIndex + 3]);
-                                case 4 ->
-                                        imageView.setImage(GameWindowController.diceFaces[baseIndex + 4]);
-                                case 5 ->
-                                        imageView.setImage(GameWindowController.diceFaces[baseIndex + 5]);
-                                case 6 ->
-                                        imageView.setImage(GameWindowController.diceFaces[baseIndex + 6]);
-                                default ->
-                                        imageView.setImage(GameWindowController.diceFaces[0]);
+                                case 1 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 1]);
+                                case 2 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 2]);
+                                case 3 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 3]);
+                                case 4 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 4]);
+                                case 5 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 5]);
+                                case 6 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 6]);
+                                default -> imageView.setImage(GameWindowController.diceFaces[0]);
                             }
-                            ;
-
                             setText(null);
                             setGraphic(imageView);
                         }
-                    }
-                });
+                    //}
+                //});
             }
         });
         logger.info("Cell factory for DiceBox set");
@@ -286,17 +268,12 @@ public class GameWindowController implements Initializable {
             @Override
             public void updateItem(String entry, boolean empty) {
                 super.updateItem(entry, empty);
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (empty) {
-                            setText(null);
-                            setGraphic(null);
-                        } else {
-                            setText(entry);
-                        }
-                    }
-                });
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(entry);
+                }
             }
         });
 
@@ -444,6 +421,9 @@ public class GameWindowController implements Initializable {
         logger.info("Game Start initialized by GUI");
     }
 
+    /**
+     * This method prepares the gui for the game. It initiates the second tab.
+     */
     public void initGame() {
         clearInformationBox();
         leaveGameButton.setDisable(true);
@@ -479,13 +459,13 @@ public class GameWindowController implements Initializable {
         }
         //Clear information box before each turn
         clearInformationBox();
-        displayInformationText("It is " + userName + "'s turn. May the power be with them.");
+        /*displayInformationText("It is " + userName + "'s turn. May the power be with them.");
         switch (phase) {
             case "Main" -> displayInformationText("The phase is: " + phase + "\nThis is a normal round. SWAP and ROTATE actions cannot be played");
             case "ShiftSwap" -> displayInformationText("The phase is: " + phase + "\nIn this round only SWAP and ROTATE actions can be played.");
 
             default -> logger.debug("Invalid game phase received: " + phase);
-        }
+        }*/
         if (userName.equals(ownerUser) && phase.equals("Main")) {
             enableAllGameFields();
         } else if (userName.equals(ownerUser) && phase.equals("ShiftSwap")) {
@@ -534,10 +514,8 @@ public class GameWindowController implements Initializable {
      */
     @FXML
     public void endTurnAction(MouseEvent event) {
-        //TODO: adapt message if necessary
         ClientOutput.send(CommandsClientToServer.ENDT,  "ended turn");
         informationBox.getChildren().clear();
-        //displayInformationText("You ended your turn "); //TODO display everything through the logic!!!!!
         diceBox.refresh();
     }
 
@@ -558,19 +536,22 @@ public class GameWindowController implements Initializable {
      */
     public void rollActionSend(ActionEvent event){
         String saveDiceString = GameWindowHelper.diceStashedArrToString(diceStashedList);
+
+        logger.debug("Sending the dice to be saved: " + saveDiceString);
+
         //Saved dice are automatically transmitted before dice are rolled again
         //Count number of saved dice
-        int diceSavedCounter = 0;
-        logger.trace("diceSavedCountr: " + diceSavedCounter);
-        for (DiceGUImplementation dice : diceList){
+        //int diceSavedCounter = 0;
+        //logger.trace("diceSavedCountr: " + diceSavedCounter);
+        /*for (DiceGUImplementation dice : diceList){
             if (dice.getSavingStatus()){
                 diceSavedCounter++;
                 logger.trace("diceSavedCountr: " + diceSavedCounter);
 
             }
-        }
+        }*/
 
-        if (diceSavedCounter < 5) {
+        //if (diceSavedCounter < 5) {
             if (!saveDiceString.isEmpty()) {
                 logger.info("The following dices are selected to be saved: " + saveDiceString);
 
@@ -578,33 +559,33 @@ public class GameWindowController implements Initializable {
 
                 //Set dice to save
                 for (int i = 0; i < diceStashedList.length; i++) {
-                    if (!diceStashedList[i].isEmpty()) {
+                    /*if (!diceStashedList[i].isEmpty()) {
                         diceList.get(i).setSavingStatus(true);
                         diceList.get(i).setStashStatus(false);
-                        diceSavedCounter++;
-                        logger.trace("diceSavedCountr: " + diceSavedCounter);
+                        //diceSavedCounter++;
+                        //logger.trace("diceSavedCountr: " + diceSavedCounter);
 
-                    }
+                    }*/
+
                     //Reset values in arrays with stashed dice
                     diceStashedList[i] = "";
                 }
             } else {
                 logger.info("No dices are selected to be saved.");
-
                 ClientOutput.send(CommandsClientToServer.SAVE, "none");
-
             }
+
             //Pause for 100 ms
-            try {
+            /*try {
                 logger.trace("Pause for 100 ms");
                 TimeUnit.MILLISECONDS.sleep(100);
                 logger.trace("Pause over");
             } catch (InterruptedException e) {
                 logger.warn("Pause interrupted");
                 throw new RuntimeException(e);
-            }
-        }
-        if (rollCounter >= 2 || diceSavedCounter == 5) {
+            }*/
+        //}
+        /*if (rollCounter >= 2 || diceSavedCounter == 5) {
             rollButton.setDisable(true);
             entryEnterButton.setDisable(false);
         }
@@ -613,9 +594,23 @@ public class GameWindowController implements Initializable {
             ClientOutput.send(CommandsClientToServer.ROLL, "");
             rollCounter++;
             logger.trace("rollCounter: " + rollCounter);
-        }
+        }*/
 
         diceBox.refresh();
+    }
+
+    public void handleSavedDice(String savedDice) {
+        if (savedDice.equals("0 1 2 3 4 ")) {
+            rollButton.setDisable(true);
+            entryEnterButton.setDisable(false);
+            for (DiceGUImplementation dice : diceList) {
+                dice.setSavingStatus(true);
+            }
+            diceBox.refresh();
+            //TODO how to make all dice red??
+        } else {
+            ClientOutput.send(CommandsClientToServer.ROLL, "");
+        }
     }
 
 
@@ -734,9 +729,14 @@ public class GameWindowController implements Initializable {
         String name = entrySheetString.split(":")[0];
         String entries = entrySheetString.split(":")[1];
 
-        ObservableList<String> entryList = playerToEntrySheetMap.get(name);
-        entryList.clear();
-        entryList.addAll(entries.split(","));
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                ObservableList<String> entryList = playerToEntrySheetMap.get(name);
+                entryList.clear();
+                entryList.addAll(entries.split(","));
+            }
+        });
 
         for (ListView<String> listView : secondTabListViews) {
             listView.refresh();
