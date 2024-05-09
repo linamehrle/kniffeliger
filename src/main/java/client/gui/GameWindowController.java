@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -35,8 +34,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import org.apache.logging.log4j.Logger;
 import starter.Starter;
-
-//import static client.gui.GameWindowHelper.entryNames;
 
 /**
  * This is the Controller class for the Game window, i.e. the window in which the gameplay happens.
@@ -116,7 +113,6 @@ public class GameWindowController implements Initializable {
     // MediaPlayer for background music of game window
     private MediaPlayer gameMainThemePlayer;
     private String ownerUser;
-    int rollCounter = 0; //TODO we should not need this!!
 
     /**
      * This map saves all the player names and their according entry sheets as observable lists
@@ -478,8 +474,6 @@ public class GameWindowController implements Initializable {
         leaveLobbyButton.setDisable(true);
         startButton.setDisable(true);
         entryEnterButton.setDisable(true);
-        rollCounter = 0;
-        logger.trace("rollCounter: " + rollCounter);
     }
 
     /**
@@ -515,8 +509,19 @@ public class GameWindowController implements Initializable {
     @FXML
     public void endTurnAction(MouseEvent event) {
         ClientOutput.send(CommandsClientToServer.ENDT,  "ended turn");
-        informationBox.getChildren().clear();
-        diceBox.refresh();
+        logger.debug("send end of turn to server");
+    }
+
+    public void endTurn() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                informationBox.getChildren().clear();
+                diceBox.refresh();
+                endTurnButton.setDisable(true);
+                disableAllGameFields();
+            }
+        });
     }
 
 
@@ -607,7 +612,6 @@ public class GameWindowController implements Initializable {
                 dice.setSavingStatus(true);
             }
             diceBox.refresh();
-            //TODO how to make all dice red??
         } else {
             ClientOutput.send(CommandsClientToServer.ROLL, "");
         }
@@ -663,14 +667,14 @@ public class GameWindowController implements Initializable {
 
         //TODO: is that needed? YES! (setting the dice status solved the dice bug :) )
         //Save all dice on last roll
-        if (rollCounter == 3){
+        /*if (rollCounter == 3){
             logger.trace("rollCounter: " + rollCounter);
             ClientOutput.send(CommandsClientToServer.SAVE, "0 1 2 3 4");
 
             for (DiceGUImplementation dice : diceList) {
                 dice.setSavingStatus(true);
             }
-        }
+        }*/
 
     }
 
@@ -804,7 +808,8 @@ public class GameWindowController implements Initializable {
         String entry = entrySheet.getSelectionModel().getSelectedItem();
         if (entry != null){
             ClientOutput.send(CommandsClientToServer.ENTY,  entry);
-            displayInformationText("You selected: " + entry);
+            logger.debug("Send entry " + entry + " to the client");
+            //displayInformationText("You selected: " + entry);
         } else {
             displayInformationText("No valid entry field selected. Please select a valid entry field.");
         }

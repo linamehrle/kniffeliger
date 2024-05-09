@@ -320,6 +320,10 @@ public class Main extends Application {
     public static void communicateSave(String savedDice) {
         gameWindowController.handleSavedDice(savedDice);
     }
+
+    public static void endTurn() {
+        gameWindowController.endTurn();
+    }
 }
 
 

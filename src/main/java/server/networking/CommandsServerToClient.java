@@ -161,7 +161,12 @@ public enum CommandsServerToClient {
     /**
      * Communicates to the client, that the sent dice were saved successfully
      */
-    SAVE
+    SAVE,
+
+    /**
+     * Sends to the client that a turn has been endet successfully
+     */
+    ENDT
 
 
 }

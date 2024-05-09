@@ -121,6 +121,7 @@ public class ClientInputHelper implements Runnable {
                 logger.debug("Received command SAVE with message: " + input[1]);
                 Main.communicateSave(input[1]);
             }
+            case ENDT -> Main.endTurn();
             default -> logger.info("unknown command received from server " + message);
         }
     }

@@ -165,7 +165,12 @@ public class GameManager implements Runnable {
                                 // send dices to all
                                 Communication.broadcastToAll(CommandsServerToClient.ALDI, playerArraysList, rolledDice);
 
+                                if (allDiceSaved(allDice)) {
+                                    Communication.sendToPlayer(CommandsServerToClient.SAVE, currentPlayer, "0 1 2 3 4 ");
+                                }
+
                             } else {
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You can not roll at the moment!");
                                 logger.log(gameLogic, "Dices were not rolled.");
                             }
                             break;
@@ -203,6 +208,7 @@ public class GameManager implements Runnable {
                             logger.trace("Entered ENTY case");
 
                             if (entryMade == true) {
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You already made an entry");
                                 logger.info("ENTY case: player has already made an entry");
                                 break;
                             }
@@ -220,7 +226,7 @@ public class GameManager implements Runnable {
                                 boolean madeEntry = EntrySheet.entryValidation(currentEntrySheet, selectedEntry, allDice);
 
                                 if (madeEntry) {
-
+                                    entryMade = true;
                                     Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
                                     Communication.sendToPlayer(CommandsServerToClient.PONT, currentPlayer, String.valueOf(currentEntrySheet.getTotalPoints()));
 
@@ -232,8 +238,6 @@ public class GameManager implements Runnable {
                                     Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You can't choose this entry, please try again!");
                                     logger.debug("false enter action tried");
                                 }
-
-                                entryMade = true;
                             } else {
                                 logger.log(gameLogic, "Not all dices are selected to be saved.");
                             }
@@ -317,8 +321,10 @@ public class GameManager implements Runnable {
                             if (entryMade) {
                                 logger.log(gameLogic, "Ending turn (" + currentPlayer.getUsername() + ")");
                                 endTurn = true;
+                                Communication.sendToPlayer(CommandsServerToClient.ENDT, currentPlayer, "turn endet");
                             } else {
                                 logger.log(gameLogic, "No ending turn; no entry was made.");
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "Make an entry first");
                             }
                             break;
                         default:
