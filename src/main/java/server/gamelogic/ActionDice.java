@@ -1,4 +1,6 @@
 package server.gamelogic;
+import java.util.ArrayList;
+
 import org.apache.logging.log4j.Logger;
 import server.Player;
 import starter.Starter;
@@ -139,7 +141,7 @@ public class ActionDice {
     public static boolean shift(EntrySheet[] playersSheets){
         Player helper = playersSheets[0].getPlayer();
         for (int i = 0; i < playersSheets.length - 1; i++) {
-            playersSheets[i].setPlayer(playersSheets[i + 1].getPlayer());
+            playersSheets[i].setPlayer(playersSheets[i+1].getPlayer());
         }
         playersSheets[playersSheets.length - 1].setPlayer(helper);
         return true;

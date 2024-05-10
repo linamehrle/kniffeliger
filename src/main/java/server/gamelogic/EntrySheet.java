@@ -1,5 +1,6 @@
 package server.gamelogic;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -638,14 +639,14 @@ public class EntrySheet {
      * Getter for the boolean madeEntry
      * @return
      */
-    public boolean getEntryMade() {
+    public synchronized boolean getEntryMade() {
         return entryMade;
     }
 
     /**
      * Setter for the boolean madeEntry
      */
-    public void setEntryMade(boolean entryMade) {
+    public synchronized void setEntryMade(boolean entryMade) {
         this.entryMade = entryMade;
     }
 
