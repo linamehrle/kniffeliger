@@ -43,6 +43,9 @@ public class GameManager implements Runnable {
         allDice = new Dice[]{new Dice(), new Dice(), new Dice(), new Dice(), new Dice()};
     }
 
+    EntrySheet[] allEntrySheets;
+    Player[] players;
+
     @Override
     // starts the game thread
     public void run() {
@@ -66,6 +69,17 @@ public class GameManager implements Runnable {
             player.prepareForGame();
             Communication.sendToPlayer(CommandsServerToClient.STRG, player, "prepare the game start");
         }
+        // initializes entry sheets for each player and saves all in an array
+        players = new Player[playerArraysList.size()];
+        for (int i = 0; i < playerArraysList.size(); i++) {
+            players[i] = playerArraysList.get(i);
+        }
+        allEntrySheets = new EntrySheet[players.length];
+        for (int i = 0; i < players.length; i++) {
+            allEntrySheets[i] = new EntrySheet(players[i]);
+            //initiates all entry sheets in the gui
+            //Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, allEntrySheets[i].printEntrySheet());
+        }
     }
 
     /**
@@ -77,13 +91,13 @@ public class GameManager implements Runnable {
         logger.trace("starter()");
 
         // initializes entry sheets for each player and saves all in an array
-        Player[] players = new Player[playerArraysList.size()];
+        /*Player[] players = new Player[playerArraysList.size()];
         for (int i = 0; i < playerArraysList.size(); i++) {
             players[i] = playerArraysList.get(i);
         }
-        EntrySheet[] allEntrySheets = new EntrySheet[players.length];
+        EntrySheet[] allEntrySheets = new EntrySheet[players.length];*/
         for (int i = 0; i < players.length; i++) {
-            allEntrySheets[i] = new EntrySheet(players[i]);
+            //allEntrySheets[i] = new EntrySheet(players[i]);
             //initiates all entry sheets in the gui
             Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, allEntrySheets[i].printEntrySheet());
         }
@@ -115,7 +129,9 @@ public class GameManager implements Runnable {
                 // conditions to check if game needs to go on or stop; this includes:
                 // 1. if a cheat code has been played
                 // 2. if an entry has been made
-                boolean entryMade = false;
+                //boolean entryMade = false; is now saved in the entrySheet class, local variable lead to errors with the
+                // threads apparently
+                //currentEntrySheet.setEntryMade(false);
                 boolean endTurn = false;
 
                 // checks if player already started to because then stealing is not allowed anymore
@@ -132,10 +148,13 @@ public class GameManager implements Runnable {
 
                 logger.log(gameLogic, currentPlayer.getUsername() + "'s turn.");
 
-                while (!entryMade || !endTurn) {
+                while (!currentEntrySheet.getEntryMade() || !endTurn) {
+                    logger.debug("Entered first while loop with entryMade = " + currentEntrySheet.getEntryMade() + " and endTurn = " + endTurn);
                     // wait for input
                     wait();
+                    logger.debug("after wait: entryMade = " + currentEntrySheet.getEntryMade());
                     String[] inputArr = input.split("\\s+");
+                    logger.debug("after input.split: entryMade = " + currentEntrySheet.getEntryMade());
                     logger.log(gameLogic, "Input received: " + Arrays.toString(inputArr));
 
                     // check if input has more parameters
@@ -144,11 +163,12 @@ public class GameManager implements Runnable {
                         selectedEntry = inputArr[2];
                     }
 
+                    logger.debug("entering switch case with entryMade = " + currentEntrySheet.getEntryMade());
                     switch (inputArr[0]) {
                         case "ROLL":
                             logger.trace("Entered ROLL case");
 
-                            if (!entryMade && !allDiceSaved(allDice)) {
+                            if (!currentEntrySheet.getEntryMade() && !allDiceSaved(allDice)) {
                                 // if player did not steal yet then roll
                                 // set about to roll to true so player cannot steal anymore
                                 aboutToRoll = true;
@@ -206,8 +226,9 @@ public class GameManager implements Runnable {
                             break;
                         case "ENTY":
                             logger.trace("Entered ENTY case");
+                            logger.debug("ENTY case with entryMade = " + currentEntrySheet.getEntryMade());
 
-                            if (entryMade == true) {
+                            if (currentEntrySheet.getEntryMade()) {
                                 Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You already made an entry");
                                 logger.info("ENTY case: player has already made an entry");
                                 break;
@@ -226,7 +247,8 @@ public class GameManager implements Runnable {
                                 boolean madeEntry = EntrySheet.entryValidation(currentEntrySheet, selectedEntry, allDice);
 
                                 if (madeEntry) {
-                                    entryMade = true;
+                                    //entryMade = true;
+                                    currentEntrySheet.setEntryMade(true);
                                     Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
                                     Communication.sendToPlayer(CommandsServerToClient.PONT, currentPlayer, String.valueOf(currentEntrySheet.getTotalPoints()));
 
@@ -257,7 +279,8 @@ public class GameManager implements Runnable {
                                             EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).printEntrySheet());
 
                                     currentPlayer.decreaseActionDiceCount(ActionDiceEnum.STEAL);
-                                    entryMade = true;
+                                    //entryMade = true;
+                                    currentEntrySheet.setEntryMade(true);
                                 } else {
                                     Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "This is not a valid input, please try again!");
                                     logger.debug("false steal action tried");
@@ -318,7 +341,7 @@ public class GameManager implements Runnable {
                         case "ENDT":
                             logger.trace("Entered ENDT case");
 
-                            if (entryMade) {
+                            if (currentEntrySheet.getEntryMade()) {
                                 logger.log(gameLogic, "Ending turn (" + currentPlayer.getUsername() + ")");
                                 endTurn = true;
                                 Communication.sendToPlayer(CommandsServerToClient.ENDT, currentPlayer, "turn endet");
@@ -329,6 +352,7 @@ public class GameManager implements Runnable {
                             break;
                         default:
                             logger.trace("Entered unknown case: " + input);
+                            break;
                     }
                 }
                 // defreeze at and of turn
@@ -338,6 +362,7 @@ public class GameManager implements Runnable {
 
                 // reset all dice
                 resetDice();
+                currentEntrySheet.setEntryMade(false);
             }
 
             // shifting and swapping phase
@@ -699,7 +724,7 @@ public class GameManager implements Runnable {
         logger.info("Message from " + player.getUsername() + " with <" + input + "> received");
 
         // Only update input if the message comes from currentPlayer
-        if (player.equals(currentPlayer) && currentPlayer != null) {
+        if (currentPlayer != null && player.equals(currentPlayer)) {
             logger.info("Message from " + player.getUsername() + " accepted.");
             this.input = input;
             notify();

@@ -70,6 +70,7 @@ public class EntrySheet {
     private Entry[] entrySheet = new Entry[]{ones, twos, threes, fours, fives, sixes, threeOfAKind, fourOfAKind, fullHouse,
             smallStraight, largeStraight, kniffeliger, chance, pi};
 
+    private boolean entryMade = false;
 
     /**
      * Constructor that builds new entry sheet with unique player (that has unique username and id) which is handed to
@@ -631,6 +632,21 @@ public class EntrySheet {
             res = 31;
         }
         return res;
+    }
+
+    /**
+     * Getter for the boolean madeEntry
+     * @return
+     */
+    public boolean getEntryMade() {
+        return entryMade;
+    }
+
+    /**
+     * Setter for the boolean madeEntry
+     */
+    public void setEntryMade(boolean entryMade) {
+        this.entryMade = entryMade;
     }
 
 }
