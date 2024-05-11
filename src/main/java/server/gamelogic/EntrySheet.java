@@ -1,12 +1,8 @@
 package server.gamelogic;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
-
 import org.apache.logging.log4j.Logger;
 import server.Player;
-import server.networking.Communication;
 import starter.Starter;
 
 /**
@@ -70,8 +66,6 @@ public class EntrySheet {
     // entry sheet as an Entry-array
     private Entry[] entrySheet = new Entry[]{ones, twos, threes, fours, fives, sixes, threeOfAKind, fourOfAKind, fullHouse,
             smallStraight, largeStraight, kniffeliger, chance, pi};
-
-    private boolean entryMade = false;
 
     /**
      * Constructor that builds new entry sheet with unique player (that has unique username and id) which is handed to
@@ -634,20 +628,4 @@ public class EntrySheet {
         }
         return res;
     }
-
-    /**
-     * Getter for the boolean madeEntry
-     * @return
-     */
-    public synchronized boolean getEntryMade() {
-        return entryMade;
-    }
-
-    /**
-     * Setter for the boolean madeEntry
-     */
-    public synchronized void setEntryMade(boolean entryMade) {
-        this.entryMade = entryMade;
-    }
-
 }

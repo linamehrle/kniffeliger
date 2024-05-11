@@ -2,7 +2,6 @@ package server;
 
 import java.util.ArrayList;
 import org.apache.logging.log4j.Logger;
-import server.gamelogic.EntrySheet;
 import server.gamelogic.GameManager;
 import server.networking.CommandsServerToClient;
 import server.networking.Communication;
@@ -33,10 +32,6 @@ public class Lobby {
     private String status;
 
     private ArrayList<Player> playersInLobby = new ArrayList<>();
-
-    private EntrySheet[] entrySheets;
-
-    private EntrySheet currentEntrySheet;
     private Logger logger = Starter.getLogger();
 
     //private boolean gameIsRunning = false; needed?
@@ -95,8 +90,8 @@ public class Lobby {
             Communication.sendToPlayer(CommandsServerToClient.BRCT, player, "There are not enough players in this lobby to start a game");
         } else {
             // sets the player in the lobby
-            //gameManager.setPlayers(playersInLobby);
-            gameManager.prepareForStart(this);
+            gameManager.setPlayers(playersInLobby);
+            gameManager.prepareForStart();
         }
     }
 
@@ -122,7 +117,6 @@ public class Lobby {
             Communication.broadcastToAll(CommandsServerToClient.LOST, ListManager.getPlayerList(), name + " (ongoing game)");
 
             // starts the game
-            prepareForGame();
             Thread gameThread = new Thread(gameManager);
             gameThread.start();
         }
@@ -181,13 +175,6 @@ public class Lobby {
         return playersInLobbyAsString;
     }
 
-    public void prepareForGame() {
-        entrySheets = new EntrySheet[playersInLobby.size()];
-        for (int i = 0; i < playersInLobby.size(); i++) {
-            entrySheets[i] = new EntrySheet(playersInLobby.get(i));
-        }
-    }
-
     /**
      * Getter for the list of players that are in the lobby
      * @return
@@ -218,21 +205,5 @@ public class Lobby {
      */
     public GameManager getGameManager() {
         return gameManager;
-    }
-
-    public synchronized EntrySheet[] getEntrySheets() {
-        return entrySheets;
-    }
-
-    public synchronized void setEntrySheets(EntrySheet[] entrySheets) {
-        this.entrySheets = entrySheets;
-    }
-
-    public synchronized EntrySheet getCurrentEntrySheet() {
-        return currentEntrySheet;
-    }
-
-    public synchronized void setCurrentEntrySheet(EntrySheet currentEntrySheet) {
-        this.currentEntrySheet = currentEntrySheet;
     }
 }

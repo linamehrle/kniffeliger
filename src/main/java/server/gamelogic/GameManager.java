@@ -3,7 +3,6 @@ package server.gamelogic;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import server.HighScore;
-import server.Lobby;
 import server.Player;
 import server.networking.CommandsServerToClient;
 import server.networking.Communication;
@@ -29,15 +28,13 @@ public class GameManager implements Runnable {
     private Dice[] allDice;
 
     // list of all player in game/lobby
-    //private ArrayList<Player> playerArraysList;
+    private ArrayList<Player> playerArraysList;
 
     // logger
     private Logger logger = Starter.getLogger();
     private Level gameLogic = Level.getLevel("GAME_LOGIC");
 
-    //private Player currentPlayer;
-
-    private Lobby lobby;
+    private Player currentPlayer;
 
     /**
      * Game gets constructed; dices get initiated in constructor.
@@ -45,9 +42,6 @@ public class GameManager implements Runnable {
     public GameManager() {
         allDice = new Dice[]{new Dice(), new Dice(), new Dice(), new Dice(), new Dice()};
     }
-
-    //EntrySheet[] allEntrySheets;
-    //Player[] players;
 
     @Override
     // starts the game thread
@@ -65,25 +59,13 @@ public class GameManager implements Runnable {
      * #################################################################################################################
      */
 
-    public void prepareForStart(Lobby lobby) {
+    public void prepareForStart() {
         logger.info("Preparing for the game start");
-        this.lobby = lobby;
         //initializes the hashMap of action dices in the player and sets the boolean isInGame to true
-        for (Player player : lobby.getPlayersInLobby()) {
+        for (Player player : playerArraysList) {
             player.prepareForGame();
             Communication.sendToPlayer(CommandsServerToClient.STRG, player, "prepare the game start");
         }
-        // initializes entry sheets for each player and saves all in an array
-        /*players = new Player[playerArraysList.size()];
-        for (int i = 0; i < playerArraysList.size(); i++) {
-            players[i] = playerArraysList.get(i);
-        }
-        allEntrySheets = new EntrySheet[players.length];
-        for (int i = 0; i < players.length; i++) {
-            allEntrySheets[i] = new EntrySheet(players[i]);
-            //initiates all entry sheets in the gui
-            //Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, allEntrySheets[i].printEntrySheet());
-        }*/
     }
 
     /**
@@ -95,7 +77,7 @@ public class GameManager implements Runnable {
         logger.trace("starter()");
 
         // initializes entry sheets for each player and saves all in an array
-        /*Player[] players = new Player[playerArraysList.size()];
+        Player[] players = new Player[playerArraysList.size()];
         for (int i = 0; i < playerArraysList.size(); i++) {
             players[i] = playerArraysList.get(i);
         }
@@ -104,47 +86,26 @@ public class GameManager implements Runnable {
             allEntrySheets[i] = new EntrySheet(players[i]);
             //initiates all entry sheets in the gui
             Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, allEntrySheets[i].printEntrySheet());
-        }*/
-
-        //the initialization of the entry sheets is now in the lobby
-        for (Player player : lobby.getPlayersInLobby()) {
-            Communication.broadcastToAll(CommandsServerToClient.ENTY, lobby.getPlayersInLobby(),
-                    EntrySheet.getEntrySheetByName(lobby.getEntrySheets(), player.getUsername()).printEntrySheet());
         }
 
-
         // starting the game and sending all players in lobby a message
-        //logger.log(gameLogic, "Game lobby with " + playerArraysList + " started.");
+        logger.log(gameLogic, "Game lobby with " + playerArraysList + " started.");
 
-        Communication.broadcastToAll(CommandsServerToClient.BRCT, lobby.getPlayersInLobby(), "The game starts.");
-
-        // request to initialize clients
-        /*String playerList = "";
-        for (Player player : playerArraysList) {
-            playerList += player.getUsername() + " ";
-        }*/
-
-        //Communication.broadcastToAll(CommandsServerToClient.INES, playerArraysList, playerList);
+        Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "The game starts.");
 
         // starting 14 rounds
         for (int round = 0; round < 3; round++) {
             logger.log(gameLogic, "Round " + (round + 1) + " started");
 
             // loop through all the players
-            for (EntrySheet currentEntrySheet : lobby.getEntrySheets()) {
-                lobby.setCurrentEntrySheet(currentEntrySheet);
+            for (EntrySheet currentEntrySheet : allEntrySheets) {
                 // saves values of current entry sheet, so player and current action dice, so we can access it easily
-                //currentPlayer = currentEntrySheet.getPlayer();
-                logger.debug("NEW PLAYER: " + lobby.getCurrentEntrySheet().getPlayer());
-                //ActionDice[] currentActionDice = currentPlayer.getActionDice();
+                currentPlayer = currentEntrySheet.getPlayer();
 
                 // conditions to check if game needs to go on or stop; this includes:
                 // 1. if a cheat code has been played
                 // 2. if an entry has been made
-                //boolean entryMade = false; is now saved in the entrySheet class, local variable lead to errors with the
-                // threads apparently
-                //currentEntrySheet.setEntryMade(false);
-
+                boolean entryMade = false;
                 boolean endTurn = false;
 
                 // checks if player already started to because then stealing is not allowed anymore
@@ -155,18 +116,16 @@ public class GameManager implements Runnable {
                 String selectedEntry = "";
 
                 // notify players which turn is
-                Communication.broadcastToAll(CommandsServerToClient.STRT, lobby.getPlayersInLobby(),
-                        lobby.getCurrentEntrySheet().getUsername() + " Main");
-                Communication.broadcastToAll(CommandsServerToClient.BRCT, lobby.getPlayersInLobby(),
-                        lobby.getCurrentEntrySheet().getUsername() + "'s turn.");
+                Communication.broadcastToAll(CommandsServerToClient.STRT, playerArraysList,
+                        currentPlayer.getUsername() + " Main");
+                Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList,
+                        currentPlayer.getUsername() + "'s turn.");
                 Communication.sendToPlayer(CommandsServerToClient.BRCT,
-                        lobby.getCurrentEntrySheet().getPlayer(), "-- It's your turn!");
+                        currentPlayer, "-- It's your turn!");
 
-                logger.log(gameLogic, lobby.getCurrentEntrySheet().getUsername() + "'s turn.");
+                logger.log(gameLogic, currentPlayer.getUsername() + "'s turn.");
 
-                while (!lobby.getCurrentEntrySheet().getEntryMade() || !endTurn) {
-                    logger.debug("Entered first while loop with entryMade = " + lobby.getCurrentEntrySheet().getEntryMade() + " and endTurn = " + endTurn);
-                    logger.debug("The current entry sheets player is: " + lobby.getCurrentEntrySheet().getUsername());
+                while (!entryMade || !endTurn) {
                     // wait for input
                     wait();
                     String[] inputArr = input.split("\\s+");
@@ -182,7 +141,7 @@ public class GameManager implements Runnable {
                         case "ROLL":
                             logger.trace("Entered ROLL case");
 
-                            if (!lobby.getCurrentEntrySheet().getEntryMade() && !allDiceSaved(allDice)) {
+                            if (!entryMade && !allDiceSaved(allDice)) {
                                 // if player did not steal yet then roll
                                 // set about to roll to true so player cannot steal anymore
                                 aboutToRoll = true;
@@ -194,17 +153,17 @@ public class GameManager implements Runnable {
                                 logger.log(gameLogic, "Rolled: " + rolledDice);
 
                                 // send dices to current player
-                                Communication.sendToPlayer(CommandsServerToClient.ROLL, lobby.getCurrentEntrySheet().getPlayer(), rolledDice);
+                                Communication.sendToPlayer(CommandsServerToClient.ROLL, currentPlayer, rolledDice);
 
                                 // send dices to all
-                                Communication.broadcastToAll(CommandsServerToClient.ALDI, lobby.getPlayersInLobby(), rolledDice);
+                                Communication.broadcastToAll(CommandsServerToClient.ALDI, playerArraysList, rolledDice);
 
                                 if (allDiceSaved(allDice)) {
-                                    Communication.sendToPlayer(CommandsServerToClient.SAVE, lobby.getCurrentEntrySheet().getPlayer(), "0 1 2 3 4 ");
+                                    Communication.sendToPlayer(CommandsServerToClient.SAVE, currentPlayer, "0 1 2 3 4 ");
                                 }
 
                             } else {
-                                Communication.sendToPlayer(CommandsServerToClient.BRCT, lobby.getCurrentEntrySheet().getPlayer(), "You can not roll at the moment!");
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You can not roll at the moment!");
                                 logger.log(gameLogic, "Dices were not rolled.");
                             }
                             break;
@@ -235,136 +194,134 @@ public class GameManager implements Runnable {
                                     allSavedDice = allSavedDice + i + " ";
                                 }
                             }
-                            Communication.sendToPlayer(CommandsServerToClient.SAVE, lobby.getCurrentEntrySheet().getPlayer(), allSavedDice);
+                            Communication.sendToPlayer(CommandsServerToClient.SAVE, currentPlayer, allSavedDice);
 
                             break;
                         case "ENTY":
                             logger.trace("Entered ENTY case");
-                            logger.debug("The current entry sheets player is: " + lobby.getCurrentEntrySheet().getUsername());
+                            logger.debug("The current entry sheets player is: " + currentPlayer.getUsername());
 
-                            if (lobby.getCurrentEntrySheet().getEntryMade()) {
-                                Communication.sendToPlayer(CommandsServerToClient.BRCT, lobby.getCurrentEntrySheet().getPlayer(),
+                            if (entryMade) {
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer,
                                         "You already made an entry");
                                 logger.info("ENTY case: player has already made an entry");
                                 break;
                             }
 
                             if (allDiceSaved(allDice)) {
-                                logger.log(gameLogic, "All dices of " + lobby.getCurrentEntrySheet().getUsername() + " were saved.");
+                                logger.log(gameLogic, "All dices of " + currentPlayer.getUsername() + " were saved.");
 
                                 //Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "Select the entry to save dices to."); //TODO where to inform the player to choose an entry?
 
                                 selectedEntry = inputArr[1];
 
-                                logger.log(gameLogic, lobby.getCurrentEntrySheet().getUsername() + " chose " + selectedEntry);
+                                logger.log(gameLogic, currentPlayer.getUsername() + " chose " + selectedEntry);
 
                                 // validate entry
-                                boolean madeEntry = EntrySheet.entryValidation(lobby.getCurrentEntrySheet(), selectedEntry, allDice);
+                                boolean madeEntry = EntrySheet.entryValidation(currentEntrySheet, selectedEntry, allDice);
 
                                 if (madeEntry) {
-                                    //entryMade = true;
-                                    lobby.getCurrentEntrySheet().setEntryMade(true);
-                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, lobby.getPlayersInLobby(), lobby.getCurrentEntrySheet().printEntrySheet());
-                                    Communication.sendToPlayer(CommandsServerToClient.PONT, lobby.getCurrentEntrySheet().getPlayer(),
-                                            String.valueOf(lobby.getCurrentEntrySheet().getTotalPoints()));
+                                    entryMade = true;
+                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
+                                    Communication.sendToPlayer(CommandsServerToClient.PONT, currentPlayer,
+                                            String.valueOf(currentEntrySheet.getTotalPoints()));
 
-                                    logger.log(gameLogic, "Save entry " + selectedEntry + "(" + lobby.getCurrentEntrySheet().getEntryByName(selectedEntry).getValue() + ") of " + lobby.getCurrentEntrySheet().getPlayer().getUsername());
+                                    logger.log(gameLogic, "Save entry " + selectedEntry + "(" + currentEntrySheet.getEntryByName(selectedEntry).getValue() + ") of " + currentPlayer.getUsername());
 
                                     // adds action dice to player
-                                    addActionDice(allDice, lobby.getCurrentEntrySheet().getPlayer());
+                                    addActionDice(allDice, currentPlayer);
                                 } else {
-                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, lobby.getCurrentEntrySheet().getPlayer(), "You can't choose this entry, please try again!");
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You can't choose this entry, please try again!");
                                     logger.debug("false enter action tried");
                                 }
                             } else {
-                                Communication.sendToPlayer(CommandsServerToClient.BRCT, lobby.getCurrentEntrySheet().getPlayer(), "Save all your dice first");
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "Save all your dice first");
                                 logger.log(gameLogic, "Not all dices are selected to be saved.");
                             }
                             break;
                         case "STEA":
                             logger.trace("Entered STEA case");
 
-                            if (!aboutToRoll && lobby.getCurrentEntrySheet().getPlayer().getActionDiceCount(ActionDiceEnum.STEAL) > 0) {
+                            if (!aboutToRoll && currentPlayer.getActionDiceCount(ActionDiceEnum.STEAL) > 0) {
 
-                                boolean couldSteal = ActionDice.steal(lobby.getCurrentEntrySheet(), EntrySheet.getEntrySheetByName(lobby.getEntrySheets(), victimPlayerName), selectedEntry);
+                                boolean couldSteal = ActionDice.steal(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
 
                                 if (couldSteal) {
-                                    logger.log(gameLogic, lobby.getCurrentEntrySheet().getPlayer().getUsername() + " has stolen entry " + selectedEntry + " from " + victimPlayerName);
+                                    logger.log(gameLogic, currentPlayer.getUsername() + " has stolen entry " + selectedEntry + " from " + victimPlayerName);
 
-                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, lobby.getPlayersInLobby(), lobby.getCurrentEntrySheet().printEntrySheet());
-                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, lobby.getPlayersInLobby(),
-                                            EntrySheet.getEntrySheetByName(lobby.getEntrySheets(), victimPlayerName).printEntrySheet());
+                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
+                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList,
+                                            EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).printEntrySheet());
 
-                                    lobby.getCurrentEntrySheet().getPlayer().decreaseActionDiceCount(ActionDiceEnum.STEAL);
-                                    //entryMade = true;
-                                    lobby.getCurrentEntrySheet().setEntryMade(true);
+                                    currentPlayer.decreaseActionDiceCount(ActionDiceEnum.STEAL);
+                                    entryMade = true;
                                 } else {
-                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, lobby.getCurrentEntrySheet().getPlayer(), "This is not a valid input, please try again!");
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "This is not a valid input, please try again!");
                                     logger.debug("false steal action tried");
                                 }
 
                             } else {
-                                logger.log(gameLogic, "No steal: aboutToRoll=" + aboutToRoll + ", stealCount=" + lobby.getCurrentEntrySheet().getPlayer().getActionDiceCount(ActionDiceEnum.STEAL));
-                                Communication.sendToPlayer(CommandsServerToClient.BRCT, lobby.getCurrentEntrySheet().getPlayer(), "You don't have this action die!");
+                                logger.log(gameLogic, "No steal: aboutToRoll=" + aboutToRoll + ", stealCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.STEAL));
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT,currentPlayer, "You don't have this action die!");
                             }
                             break;
                         case "FRZE":
                             logger.trace("Entered FRZE case");
 
-                            if (lobby.getCurrentEntrySheet().getPlayer().getActionDiceCount(ActionDiceEnum.FREEZE) > 0) {
-                                boolean couldFreeze = ActionDice.freeze(lobby.getCurrentEntrySheet(), EntrySheet.getEntrySheetByName(lobby.getEntrySheets(), victimPlayerName), selectedEntry);
+                            if (currentPlayer.getActionDiceCount(ActionDiceEnum.FREEZE) > 0) {
+                                boolean couldFreeze = ActionDice.freeze(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
 
                                 if (couldFreeze) {
-                                    logger.log(gameLogic, lobby.getCurrentEntrySheet().getPlayer().getUsername() + " has frozen entry " + selectedEntry + " from " + victimPlayerName);
+                                    logger.log(gameLogic, currentPlayer.getUsername() + " has frozen entry " + selectedEntry + " from " + victimPlayerName);
 
                                     // send freeze state
-                                    Communication.sendToPlayer(CommandsServerToClient.FRZE, getPlayerByName(lobby.getPlayersInLobby(), victimPlayerName), "freeze:" + selectedEntry);
-                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, getPlayerByName(lobby.getPlayersInLobby(), victimPlayerName),
-                                            lobby.getCurrentEntrySheet().getPlayer().getUsername() + " has frozen your " + selectedEntry + "!");
+                                    Communication.sendToPlayer(CommandsServerToClient.FRZE, getPlayerByName(playerArraysList, victimPlayerName), "freeze:" + selectedEntry);
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, getPlayerByName(playerArraysList, victimPlayerName),
+                                            currentPlayer.getUsername() + " has frozen your " + selectedEntry + "!");
 
-                                    lobby.getCurrentEntrySheet().getPlayer().decreaseActionDiceCount(ActionDiceEnum.FREEZE);
+                                    currentPlayer.decreaseActionDiceCount(ActionDiceEnum.FREEZE);
                                 } else {
-                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, lobby.getCurrentEntrySheet().getPlayer(), "This is not a valid input, please try again!");
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "This is not a valid input, please try again!");
                                     logger.debug("false freeze action tried");
                                 }
                             } else {
-                                logger.log(gameLogic, "No freeze: freezeCount=" + lobby.getCurrentEntrySheet().getPlayer().getActionDiceCount(ActionDiceEnum.FREEZE));
-                                Communication.sendToPlayer(CommandsServerToClient.BRCT, lobby.getCurrentEntrySheet().getPlayer(), "You don't have this action die!");
+                                logger.log(gameLogic, "No freeze: freezeCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.FREEZE));
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You don't have this action die!");
                             }
                             break;
                         case "COUT":
                             logger.trace("Entered COUT case");
 
-                            if (lobby.getCurrentEntrySheet().getPlayer().getActionDiceCount(ActionDiceEnum.CROSSOUT) > 0) {
-                                boolean couldCrossOut = ActionDice.crossOut(lobby.getCurrentEntrySheet(), EntrySheet.getEntrySheetByName(lobby.getEntrySheets(), victimPlayerName), selectedEntry);
+                            if (currentPlayer.getActionDiceCount(ActionDiceEnum.CROSSOUT) > 0) {
+                                boolean couldCrossOut = ActionDice.crossOut(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
 
                                 if (couldCrossOut) {
-                                    logger.log(gameLogic, lobby.getCurrentEntrySheet().getPlayer() + " has crossed out entry " + selectedEntry + " from " + victimPlayerName);
+                                    logger.log(gameLogic, currentPlayer.getUsername() + " has crossed out entry " + selectedEntry + " from " + victimPlayerName);
 
-                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, lobby.getPlayersInLobby(), lobby.getCurrentEntrySheet().printEntrySheet());
-                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, lobby.getPlayersInLobby(),
-                                            EntrySheet.getEntrySheetByName(lobby.getEntrySheets(), victimPlayerName).printEntrySheet());
+                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
+                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList,
+                                            EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).printEntrySheet());
 
-                                    lobby.getCurrentEntrySheet().getPlayer().decreaseActionDiceCount(ActionDiceEnum.CROSSOUT);
+                                    currentPlayer.decreaseActionDiceCount(ActionDiceEnum.CROSSOUT);
                                 } else {
-                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, lobby.getCurrentEntrySheet().getPlayer(), "This is not a valid input, please try again!");
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "This is not a valid input, please try again!");
                                     logger.debug("false cross out action tried");
                                 }
                             } else {
-                                logger.log(gameLogic, "No cross out: crossOutCount=" + lobby.getCurrentEntrySheet().getPlayer().getActionDiceCount(ActionDiceEnum.CROSSOUT));
-                                Communication.sendToPlayer(CommandsServerToClient.BRCT, lobby.getCurrentEntrySheet().getPlayer(), "You don't have this action die!");
+                                logger.log(gameLogic, "No cross out: crossOutCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.CROSSOUT));
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You don't have this action die!");
                             }
                             break;
                         case "ENDT":
                             logger.trace("Entered ENDT case");
 
-                            if (lobby.getCurrentEntrySheet().getEntryMade()) {
-                                logger.log(gameLogic, "Ending turn (" + lobby.getCurrentEntrySheet().getPlayer().getUsername() + ")");
+                            if (entryMade) {
+                                logger.log(gameLogic, "Ending turn (" + currentPlayer.getUsername() + ")");
                                 endTurn = true;
-                                Communication.sendToPlayer(CommandsServerToClient.ENDT, lobby.getCurrentEntrySheet().getPlayer(), "turn endet");
+                                Communication.sendToPlayer(CommandsServerToClient.ENDT, currentPlayer, "turn endet");
                             } else {
                                 logger.log(gameLogic, "No ending turn; no entry was made.");
-                                Communication.sendToPlayer(CommandsServerToClient.BRCT, lobby.getCurrentEntrySheet().getPlayer(), "Make an entry first");
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "Make an entry first");
                             }
                             break;
                         default:
@@ -373,28 +330,26 @@ public class GameManager implements Runnable {
                     }
                 }
                 // defreeze at and of turn
-                lobby.getCurrentEntrySheet().defreeze();
-                Communication.sendToPlayer(CommandsServerToClient.FRZE, lobby.getCurrentEntrySheet().getPlayer(), "defreeze");
-                logger.log(gameLogic, "Defreeze all entries of " + lobby.getCurrentEntrySheet().getPlayer().getUsername());
+                currentEntrySheet.defreeze();
+                Communication.sendToPlayer(CommandsServerToClient.FRZE, currentPlayer, "defreeze");
+                logger.log(gameLogic, "Defreeze all entries of " +currentPlayer.getUsername());
 
                 // reset all dice
                 resetDice();
-                lobby.getCurrentEntrySheet().setEntryMade(false);
             }
 
             // shifting and swapping phase
             logger.log(gameLogic, "Shifting and Swapping phase started.");
 
-            for (EntrySheet currentEntrySheet : lobby.getEntrySheets()) {
-                lobby.setCurrentEntrySheet(currentEntrySheet);
+            for (EntrySheet currentEntrySheet : allEntrySheets) {
                 // saves values of current entry sheet, so player and current action dice, so we can access it easily
-                //lobby.getCurrentEntrySheet().getPlayer() = currentEntrySheet.getPlayer();
+                currentPlayer = currentEntrySheet.getPlayer();
 
                 // notify players which turn is
-                Communication.broadcastToAll(CommandsServerToClient.STRT, lobby.getPlayersInLobby(), lobby.getCurrentEntrySheet().getPlayer().getUsername() + " ShiftSwap");
-                Communication.sendToPlayer(CommandsServerToClient.BRCT, lobby.getCurrentEntrySheet().getPlayer(), "-- It's your turn!");
+                Communication.broadcastToAll(CommandsServerToClient.STRT, playerArraysList, currentPlayer.getUsername() + " ShiftSwap");
+                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "-- It's your turn!");
 
-                logger.log(gameLogic, lobby.getCurrentEntrySheet().getPlayer().getUsername() + "'s turn.");
+                logger.log(gameLogic, currentPlayer.getUsername() + "'s turn.");
 
                 // checks if player wants to shift or swap
                 boolean finishedSwapOrShift = false;
@@ -411,56 +366,56 @@ public class GameManager implements Runnable {
                         case "SHFT":
                             logger.trace("Entered SHFT case");
 
-                            if (lobby.getCurrentEntrySheet().getPlayer().getActionDiceCount(ActionDiceEnum.SHIFT) > 0) {
-                                ActionDice.shift(lobby.getEntrySheets());
+                            if (currentPlayer.getActionDiceCount(ActionDiceEnum.SHIFT) > 0) {
+                                ActionDice.shift(allEntrySheets);
 
-                                for (EntrySheet sheet : lobby.getEntrySheets()) {
-                                    Communication.broadcastToAll(CommandsServerToClient.BRCT, lobby.getPlayersInLobby(), sheet.printEntrySheet());
+                                for (EntrySheet sheet : allEntrySheets) {
+                                    Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, sheet.printEntrySheet());
                                     Communication.sendToPlayer(CommandsServerToClient.PONT, sheet.getPlayer(), String.valueOf(sheet.getTotalPoints()));
                                 }
 
                                 logger.log(gameLogic, "Shifting");
 
-                                lobby.getCurrentEntrySheet().getPlayer().decreaseActionDiceCount(ActionDiceEnum.SHIFT);
+                               currentPlayer.decreaseActionDiceCount(ActionDiceEnum.SHIFT);
                             } else {
-                                logger.log(gameLogic, "No shift: shiftCount=" + lobby.getCurrentEntrySheet().getPlayer().getActionDiceCount(ActionDiceEnum.SHIFT));
-                                Communication.sendToPlayer(CommandsServerToClient.BRCT, lobby.getCurrentEntrySheet().getPlayer(), "You don't have this action die!");
+                                logger.log(gameLogic, "No shift: shiftCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.SHIFT));
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You don't have this action die!");
                             }
                             break;
                         case "SWAP":
                             logger.trace("Entered SWAP case");
 
-                            if (lobby.getCurrentEntrySheet().getPlayer().getActionDiceCount(ActionDiceEnum.SWAP) > 0) {
-                                boolean couldSwap = ActionDice.swap(currentEntrySheet, EntrySheet.getEntrySheetByName(lobby.getEntrySheets(), inputArr[1]));
+                            if (currentPlayer.getActionDiceCount(ActionDiceEnum.SWAP) > 0) {
+                                boolean couldSwap = ActionDice.swap(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, inputArr[1]));
                                 if (couldSwap) {
 
                                     //Update the entry sheets
-                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, lobby.getPlayersInLobby(),
-                                            EntrySheet.getEntrySheetByName(lobby.getEntrySheets(), lobby.getCurrentEntrySheet().getPlayer().getUsername()).printEntrySheet());
-                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, lobby.getPlayersInLobby(),
-                                            EntrySheet.getEntrySheetByName(lobby.getEntrySheets(), inputArr[1]).printEntrySheet());
+                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList,
+                                            EntrySheet.getEntrySheetByName(allEntrySheets, currentPlayer.getUsername()).printEntrySheet());
+                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList,
+                                            EntrySheet.getEntrySheetByName(allEntrySheets, inputArr[1]).printEntrySheet());
 
                                     //update the points
-                                    Communication.sendToPlayer(CommandsServerToClient.PONT, lobby.getCurrentEntrySheet().getPlayer(),
-                                            String.valueOf(EntrySheet.getEntrySheetByName(lobby.getEntrySheets(), lobby.getCurrentEntrySheet().getPlayer().getUsername()).getTotalPoints()));
-                                    Communication.sendToPlayer(CommandsServerToClient.PONT, getPlayerByName(lobby.getPlayersInLobby(), inputArr[1]),
-                                            String.valueOf(EntrySheet.getEntrySheetByName(lobby.getEntrySheets(), inputArr[1]).getTotalPoints()));
+                                    Communication.sendToPlayer(CommandsServerToClient.PONT, currentPlayer,
+                                            String.valueOf(EntrySheet.getEntrySheetByName(allEntrySheets, currentPlayer.getUsername()).getTotalPoints()));
+                                    Communication.sendToPlayer(CommandsServerToClient.PONT, getPlayerByName(playerArraysList, inputArr[1]),
+                                            String.valueOf(EntrySheet.getEntrySheetByName(allEntrySheets, inputArr[1]).getTotalPoints()));
 
-                                    logger.log(gameLogic, "Swapping " + lobby.getCurrentEntrySheet().getPlayer().getUsername() + " <-> " + inputArr[1]);
+                                    logger.log(gameLogic, "Swapping " +currentPlayer.getUsername() + " <-> " + inputArr[1]);
 
-                                    lobby.getCurrentEntrySheet().getPlayer().decreaseActionDiceCount(ActionDiceEnum.SWAP);
+                                    currentPlayer.decreaseActionDiceCount(ActionDiceEnum.SWAP);
                                 } else {
-                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, lobby.getCurrentEntrySheet().getPlayer(), "This is not a valid input, please try again!");
+                                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "This is not a valid input, please try again!");
                                     logger.debug("false swap action tried");
                                 }
                             } else {
-                                Communication.sendToPlayer(CommandsServerToClient.BRCT, lobby.getCurrentEntrySheet().getPlayer(), "You don't have this action die!");
-                                logger.log(gameLogic, "No swap: swapCount=" + lobby.getCurrentEntrySheet().getPlayer().getActionDiceCount(ActionDiceEnum.SWAP));
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You don't have this action die!");
+                                logger.log(gameLogic, "No swap: swapCount=" + currentPlayer.getActionDiceCount(ActionDiceEnum.SWAP));
                             }
                             break;
                         case "ENDT":
                             logger.trace("Entered ENDT case of shift and swap");
-                            logger.log(gameLogic, "Ending turn (" + lobby.getCurrentEntrySheet().getPlayer().getUsername() + ")");
+                            logger.log(gameLogic, "Ending turn (" + currentPlayer.getUsername() + ")");
                             finishedSwapOrShift = true;
 
                             break;
@@ -471,26 +426,26 @@ public class GameManager implements Runnable {
         logger.log(gameLogic, "Game finished.");
 
         //==== RANKING
-        Player[] rankedPlayer = ranking(lobby.getEntrySheets());
+        Player[] rankedPlayer = ranking(allEntrySheets);
 
         String rankingMsg = "";
         for (int i = 0; i < rankedPlayer.length; i++) {
             rankingMsg = rankingMsg + rankedPlayer[i].getUsername() + " "
-                         + EntrySheet.getEntrySheetByName(lobby.getEntrySheets(), rankedPlayer[i].getUsername()).getTotalPoints() + ",";
+                         + EntrySheet.getEntrySheetByName(allEntrySheets, rankedPlayer[i].getUsername()).getTotalPoints() + ",";
         }
 
         logger.log(gameLogic, "Ranking: " + rankingMsg);
 
         // sends ranking to all players in lobby
-        Communication.broadcastToAll(CommandsServerToClient.RANK, lobby.getPlayersInLobby(), rankingMsg);
+        Communication.broadcastToAll(CommandsServerToClient.RANK, playerArraysList, rankingMsg);
 
         // send the scores to the high score class to possibly update the highscore
-        HighScore.updateHighScore(returnScoreAsString(lobby.getEntrySheets()));
+        HighScore.updateHighScore(returnScoreAsString(allEntrySheets));
         logger.trace("Calling updateHighScore() on HighScore");
 
         // TODO: should end the game but wtf is happening (only indicates if lobby is closed or open, does not end lobby)
         logger.trace("Calling gameEnded() on lobby");
-        lobby.gameEnded();
+        playerArraysList.get(1).getLobby().gameEnded();
     }
 
     /*
@@ -743,7 +698,7 @@ public class GameManager implements Runnable {
         logger.info("Message from " + player.getUsername() + " with <" + input + "> received");
 
         // Only update input if the message comes from currentPlayer
-        if (lobby.getCurrentEntrySheet().getPlayer() != null && player.equals(lobby.getCurrentEntrySheet().getPlayer())) {
+        if (currentPlayer != null && player.equals(currentPlayer)) {
             logger.info("Message from " + player.getUsername() + " accepted.");
             this.input = input;
             notify();
@@ -782,9 +737,9 @@ public class GameManager implements Runnable {
      *
      * @param players connected players
      */
-    /*public void setPlayers(ArrayList<Player> players) {
+    public void setPlayers(ArrayList<Player> players) {
         playerArraysList = players;
-    }*/
+    }
 
     /*
      * #################################################################################################################
