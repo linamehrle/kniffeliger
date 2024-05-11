@@ -86,6 +86,10 @@ public class GameManager implements Runnable {
             allEntrySheets[i] = new EntrySheet(players[i]);
             //initiates all entry sheets in the gui
             Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, allEntrySheets[i].printEntrySheet());
+            //the player has 0 points at the beginning of the game (needed for restart)
+            Communication.sendToPlayer(CommandsServerToClient.PONT, players[i], "0");
+            //the player has 0 action dice at the beginning of the game (needed for restart)
+            Communication.sendToPlayer(CommandsServerToClient.ACTN, players[i], players[i].getActionDiceAsString());
         }
 
         // starting the game and sending all players in lobby a message
@@ -94,7 +98,7 @@ public class GameManager implements Runnable {
         Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "The game starts.");
 
         // starting 14 rounds
-        for (int round = 0; round < 3; round++) {
+        for (int round = 0; round < 1; round++) {
             logger.log(gameLogic, "Round " + (round + 1) + " started");
 
             // loop through all the players
@@ -242,6 +246,16 @@ public class GameManager implements Runnable {
                         case "STEA":
                             logger.trace("Entered STEA case");
 
+                            if (entryMade) {
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You already made an entry");
+                                break;
+                            }
+
+                            if (aboutToRoll) {
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer,
+                                        "You cannot use the steal action once you started to roll your dice");
+                            }
+
                             if (!aboutToRoll && currentPlayer.getActionDiceCount(ActionDiceEnum.STEAL) > 0) {
 
                                 boolean couldSteal = ActionDice.steal(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
@@ -273,6 +287,13 @@ public class GameManager implements Runnable {
                             break;
                         case "FRZE":
                             logger.trace("Entered FRZE case");
+
+                            //you cannot freeze in the round before the last round or the last round or else the person cannot
+                            // make an entry at all and we have a problem
+                            if (round >= ROUNDS - 2) {
+                                Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You cannot freeze an entry in this round");
+                                break;
+                            }
 
                             if (currentPlayer.getActionDiceCount(ActionDiceEnum.FREEZE) > 0) {
                                 boolean couldFreeze = ActionDice.freeze(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName), selectedEntry);
@@ -383,7 +404,7 @@ public class GameManager implements Runnable {
                                 ActionDice.shift(allEntrySheets);
 
                                 for (EntrySheet sheet : allEntrySheets) {
-                                    Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, sheet.printEntrySheet());
+                                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, sheet.printEntrySheet());
                                     Communication.sendToPlayer(CommandsServerToClient.PONT, sheet.getPlayer(), String.valueOf(sheet.getTotalPoints()));
                                 }
 

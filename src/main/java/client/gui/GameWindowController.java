@@ -1066,6 +1066,7 @@ public class GameWindowController implements Initializable {
         disableAllGameFields();
         leaveGameButton.setDisable(false);
         leaveLobbyButton.setDisable(false);
+        startButton.setDisable(false);
     }
 
 
