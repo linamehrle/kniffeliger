@@ -271,9 +271,4 @@ public class LobbyWindowController implements Initializable {
 
         hasBeenInitialized = true;
     }
-
-
-
-    //TODO popUps when something is not done right?
-    //TODO show personalized welcome, ie integrate username
 }

@@ -125,8 +125,6 @@ public class GameWindowController implements Initializable {
      */
     private ArrayList<ListView<String>> secondTabListViews = new ArrayList<>();
 
-    private boolean secondTabInitiated = false;
-
 
 
     /**
@@ -170,33 +168,28 @@ public class GameWindowController implements Initializable {
             @Override
             public void updateItem(DiceGUImplementation dice, boolean empty) {
                 super.updateItem(dice, empty);
-                //Platform.runLater(new Runnable() {
-                    //@Override
-                    //public void run() {
-                        if (empty) {
-                            setText(null);
-                            setGraphic(null);
-                        } else {
-                            //set baseIndex, such that different symbols are loaded for saved and unsaved dice
-                            int baseIndex = 0;
-                            if (dice.getSavingStatus() || dice.getStashStatus()) {
-                                baseIndex = 6;
-                            }
-                            ImageView imageView = new ImageView();
-                            switch (dice.getDiceValue()) {
-                                case 1 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 1]);
-                                case 2 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 2]);
-                                case 3 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 3]);
-                                case 4 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 4]);
-                                case 5 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 5]);
-                                case 6 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 6]);
-                                default -> imageView.setImage(GameWindowController.diceFaces[0]);
-                            }
-                            setText(null);
-                            setGraphic(imageView);
-                        }
-                    //}
-                //});
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    //set baseIndex, such that different symbols are loaded for saved and unsaved dice
+                    int baseIndex = 0;
+                    if (dice.getSavingStatus() || dice.getStashStatus()) {
+                        baseIndex = 6;
+                    }
+                    ImageView imageView = new ImageView();
+                    switch (dice.getDiceValue()) {
+                        case 1 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 1]);
+                        case 2 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 2]);
+                        case 3 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 3]);
+                        case 4 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 4]);
+                        case 5 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 5]);
+                        case 6 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 6]);
+                        default -> imageView.setImage(GameWindowController.diceFaces[0]);
+                    }
+                    setText(null);
+                    setGraphic(imageView);
+                }
             }
         });
 
@@ -205,60 +198,31 @@ public class GameWindowController implements Initializable {
             @Override
             public void updateItem(DiceGUImplementation dice, boolean empty) {
                 super.updateItem(dice, empty);
-                //Platform.runLater(new Runnable() {
-                    //@Override
-                    //public void run() {
-                        if (empty) {
-                            setText(null);
-                            setGraphic(null);
-                        } else {
-                            //set baseIndex, such that different symbols are loaded for saved and unsaved dice
-                            int baseIndex = 0;
-                            if (dice.getSavingStatus() || dice.getStashStatus()) {
-                                baseIndex = 6;
-                            }
-                            ImageView imageView = new ImageView();
-                            switch (dice.getDiceValue()) {
-                                case 1 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 1]);
-                                case 2 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 2]);
-                                case 3 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 3]);
-                                case 4 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 4]);
-                                case 5 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 5]);
-                                case 6 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 6]);
-                                default -> imageView.setImage(GameWindowController.diceFaces[0]);
-                            }
-                            setText(null);
-                            setGraphic(imageView);
-                        }
-                    //}
-                //});
-            }
-        });
-        logger.info("Cell factory for DiceBox set");
-
-        /*entrySheet.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
-            @Override
-            public void updateItem(EntrySheetGUImplementation entry, boolean empty) {
-                super.updateItem(entry, empty);
                 if (empty) {
                     setText(null);
                     setGraphic(null);
                 } else {
-                    if (entry.getSavingStatus() ) {
-                        setDisable(true);
+                    //set baseIndex, such that different symbols are loaded for saved and unsaved dice
+                    int baseIndex = 0;
+                    if (dice.getSavingStatus() || dice.getStashStatus()) {
+                        baseIndex = 6;
                     }
-                    String title = entry.getIDname();
-                    String separation = GameWindowHelper.fillWithTabulators(title, 4);
-
-                    String scoreString = "";
-                    if (entry.getScore() != -1) {
-                        scoreString = String.valueOf(entry.getScore());
+                    ImageView imageView = new ImageView();
+                    switch (dice.getDiceValue()) {
+                        case 1 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 1]);
+                        case 2 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 2]);
+                        case 3 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 3]);
+                        case 4 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 4]);
+                        case 5 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 5]);
+                        case 6 -> imageView.setImage(GameWindowController.diceFaces[baseIndex + 6]);
+                        default -> imageView.setImage(GameWindowController.diceFaces[0]);
                     }
-                    setText(title + separation + scoreString);
-                    //setGraphic(imageView);
+                    setText(null);
+                    setGraphic(imageView);
                 }
             }
-        });*/
+        });
+        logger.info("Cell factory for DiceBox set");
 
         entrySheet.setCellFactory(param -> new ListCell<String>() {
             @Override
@@ -426,6 +390,10 @@ public class GameWindowController implements Initializable {
         initTabOther();
     }
 
+    /**
+     * Handles the mute action, i.e. mutes the music on demand
+     * @param event
+     */
     @FXML
     public void muteButtonAction(ActionEvent event) {
         if (muteButton.isSelected()){
@@ -455,13 +423,7 @@ public class GameWindowController implements Initializable {
         }
         //Clear information box before each turn
         clearInformationBox();
-        /*displayInformationText("It is " + userName + "'s turn. May the power be with them.");
-        switch (phase) {
-            case "Main" -> displayInformationText("The phase is: " + phase + "\nThis is a normal round. SWAP and ROTATE actions cannot be played");
-            case "ShiftSwap" -> displayInformationText("The phase is: " + phase + "\nIn this round only SWAP and ROTATE actions can be played.");
 
-            default -> logger.debug("Invalid game phase received: " + phase);
-        }*/
         if (userName.equals(ownerUser) && phase.equals("Main")) {
             enableAllGameFields();
         } else if (userName.equals(ownerUser) && phase.equals("ShiftSwap")) {
@@ -512,6 +474,9 @@ public class GameWindowController implements Initializable {
         logger.debug("send end of turn to server");
     }
 
+    /**
+     * Handles the end of a turn, the game buttons are disabled and dice reset
+     */
     public void endTurn() {
         Platform.runLater(new Runnable() {
             @Override
@@ -523,8 +488,6 @@ public class GameWindowController implements Initializable {
             }
         });
     }
-
-
 
 
     /**
@@ -544,66 +507,29 @@ public class GameWindowController implements Initializable {
 
         logger.debug("Sending the dice to be saved: " + saveDiceString);
 
-        //Saved dice are automatically transmitted before dice are rolled again
-        //Count number of saved dice
-        //int diceSavedCounter = 0;
-        //logger.trace("diceSavedCountr: " + diceSavedCounter);
-        /*for (DiceGUImplementation dice : diceList){
-            if (dice.getSavingStatus()){
-                diceSavedCounter++;
-                logger.trace("diceSavedCountr: " + diceSavedCounter);
+        if (!saveDiceString.isEmpty()) {
+            logger.info("The following dices are selected to be saved: " + saveDiceString);
 
+            ClientOutput.send(CommandsClientToServer.SAVE, saveDiceString);
+
+            //Set dice to save
+            for (int i = 0; i < diceStashedList.length; i++) {
+                //Reset values in arrays with stashed dice
+                diceStashedList[i] = "";
             }
-        }*/
-
-        //if (diceSavedCounter < 5) {
-            if (!saveDiceString.isEmpty()) {
-                logger.info("The following dices are selected to be saved: " + saveDiceString);
-
-                ClientOutput.send(CommandsClientToServer.SAVE, saveDiceString);
-
-                //Set dice to save
-                for (int i = 0; i < diceStashedList.length; i++) {
-                    /*if (!diceStashedList[i].isEmpty()) {
-                        diceList.get(i).setSavingStatus(true);
-                        diceList.get(i).setStashStatus(false);
-                        //diceSavedCounter++;
-                        //logger.trace("diceSavedCountr: " + diceSavedCounter);
-
-                    }*/
-
-                    //Reset values in arrays with stashed dice
-                    diceStashedList[i] = "";
-                }
-            } else {
-                logger.info("No dices are selected to be saved.");
-                ClientOutput.send(CommandsClientToServer.SAVE, "none");
-            }
-
-            //Pause for 100 ms
-            /*try {
-                logger.trace("Pause for 100 ms");
-                TimeUnit.MILLISECONDS.sleep(100);
-                logger.trace("Pause over");
-            } catch (InterruptedException e) {
-                logger.warn("Pause interrupted");
-                throw new RuntimeException(e);
-            }*/
-        //}
-        /*if (rollCounter >= 2 || diceSavedCounter == 5) {
-            rollButton.setDisable(true);
-            entryEnterButton.setDisable(false);
+        } else {
+            logger.info("No dices are selected to be saved.");
+            ClientOutput.send(CommandsClientToServer.SAVE, "none");
         }
-
-        if (rollCounter <= 2 ) {
-            ClientOutput.send(CommandsClientToServer.ROLL, "");
-            rollCounter++;
-            logger.trace("rollCounter: " + rollCounter);
-        }*/
 
         diceBox.refresh();
     }
 
+    /**
+     * Makes all dice red if the game logic saved the dice at the end of the third roll or send roll
+     * to the game logic if there has not been a third roll
+     * @param savedDice
+     */
     public void handleSavedDice(String savedDice) {
         if (savedDice.equals("0 1 2 3 4 ")) {
             rollButton.setDisable(true);
@@ -616,8 +542,6 @@ public class GameWindowController implements Initializable {
             ClientOutput.send(CommandsClientToServer.ROLL, "");
         }
     }
-
-
 
     /**
      * Event handler for clicking on dice pictures in GUI, constructed via FXML API
@@ -649,81 +573,13 @@ public class GameWindowController implements Initializable {
      */
     public void receiveRoll( ObservableList<DiceGUImplementation> diceListToUpdate, int[] diceValues) {
 
-        //index of dices in diceValues[]
-        //int i = 0;
         for (int i=0; i < diceListToUpdate.size() && i < diceValues.length; i++) {
             diceListToUpdate.get(i).setDiceValue(diceValues[i]);
-            //if (!dice.getSavingStatus() && i < diceValues.length){
-                //dice.setDiceValue(diceValues[i]);
-                //System.out.println(Arrays.toString(diceValues));
-                //i++;
-           // }
         }
 
-        //displayInformationText("ALEA IACTA EST! (the die is cast)");
-        //logger.info("send text to information window: ALEA IACTA EST");
         diceBox.refresh();
         diceBoxOther.refresh();
-
-        //TODO: is that needed? YES! (setting the dice status solved the dice bug :) )
-        //Save all dice on last roll
-        /*if (rollCounter == 3){
-            logger.trace("rollCounter: " + rollCounter);
-            ClientOutput.send(CommandsClientToServer.SAVE, "0 1 2 3 4");
-
-            for (DiceGUImplementation dice : diceList) {
-                dice.setSavingStatus(true);
-            }
-        }*/
-
     }
-
-
-    /**
-     * Method to receive ArrayList &lt; String[] &gt;  of updated entries (arbitrary length) from GameLogic
-     * and update ObservableList of primary EntrySheet
-     * @param listOfEntries
-     * ArrayList that contains entries as String arrays of size 2 with format {&lt; entry name &gt;, &lt; score &gt;}
-     */
-    /*public void receiveEntrySheet(ArrayList<String[]> listOfEntries) {
-        for (String[] elem: listOfEntries) {
-            //Check if string array has correct format: {&lt; entry name &gt;, &lt; score &gt;}
-            if (elem != null && elem.length == 2 && entrySheetNameIndexMap.get(elem[0])!= null) {
-                entryList.get(entrySheetNameIndexMap.get(elem[0])).setScore(Integer.parseInt(elem[1]));
-            } else {
-                logger.info("entry sheet cannot be updated due to invalid input format.");
-            }
-        }
-        entrySheet.refresh();
-    }*/
-
-    /**
-     * Method to receive ArrayList &lt; String[] &gt;  of updated entries (arbitrary length) from GameLogic
-     * and update ObservableList of entry sheet of respective user on tab 2
-     * //@param userName
-     * Name of user whose entry sheet is changed
-     * //@param listOfEntries
-     * ArrayList of changed entries
-     */
-    /*public void updateEntrySheetTab2 (String userName, ArrayList<String[]> listOfEntries) {
-        for (PlayerGUImplementation player : playersWithSheets){
-            if ( player != null && player.getUsername().equals(userName) ) {
-                for (String[] elem : listOfEntries) {
-                    if (elem != null && elem.length == 2) {
-                        if (player.getEntrySheet() != null && player.getEntrySheetListView() != null) {
-                            player.getEntrySheet().get(entrySheetNameIndexMap.get(elem[0])).setScore(Integer.parseInt(elem[1]));
-                            player.getEntrySheetListView().refresh();
-                        }
-                    } else{
-                        logger.info("entry sheet cannot be updated due to invalid input format.");
-
-                    }
-                }
-
-            }
-
-        }
-    }*/
 
     /**
      * Updates the listView for the entry sheet of a given player in the gui
@@ -790,8 +646,6 @@ public class GameWindowController implements Initializable {
     }
 
 
-
-
     /*
     Entry sheet controls
      */
@@ -823,66 +677,7 @@ public class GameWindowController implements Initializable {
      * 3. new ListView representing entry sheet is created with ObservableList as items
      * 4. ListView is added to Hbox hBoxEntries on tab 2
      */
-    /*public void initTabOther() {
-        clearInformationBox();
-
-        if (playersInLobby != null ) {
-            for (int i = 0; i < playersInLobby.size() && i < playersWithSheets.length; i++) {
-                playersWithSheets[i] = new PlayerGUImplementation(playersInLobby.get(i));
-
-                ListView<EntrySheetGUImplementation> otherPlayerSheetListView = new ListView<>();
-                otherPlayerSheetListView.setItems(playersWithSheets[i].getEntrySheet());
-                otherPlayerSheetListView.setCellFactory(param -> new ListCell<EntrySheetGUImplementation>() {
-                    @Override
-                    public void updateItem(EntrySheetGUImplementation entry, boolean empty) {
-                        super.updateItem(entry, empty);
-                        if (empty) {
-                            setText(null);
-                            setGraphic(null);
-                        } else {
-                            if (entry.getSavingStatus()) {
-                                setDisable(true);
-                            }
-                            String title = entry.getIDname();
-                            String separation = GameWindowHelper.fillWithTabulators(title, 4);
-
-                            setText(title + separation + entry.getScore());
-                            //setGraphic(imageView);
-                        }
-                    }
-                });
-                playersWithSheets[i].setEntrySheetListView(otherPlayerSheetListView);
-
-                String username = playersWithSheets[i].getUsername();
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        VBox playerVBox = new VBox();
-                        TextFlow playerTitle = new TextFlow();
-                        playerTitle.getChildren().add(new Text(username));
-                        playerVBox.getChildren().add(playerTitle);
-                        playerVBox.getChildren().add(otherPlayerSheetListView);
-                        hBoxEntries.getChildren().add(playerVBox);
-                    }
-                });
-            }
-        }
-        displayInformationText(" \uD83C\uDFC1 LET THE GAME BEGIN \uD83C\uDFC1");
-        logger.info("second tab initialized");
-    }*/
-
-    /**
-     * Method to initialize second tab:
-     * Iterates through playersInLobby list and creates for each player in list new instance of PlayerGUImplementation
-     * 1. userName is set to the userName in playersInLobby list
-     * 2. new ObservableList with entries is created
-     * 3. new ListView representing entry sheet is created with ObservableList as items
-     * 4. ListView is added to Hbox hBoxEntries on tab 2
-     */
     public void initTabOther() {
-        //clearInformationBox();
-
         logger.info("initiating the second tab now");
 
         if (playersInLobby != null ) {
@@ -927,7 +722,6 @@ public class GameWindowController implements Initializable {
             }
         }
         logger.info("second tab initialized");
-        secondTabInitiated = true;
         ClientOutput.send(CommandsClientToServer.STRG, "lets start the game :)");
     }
 
@@ -965,91 +759,10 @@ public class GameWindowController implements Initializable {
 
     }
 
-    /*
-    Dice actions
+    /**
+     * Sets the own username for the gui
+     * @param ownUserName
      */
-    /*public void shiftEntrySheets (String playerlist) {
-        String[] playerArray = playerlist.split("\\s+");      // LINA DOM RI
-        ArrayList<EntrySheetGUImplementation> sheetPlayer1TMP = null;
-        ArrayList<EntrySheetGUImplementation> sheetPlayer2TMP = null;
-        ArrayList<ArrayList<EntrySheetGUImplementation>> entrySheetsInOrder = new ArrayList<>();
-
-        // iterate over player names
-        for (int i = 0; i < playerArray.length; i++) {
-            for (PlayerGUImplementation player : playersWithSheets) {
-                if (player != null && player.getUsername().equals(playerArray[i])) {
-                    entrySheetsInOrder.add(observableListToArrayList(player.getEntrySheet()));
-                }
-            }
-        }
-
-        for (int i = 0; i < entrySheetsInOrder.size(); i++) {
-            PlayerGUImplementation player = playersWithSheets[i];
-            if ( player !=null && player.getUsername().equals(playerArray[i])){
-                int moduloIndex = (i+1) %  playersWithSheets.length;
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        player.getEntrySheet().clear();
-                        player.getEntrySheet().addAll(entrySheetsInOrder.get( moduloIndex));
-                        //player.getEntrySheetListView().setItems(player.getEntrySheet());
-                        player.getEntrySheetListView().refresh();
-                    }
-                });
-            }
-        }
-    }
-
-
-    public void swapEntrySheets(String userName1, String userName2){
-
-        ArrayList<EntrySheetGUImplementation> temp1 = null;
-        ArrayList<EntrySheetGUImplementation> temp2 = null;
-        for (PlayerGUImplementation player : playersWithSheets) {
-            if (player != null && player.getUsername().equals(userName1)) {
-
-                temp1 = observableListToArrayList(player.getEntrySheet());
-            }
-            if (player != null && player.getUsername().equals(userName2)) {
-
-                temp2 = observableListToArrayList(player.getEntrySheet());
-            }
-        }
-        for (PlayerGUImplementation player : playersWithSheets) {
-            if (player != null && player.getUsername().equals(userName1) && temp2 != null) {
-                ArrayList<EntrySheetGUImplementation> finalTemp2 = temp2;
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        player.getEntrySheet().clear();
-                        player.getEntrySheet().addAll(finalTemp2);
-                        //player.getEntrySheetListView().setItems(player.getEntrySheet());
-                        player.getEntrySheetListView().refresh();
-                    }
-                });
-
-            }
-            if (player != null && player.getUsername().equals(userName2) && temp1 != null) {
-                ArrayList<EntrySheetGUImplementation> finalTemp1 = temp1;
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        player.getEntrySheet().clear();
-                        player.getEntrySheet().addAll(finalTemp1);
-                        //player.getEntrySheetListView().setItems(player.getEntrySheet());
-                        player.getEntrySheetListView().refresh();
-                    }
-                });
-            }
-        }
-    }
-
-    private ArrayList<EntrySheetGUImplementation> observableListToArrayList (ObservableList<EntrySheetGUImplementation> observableEntries){
-        ArrayList<EntrySheetGUImplementation> arrayListOfEntries = new ArrayList<>();
-        arrayListOfEntries.addAll(observableEntries);
-        return arrayListOfEntries;
-    }*/
-
     public void setOwnUser(String ownUserName) {
         this.ownerUser = ownUserName;
 
@@ -1062,6 +775,9 @@ public class GameWindowController implements Initializable {
 
     }
 
+    /**
+     * Handles the end of the game, game buttons are disabled and the start, leave lobby and leave game buttons are enabled
+     */
     public void endGame() {
         disableAllGameFields();
         leaveGameButton.setDisable(false);

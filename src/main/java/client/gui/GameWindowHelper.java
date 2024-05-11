@@ -17,12 +17,6 @@ import java.util.stream.IntStream;
  */
 public class GameWindowHelper {
 
-    //Name of entries, is used to initialize EntrySheets
-    /*public static final String[] entryNames = {"ones", "twos", "threes", "fours", "fives", "sixes",
-            "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight", "largeStraight",
-            "kniffeliger", "chance", "pi"};*/
-
-
     /* #################################################################################################################
 
     Image loading and processing methods
@@ -59,9 +53,6 @@ public class GameWindowHelper {
         }
         return new Image(String.valueOf(GameWindowController.class.getResource("/images/dice-" + saved + diceNumber  + ".png")), 64, 63.2, true, false);
     }
-
-
-
 
     /**
      * Method to convert array of String containing indices of saved dices to String suitable to send to gamelogic
@@ -116,47 +107,6 @@ public class GameWindowHelper {
     public static AudioClip loadSoundEffect(String fileName) throws FileNotFoundException {
         return new AudioClip(Objects.requireNonNull(GameWindowController.class.getResource("/audio/" + fileName)).toExternalForm());
     }
-
-    /* #################################################################################################################
-
-    Initialization and Creation of Game Elements
-
-     ################################################################################################################ */
-
-    /**
-     * Method create HashMap that has names of entries (e.g. "ones", "FourOfAKind" ...) as key and integer enumeration as values
-     * used to get indices of entries in ObservableList representing entry sheet
-     * @return HashMap of entry name - integer pairs
-     */
-    /*public static HashMap<String, Integer> makeEntryToIntMap () {
-        HashMap<String, Integer> entrySheetNameIndexMap = new HashMap<>();
-        for (int k = 0; k < entryNames.length; k++){
-            //Begin ID number of entries at 1, such that ones = 1, twos = 2 etc.
-
-            entrySheetNameIndexMap.put(entryNames[k], k);
-        }
-
-        return entrySheetNameIndexMap;
-    }*/
-
-    /**
-     * Method to construct elements of entry sheet
-     * @return Observable list of entries in entry sheet (objects of EntrySheetGUImplementation)
-     */
-    /*public static ObservableList<EntrySheetGUImplementation> makeEntrySheet(){
-        String[] entryNames = GameWindowHelper.entryNames;
-        EntrySheetGUImplementation[] entryElements = new EntrySheetGUImplementation[entryNames.length];
-        int k = 0;
-        for (String name : entryNames){
-            //Begin ID number of entries at 1, such that ones = 1, twos = 2 etc.
-            entryElements[k] = new EntrySheetGUImplementation(k+1, name);
-            k++;
-        }
-        return FXCollections.observableArrayList(entryElements);
-    }*/
-
-
-
 
 
     /* #################################################################################################################

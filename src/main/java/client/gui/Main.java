@@ -10,8 +10,6 @@ import client.networking.CommandsClientToServer;
 import org.apache.logging.log4j.Logger;
 import starter.Starter;
 
-import java.util.ArrayList;
-
 /**
  * This is the main class for the gui, it handles the start and communication from the network to the gui.
  */
@@ -100,14 +98,26 @@ public class Main extends Application {
         Main.lobbyWindowController = lobbyWindowController;
     }
 
+    /**
+     * Getter for the lobby window controller
+     * @return
+     */
     public static LobbyWindowController getLobbyWindowController() {
         return lobbyWindowController;
     }
 
+    /**
+     * Setter for the game window controller
+     * @param controller
+     */
     public static void setGameWindowController(GameWindowController controller) {
         Main.gameWindowController = controller;
     }
 
+    /**
+     * Getter for the game window controller
+     * @return
+     */
     public static GameWindowController getGameWindowController() {
         return gameWindowController;
     }
@@ -154,42 +164,22 @@ public class Main extends Application {
         gameWindowController.receiveRoll(gameWindowController.diceList, diceValueArray);
     }
 
+    /**
+     * Sends a list of dice to the game window to update in the second tab
+     * @param diceValues
+     */
     public static void updateOtherDiceBox(String diceValues){
         int[] diceValueArray = parseIntArray(diceValues);
         Main.gameWindowController.receiveRoll(gameWindowController.diceListOther, diceValueArray);
     }
 
+    /**
+     * Send a new entry sheet to the game window to dispaly
+     * @param entrySheetString
+     */
     public static void updateEntrySheet (String entrySheetString) {
-        //First split results at spaces giving entryFieldName:score
-        /*String[] nameValueStrings = entrySheetString.split(" ");
-        ArrayList<String[]> listOfEntries = new ArrayList<>();
-        for (String elem : nameValueStrings){
-            //Split at : giving arrays containing {entryFieldName, score}
-            String[] nameValuePairs = elem.split(":");
-            listOfEntries.add(nameValuePairs);
-        }
-        Main.gameWindowController.receiveEntrySheet(listOfEntries);*/
-
         gameWindowController.updateEntrySheet(entrySheetString);
     }
-
-    /*public static void updateOtherEntrySheets (String entrySheetString) {
-        //First split results at spaces giving entryFieldName:score
-        String[] nameValueStrings = entrySheetString.split(" ");
-        String userName = nameValueStrings[0];
-        ArrayList<String[]> listOfEntries = new ArrayList<>();
-
-        for (int i=1; i < nameValueStrings.length; i++){
-            //Split at : giving arrays containing {entryFieldName, score}
-            String[] nameValuePairs = nameValueStrings[i].split(":");
-            listOfEntries.add(nameValuePairs);
-        }
-        Main.gameWindowController.updateEntrySheetTab2(userName, listOfEntries);
-    }*/
-
-    /*public static void sendInformationTextToGUI(String informationText) {
-        Main.gameWindowController.displayInformationText(informationText);
-    }*/
 
     /**
      * Sends a new lobby status to the gui to update the list
@@ -199,7 +189,6 @@ public class Main extends Application {
         Main.lobbyWindowController.updateLobbyStatus(lobby);
     }
 
-    //Put this in a separate file with helper functions?
     /**
      * Helper function to convert dice values received as string to array
      * @param input
@@ -256,6 +245,10 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Communicates to the gui who's turn it is and which turn it is
+     * @param usernameAndPhase
+     */
     public static void changeTurn(String usernameAndPhase) {
         String[] userPhaseSplit = usernameAndPhase.split(" ");
 
@@ -279,28 +272,26 @@ public class Main extends Application {
         ClientOutput.send(CommandsClientToServer.QUIT, "leaving now");
     }
 
-
-    /*public static void swapEntrySheets(String twoUsernames) {
-        String[] playersSwapped = twoUsernames.split(" ");
-
-        if (playersSwapped.length == 2){
-            gameWindowController.swapEntrySheets(playersSwapped[0], playersSwapped[1]);
-        }
-    }*/
-
+    /**
+     * Communicates the own username to the gui
+     * @param ownUserName
+     */
     public static void sendOwnNameToGUI(String ownUserName){
         gameWindowController.setOwnUser(ownUserName);
 
     }
 
-    /*public static void shiftEntrySheets(String playerList) {
-        gameWindowController.shiftEntrySheets(playerList);
-    }*/
-
+    /**
+     * Communicated the end of the game to the game window
+     */
     public static void sendEndOfGame() {
         gameWindowController.endGame();
     }
 
+    /**
+     * Sends the updated score to the game window
+     * @param points
+     */
     public static void updateTotalScore(String points) {
         gameWindowController.updateTotalPoints(points);
     }
@@ -317,10 +308,17 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Communicates the saved dice to the game window
+     * @param savedDice
+     */
     public static void communicateSave(String savedDice) {
         gameWindowController.handleSavedDice(savedDice);
     }
 
+    /**
+     * Communicates the end of turn to the game window
+     */
     public static void endTurn() {
         gameWindowController.endTurn();
     }
