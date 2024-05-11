@@ -249,9 +249,15 @@ public class GameManager implements Runnable {
                                 if (couldSteal) {
                                     logger.log(gameLogic, currentPlayer.getUsername() + " has stolen entry " + selectedEntry + " from " + victimPlayerName);
 
+                                    //Communicates the new entry sheets
                                     Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
                                     Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList,
                                             EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).printEntrySheet());
+
+                                    //Communicates the new Points
+                                    Communication.sendToPlayer(CommandsServerToClient.PONT, currentPlayer, String.valueOf(currentEntrySheet.getTotalPoints()));
+                                    Communication.sendToPlayer(CommandsServerToClient.PONT, getPlayerByName(playerArraysList, victimPlayerName),
+                                            String.valueOf(EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getTotalPoints()));
 
                                     currentPlayer.decreaseActionDiceCount(ActionDiceEnum.STEAL);
                                     entryMade = true;
@@ -298,9 +304,15 @@ public class GameManager implements Runnable {
                                 if (couldCrossOut) {
                                     logger.log(gameLogic, currentPlayer.getUsername() + " has crossed out entry " + selectedEntry + " from " + victimPlayerName);
 
+                                    //Communicates the new entry sheets
                                     Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
                                     Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList,
                                             EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).printEntrySheet());
+
+                                    //Communicates the new Points
+                                    Communication.sendToPlayer(CommandsServerToClient.PONT, currentPlayer, String.valueOf(currentEntrySheet.getTotalPoints()));
+                                    Communication.sendToPlayer(CommandsServerToClient.PONT, getPlayerByName(playerArraysList, victimPlayerName),
+                                            String.valueOf(EntrySheet.getEntrySheetByName(allEntrySheets, victimPlayerName).getTotalPoints()));
 
                                     currentPlayer.decreaseActionDiceCount(ActionDiceEnum.CROSSOUT);
                                 } else {
@@ -341,9 +353,10 @@ public class GameManager implements Runnable {
             // shifting and swapping phase
             logger.log(gameLogic, "Shifting and Swapping phase started.");
 
-            for (EntrySheet currentEntrySheet : allEntrySheets) {
+            for (Player player : playerArraysList) {
+                currentPlayer = player;
                 // saves values of current entry sheet, so player and current action dice, so we can access it easily
-                currentPlayer = currentEntrySheet.getPlayer();
+                EntrySheet currentEntrySheet = EntrySheet.getEntrySheetByName(allEntrySheets, currentPlayer.getUsername());
 
                 // notify players which turn is
                 Communication.broadcastToAll(CommandsServerToClient.STRT, playerArraysList, currentPlayer.getUsername() + " ShiftSwap");
