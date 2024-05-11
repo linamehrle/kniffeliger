@@ -259,7 +259,7 @@ public class Main extends Application {
     public static void changeTurn(String usernameAndPhase) {
         String[] userPhaseSplit = usernameAndPhase.split(" ");
 
-        if ( userPhaseSplit.length >= 2) {
+        if (userPhaseSplit.length >= 2) {
             gameWindowController.initiateTurn(userPhaseSplit[0], userPhaseSplit[1]);
         }
 

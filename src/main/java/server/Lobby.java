@@ -108,6 +108,11 @@ public class Lobby {
     public void startGame(Player player) {
         logger.debug("TRYING TO START GAME");
 
+        if (status.equals("ongoing game")) {
+            logger.info("Game is already running");
+            return;
+        }
+
         if (!playersInLobby.contains(player)) {
             Communication.sendToPlayer(CommandsServerToClient.BRCT, player, "You are not in this lobby, please enter before starting a game!");
         } else if (numbOfPlayers < 2) {

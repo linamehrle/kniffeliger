@@ -169,8 +169,6 @@ public class GameManager implements Runnable {
                     logger.debug("The current entry sheets player is: " + lobby.getCurrentEntrySheet().getUsername());
                     // wait for input
                     wait();
-                    logger.debug("after wait: current entrys player is " + lobby.getCurrentEntrySheet().getUsername());
-                    logger.debug("after wait(): entryMade = " + lobby.getCurrentEntrySheet().getEntryMade());
                     String[] inputArr = input.split("\\s+");
                     logger.log(gameLogic, "Input received: " + Arrays.toString(inputArr));
 
@@ -388,6 +386,7 @@ public class GameManager implements Runnable {
             logger.log(gameLogic, "Shifting and Swapping phase started.");
 
             for (EntrySheet currentEntrySheet : lobby.getEntrySheets()) {
+                lobby.setCurrentEntrySheet(currentEntrySheet);
                 // saves values of current entry sheet, so player and current action dice, so we can access it easily
                 //lobby.getCurrentEntrySheet().getPlayer() = currentEntrySheet.getPlayer();
 
@@ -401,6 +400,7 @@ public class GameManager implements Runnable {
                 boolean finishedSwapOrShift = false;
 
                 while (!finishedSwapOrShift) {
+                    logger.debug("Entered while loop for shift and swap");
                     // wait for input
                     wait();
                     String[] inputArr = input.split("\\s+");
@@ -459,7 +459,7 @@ public class GameManager implements Runnable {
                             }
                             break;
                         case "ENDT":
-                            logger.trace("Entered ENDT case");
+                            logger.trace("Entered ENDT case of shift and swap");
                             logger.log(gameLogic, "Ending turn (" + lobby.getCurrentEntrySheet().getPlayer().getUsername() + ")");
                             finishedSwapOrShift = true;
 
