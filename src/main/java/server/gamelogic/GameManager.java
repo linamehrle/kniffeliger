@@ -161,6 +161,7 @@ public class GameManager implements Runnable {
 
                                 // send dices to all
                                 Communication.broadcastToAll(CommandsServerToClient.ALDI, playerArraysList, rolledDice);
+                                Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "ALEA IACTA EST! (the die is cast)");
 
                                 if (allDiceSaved(allDice)) {
                                     Communication.sendToPlayer(CommandsServerToClient.SAVE, currentPlayer, "0 1 2 3 4 ");
@@ -403,6 +404,9 @@ public class GameManager implements Runnable {
                             if (currentPlayer.getActionDiceCount(ActionDiceEnum.SHIFT) > 0) {
                                 ActionDice.shift(allEntrySheets);
 
+                                //current entry sheet has to be updated since it changed
+                                currentEntrySheet = EntrySheet.getEntrySheetByName(allEntrySheets, currentPlayer.getUsername());
+
                                 for (EntrySheet sheet : allEntrySheets) {
                                     Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, sheet.printEntrySheet());
                                     Communication.sendToPlayer(CommandsServerToClient.PONT, sheet.getPlayer(), String.valueOf(sheet.getTotalPoints()));
@@ -422,6 +426,8 @@ public class GameManager implements Runnable {
                             if (currentPlayer.getActionDiceCount(ActionDiceEnum.SWAP) > 0) {
                                 boolean couldSwap = ActionDice.swap(currentEntrySheet, EntrySheet.getEntrySheetByName(allEntrySheets, inputArr[1]));
                                 if (couldSwap) {
+                                    //current entry sheet has to be updated since it changed
+                                    currentEntrySheet = EntrySheet.getEntrySheetByName(allEntrySheets, currentPlayer.getUsername());
 
                                     //Update the entry sheets
                                     Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList,

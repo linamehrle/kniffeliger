@@ -660,8 +660,8 @@ public class GameWindowController implements Initializable {
            // }
         }
 
-        displayInformationText("ALEA IACTA EST! (the die is cast)");
-        logger.info("send text to information window: ALEA IACTA EST");
+        //displayInformationText("ALEA IACTA EST! (the die is cast)");
+        //logger.info("send text to information window: ALEA IACTA EST");
         diceBox.refresh();
         diceBoxOther.refresh();
 
@@ -811,7 +811,7 @@ public class GameWindowController implements Initializable {
             logger.debug("Send entry " + entry + " to the client");
             //displayInformationText("You selected: " + entry);
         } else {
-            displayInformationText("No valid entry field selected. Please select a valid entry field.");
+            displayInformationText("No entry field selected. Please select a valid entry field.");
         }
     }
 
