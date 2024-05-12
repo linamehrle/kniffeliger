@@ -100,6 +100,7 @@ public class ListManager {
      */
     public static void createNewLobby(Player player, String name) {
         name = name.replaceAll(" ", "_");
+        name = name.replaceAll(",", "_");
         if (lobbyExists(name)) {
             Communication.sendToPlayer(CommandsServerToClient.BRCT, player, "Name is already taken");
         } else {

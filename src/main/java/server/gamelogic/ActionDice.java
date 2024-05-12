@@ -1,11 +1,16 @@
 package server.gamelogic;
-import server.Player;
+import java.util.ArrayList;
 
+import org.apache.logging.log4j.Logger;
+import server.Player;
+import starter.Starter;
 
 /**
  * Class that contains the action dice and all the methods that enforce the actions of the action dice.
  */
 public class ActionDice {
+
+    private static Logger logger = Starter.getLogger();
 
     // name of action player can perform
     private final String actionName;
@@ -136,7 +141,7 @@ public class ActionDice {
     public static boolean shift(EntrySheet[] playersSheets){
         Player helper = playersSheets[0].getPlayer();
         for (int i = 0; i < playersSheets.length - 1; i++) {
-            playersSheets[i].setPlayer(playersSheets[i + 1].getPlayer());
+            playersSheets[i].setPlayer(playersSheets[i+1].getPlayer());
         }
         playersSheets[playersSheets.length - 1].setPlayer(helper);
         return true;

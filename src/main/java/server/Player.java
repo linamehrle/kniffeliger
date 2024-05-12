@@ -46,6 +46,8 @@ public class Player {
      */
     private boolean isOnline;
 
+    //private boolean entryMade;
+
     /**
      * The constructor for the Player class. It starts a new ClientThread per Player.
      * @param socket

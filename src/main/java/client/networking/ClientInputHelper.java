@@ -4,12 +4,9 @@ import client.Print;
 import client.Client;
 import client.gui.Main;
 import client.gui.SceneController;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import server.networking.CommandsServerToClient;
 import starter.Starter;
-
-import java.util.Arrays;
 
 /**
  * This class handles the input read by the ClientInput class and processes it accordingly.
@@ -59,7 +56,7 @@ public class ClientInputHelper implements Runnable {
             case PING -> clientOutput.send(CommandsClientToServer.PONG, input[1]);
             case PONG -> pong.updatePong(input[1]);
             case CHAT -> {
-                System.out.println(input[1]);
+                //System.out.println(input[1]);
                 Main.sendToChatWindow(input[1]);
             }
             case BRCT -> {
@@ -67,7 +64,7 @@ public class ClientInputHelper implements Runnable {
                 Main.displayInGameWindow(input[1]);
             }
             case LOLI -> {
-                Print.printLobbies(input[1]);
+                //Print.printLobbies(input[1]);
                 Main.lobbyList(input[1]);
             }
             case CRLO -> {
@@ -89,7 +86,7 @@ public class ClientInputHelper implements Runnable {
                 Main.updateChatPlayerList(input[1]);
             }
             case HGSC -> {
-                System.out.println(input[1]);
+                //System.out.println(input[1]);
                 Main.updateHighScore(input[1]);
             }
             case LOST -> Main.updateLobby(input[1]);
@@ -104,21 +101,27 @@ public class ClientInputHelper implements Runnable {
                 logger.debug("Action dice update received at the client: " + input[1]);
             }
             case ENTY -> {
-                Main.updatePrimaryEntrySheet(input[1]);
                 logger.debug("Client received command ENTY with message: " + input[1]);
+                Main.updateEntrySheet(input[1]);
             }
-            case ALES -> {
+            /*case ALES -> {
                 Main.updateOtherEntrySheets(input[1]);
                 logger.debug("Client received command ALES with message: " + input[1]);
-            }
+            }*/
             case ALDI -> Main.updateOtherDiceBox(input[1]);
-            case INES -> Main.initOtherTab(input[1]);
+            //case INES -> Main.initOtherTab();
             case STRT -> Main.changeTurn(input[1]);
-            case SWAP -> Main.swapEntrySheets(input[1]);
+            //case SWAP -> Main.swapEntrySheets(input[1]);
             case TUSR -> Main.sendOwnNameToGUI(input[1]);
-            case SHFT -> Main.shiftEntrySheets(input[1]);
+            //case SHFT -> Main.shiftEntrySheets(input[1]);
             case PONT -> Main.updateTotalScore(input[1]);
             case FRZE -> Main.freezeOrDefreeze(input[1]);
+            case STRG -> Main.initGame();
+            case SAVE -> {
+                logger.debug("Received command SAVE with message: " + input[1]);
+                Main.communicateSave(input[1]);
+            }
+            case ENDT -> Main.endTurn();
             default -> logger.info("unknown command received from server " + message);
         }
     }

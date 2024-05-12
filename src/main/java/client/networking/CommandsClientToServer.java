@@ -135,5 +135,10 @@ public enum CommandsClientToServer {
     /**
      *  Request username
      */
-    RUSR
+    RUSR,
+
+    /**
+     * Informs the server to initiate preparations for the game start
+     */
+    PREP
 }
