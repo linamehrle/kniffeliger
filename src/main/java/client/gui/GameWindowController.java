@@ -302,6 +302,17 @@ public class GameWindowController implements Initializable {
         entryEnterButton.setDisable(true);
     }
 
+    /**
+     * Method to disable all action dice buttons
+     */
+    public void disableAllActionButtons() {
+        stealButton.setDisable(true);
+        freezeButton.setDisable(true);
+        rotateButton.setDisable(true);
+        swapButton.setDisable(true);
+        deleteButton.setDisable(true);
+    }
+
 
     /**
      * Method enables all game fields except special action fields
@@ -387,6 +398,7 @@ public class GameWindowController implements Initializable {
     public void initGame() {
         clearInformationBox();
         leaveGameButton.setDisable(true);
+        disableAllActionButtons();
         initTabOther();
     }
 
