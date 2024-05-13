@@ -25,50 +25,6 @@ public class ClientOutput {
     }
 
     /**
-     * This method handles commands that are entered in the console.
-     * @param message the whole String read from the console
-     */
-    public synchronized void sendFromConsoleIn(String message) {
-
-        String[] input = message.split(" ", 2);
-
-        if(input.length == 1) { //case: only command without message is entered
-
-            switch (input[0]) {
-
-                case "\\roll" -> sendToServer("ROLL player rolled the dice");
-                case "\\quit" -> sendToServer("QUIT goodbye!");
-                case "\\showLobbies" -> sendToServer("LOLI show me all lobbies");
-                case "\\leaveLobby" -> sendToServer("LELO byebye");
-                case "\\start" -> sendToServer("STRG start a game");
-                case "\\showPlayers" -> sendToServer("PLLI show me all players");
-                case "\\showHighScores" -> sendToServer("HGSC who is on top?");
-                default -> logger.info("Invalid input entered");
-
-            }
-
-        } else if (input.length == 2) { //case: the command is followed by a message
-
-            switch (input[0]) {
-
-                case "\\changeUsername" -> sendToServer("CHNA " + input[1]);
-                case "\\chat" -> sendToServer("CHAT " + input[1]);
-                case "\\whisper" -> sendToServer("WHSP " + input[1]);
-                case "\\save" -> sendToServer("SAVE " + input[1]);
-                case "\\newLobby" -> sendToServer("CRLO " + input[1]);
-                case "\\enterLobby" -> sendToServer("ENLO " + input[1]);
-                case "\\lobbyChat" -> {
-                    sendToServer("LOCH " + input[1]);
-                    logger.debug("lobby chat send to server");
-                }
-                case "\\gameAction" -> sendToServer("GAME " + input[1]);
-                default -> logger.info("Invalid command or message entered: command " + input[0] + " message " + input[1]);
-            }
-        }
-
-    }
-
-    /**
      * This method handles internal commands to server.
      * @param cmd command as defined by the network protocol
      * @param message
