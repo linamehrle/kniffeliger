@@ -399,6 +399,7 @@ public class GameWindowController implements Initializable {
      * @param event
      */
     public void stealEntryAction(ActionEvent event) {
+        buttonSoundEffect1.play();
         SceneController.showActionPlayerAndFieldWindow(playersInLobby, "steal");
     }
 
@@ -407,6 +408,7 @@ public class GameWindowController implements Initializable {
      * @param event
      */
     public void freezeEntryButton(ActionEvent event) {
+        buttonSoundEffect1.play();
         SceneController.showActionPlayerAndFieldWindow(playersInLobby, "freeze");
     }
 
@@ -415,6 +417,7 @@ public class GameWindowController implements Initializable {
      * @param event
      */
     public void rotateSheetsAction(ActionEvent event) {
+        buttonSoundEffect1.play();
         ClientOutput.send(CommandsClientToServer.SHFT, "entry sheets shifted by one");
     }
 
@@ -423,6 +426,7 @@ public class GameWindowController implements Initializable {
      * @param event
      */
     public void swapSheetsAction(ActionEvent event) {
+        buttonSoundEffect1.play();
         SceneController.showActionPlayerWindow(playersInLobby);
     }
 
@@ -431,6 +435,7 @@ public class GameWindowController implements Initializable {
      * @param event
      */
     public void deleteEntryAction(ActionEvent event) {
+        buttonSoundEffect1.play();
         SceneController.showActionPlayerAndFieldWindow(playersInLobby, "delete");
     }
 
@@ -514,6 +519,7 @@ public class GameWindowController implements Initializable {
      * @param event
      */
     public void leaveGameAction(ActionEvent event) {
+        buttonSoundEffect1.play();
         Main.exit();
     }
 
@@ -522,6 +528,7 @@ public class GameWindowController implements Initializable {
      * @param event
      */
     public void leaveLobbyAction(ActionEvent event) {
+        buttonSoundEffect1.play();
         ClientOutput.send(CommandsClientToServer.LELO, "bye Lobby");
 
         //the scene switches again to the lobby window where the player can choose or create a new lobby
@@ -532,6 +539,7 @@ public class GameWindowController implements Initializable {
      * Method to open the high score list as a new window when pushing the highScoreButton
      */
     public void highScoreAction() {
+        buttonSoundEffect1.play();
         SceneController.showHighScoreWindow();
     }
 
@@ -545,6 +553,7 @@ public class GameWindowController implements Initializable {
         //TODO: adapt message if necessary
         ClientOutput.send(CommandsClientToServer.ENDT,  "ended turn");
         logger.debug("send end of turn to server");
+        buttonSoundEffect2.play();
     }
 
     /**
@@ -576,6 +585,7 @@ public class GameWindowController implements Initializable {
      * Mouse click on rollButton
      */
     public void rollActionSend(ActionEvent event){
+        buttonSoundEffect1.play();
         rollButtonAnimation.seek(Duration.ZERO);
         rollButtonAnimation.play();
         buttonSoundEffect1.play();
@@ -597,7 +607,6 @@ public class GameWindowController implements Initializable {
             logger.info("No dices are selected to be saved.");
             ClientOutput.send(CommandsClientToServer.SAVE, "none");
         }
-
         diceBox.refresh();
     }
 
@@ -628,6 +637,7 @@ public class GameWindowController implements Initializable {
      */
     @FXML
     public void diceClick (MouseEvent event) {
+        buttonSoundEffect1.play();
         DiceGUImplementation dice = diceBox.getSelectionModel().getSelectedItem();
         if (!dice.getSavingStatus() && !dice.getStashStatus() && (dice.getDiceValue() != 0)) {
             diceStashedList[dice.getID()] = String.valueOf(dice.getID());
@@ -652,7 +662,7 @@ public class GameWindowController implements Initializable {
         for (int i=0; i < diceListToUpdate.size() && i < diceValues.length; i++) {
             diceListToUpdate.get(i).setDiceValue(diceValues[i]);
         }
-
+        buttonSoundEffect1.play();
         diceBox.refresh();
         diceBoxOther.refresh();
     }
@@ -682,6 +692,7 @@ public class GameWindowController implements Initializable {
             entrySheet.setItems(playerToEntrySheetMap.get(ownerUser));
             entrySheet.refresh();
         }
+        buttonSoundEffect2.play();
     }
 
     /**
@@ -735,6 +746,7 @@ public class GameWindowController implements Initializable {
      */
     @FXML
     public void entryEnterButtonAction(MouseEvent event){
+        buttonSoundEffect1.play();
         String entry = entrySheet.getSelectionModel().getSelectedItem();
         if (entry != null){
             ClientOutput.send(CommandsClientToServer.ENTY,  entry);
