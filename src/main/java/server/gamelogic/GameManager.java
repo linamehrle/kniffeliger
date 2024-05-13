@@ -108,6 +108,7 @@ public class GameManager implements Runnable {
 
             // loop through all the players
             for (EntrySheet currentEntrySheet : allEntrySheets) {
+                logger.debug("new main phase with " + currentEntrySheet.getUsername());
                 // saves values of current entry sheet, so player and current action dice, so we can access it easily
                 currentPlayer = currentEntrySheet.getPlayer();
 
@@ -138,20 +139,29 @@ public class GameManager implements Runnable {
                 // if player is not connected anymore then the game manager handles it with playForPlayer method
                 // adds action dice if necessary (this part stay if Lina can still do the reconnect) and sets it true
                 // that an entry was made and the turn is ended
+
+                /*
+                If the player is disconnected, there are no input or output streams and no gui so nothing to communicate
+                The status only needs to be communicated to the other players at the moment
+                 */
                 if (!currentPlayer.isOnline()) {
+                    logger.info("Curent player is not online");
+
+                    Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList,
+                            "The player " + currentPlayer.getUsername() + " is not online anymore, playing for them.");
 
                     // entry is made for player and communicated afterward
                     playForPlayer(currentPlayer, currentEntrySheet, allDice);
                     Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
-                    Communication.sendToPlayer(CommandsServerToClient.PONT, currentPlayer, String.valueOf(currentEntrySheet.getTotalPoints()));
+                    //Communication.sendToPlayer(CommandsServerToClient.PONT, currentPlayer, String.valueOf(currentEntrySheet.getTotalPoints()));
 
                     // action dice is added and communicated to the player that is not yet connected again
-                    addActionDice(allDice, currentPlayer);
-                    Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, currentPlayer.getActionDiceAsString());
-                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You got a new action die.");
+                    //addActionDice(allDice, currentPlayer);
+                    //Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, currentPlayer.getActionDiceAsString());
+                    //Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You got a new action die.");
 
                     // entry was made for player and turn is ended (so it does not enter the while loop where player can choose actions)
-                    Communication.sendToPlayer(CommandsServerToClient.ENDT, currentPlayer, "turn endet");
+                    //Communication.sendToPlayer(CommandsServerToClient.ENDT, currentPlayer, "turn endet");
                     entryMade = true;
                     endTurn = true;
                 }
@@ -404,6 +414,15 @@ public class GameManager implements Runnable {
                                 logger.log(gameLogic, "Ending turn (" + currentPlayer.getUsername() + ")");
                             }
                             break;
+                        case "NOTONLINE":
+                            Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList,
+                                    "The player " + currentPlayer.getUsername() + " is not online anymore, playing for them.");
+                            // entry is made for player and communicated afterward
+                            playForPlayer(currentPlayer, currentEntrySheet, allDice);
+                            Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
+                            entryMade = true;
+                            endTurn = true;
+                            break;
                         default:
                             logger.trace("Entered unknown case: " + input);
                             break;
@@ -422,7 +441,9 @@ public class GameManager implements Runnable {
             logger.log(gameLogic, "Shifting and Swapping phase started.");
 
             for (Player player : playerArraysList) {
+                logger.debug("new shift and swap round with player " + player.getUsername());
                 currentPlayer = player;
+
                 // saves values of current entry sheet, so player and current action dice, so we can access it easily
                 EntrySheet currentEntrySheet = EntrySheet.getEntrySheetByName(allEntrySheets, currentPlayer.getUsername());
 
@@ -434,6 +455,12 @@ public class GameManager implements Runnable {
 
                 // checks if player wants to shift or swap
                 boolean finishedSwapOrShift = false;
+
+                //again connection loss handling
+                if (!currentPlayer.isOnline()) {
+                    logger.info("Shift and swap phase: current player is not online");
+                    finishedSwapOrShift = true;
+                }
 
                 // TODO: added condition that player needs to be online, if s/he wants to play an action dice
                 while (!finishedSwapOrShift && currentPlayer.isOnline()) {
@@ -509,6 +536,13 @@ public class GameManager implements Runnable {
                             finishedSwapOrShift = true;
 
                             break;
+                        case "NOTONLINE":
+                            Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList,
+                                    "The player " + currentPlayer.getUsername() + " is not online anymore, playing for them.");
+                            // entry is made for player and communicated afterward
+                            playForPlayer(currentPlayer, currentEntrySheet, allDice);
+                            Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
+                            finishedSwapOrShift = true;
                     }
                 }
             }
@@ -661,6 +695,10 @@ public class GameManager implements Runnable {
                 break;
             }
         }
+
+        logger.debug("finished playing for disconnected player");
+
+        //TODO also add entry dice here? For a possible reconnect (that wont happen lol)
     }
 
     /**

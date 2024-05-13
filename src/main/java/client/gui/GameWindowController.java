@@ -433,11 +433,14 @@ public class GameWindowController implements Initializable {
         for (DiceGUImplementation dice : diceList) {
             dice.resetDice();
         }
+        diceBox.refresh();
+
         //Clear information box before each turn
         clearInformationBox();
 
         if (userName.equals(ownerUser) && phase.equals("Main")) {
             enableAllGameFields();
+            logger.debug("enabled all game fields");
         } else if (userName.equals(ownerUser) && phase.equals("ShiftSwap")) {
             enableSwapAndShift();
         } else {

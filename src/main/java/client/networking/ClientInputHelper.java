@@ -55,18 +55,12 @@ public class ClientInputHelper implements Runnable {
             case QUIT -> gameManager.disconnect();
             case PING -> clientOutput.send(CommandsClientToServer.PONG, input[1]);
             case PONG -> pong.updatePong(input[1]);
-            case CHAT -> {
-                //System.out.println(input[1]);
-                Main.sendToChatWindow(input[1]);
-            }
+            case CHAT -> Main.sendToChatWindow(input[1]);
             case BRCT -> {
                 logger.info("Alfred: " + input[1]);
                 Main.displayInGameWindow(input[1]);
             }
-            case LOLI -> {
-                //Print.printLobbies(input[1]);
-                Main.lobbyList(input[1]);
-            }
+            case LOLI -> Main.lobbyList(input[1]);
             case CRLO -> {
                 Main.addNewLobby(input[1]);
                 logger.debug("Lobby was send to the gui");
@@ -77,14 +71,10 @@ public class ClientInputHelper implements Runnable {
                 logger.debug("LELO received with message: " + input[1]);
             }
             case ROLL -> {
-                //System.out.println("Game: Your dice: " + input[1]);
                 logger.debug("client input: dice received from server " + input[1]);
                 Main.sendDiceToGUI(input[1]);
             }
-            case PLLI -> {
-                //Print.printPlayerList(input[1]);
-                Main.updateChatPlayerList(input[1]);
-            }
+            case PLLI -> Main.updateChatPlayerList(input[1]);
             case HGSC -> {
                 //System.out.println(input[1]);
                 Main.updateHighScore(input[1]);
@@ -104,16 +94,12 @@ public class ClientInputHelper implements Runnable {
                 logger.debug("Client received command ENTY with message: " + input[1]);
                 Main.updateEntrySheet(input[1]);
             }
-            /*case ALES -> {
-                Main.updateOtherEntrySheets(input[1]);
-                logger.debug("Client received command ALES with message: " + input[1]);
-            }*/
             case ALDI -> Main.updateOtherDiceBox(input[1]);
-            //case INES -> Main.initOtherTab();
-            case STRT -> Main.changeTurn(input[1]);
-            //case SWAP -> Main.swapEntrySheets(input[1]);
+            case STRT -> {
+                logger.debug("received new message with command STRT: " + input[1]);
+                Main.changeTurn(input[1]);
+            }
             case TUSR -> Main.sendOwnNameToGUI(input[1]);
-            //case SHFT -> Main.shiftEntrySheets(input[1]);
             case PONT -> Main.updateTotalScore(input[1]);
             case FRZE -> Main.freezeOrDefreeze(input[1]);
             case STRG -> Main.initGame();

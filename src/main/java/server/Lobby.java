@@ -144,6 +144,7 @@ public class Lobby {
             }
         } else {
             player.setOnline(false);
+            gameManager.getAnswer("NOTONLINE", player);
         }
         Communication.broadcastToAll(CommandsServerToClient.LOPL, playersInLobby, getPlayersInLobbyAsString());
     }
@@ -161,11 +162,18 @@ public class Lobby {
             Communication.broadcastToAll(CommandsServerToClient.LOST, ListManager.getPlayerList(), name + " (open)");
         }
 
+        ArrayList<Player> playersStillInLobby = new ArrayList<>();
+
         for (Player player : playersInLobby) {
-            if (!player.isOnline()) {
-                playersInLobby.remove(player);
+            logger.debug("checking for removal: " + player.getUsername() + " with status isOnline " + player.isOnline());
+            if (player.isOnline()) {
+                playersStillInLobby.add(player);
             }
         }
+
+        playersInLobby = playersStillInLobby;
+        Communication.broadcastToAll(CommandsServerToClient.LOPL, playersInLobby, getPlayersInLobbyAsString());
+        logger.info("the current lobby is " + name + " with players " + getPlayersInLobbyAsString());
     }
 
     /**
