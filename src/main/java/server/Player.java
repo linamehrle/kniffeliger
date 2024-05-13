@@ -253,4 +253,12 @@ public class Player {
         actionDice.put(ActionDiceEnum.SHIFT, 0);
         actionDice.put(ActionDiceEnum.SWAP, 0);
     }
+
+    public boolean isOnline() {
+        return isOnline;
+    }
+
+    public void setOnline(boolean online) {
+        isOnline = online;
+    }
 }
