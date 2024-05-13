@@ -63,6 +63,28 @@ class GameManagerTest {
     }
 
     /**
+     * Method to create an Action Dice HashMap given counts.
+     *
+     * @param stealCount
+     * @param freezeCount
+     * @param crossOutCount
+     * @param swapCount
+     * @param shiftCount
+     * @return
+     */
+    public static HashMap<ActionDiceEnum, Integer> generateActionDice(int stealCount, int freezeCount, int crossOutCount, int swapCount, int shiftCount) {
+        HashMap<ActionDiceEnum, Integer> actionDice = new HashMap<>();
+
+        actionDice.put(ActionDiceEnum.STEAL, stealCount);
+        actionDice.put(ActionDiceEnum.FREEZE, freezeCount);
+        actionDice.put(ActionDiceEnum.CROSSOUT, crossOutCount);
+        actionDice.put(ActionDiceEnum.SHIFT, shiftCount);
+        actionDice.put(ActionDiceEnum.SWAP, swapCount);
+
+        return actionDice;
+    }
+
+    /**
      * Turns action dice array into String array with names of actions as array
      *
      * @param actionDiceArray array to extract names from
@@ -76,102 +98,6 @@ class GameManagerTest {
             }
         }
         return result;
-    }
-
-    @Test
-    @DisplayName("Tests if it properly checks if all dice are saved.")
-    void allDiceSavedTest() {
-        // random index from 0 to 4 of a dice that will not be saved
-        int randomIndex = (int) (Math.random() * 4);
-
-        // generate a game manager, so we can use entry validation method
-        GameManager gm = new GameManager();
-        Dice d1 = new Dice();
-        Dice d2 = new Dice();
-        Dice d3 = new Dice();
-        Dice d4 = new Dice();
-        Dice d5 = new Dice();
-        Dice[] notAllSavedDice = new Dice[]{d1, d2, d3, d4, d5};
-        // saves all dice except for the one with randomIndex
-        for (int i = 0; i < 5; i++) {
-            if (i != randomIndex) {
-                notAllSavedDice[i].saveDice();
-            }
-        }
-
-        Dice d11 = new Dice();
-        Dice d21 = new Dice();
-        Dice d31 = new Dice();
-        Dice d41 = new Dice();
-        Dice d51 = new Dice();
-        Dice[] allSavedDice = new Dice[]{d11, d21, d31, d41, d51};
-        // saves all dice
-        for (int i = 0; i < 5; i++) {
-            allSavedDice[i].saveDice();
-        }
-
-        // test
-        assertAll(() -> assertFalse(GameManager.allDiceSaved(notAllSavedDice)),
-                () -> assertFalse(notAllSavedDice[randomIndex].getSavingStatus()),
-                () -> assertTrue(GameManager.allDiceSaved(allSavedDice))
-        );
-
-    }
-
-    @Test
-    @DisplayName("Checks if dice are properly reset, so savingStatus is false and numberOfRolls and diceValue are 0.")
-    void resetDiceTest() {
-        // generate a game manager, so we can use entry validation method
-        GameManager gm = new GameManager();
-        Dice d1 = new Dice();
-        Dice d2 = new Dice();
-        Dice d3 = new Dice();
-        Dice d4 = new Dice();
-        Dice d5 = new Dice();
-        Dice[] allDice = new Dice[]{d1, d2, d3, d4, d5};
-        gm.rollDice(allDice);
-        // saves all dice except for the one with randomIndex
-        int[] valuesArray = Dice.getAsIntArray(allDice);
-
-        for (int i = 0; i < 5; i++) {
-            Dice d = allDice[i];
-            int randomRollValue = valuesArray[i];
-            d.saveDice();
-            assertAll(() -> assertTrue(d.getSavingStatus()),
-                    () -> assertEquals(1, d.getNumberOfRolls()),
-                    () -> assertEquals(randomRollValue, d.getDiceValue())
-            );
-        }
-
-        // implementation of reset dice copied to test it with junit
-        for (Dice dice : allDice) {
-            dice.resetDice();
-        }
-
-        for (int i = 0; i < 5; i++) {
-            Dice d = allDice[i];
-            assertAll(() -> assertFalse(d.getSavingStatus()),
-                    () -> assertEquals(0, d.getNumberOfRolls()),
-                    () -> assertEquals(0, d.getDiceValue())
-            );
-        }
-    }
-
-    @Test
-    @DisplayName("Checks if dice are rolled correctly.")
-    void rolledDiceTest() {
-        GameManager gm = new GameManager();
-        Dice d1 = new Dice();
-        Dice d2 = new Dice();
-        Dice d3 = new Dice();
-        Dice d4 = new Dice();
-        Dice d5 = new Dice();
-        Dice[] allDice = new Dice[]{d1, d2, d3, d4, d5};
-        gm.rollDice(allDice);
-
-        for (Dice dice : allDice) {
-            assertTrue(0 != dice.getDiceValue());
-        }
     }
 
     // depends on constant DIVISIBLE_BY field in GameManager
@@ -233,6 +159,46 @@ class GameManagerTest {
     }
 
     @Test
+    @DisplayName("Tests if it properly checks if all dice are saved.")
+    void allDiceSavedTest() {
+        // random index from 0 to 4 of a dice that will not be saved
+        int randomIndex = (int) (Math.random() * 4);
+
+        // generate a game manager, so we can use entry validation method
+        GameManager gm = new GameManager();
+        Dice d1 = new Dice();
+        Dice d2 = new Dice();
+        Dice d3 = new Dice();
+        Dice d4 = new Dice();
+        Dice d5 = new Dice();
+        Dice[] notAllSavedDice = new Dice[]{d1, d2, d3, d4, d5};
+        // saves all dice except for the one with randomIndex
+        for (int i = 0; i < 5; i++) {
+            if (i != randomIndex) {
+                notAllSavedDice[i].saveDice();
+            }
+        }
+
+        Dice d11 = new Dice();
+        Dice d21 = new Dice();
+        Dice d31 = new Dice();
+        Dice d41 = new Dice();
+        Dice d51 = new Dice();
+        Dice[] allSavedDice = new Dice[]{d11, d21, d31, d41, d51};
+        // saves all dice
+        for (int i = 0; i < 5; i++) {
+            allSavedDice[i].saveDice();
+        }
+
+        // test
+        assertAll(() -> assertFalse(GameManager.allDiceSaved(notAllSavedDice)),
+                () -> assertFalse(notAllSavedDice[randomIndex].getSavingStatus()),
+                () -> assertTrue(GameManager.allDiceSaved(allSavedDice))
+        );
+
+    }
+
+    @Test
     @DisplayName("Tests the method that deletes an action dice out of an array")
     void deleteActionDiceTest(){
         // players that hold action dice (needed to apply the delete entry method)
@@ -256,6 +222,12 @@ class GameManagerTest {
         assertAll(() -> assertEquals(controlActionDiceLina, lina.getActionDice()),
                 () -> assertEquals(controlActionDiceRiccardo, riccardo.getActionDice())
         );
+    }
+
+    @Test
+    @DisplayName("Checks if it gets played correctly if player is not connected anymore.")
+    void playForPlayerTest() {
+        //TODO: add test for this method
     }
 
     @Test
@@ -290,27 +262,62 @@ class GameManagerTest {
         assertAll(() -> assertEquals("lina", rankedPlayers[1].getUsername()),
                 () -> assertEquals("loris", rankedPlayers[0].getUsername())
         );
-
     }
 
-    /**
-     * Method to create a Action Dice HashMap given counts.
-     * @param stealCount
-     * @param freezeCount
-     * @param crossOutCount
-     * @param swapCount
-     * @param shiftCount
-     * @return
-     */
-    public static HashMap<ActionDiceEnum, Integer> generateActionDice(int stealCount, int freezeCount, int crossOutCount, int swapCount, int shiftCount) {
-        HashMap<ActionDiceEnum, Integer> actionDice = new HashMap<>();
+    @Test
+    @DisplayName("Checks if dice are properly reset, so savingStatus is false and numberOfRolls and diceValue are 0.")
+    void resetDiceTest() {
+        // generate a game manager, so we can use entry validation method
+        GameManager gm = new GameManager();
+        Dice d1 = new Dice();
+        Dice d2 = new Dice();
+        Dice d3 = new Dice();
+        Dice d4 = new Dice();
+        Dice d5 = new Dice();
+        Dice[] allDice = new Dice[]{d1, d2, d3, d4, d5};
+        gm.rollDice(allDice);
+        // saves all dice except for the one with randomIndex
+        int[] valuesArray = Dice.getAsIntArray(allDice);
 
-        actionDice.put(ActionDiceEnum.STEAL, stealCount);
-        actionDice.put(ActionDiceEnum.FREEZE, freezeCount);
-        actionDice.put(ActionDiceEnum.CROSSOUT, crossOutCount);
-        actionDice.put(ActionDiceEnum.SHIFT, shiftCount);
-        actionDice.put(ActionDiceEnum.SWAP, swapCount);
+        for (int i = 0; i < 5; i++) {
+            Dice d = allDice[i];
+            int randomRollValue = valuesArray[i];
+            d.saveDice();
+            assertAll(() -> assertTrue(d.getSavingStatus()),
+                    () -> assertEquals(1, d.getNumberOfRolls()),
+                    () -> assertEquals(randomRollValue, d.getDiceValue())
+            );
+        }
 
-        return actionDice;
+        // implementation of reset dice copied to test it with junit
+        for (Dice dice : allDice) {
+            dice.resetDice();
+        }
+
+        for (int i = 0; i < 5; i++) {
+            Dice d = allDice[i];
+            assertAll(() -> assertFalse(d.getSavingStatus()),
+                    () -> assertEquals(0, d.getNumberOfRolls()),
+                    () -> assertEquals(0, d.getDiceValue())
+            );
+        }
     }
+
+    @Test
+    @DisplayName("Checks if dice are rolled correctly.")
+    void rolledDiceTest() {
+        GameManager gm = new GameManager();
+        Dice d1 = new Dice();
+        Dice d2 = new Dice();
+        Dice d3 = new Dice();
+        Dice d4 = new Dice();
+        Dice d5 = new Dice();
+        Dice[] allDice = new Dice[]{d1, d2, d3, d4, d5};
+        gm.rollDice(allDice);
+
+        for (Dice dice : allDice) {
+            assertTrue(0 != dice.getDiceValue());
+        }
+    }
+
 }

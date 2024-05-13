@@ -134,6 +134,28 @@ public class GameManager implements Runnable {
 
                 logger.log(gameLogic, currentPlayer.getUsername() + "'s turn.");
 
+                // TODO: connection loss handling is done here, Riccardo should check this shit
+                // if player is not connected anymore then the game manager handles it with playForPlayer method
+                // adds action dice if necessary (this part stay if Lina can still do the reconnect) and sets it true
+                // that an entry was made and the turn is ended
+                if (!currentPlayer.isOnline()) {
+
+                    // entry is made for player and communicated afterward
+                    playForPlayer(currentPlayer, currentEntrySheet, allDice);
+                    Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
+                    Communication.sendToPlayer(CommandsServerToClient.PONT, currentPlayer, String.valueOf(currentEntrySheet.getTotalPoints()));
+
+                    // action dice is added and communicated to the player that is not yet connected again
+                    addActionDice(allDice, currentPlayer);
+                    Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, currentPlayer.getActionDiceAsString());
+                    Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You got a new action die.");
+
+                    // entry was made for player and turn is ended (so it does not enter the while loop where player can choose actions)
+                    Communication.sendToPlayer(CommandsServerToClient.ENDT, currentPlayer, "turn endet");
+                    entryMade = true;
+                    endTurn = true;
+                }
+
                 while (!entryMade || !endTurn) {
                     // wait for input
                     wait();
@@ -413,7 +435,8 @@ public class GameManager implements Runnable {
                 // checks if player wants to shift or swap
                 boolean finishedSwapOrShift = false;
 
-                while (!finishedSwapOrShift) {
+                // TODO: added condition that player needs to be online, if s/he wants to play an action dice
+                while (!finishedSwapOrShift && currentPlayer.isOnline()) {
                     logger.debug("Entered while loop for shift and swap");
                     // wait for input
                     wait();
@@ -516,7 +539,7 @@ public class GameManager implements Runnable {
 
     /*
      * #################################################################################################################
-     * ROLLS AND PRINTS DICE
+     * ROLLS DICE
      * #################################################################################################################
      */
     /**
@@ -612,6 +635,34 @@ public class GameManager implements Runnable {
         return false;
     }
 
+
+    /*
+     * #################################################################################################################
+     * HANDLES EVERYTHING ELSE (GET METHODS, RANKING, CONNECTION LOSS HANDLING)
+     * #################################################################################################################
+     */
+
+    /**
+     * Handles connection loss: if a player is not connected then the game manager plays automatically for him/her.
+     */
+    public synchronized void playForPlayer(Player player, EntrySheet playersEntrySheet, Dice[] allDice) {
+        // rolls all dice and saves them after first roll
+        rollDice(allDice);
+        for (Dice d : allDice) {
+            d.saveDice();
+        }
+
+        // goes through entry sheet and checks for the first entry that is not final or frozen to add the entry
+        // through the
+        // entry validation
+        for (Entry entry : playersEntrySheet.getAsArray()) {
+            if (!entry.getIsFinal() && !entry.getFrozenStatus()) {
+                EntrySheet.entryValidation(playersEntrySheet, entry.getName(), allDice);
+                break;
+            }
+        }
+    }
+
     /**
      * Gets answer as String and saves it in answer field, so it can be accessed in starter-method.
      * @param input answer of player
@@ -663,11 +714,6 @@ public class GameManager implements Runnable {
         playerArraysList = players;
     }
 
-    /*
-     * #################################################################################################################
-     * HANDLES ACTION DICE
-     * #################################################################################################################
-     */
     /**
      * Ranks the winners from lowest to highest (from loser to winner, so losers first rankedPlayer[0] and winner last).
      *
