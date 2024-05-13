@@ -11,7 +11,7 @@
 }
 
 .header-section Label {
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: #ff9acf;
     -fx-padding: 10px;
 }
 
@@ -21,14 +21,14 @@
     -fx-pref-width: 200px;
     -fx-max-width: 200px;
     -fx-border-width: 1;
-    -fx-border-color: transparent #E8E8E8 transparent transparent;
+    -fx-border-color: transparent #ff9acf transparent transparent;
 }
 
 .sidebar-section Label {
     -fx-font-size: 18px;
     -fx-padding: 10 15 10 15;
     -fx-border-width: 1;
-    -fx-border-color: transparent transparent #E8E8E8 transparent;
+    -fx-border-color: transparent transparent #ff9acf transparent;
     -fx-min-width: 200px;
     -fx-pref-width: 200px;
     -fx-max-width: 200px;
@@ -44,7 +44,7 @@
     -fx-font-size: 18px;
     -fx-padding: 10 15 10 15;
     -fx-border-width: 1;
-    -fx-border-color: transparent transparent #E8E8E8 transparent;
+    -fx-border-color: transparent transparent #ff9acf transparent;
     -fx-min-width: 200px;
     -fx-pref-width: 200px;
     -fx-max-width: 200px;
@@ -121,6 +121,7 @@
 
 #buttonRoll {
     -fx-background-color: transparent;
+    -fx-text-fill: #ff9acf;
 }
 
 #buttonLeaveGame {
