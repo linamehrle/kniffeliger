@@ -15,12 +15,6 @@
     -fx-padding: 10px;
 }
 
-#account {
-    -fx-background-color: transparent;
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 16px;
-    -fx-cursor: hand;
-}
 
 .sidebar-section {
     -fx-min-width: 200px;
@@ -60,7 +54,7 @@
     -fx-background-color: #ff9acf;
 }
 .button:hover {
-    -fx-background-color: #e5017d;
+    -fx-background-color: black;
 }
 
 
@@ -119,6 +113,31 @@
 
 #buttonRoll {
     -fx-background-color: transparent;
+}
+
+#buttonLeaveGame {
+    -fx-background-image: url("../images/exit.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: black;
+}
+
+#buttonMute {
+    -fx-background-image: url("../images/buttonMute.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: #ff9acf;
+}
+
+#buttonMute:selected {
+    -fx-background-image: url("../images/buttonUnmute.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
+    -fx-background-color: #ff9acf;
 }
 
 #labelLogo {

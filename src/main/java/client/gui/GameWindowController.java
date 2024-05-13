@@ -473,12 +473,12 @@ public class GameWindowController implements Initializable {
             gameMainThemePlayer.pause();
             gameMainThemePlayer.setMute(true);
             volumeSlider.adjustValue(0.0);
-            muteButton.setText("Unmute");
+            //muteButton.setText("Unmute");
         } else {
             gameMainThemePlayer.play();
             gameMainThemePlayer.setMute(false);
             volumeSlider.adjustValue(0.5);
-            muteButton.setText("Mute");
+            //muteButton.setText("Mute");
         }
     }
 
