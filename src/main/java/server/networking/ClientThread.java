@@ -104,7 +104,6 @@ public class ClientThread implements Runnable{
     public void disconnect() {
         try {
             serverOutput.send(CommandsServerToClient.QUIT, "goodbye client");
-            //Communication.broadcast(player.getPlayerList(), player, "Player " + player.getUsername() + " has disconnected");
             ArrayList<Player> playerList = player.getPlayerList();
             playerList.remove(player);
             Communication.broadcastToAll(CommandsServerToClient.PLLI, playerList, ListManager.getPlayerListAsString());

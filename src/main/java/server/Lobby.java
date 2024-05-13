@@ -34,8 +34,6 @@ public class Lobby {
     private ArrayList<Player> playersInLobby = new ArrayList<>();
     private Logger logger = Starter.getLogger();
 
-    //private boolean gameIsRunning = false; needed?
-
     /**
      * Constructor for the lobby, the initial status is open
      * @param name
@@ -144,9 +142,10 @@ public class Lobby {
                 status = "open";
                 Communication.broadcastToAll(CommandsServerToClient.LOST, ListManager.getPlayerList(), name + " (open)");
             }
+        } else {
+            player.setOnline(false);
         }
         Communication.broadcastToAll(CommandsServerToClient.LOPL, playersInLobby, getPlayersInLobbyAsString());
-        //TODO how to handle leaving a lobby when a game is running?
     }
 
 
@@ -160,6 +159,12 @@ public class Lobby {
         } else {
             status = "open";
             Communication.broadcastToAll(CommandsServerToClient.LOST, ListManager.getPlayerList(), name + " (open)");
+        }
+
+        for (Player player : playersInLobby) {
+            if (!player.isOnline()) {
+                playersInLobby.remove(player);
+            }
         }
     }
 
