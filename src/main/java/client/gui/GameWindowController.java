@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
+
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,6 +17,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -29,10 +32,13 @@ import client.networking.CommandsClientToServer;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
 import org.apache.logging.log4j.Logger;
 import starter.Starter;
 
@@ -106,15 +112,17 @@ public class GameWindowController implements Initializable {
     private Slider volumeSlider;
     @FXML
     private ToggleButton muteButton;
+    @FXML
+    private MediaView leverRoll;
 
     private ObservableList<EntrySheetGUImplementation> entryList = FXCollections.observableArrayList();
     public ObservableList<DiceGUImplementation> diceList = FXCollections.observableArrayList();
     public ObservableList<DiceGUImplementation> diceListOther = FXCollections.observableArrayList();
     //variables for dice images
     private static Image[]  diceFaces = new Image[13];
+    private static Image[]  numberImages = new Image[7];
     //List with dice selected for saving in GUI, but not yet saved
     private String[] diceStashedList = new String[]{"", "", "", "", ""};
-    //
     private HashMap<String, Integer> entrySheetNameIndexMap = GameWindowHelper.makeEntryToIntMap();
     private ArrayList<String> playersInLobby;
     private PlayerGUImplementation[] playersWithSheets = new PlayerGUImplementation[4];
@@ -122,6 +130,16 @@ public class GameWindowController implements Initializable {
     private MediaPlayer gameMainThemePlayer;
     private String ownerUser;
     int rollCounter = 0;
+
+    // Buttons to test slot animations
+    @FXML
+    private HBox slotBox;
+    @FXML
+    private Button slotStart;
+    private AudioClip buttonSoundEffect1;
+    private AudioClip buttonSoundEffect2;
+    private MediaPlayer rollButtonAnimation;
+
 
 
 
@@ -139,6 +157,8 @@ public class GameWindowController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         logger.info("Game Window initialized");
+        Font.loadFont(getClass().getResourceAsStream("/resources/fonts/SpaceAge.ttf"), 14);
+        logger.trace("Font loaded");
 
         //Set this instance of GameWindowController as controller in main
         Main.setGameWindowController(this);
@@ -161,7 +181,11 @@ public class GameWindowController implements Initializable {
         diceBoxOther.setItems(diceListOther);
 
         //Load images
-        GameWindowHelper.loadImagesToArray(diceFaces);
+        GameWindowHelper.loadImagesToArray(diceFaces, "dice");
+        GameWindowHelper.loadImagesToArray(numberImages, "number");
+        ImageView number1 = new ImageView();
+        number1.setImage(numberImages[1]);
+        slotBox.getChildren().add(number1);
         logger.info("Dice images loaded into GUI");
 
 
@@ -259,11 +283,37 @@ public class GameWindowController implements Initializable {
         // Load sounds
         try {
             gameMainThemePlayer = GameWindowHelper.loadMedia("gameTheme.mp3");
+            gameMainThemePlayer.setAutoPlay(true);
+            gameMainThemePlayer.setCycleCount(MediaPlayer.INDEFINITE);
             gameMainThemePlayer.play();
             logger.trace("Audio file 'gameTheme.mp3' loaded.");
         } catch (FileNotFoundException e) {
             logger.info("Audio file 'gameTheme.mp3' not found.");
         }
+
+        try {
+            buttonSoundEffect1 = GameWindowHelper.loadSoundEffect("button1.mp3");
+            buttonSoundEffect2 = GameWindowHelper.loadSoundEffect("button2.mp3");
+            logger.trace("Sound effects loaded.");
+        } catch (FileNotFoundException e) {
+            logger.info("Sound effects not found.");
+        }
+
+        // Load Roll button animation
+        try {
+            rollButtonAnimation = GameWindowHelper.loadMedia("buttonRoll.mp4");
+            logger.trace("Animation file 'buttonRoll.mp4' loaded.");
+        } catch (FileNotFoundException e) {
+            logger.info("Animation file 'buttonRoll.mp4' not found.");
+        }
+
+        leverRoll.setMediaPlayer(rollButtonAnimation);
+        //rollButtonAnimation.setOnEndOfMedia(()->rollButton.setVisible(true));
+
+
+
+
+
 
         // Add listeners to sound controls
         volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
@@ -395,6 +445,7 @@ public class GameWindowController implements Initializable {
      */
     @FXML
     public void startGameAction(ActionEvent event) {
+        buttonSoundEffect1.play();
         ClientOutput.send(CommandsClientToServer.STRG, "lets start the game :)");
         logger.info("Game Start initialized by GUI");
         //Adds entry sheets of other players to second tab
@@ -402,11 +453,13 @@ public class GameWindowController implements Initializable {
         ClientOutput.send(CommandsClientToServer.LOPL, "getting the players in the lobby");
         logger.debug("List of Players in Lobby updated");
         leaveGameButton.setDisable(true);
+
     }
 
     @FXML
     public void muteButtonAction(ActionEvent event) {
         if (muteButton.isSelected()){
+            buttonSoundEffect1.play();
             gameMainThemePlayer.pause();
             gameMainThemePlayer.setMute(true);
             volumeSlider.adjustValue(0.0);
@@ -488,12 +541,14 @@ public class GameWindowController implements Initializable {
      */
     @FXML
     public void endTurnAction(MouseEvent event) {
+        buttonSoundEffect1.play();
         //TODO: adapt message if necessary
         ClientOutput.send(CommandsClientToServer.ENDT,  "ended turn");
         informationBox.getChildren().clear();
         displayInformationText("You ended your turn ");
 
         diceBox.refresh();
+        buttonSoundEffect2.play();
     }
 
 
@@ -512,11 +567,14 @@ public class GameWindowController implements Initializable {
      * Mouse click on rollButton
      */
     public void rollActionSend(ActionEvent event){
+        rollButtonAnimation.seek(Duration.ZERO);
+        rollButtonAnimation.play();
+        buttonSoundEffect1.play();
         String saveDiceString = GameWindowHelper.diceStashedArrToString(diceStashedList);
         //Saved dice are automatically transmitted before dice are rolled again
         //Count number of saved dice
         int diceSavedCounter = 0;
-        logger.trace("diceSavedCountr: " + diceSavedCounter);
+        logger.trace("diceSavedCounter: " + diceSavedCounter);
         for (DiceGUImplementation dice : diceList){
             if (dice.getSavingStatus()){
                 diceSavedCounter++;
@@ -734,6 +792,7 @@ public class GameWindowController implements Initializable {
      */
     @FXML
     public void entryEnterButtonAction(MouseEvent event){
+        buttonSoundEffect1.play();
         EntrySheetGUImplementation entry = entrySheet.getSelectionModel().getSelectedItem();
         if (entry != null && !entry.getSavingStatus()){
             String entryIDName = entry.getIDname();
@@ -742,6 +801,7 @@ public class GameWindowController implements Initializable {
         } else {
             displayInformationText("No valid entry field selected. Please select a valid entry field.");
         }
+        buttonSoundEffect2.play();
     }
 
     /**
@@ -808,6 +868,7 @@ public class GameWindowController implements Initializable {
             }
         }
         displayInformationText(" \uD83C\uDFC1 LET THE GAME BEGIN \uD83C\uDFC1");
+        buttonSoundEffect2.play();
         logger.info("second tab initialized");
     }
 
@@ -972,5 +1033,12 @@ public class GameWindowController implements Initializable {
      */
     public void defreezeEntrys() {
         //TODO reset the frozen entries, i.e. remove the cross out etc.
+    }
+
+    public void sloStartAction(ActionEvent event){
+        Node number = slotBox.getChildren().get(0);
+        Timeline timeline = new Timeline();
+
+
     }
 }

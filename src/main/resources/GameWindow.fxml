@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -10,63 +11,113 @@
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.media.MediaView?>
+<?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.GameWindowController">
-   <children>
-      <TabPane prefHeight="600.0" prefWidth="1100.0" tabClosingPolicy="UNAVAILABLE" tabMinWidth="90.0">
-        <tabs>
-          <Tab fx:id="ownerTab" text="YOU ♥">
-               <content>
-                  <AnchorPane prefHeight="600.0" prefWidth="1100.0">
+
+<TabPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1133.0" stylesheets="@styles/gameWindow.css" tabClosingPolicy="UNAVAILABLE" tabMinHeight="30.0" tabMinWidth="90.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.GameWindowController">
+  <tabs>
+    <Tab id="tab1" fx:id="ownerTab" closable="false" text="YOU ♥">
+         <content>
+            <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1133.0">
+               <children>
+                  <Label fx:id="usernameLabel" layoutX="509.0" layoutY="7.0" styleClass="header-section" text="Username">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="60.0" layoutY="547.0" text="Total points:" />
+                  <StackPane fx:id="rollStackPane" layoutX="620.0" layoutY="275.0">
                      <children>
-                        <Label layoutX="42.0" layoutY="28.0" text="Entry Sheet of:" />
-                        <Label fx:id="usernameLabel" layoutX="225.0" layoutY="28.0" text="Username" />
-                        <Label layoutX="42.0" layoutY="500.0" text="Total points:" />
-                        <Button fx:id="freezeButton" layoutX="698.0" layoutY="181.0" mnemonicParsing="false" onAction="#freezeEntryButton" text="freeze" />
-                        <Button fx:id="rotateButton" layoutX="512.0" layoutY="181.0" mnemonicParsing="false" onAction="#rotateSheetsAction" text="rotate" />
-                        <Button fx:id="swapButton" layoutX="432.0" layoutY="181.0" mnemonicParsing="false" onAction="#swapSheetsAction" text="swap" />
-                        <Button fx:id="deleteButton" layoutX="606.0" layoutY="181.0" mnemonicParsing="false" onAction="#deleteEntryAction" text="delete" />
-                        <Button fx:id="startButton" layoutX="989.0" layoutY="26.0" mnemonicParsing="false" onAction="#startGameAction" text="START" />
-                        <Button fx:id="leaveGameButton" layoutX="978.0" layoutY="500.0" mnemonicParsing="false" onAction="#leaveGameAction" text="leave game" />
-                        <Button fx:id="leaveLobbyButton" layoutX="835.0" layoutY="500.0" mnemonicParsing="false" onAction="#leaveLobbyAction" text="leave Lobby" />
-                        <Button fx:id="rollButton" layoutX="686.0" layoutY="24.0" mnemonicParsing="false" onAction="#rollActionSend" prefHeight="12.0" prefWidth="64.0" text="ROLL" />
-                        <fx:include fx:id="chatWindow" layoutX="800.0" layoutY="150.0" source="chatwindow.fxml" />
-                        <ListView fx:id="diceBox" layoutX="350.0" layoutY="57.0" onMouseClicked="#diceClick" orientation="HORIZONTAL" prefHeight="103.0" prefWidth="400.0" />
-                        <Button fx:id="highScoreButton" layoutX="978.0" layoutY="78.0" mnemonicParsing="false" onAction="#highScoreAction" text="High Score" />
-                        <ListView fx:id="entrySheet" layoutX="42.0" layoutY="54.0" prefHeight="430.0" prefWidth="262.0" />
-                        <Button fx:id="endTurnButton" layoutX="671.0" layoutY="444.0" mnemonicParsing="false" onMouseClicked="#endTurnAction" text="END TURN" />
-                        <Button fx:id="stealButton" layoutX="350.0" layoutY="181.0" mnemonicParsing="false" onAction="#stealEntryAction" prefHeight="30.0" prefWidth="70.0" text="steal" />
-                        <Label layoutX="350.0" layoutY="28.0" text="Dice" />
-                        <Button fx:id="entryEnterButton" layoutX="226.0" layoutY="496.0" mnemonicParsing="false" onMouseClicked="#entryEnterButtonAction" text="Enter" />
-                        <Label fx:id="stealLabel" layoutX="362.0" layoutY="222.0" text="0" />
-                        <Label fx:id="swapLabel" layoutX="440.0" layoutY="222.0" text="0" />
-                        <Label fx:id="shiftLabel" layoutX="522.0" layoutY="222.0" text="0" />
-                        <Label fx:id="crossOutLabel" layoutX="617.0" layoutY="222.0" text="0" />
-                        <Label fx:id="freezeLabel" layoutX="709.0" layoutY="222.0" text="0" />
-                        <ScrollPane hbarPolicy="NEVER" layoutX="350.0" layoutY="268.0">
-                           <content>
-                              <VBox fx:id="informationBox" prefHeight="150.0" prefWidth="400.0" />
-                           </content>
-                        </ScrollPane>
-                        <Slider fx:id="volumeSlider" blockIncrement="0.1" layoutX="14.0" layoutY="69.0" max="1.0" orientation="VERTICAL" prefHeight="341.0" prefWidth="16.0" value="0.5" />
-                        <ToggleButton fx:id="muteButton" layoutX="374.0" layoutY="500.0" mnemonicParsing="false" onAction="#muteButtonAction" text="Mute" />
-                        <Label fx:id="totalPointsLabel" layoutX="119.0" layoutY="500.0" text="0" />
+                        <MediaView fx:id="leverRoll" fitHeight="160.0" fitWidth="160.0" />
+                        <Button id="buttonRoll" fx:id="rollButton" mnemonicParsing="false" onAction="#rollActionSend" prefHeight="160.0" prefWidth="160.0" styleClass="header-section" textFill="WHITE">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </StackPane>
+                  <AnchorPane layoutX="371.0" layoutY="428.0" prefHeight="150.0" AnchorPane.leftAnchor="340.0" AnchorPane.topAnchor="400.0">
+                     <children>
+                        <Label fx:id="stealLabel" layoutX="285.0" layoutY="107.0" styleClass="content-section" text="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="285.0">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="swapLabel" layoutX="375.0" layoutY="107.0" styleClass="content-section" text="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="375.0">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="shiftLabel" layoutX="195.0" layoutY="107.0" styleClass="content-section" text="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="195.0">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="crossOutLabel" layoutX="15.0" layoutY="107.0" styleClass="content-section" text="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="15.0">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="freezeLabel" styleClass="content-section" text="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="105.0">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Button id="buttonFreeze" fx:id="freezeButton" layoutX="96.0" mnemonicParsing="false" onAction="#freezeEntryButton" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" AnchorPane.leftAnchor="90.0" AnchorPane.topAnchor="25.0" />
+                        <Button id="buttonShift" fx:id="rotateButton" layoutX="201.0" mnemonicParsing="false" onAction="#rotateSheetsAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" AnchorPane.leftAnchor="180.0" AnchorPane.topAnchor="25.0" />
+                        <Button id="buttonSwap" fx:id="swapButton" layoutX="381.0" mnemonicParsing="false" onAction="#swapSheetsAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" AnchorPane.leftAnchor="360.0" AnchorPane.topAnchor="25.0" />
+                        <Button id="buttonDelete" fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteEntryAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="25.0" />
+                        <Button id="buttonSteal" fx:id="stealButton" layoutX="287.0" mnemonicParsing="false" onAction="#stealEntryAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" AnchorPane.leftAnchor="270.0" AnchorPane.topAnchor="25.0" />
                      </children>
                   </AnchorPane>
-               </content></Tab>
-            <Tab fx:id="otherPlayersTab" text="Other Players 😈">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="1100.0">
-                     <children>
-                        <ListView fx:id="diceBoxOther" layoutX="350.0" layoutY="17.0" onMouseClicked="#diceClick" orientation="HORIZONTAL" prefHeight="103.0" prefWidth="400.0" />
-                        <HBox fx:id="hBoxEntries" layoutX="42.0" layoutY="150.0" prefHeight="384.0" prefWidth="1017.0" />
-                     </children>
-                  </AnchorPane>
-              </content>
-            </Tab>
-        </tabs>
-      </TabPane>
-   </children>
-</Pane>
+                  <Button fx:id="startButton" layoutX="1021.0" layoutY="61.0" mnemonicParsing="false" onAction="#startGameAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" text="START" />
+                  <Button fx:id="leaveGameButton" layoutX="1021.0" layoutY="550.0" mnemonicParsing="false" onAction="#leaveGameAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" text="leave  game" />
+                  <Button fx:id="leaveLobbyButton" layoutX="873.0" layoutY="550.0" mnemonicParsing="false" onAction="#leaveLobbyAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" text="leave Lobby" />
+                  <fx:include fx:id="chatWindow" layoutX="850.0" layoutY="155.0" source="chatwindow.fxml" AnchorPane.rightAnchor="-10.0" AnchorPane.topAnchor="155.0" />
+                  <ListView fx:id="diceBox" layoutX="415.0" layoutY="163.0" onMouseClicked="#diceClick" orientation="HORIZONTAL" prefHeight="103.0" prefWidth="400.0" AnchorPane.leftAnchor="360.0" AnchorPane.topAnchor="150.0" />
+                  <Button fx:id="highScoreButton" layoutX="901.0" layoutY="61.0" mnemonicParsing="false" onAction="#highScoreAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" text="High Score" />
+                  <ListView fx:id="entrySheet" layoutX="60.0" layoutY="80.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="275.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0" />
+                  <Button fx:id="endTurnButton" layoutX="380.0" layoutY="315.0" mnemonicParsing="false" onMouseClicked="#endTurnAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" text="END TURN" />
+                  <Label layoutX="559.0" layoutY="158.0" text="Dice" AnchorPane.leftAnchor="550.0" AnchorPane.topAnchor="130.0" />
+                  <Button fx:id="entryEnterButton" layoutX="255.0" layoutY="550.0" mnemonicParsing="false" onMouseClicked="#entryEnterButtonAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" text="Enter" />
+                  <Slider fx:id="volumeSlider" blockIncrement="0.1" layoutX="825.0" layoutY="239.0" max="1.0" orientation="VERTICAL" prefHeight="125.0" prefWidth="17.0" scaleX="2.0" scaleY="2.0" value="0.5" />
+                  <ToggleButton fx:id="muteButton" layoutX="793.0" layoutY="61.0" mnemonicParsing="false" onAction="#muteButtonAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" text="Mute" />
+                  <Label fx:id="totalPointsLabel" layoutX="210.0" layoutY="547.0" text="0" />
+                  <ScrollPane layoutX="411.0" layoutY="54.0" vbarPolicy="NEVER" AnchorPane.leftAnchor="360.0" AnchorPane.topAnchor="40.0">
+                     <content>
+                        <VBox fx:id="informationBox" prefHeight="80.0" prefWidth="398.0" />
+                     </content>
+                  </ScrollPane>
+                  <Label id="labelLogo" layoutX="431.0" layoutY="575.0" prefHeight="55.0" prefWidth="298.0" />
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
+               </padding>
+            </AnchorPane>
+         </content>
+      </Tab>
+      <Tab id="tab2" fx:id="otherPlayersTab" closable="false" text="Other Players 😈">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="1100.0" styleClass="root">
+               <children>
+                  <ListView fx:id="diceBoxOther" layoutX="350.0" layoutY="17.0" onMouseClicked="#diceClick" orientation="HORIZONTAL" prefHeight="103.0" prefWidth="400.0" />
+                  <HBox fx:id="hBoxEntries" layoutX="42.0" layoutY="150.0" prefHeight="384.0" prefWidth="1017.0" />
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+      <Tab text="testTab">
+        <content>
+          <AnchorPane fx:id="testTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <HBox fx:id="slotBox" layoutX="243.0" layoutY="113.0" prefHeight="200.0" prefWidth="200.0" />
+                  <Button fx:id="slotStart" layoutX="471.0" layoutY="213.0" mnemonicParsing="false" text="Play" />
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+  </tabs>
+</TabPane>

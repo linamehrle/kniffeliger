@@ -37,10 +37,14 @@ public class GameWindowHelper {
      * Loads dice images to Image array, such that images have only to be loaded once
      * @param imageArray Image array, to which the images are loaded
      */
-    public static void loadImagesToArray(Image[] imageArray){
+    public static void loadImagesToArray(Image[] imageArray, String imageType){
         IntStream.range(0, imageArray.length).forEach(i -> {
             try {
-                imageArray[i] = GameWindowHelper.diceImageLoader(i);
+                switch (imageType){
+                    case "number" -> imageArray[i] = GameWindowHelper.numberImageLoader(i);
+                    default -> imageArray[i] = GameWindowHelper.diceImageLoader(i);
+                }
+
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -64,6 +68,14 @@ public class GameWindowHelper {
         return new Image(String.valueOf(GameWindowController.class.getResource("/images/dice-" + saved + diceNumber  + ".png")), 64, 63.2, true, false);
     }
 
+    public static Image numberImageLoader(int diceNumber) throws FileNotFoundException {
+        String saved = "";
+        if (diceNumber > 6){
+            saved = "s";
+            diceNumber = diceNumber -6;
+        }
+        return new Image(String.valueOf(GameWindowController.class.getResource("/images/number-" + saved + diceNumber  + ".png")), 64, 63.2, true, false);
+    }
 
 
 
