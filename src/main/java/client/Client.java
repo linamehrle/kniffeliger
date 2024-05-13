@@ -4,7 +4,6 @@ import client.gui.Main;
 import client.networking.ClientInput;
 import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
-import client.networking.ConsoleInput;
 import client.networking.Pong;
 import org.apache.logging.log4j.Logger;
 import starter.Starter;
@@ -23,7 +22,6 @@ public class Client {
     Logger logger = Starter.getLogger();
 
     private Socket socket;
-    private ConsoleInput consoleInput;
     private ClientInput clientInput;
     private ClientOutput clientOutput;
     private Pong pong;
@@ -41,11 +39,6 @@ public class Client {
             //start the output stream
             clientOutput = new ClientOutput(socket);
 
-            //start the input thread from the console
-            consoleInput = new ConsoleInput(clientOutput);
-            Thread consoleThread = new Thread(consoleInput);
-            consoleThread.start();
-
             //start the input thread from the client
             clientInput = new ClientInput(socket, this);
             Thread clientThread = new Thread(clientInput);
@@ -61,27 +54,6 @@ public class Client {
             logger.info(e.getMessage());
             return;
         }
-
-//        // print welcome text
-//        String welcomeText = "======================================================================\n" +
-//                "====                        Kniffeliger                           ====\n" +
-//                "======================================================================\n" +
-//                "Welcome to Kniffeliger TestDemo.\n" +
-//                "======================================================================\n" +
-//                "You can use the following commands:\n" +
-//                "\\changeUsername <new username> to change your username\n" +
-//                "\\chat <message> to send a chat message to all other players\n" +
-//                "\\whisper <username> <message> to send a chat to only one other player\n" +
-//                "\\newLobby <name> to create a new lobby with the given name\n" +
-//                "\\showLobbies to get a list of all existing lobbies\n" +
-//                "\\showPlayers to et a list of all connected players\n" +
-//                "\\showHighScores to get a high score list\n" +
-//                "\\enterLobby <name> to enter a lobby of a given name\n" +
-//                "\\start to start a game in a lobby\n" +
-//                "\\gameAction to enter all commands belonging to the game\n" +
-//                "\\quit to leave the game\n" +
-//                "======================================================================\n";
-//        System.out.println(welcomeText);
 
         if (username.equals("default")) {
             String systemUsername = System.getProperty("user.name");
@@ -100,7 +72,6 @@ public class Client {
      */
     public void disconnect() {
         try {
-            consoleInput.stop();
             clientInput.stop();
             pong.stop();
             socket.close();
