@@ -20,26 +20,17 @@ public class Communication {
      */
     public static void broadcastToAll(CommandsServerToClient cmd, ArrayList<Player> playerList, String message) {
         for (Player player : playerList) {
-            Starter.getLogger().trace("Sent message <" + message + "> to " + player.getUsername());
+            if (player.isOnline()) {
+                logger.trace("Sent message <" + message + "> to " + player.getUsername() + " with command " + cmd);
 
-            ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
-            serverOutput.send(cmd, message);
-        }
-    }
-
-    /**
-     * sends a message from the server to all clients in the list but the single specified player
-     * @param player
-     * @param message
-     */
-    public static void broadcast(ArrayList<Player> listOfPlayers, Player player, String message) {
-        for (Player playerInList : listOfPlayers) {
-            if (!playerInList.equals(player)) {
-                ServerOutput serverOutput = playerInList.getPlayerThreadManager().getServerOutput(); //I know this is ugly, fix later
-                serverOutput.send(CommandsServerToClient.BRCT, message);
+                ServerOutput serverOutput = player.getPlayerThreadManager().getServerOutput();
+                serverOutput.send(cmd, message);
+            } else {
+                logger.info("player " + player.getUsername() + " is not online, did not send the message " + message);
             }
         }
     }
+
 
     /**
      * Sends a message from the server to the specified player

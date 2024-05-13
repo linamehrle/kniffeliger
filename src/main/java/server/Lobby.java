@@ -34,8 +34,6 @@ public class Lobby {
     private ArrayList<Player> playersInLobby = new ArrayList<>();
     private Logger logger = Starter.getLogger();
 
-    //private boolean gameIsRunning = false; needed?
-
     /**
      * Constructor for the lobby, the initial status is open
      * @param name
@@ -81,6 +79,20 @@ public class Lobby {
         }
     }
 
+    public void prepareForGame(Player player) {
+        logger.debug("TRYING TO PREPARE FOR THE GAME");
+
+        if (!playersInLobby.contains(player)) {
+            Communication.sendToPlayer(CommandsServerToClient.BRCT, player, "You are not in this lobby, please enter before starting a game!");
+        } else if (numbOfPlayers < 2) {
+            Communication.sendToPlayer(CommandsServerToClient.BRCT, player, "There are not enough players in this lobby to start a game");
+        } else {
+            // sets the player in the lobby
+            gameManager.setPlayers(playersInLobby);
+            gameManager.prepareForStart();
+        }
+    }
+
     /**
      * This method starts the game if enough players are in the lobby. Only a player that is in the lobby can start a
      * game in the lobby
@@ -89,6 +101,11 @@ public class Lobby {
     public void startGame(Player player) {
         logger.debug("TRYING TO START GAME");
 
+        if (status.equals("ongoing game")) {
+            logger.info("Game is already running");
+            return;
+        }
+
         if (!playersInLobby.contains(player)) {
             Communication.sendToPlayer(CommandsServerToClient.BRCT, player, "You are not in this lobby, please enter before starting a game!");
         } else if (numbOfPlayers < 2) {
@@ -96,9 +113,6 @@ public class Lobby {
         } else {
             status = "ongoing game";
             Communication.broadcastToAll(CommandsServerToClient.LOST, ListManager.getPlayerList(), name + " (ongoing game)");
-
-            // sets the player in the lobby
-            gameManager.setPlayers(playersInLobby);
 
             // starts the game
             Thread gameThread = new Thread(gameManager);
@@ -128,9 +142,11 @@ public class Lobby {
                 status = "open";
                 Communication.broadcastToAll(CommandsServerToClient.LOST, ListManager.getPlayerList(), name + " (open)");
             }
+        } else {
+            player.setOnline(false);
+            gameManager.getAnswer("NOTONLINE", player);
         }
         Communication.broadcastToAll(CommandsServerToClient.LOPL, playersInLobby, getPlayersInLobbyAsString());
-        //TODO how to handle leaving a lobby when a game is running?
     }
 
 
@@ -145,6 +161,19 @@ public class Lobby {
             status = "open";
             Communication.broadcastToAll(CommandsServerToClient.LOST, ListManager.getPlayerList(), name + " (open)");
         }
+
+        ArrayList<Player> playersStillInLobby = new ArrayList<>();
+
+        for (Player player : playersInLobby) {
+            logger.debug("checking for removal: " + player.getUsername() + " with status isOnline " + player.isOnline());
+            if (player.isOnline()) {
+                playersStillInLobby.add(player);
+            }
+        }
+
+        playersInLobby = playersStillInLobby;
+        Communication.broadcastToAll(CommandsServerToClient.LOPL, playersInLobby, getPlayersInLobbyAsString());
+        logger.info("the current lobby is " + name + " with players " + getPlayersInLobbyAsString());
     }
 
     /**

@@ -2,8 +2,6 @@ package client.gui;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

@@ -1,17 +1,13 @@
 package client.gui;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import starter.Starter;
-
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
@@ -20,12 +16,6 @@ import java.util.stream.IntStream;
  * Class that contains helper function for GameWindow for loading data (images) and formatting and conversions
  */
 public class GameWindowHelper {
-
-    //Name of entries, is used to initialize EntrySheets
-    public static final String[] entryNames = {"ones", "twos", "threes", "fours", "fives", "sixes",
-            "threeOfAKind", "fourOfAKind", "fullHouse", "smallStraight", "largeStraight",
-            "kniffeliger", "chance", "pi"};
-
 
     /* #################################################################################################################
 
@@ -132,47 +122,6 @@ public class GameWindowHelper {
     public static AudioClip loadSoundEffect(String fileName) throws FileNotFoundException {
         return new AudioClip(Objects.requireNonNull(GameWindowController.class.getResource("/audio/" + fileName)).toExternalForm());
     }
-
-    /* #################################################################################################################
-
-    Initialization and Creation of Game Elements
-
-     ################################################################################################################ */
-
-    /**
-     * Method create HashMap that has names of entries (e.g. "ones", "FourOfAKind" ...) as key and integer enumeration as values
-     * used to get indices of entries in ObservableList representing entry sheet
-     * @return HashMap of entry name - integer pairs
-     */
-    public static HashMap<String, Integer> makeEntryToIntMap () {
-        HashMap<String, Integer> entrySheetNameIndexMap = new HashMap<>();
-        for (int k = 0; k < entryNames.length; k++){
-            //Begin ID number of entries at 1, such that ones = 1, twos = 2 etc.
-
-            entrySheetNameIndexMap.put(entryNames[k], k);
-        }
-
-        return entrySheetNameIndexMap;
-    }
-
-    /**
-     * Method to construct elements of entry sheet
-     * @return Observable list of entries in entry sheet (objects of EntrySheetGUImplementation)
-     */
-    public static ObservableList<EntrySheetGUImplementation> makeEntrySheet(){
-        String[] entryNames = GameWindowHelper.entryNames;
-        EntrySheetGUImplementation[] entryElements = new EntrySheetGUImplementation[entryNames.length];
-        int k = 0;
-        for (String name : entryNames){
-            //Begin ID number of entries at 1, such that ones = 1, twos = 2 etc.
-            entryElements[k] = new EntrySheetGUImplementation(k+1, name);
-            k++;
-        }
-        return FXCollections.observableArrayList(entryElements);
-    }
-
-
-
 
 
     /* #################################################################################################################

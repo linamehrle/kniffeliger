@@ -1,14 +1,17 @@
 package server.gamelogic;
 
 import java.util.Arrays;
-import java.util.Scanner;
+import org.apache.logging.log4j.Logger;
 import server.Player;
-import server.networking.Communication;
+import starter.Starter;
 
 /**
  * Entry sheet class to build entry sheets that are associated with a player.
  */
 public class EntrySheet {
+
+    private static Logger logger = Starter.getLogger();
+
     // entry sheet length
     private static final int ENTRY_SHEET_LENGTH = 14;
 
@@ -30,7 +33,9 @@ public class EntrySheet {
     private static final Entry defaultKniffeliger = new Entry("kniffeliger", DEFAULT_VALUE);
     private static final Entry defaultChance = new Entry("chance", DEFAULT_VALUE);
     private static final Entry defaultPi = new Entry("pi", DEFAULT_VALUE);
-    private static final Entry[] defaultEntrySheet = new Entry[]{defaultOnes, defaultTwos, defaultThrees, defaultFours, defaultFives, defaultSixes, defaultThreeOfAKind, defaultFourOfAKind, defaultFullHouse, defaultSmallStraight, defaultLargeStraight, defaultKniffeliger, defaultChance, defaultPi};
+    private static final Entry[] defaultEntrySheet = new Entry[]{defaultOnes, defaultTwos, defaultThrees, defaultFours,
+            defaultFives, defaultSixes, defaultThreeOfAKind, defaultFourOfAKind, defaultFullHouse, defaultSmallStraight,
+            defaultLargeStraight, defaultKniffeliger, defaultChance, defaultPi};
 
 
     // player that is associated with entry sheet
@@ -59,8 +64,8 @@ public class EntrySheet {
     private Entry pi = new Entry("pi", DEFAULT_VALUE);
 
     // entry sheet as an Entry-array
-    private Entry[] entrySheet = new Entry[]{ones, twos, threes, fours, fives, sixes, threeOfAKind, fourOfAKind, fullHouse, smallStraight, largeStraight, kniffeliger, chance, pi};
-
+    private Entry[] entrySheet = new Entry[]{ones, twos, threes, fours, fives, sixes, threeOfAKind, fourOfAKind, fullHouse,
+            smallStraight, largeStraight, kniffeliger, chance, pi};
 
     /**
      * Constructor that builds new entry sheet with unique player (that has unique username and id) which is handed to
@@ -211,6 +216,7 @@ public class EntrySheet {
     public void setPlayer(Player newPlayer) {
         player = newPlayer;
         username = newPlayer.getUsername();
+        logger.debug("New Player: " + username);
     }
 
     /**
@@ -234,7 +240,7 @@ public class EntrySheet {
             // if the correct entry has been detected, so if
             // 1. the entry exists (name is valid)
             // 2. it is not final
-            // 3. it is not forzen
+            // 3. it is not frozen
             // then the value of the entry on entrySheet can be changed to the value of the value of the newEntry
             if (entry.getName().equals(newEntry.getName()) && !entry.getIsFinal() && !entry.getFrozenStatus()) {
                 entry.setValue(newEntry.getValue());
@@ -285,11 +291,14 @@ public class EntrySheet {
      * @return String with entry sheet values
      */
     public String printEntrySheet() {
-        String message = "Name: " + username + ",";
-        for (int i = 0; i < ENTRY_SHEET_LENGTH - 1; i++) {
-            message = message + entrySheet[i].getName() + ": " + entrySheet[i].getValue() + ",";
+        String message = username + ":";
+        for (int i = 0; i < ENTRY_SHEET_LENGTH; i++) {
+            if (entrySheet[i].getIsFinal()) {
+                message = message + entrySheet[i].getName() + " " + entrySheet[i].getValue() + ",";
+            } else {
+                message = message + entrySheet[i].getName() + ",";
+            }
         }
-        message = message + entrySheet[ENTRY_SHEET_LENGTH - 1].getName() + ": " + entrySheet[ENTRY_SHEET_LENGTH - 1].getValue();
         return message;
     }
 
@@ -619,5 +628,4 @@ public class EntrySheet {
         }
         return res;
     }
-
 }

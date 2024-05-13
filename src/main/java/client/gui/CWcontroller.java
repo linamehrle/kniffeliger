@@ -48,9 +48,6 @@ public class CWcontroller implements Initializable {
 
     //will be used later to select user for whisper chat
     String[] userList = new String[]{"dummy"};
-    //private List<String> userNameList;
-    //ArrayList<Player> playerList;
-    //private ClientOutput networkManager;
 
     /**
      * Initializer for the ChatWindow is called when FXML is loaded
@@ -152,11 +149,6 @@ public class CWcontroller implements Initializable {
         this.recipient = recipient;
     }
 
-    //private class getClickID implements EventHandler<Event>{
-        //@Override
-        //public void handle(Event evt) {
-            //}
-    //}
 
     /**
      * This method adds text to a VBox. It is used to display received messages
@@ -198,12 +190,6 @@ public class CWcontroller implements Initializable {
      */
     public void sendMsgtoServer(String message){
 
-        //at the moment the default is to send a message to everybody (if no @... is at the beginning)
-        /*if (message.charAt(0) != '@') {
-            ClientOutput.sendToServer("CHAT " + message);
-            return;
-        }*/
-
         String receiver = getRecipient();
         System.out.println("the receiver is: " + receiver);
 
@@ -243,19 +229,19 @@ public class CWcontroller implements Initializable {
         choiceBox.setItems(userNameList);
         userNameList.addAll(values);
     }
-    //public void setNetworkManager(ClientOutput clientOutput){
-        //this.networkManager = clientOutput;
-    //}
 
     /**
      * method to display message in main display area of chat window (on left side in light gray)
      * @param message message to be displayed
      */
     public void displayReceivedMessage(String message) {
-        //display this in the chat window, message is "username: message"
         addMsgReceived(message, msgDisplayAll);
     }
 
+    /**
+     * Updates the list of player to choose from for the whisper chat
+     * @param playerlist
+     */
     public void updatePlayerList(String playerlist) {
         playerlist = "all,lobby," + playerlist;
         userList = playerlist.split(",");

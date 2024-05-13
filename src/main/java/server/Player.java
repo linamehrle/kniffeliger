@@ -29,7 +29,7 @@ public class Player {
      * This map saves all the action dice a player gets during the game, the first field is the name of the action dice
      * and the second the current count of this specific action die
      */
-    private HashMap<ActionDiceEnum, Integer> actionDice = new HashMap<>();
+    protected HashMap<ActionDiceEnum, Integer> actionDice = new HashMap<>();
     private ClientThread playerThreadManager;
     private ArrayList<Player> playerList;
     private Lobby lobby;
@@ -45,6 +45,8 @@ public class Player {
      * reconnecting possible
      */
     private boolean isOnline;
+
+    //private boolean entryMade;
 
     /**
      * The constructor for the Player class. It starts a new ClientThread per Player.
@@ -68,6 +70,7 @@ public class Player {
      */
     public Player(String username) {
         this.username = username;
+        prepareForGame();
     }
 
     /**
@@ -175,7 +178,6 @@ public class Player {
     public void increaseActionDiceCount(ActionDiceEnum diceName) {
         int currentCount = actionDice.get(diceName);
         actionDice.replace(diceName, currentCount + 1);
-        Communication.sendToPlayer(CommandsServerToClient.BRCT, this, "You got a new action die: " + diceName.toString());
     }
 
     /**
@@ -185,7 +187,6 @@ public class Player {
     public void decreaseActionDiceCount(ActionDiceEnum diceName) {
         int currentCount = actionDice.get(diceName);
         actionDice.replace(diceName, currentCount - 1);
-        Communication.sendToPlayer(CommandsServerToClient.ACTN, this, getActionDiceAsString());
     }
 
     /**
@@ -251,5 +252,13 @@ public class Player {
         actionDice.put(ActionDiceEnum.CROSSOUT, 0);
         actionDice.put(ActionDiceEnum.SHIFT, 0);
         actionDice.put(ActionDiceEnum.SWAP, 0);
+    }
+
+    public boolean isOnline() {
+        return isOnline;
+    }
+
+    public void setOnline(boolean online) {
+        isOnline = online;
     }
 }
