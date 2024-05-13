@@ -52,9 +52,17 @@
 
 .button {
     -fx-background-color: #ff9acf;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
+
 }
 .button:hover {
-    -fx-background-color: black;
+    -fx-background-color: #ff9acf;
+    -fx-effect: none;
+}
+
+.button:pressed {
+    -fx-background-color: #ff9acf;
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 30, 0.0 , 0 , 0 );
 }
 
 
@@ -128,6 +136,7 @@
     -fx-background-size: 80 80;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
     -fx-background-color: #ff9acf;
 }
 
@@ -136,8 +145,8 @@
     -fx-background-size: 80 80;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
     -fx-background-color: #ff9acf;
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 20, 0.0 , 0 , 0 );
 }
 
 #labelLogo {
@@ -145,7 +154,7 @@
     -fx-background-size: 151 55;
     -fx-background-repeat: no-repeat;
     -fx-background-position:center;
-    -fx-background-color: #ff9acf;
+    -fx-background-color: #7d0041;
 
 }
 
