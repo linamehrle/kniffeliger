@@ -282,7 +282,7 @@ public class GameWindowController implements Initializable {
 
         try {
             buttonSoundEffect1 = GameWindowHelper.loadSoundEffect("button1.mp3");
-            buttonSoundEffect2 = GameWindowHelper.loadSoundEffect("button2.mp3");
+            buttonSoundEffect2 = GameWindowHelper.loadSoundEffect("soundEffect2.mp3");
             logger.trace("Sound effects loaded.");
         } catch (FileNotFoundException e) {
             logger.info("Sound effects not found.");
@@ -309,6 +309,8 @@ public class GameWindowController implements Initializable {
             public void changed(ObservableValue<? extends Number> ov,
                                 Number oldVal, Number newVal) {
                 gameMainThemePlayer.setVolume(volumeSlider.getValue());
+                buttonSoundEffect1.setVolume(volumeSlider.getValue());
+                buttonSoundEffect2.setVolume(volumeSlider.getValue());
                 if (volumeSlider.getValue() == 0 && !muteButton.isSelected()) {
                     muteButton.fire();
                 } else if (volumeSlider.getValue() != 0 && muteButton.isSelected()) {
@@ -463,7 +465,6 @@ public class GameWindowController implements Initializable {
     @FXML
     public void muteButtonAction(ActionEvent event) {
         if (muteButton.isSelected()){
-            buttonSoundEffect1.play();
             gameMainThemePlayer.pause();
             gameMainThemePlayer.setMute(true);
             volumeSlider.adjustValue(0.0);
@@ -796,6 +797,7 @@ public class GameWindowController implements Initializable {
                 });
             }
         }
+        buttonSoundEffect2.play();
         logger.info("second tab initialized");
         ClientOutput.send(CommandsClientToServer.STRG, "lets start the game :)");
     }

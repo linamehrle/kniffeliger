@@ -29,10 +29,10 @@
                      </font>
                   </Label>
                   <Label layoutX="60.0" layoutY="547.0" text="Total points:" />
-                  <StackPane fx:id="rollStackPane" layoutX="620.0" layoutY="275.0">
+                  <StackPane fx:id="rollStackPane" layoutX="630.0" layoutY="275.0">
                      <children>
-                        <MediaView fx:id="leverRoll" fitHeight="160.0" fitWidth="160.0" />
-                        <Button id="buttonRoll" fx:id="rollButton" mnemonicParsing="false" onAction="#rollActionSend" prefHeight="160.0" prefWidth="160.0" styleClass="header-section" textFill="WHITE">
+                        <MediaView fx:id="leverRoll" fitHeight="150.0" fitWidth="150.0" />
+                        <Button id="buttonRoll" fx:id="rollButton" alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#rollActionSend" prefHeight="150.0" prefWidth="150.0" styleClass="header-section" text="ROLL" textAlignment="CENTER" textFill="WHITE">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -41,27 +41,30 @@
                   </StackPane>
                   <AnchorPane layoutX="371.0" layoutY="428.0" prefHeight="150.0" AnchorPane.leftAnchor="340.0" AnchorPane.topAnchor="400.0">
                      <children>
-                        <Label fx:id="stealLabel" layoutX="285.0" layoutY="107.0" styleClass="content-section" text="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="285.0">
+                        <Label alignment="CENTER" prefWidth="80.0" text="steal" AnchorPane.leftAnchor="270.0" AnchorPane.topAnchor="5.0" />
+                        <Label alignment="CENTER" prefWidth="80.0" text="freeze" textAlignment="CENTER" AnchorPane.leftAnchor="90.0" AnchorPane.topAnchor="5.0" />
+                        <Label alignment="CENTER" prefWidth="90.0" text="cross" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="5.0" />
+                        <Label fx:id="stealLabel" alignment="CENTER" layoutX="285.0" layoutY="107.0" styleClass="content-section" text="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="285.0">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="swapLabel" layoutX="375.0" layoutY="107.0" styleClass="content-section" text="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="375.0">
+                        <Label fx:id="swapLabel" alignment="CENTER" layoutX="375.0" layoutY="107.0" styleClass="content-section" text="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="375.0">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="shiftLabel" layoutX="195.0" layoutY="107.0" styleClass="content-section" text="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="195.0">
+                        <Label fx:id="shiftLabel" alignment="CENTER" layoutX="195.0" layoutY="107.0" styleClass="content-section" text="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="195.0">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="crossOutLabel" layoutX="15.0" layoutY="107.0" styleClass="content-section" text="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="15.0">
+                        <Label fx:id="crossOutLabel" alignment="CENTER" layoutX="15.0" layoutY="107.0" styleClass="content-section" text="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="15.0">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="freezeLabel" styleClass="content-section" text="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="105.0">
+                        <Label fx:id="freezeLabel" alignment="CENTER" styleClass="content-section" text="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="105.0">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -71,6 +74,8 @@
                         <Button id="buttonSwap" fx:id="swapButton" layoutX="381.0" mnemonicParsing="false" onAction="#swapSheetsAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" AnchorPane.leftAnchor="360.0" AnchorPane.topAnchor="25.0" />
                         <Button id="buttonDelete" fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteEntryAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="25.0" />
                         <Button id="buttonSteal" fx:id="stealButton" layoutX="287.0" mnemonicParsing="false" onAction="#stealEntryAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" AnchorPane.leftAnchor="270.0" AnchorPane.topAnchor="25.0" />
+                        <Label alignment="CENTER" prefWidth="80.0" text="shift" AnchorPane.leftAnchor="180.0" AnchorPane.topAnchor="5.0" />
+                        <Label alignment="CENTER" prefWidth="80.0" text="swap" AnchorPane.leftAnchor="360.0" AnchorPane.topAnchor="5.0" />
                      </children>
                   </AnchorPane>
                   <Button fx:id="startButton" layoutX="1021.0" layoutY="61.0" mnemonicParsing="false" onAction="#startGameAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" text="START" />
