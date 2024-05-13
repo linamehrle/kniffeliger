@@ -588,7 +588,6 @@ public class GameWindowController implements Initializable {
         buttonSoundEffect1.play();
         rollButtonAnimation.seek(Duration.ZERO);
         rollButtonAnimation.play();
-        buttonSoundEffect1.play();
         String saveDiceString = GameWindowHelper.diceStashedArrToString(diceStashedList);
 
         logger.debug("Sending the dice to be saved: " + saveDiceString);
@@ -662,7 +661,7 @@ public class GameWindowController implements Initializable {
         for (int i=0; i < diceListToUpdate.size() && i < diceValues.length; i++) {
             diceListToUpdate.get(i).setDiceValue(diceValues[i]);
         }
-        buttonSoundEffect1.play();
+        buttonSoundEffect2.play();
         diceBox.refresh();
         diceBoxOther.refresh();
     }
