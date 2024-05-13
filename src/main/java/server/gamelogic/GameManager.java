@@ -632,7 +632,7 @@ public class GameManager implements Runnable {
      */
 
     /**
-     * Checks if sum of all dice is modulo 5 and randomly adds action dice, if so.
+     * Checks if sum of all dice is modulo 3 and randomly adds action dice, if so.
      *
      * @param playerDice final dice value of a player
      * @return true, if player gets action dice, false, if not
