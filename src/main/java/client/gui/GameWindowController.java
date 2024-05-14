@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-
 import animatefx.animation.BounceIn;
 import animatefx.animation.FadeOutDownBig;
 import animatefx.animation.Flash;
@@ -37,17 +36,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 import org.apache.logging.log4j.Logger;
-import animatefx.animation.JackInTheBox;
-import animatefx.util.ParallelAnimationFX;
-import animatefx.util.SequentialAnimationFX;
 import starter.Starter;
-
-import static java.awt.SystemColor.text;
 
 
 /**
@@ -293,7 +286,7 @@ public class GameWindowController implements Initializable {
         highScoreButtonBounce.setResetOnFinished(true);
 
 
-        
+
         // Load sounds
         try {
             gameMainThemePlayer = GameWindowHelper.loadMedia("gameTheme.mp3");
