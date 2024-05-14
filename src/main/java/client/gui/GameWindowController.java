@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import animatefx.animation.*;
+import animatefx.util.SequentialAnimationFX;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -142,15 +143,15 @@ public class GameWindowController implements Initializable {
     private MediaPlayer rollButtonAnimation;
 
     // Animations
-    private FadeOutDownBig startButtonAnimationFade;
+    private ZoomOut startButtonAnimationFade;
     private Flash startButtonAnimationFlash;
     private BounceIn highScoreButtonBounce;
     private FadeOutRightBig shiftAnimationFade;
     private RotateOutDownLeft swapAnimationFade;
     private Flash stealAnimationFlash;
     private Wobble freezeAnimationWobble;
-    private Swing deleteAnimationSwing;
-
+    private ZoomOut deleteAnimationSwing;
+    private SequentialAnimationFX diceBoxAnimation;
 
 
     /**
@@ -274,7 +275,7 @@ public class GameWindowController implements Initializable {
         disableAllGameFields();
 
         // Initialize animations
-        startButtonAnimationFade = new FadeOutDownBig(startButton);
+        startButtonAnimationFade = new ZoomOut(startButton);
         // startButtonAnimationFade.setResetOnFinished(true);
 
         startButtonAnimationFlash = new Flash(startButton);
@@ -295,8 +296,11 @@ public class GameWindowController implements Initializable {
         freezeAnimationWobble = new Wobble(entrySheet);
         freezeAnimationWobble.setResetOnFinished(true);
 
-        deleteAnimationSwing = new Swing(entrySheet);
+        deleteAnimationSwing = new ZoomOut(entrySheet);
         deleteAnimationSwing.setResetOnFinished(true);
+
+        diceBoxAnimation = new SequentialAnimationFX(diceBox, new FadeOutDownBig(), new FadeInDownBig(), new Bounce());
+        diceBoxAnimation.setResetOnFinished(true);
 
 
         // Load media / audio
@@ -629,6 +633,7 @@ public class GameWindowController implements Initializable {
         buttonSoundEffect1.play();
         rollButtonAnimation.seek(Duration.ZERO);
         rollButtonAnimation.play();
+        diceBoxAnimation.play();
         String saveDiceString = GameWindowHelper.diceStashedArrToString(diceStashedList);
 
         logger.debug("Sending the dice to be saved: " + saveDiceString);
