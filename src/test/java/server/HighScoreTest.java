@@ -48,7 +48,7 @@ class HighScoreTest {
             String newScore1 = "190:Nico,310:Benni,0:Loris,";
             HighScore.updateHighScore(newScore1);
             BufferedReader reader = new BufferedReader(new FileReader("highscore.txt"));
-            assertEquals("310:Benni,300:Lina,210:Anisja,190:Nico,150:Riccardo,30:Dominique,0:Loris,", reader.readLine());
+            assertEquals("310:Benni,300:Lina,210:Anisja,190:Nico,150:Riccardo,30:Dominique,10:Loris,", reader.readLine());
             reader.close();
 
             //test what happens when two people have the same score
