@@ -36,6 +36,8 @@ public class GameManager implements Runnable {
 
     private Player currentPlayer;
 
+    private EntrySheet[] allEntrySheets;
+
     /**
      * Game gets constructed; dices get initiated in constructor.
      */
@@ -86,7 +88,7 @@ public class GameManager implements Runnable {
         for (int i = 0; i < playerArraysList.size(); i++) {
             players[i] = playerArraysList.get(i);
         }
-        EntrySheet[] allEntrySheets = new EntrySheet[players.length];
+        allEntrySheets = new EntrySheet[players.length];
         for (int i = 0; i < players.length; i++) {
             allEntrySheets[i] = new EntrySheet(players[i]);
             //initiates all entry sheets in the gui
@@ -785,7 +787,7 @@ public class GameManager implements Runnable {
             player.increaseActionDiceCount(ActionDiceEnum.SWAP);
         } else {
             player.removeAllActionDice();
-            //TODO give -50 points?
+            EntrySheet.getEntrySheetByName(allEntrySheets, player.getUsername()).punishCheatCodes();
         }
         Communication.sendToPlayer(CommandsServerToClient.ACTN, player, player.getActionDiceAsString());
     }

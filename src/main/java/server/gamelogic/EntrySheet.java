@@ -186,6 +186,10 @@ public class EntrySheet {
         return totalPoints;
     }
 
+    public void punishCheatCodes() {
+        //TODO
+    }
+
     /**
      * Access username which is also name of entry sheet.
      *
