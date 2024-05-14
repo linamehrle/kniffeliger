@@ -148,6 +148,8 @@ public class GameWindowController implements Initializable {
     private FadeOutRightBig shiftAnimationFade;
     private RotateOutDownLeft swapAnimationFade;
     private Flash stealAnimationFlash;
+    private Wobble freezeAnimationWobble;
+    private Swing deleteAnimationSwing;
 
 
 
@@ -290,6 +292,11 @@ public class GameWindowController implements Initializable {
         stealAnimationFlash = new Flash(entrySheet);
         stealAnimationFlash.setResetOnFinished(true);
 
+        freezeAnimationWobble = new Wobble(entrySheet);
+        freezeAnimationWobble.setResetOnFinished(true);
+
+        deleteAnimationSwing = new Swing(entrySheet);
+        deleteAnimationSwing.setResetOnFinished(true);
 
 
         // Load media / audio
@@ -433,6 +440,7 @@ public class GameWindowController implements Initializable {
      */
     public void freezeEntryButton(ActionEvent event) {
         buttonSoundEffect1.play();
+        freezeAnimationWobble.play();
         SceneController.showActionPlayerAndFieldWindow(playersInLobby, "freeze");
     }
 
@@ -462,6 +470,7 @@ public class GameWindowController implements Initializable {
      */
     public void deleteEntryAction(ActionEvent event) {
         buttonSoundEffect1.play();
+        deleteAnimationSwing.play();
         SceneController.showActionPlayerAndFieldWindow(playersInLobby, "delete");
     }
 
