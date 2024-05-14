@@ -65,9 +65,13 @@
     -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 30, 0.0 , 0 , 0 );
 }
 
-.list-view {
-    -fx-background-color: #fe9ace;
-    -fx-border-color: white ;
+.list-view .list-cell:even {
+    -fx-background-color: #ffa8d7; /* #fe9ace; */
+    -fx-text-fill: black;
+}
+.list-view .list-cell:odd {
+    -fx-background-color: #ffa8d7;
+    -fx-text-fill: black;
 }
 
 
@@ -86,7 +90,7 @@
     -fx-alignment: center;
     -fx-padding: 10 10 10 10;
     -fx-border-width: 1;
-    -fx-border-color: #ee82ee ;
+    -fx-border-color: #ee82ee;
 }
 
 #buttonSwap {
@@ -201,13 +205,14 @@
 }
 
 #informationBox {
-    -fx-background-color: #fe9ace;
-    -fx-border-color: white ;
+    -fx-background-color: #ffa8d7;
+    -fx-border-color: #e5017d ;
     -fx-font-size: 18;
+    -fx-text-fill: #e5017d;
 }
 
 #diceBox {
-    -fx-background-color: #fe9ace;
+    -fx-background-color: #ffa8d7;
     -fx-border-color: white ;
 }
 
