@@ -103,7 +103,7 @@ public class GameManager implements Runnable {
         Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "The game starts.");
 
         // starting 14 rounds
-        for (int round = 0; round < 3; round++) {
+        for (int round = 0; round < ROUNDS; round++) {
             logger.log(gameLogic, "Round " + (round + 1) + " started");
 
             // loop through all the players
@@ -646,8 +646,8 @@ public class GameManager implements Runnable {
         // if the sum of all dice is dividable by 5 then add action dice
         if (sum % DIVIDABLE_BY == 0 && sum != 0) {
             // rolls action dice
-            //int random = (int) Math.floor(Math.random() * 6 + 1);
-            int random = 6; //for debugging purposes
+            int random = (int) Math.floor(Math.random() * 6 + 1);
+            //int random = 6; //for debugging purposes
 
             // adds action dice to existing dice of player
             switch (random) {
