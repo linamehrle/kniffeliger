@@ -77,6 +77,8 @@ public class GameManager implements Runnable {
      */
     public synchronized void starter() throws InterruptedException {
         logger.trace("starter()");
+        wait(100);
+        logger.trace("finished waiting");
 
         //initializes the hashMap of action dices in the player and sets the boolean isInGame to true
         for (Player player : playerArraysList) {
@@ -130,6 +132,7 @@ public class GameManager implements Runnable {
                 // notify players which turn is
                 Communication.broadcastToAll(CommandsServerToClient.STRT, playerArraysList,
                         currentPlayer.getUsername() + " Main");
+                Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "It's the main phase of the game!");
                 Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList,
                         currentPlayer.getUsername() + "'s turn.");
                 Communication.sendToPlayer(CommandsServerToClient.BRCT,
@@ -137,35 +140,21 @@ public class GameManager implements Runnable {
 
                 logger.log(gameLogic, currentPlayer.getUsername() + "'s turn.");
 
-                // TODO: connection loss handling is done here, Riccardo should check this shit
-                // if player is not connected anymore then the game manager handles it with playForPlayer method
-                // adds action dice if necessary (this part stay if Lina can still do the reconnect) and sets it true
-                // that an entry was made and the turn is ended
 
-                /*
-                If the player is disconnected, there are no input or output streams and no gui so nothing to communicate
-                The status only needs to be communicated to the other players at the moment
-                 */
+                // if player is not connected anymore, then the game manager handles it with playForPlayer method
+                // and sets it true that an entry was made and the turn is ended
                 if (!currentPlayer.isOnline()) {
-                    logger.info("Curent player is not online");
+                    logger.info("Current player is not online");
 
                     Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList,
                             "The player " + currentPlayer.getUsername() + " is not online anymore, playing for them.");
 
-                    // entry is made for player and communicated afterward
+                    // entry is made for player and communicated afterwards
                     playForPlayer(currentPlayer, currentEntrySheet, allDice);
                     Communication.broadcastToAll(CommandsServerToClient.ENTY, playerArraysList, currentEntrySheet.printEntrySheet());
-                    //Communication.sendToPlayer(CommandsServerToClient.PONT, currentPlayer, String.valueOf(currentEntrySheet.getTotalPoints()));
-
-                    // action dice is added and communicated to the player that is not yet connected again
-                    //addActionDice(allDice, currentPlayer);
-                    //Communication.sendToPlayer(CommandsServerToClient.ACTN, currentPlayer, currentPlayer.getActionDiceAsString());
-                    //Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "You got a new action die.");
-
-                    // entry was made for player and turn is ended (so it does not enter the while loop where player can choose actions)
-                    //Communication.sendToPlayer(CommandsServerToClient.ENDT, currentPlayer, "turn endet");
                     entryMade = true;
                     endTurn = true;
+                    wait(100);
                 }
 
                 while (!entryMade || !endTurn) {
@@ -451,6 +440,8 @@ public class GameManager implements Runnable {
 
                 // notify players which turn is
                 Communication.broadcastToAll(CommandsServerToClient.STRT, playerArraysList, currentPlayer.getUsername() + " ShiftSwap");
+                Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "It's the shift and swap phase of the game!");
+                Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "Its " + currentPlayer.getUsername() + "'s turn!");
                 Communication.sendToPlayer(CommandsServerToClient.BRCT, currentPlayer, "-- It's your turn!");
 
                 logger.log(gameLogic, currentPlayer.getUsername() + "'s turn.");
@@ -464,7 +455,6 @@ public class GameManager implements Runnable {
                     finishedSwapOrShift = true;
                 }
 
-                // TODO: added condition that player needs to be online, if s/he wants to play an action dice
                 while (!finishedSwapOrShift && currentPlayer.isOnline()) {
                     logger.debug("Entered while loop for shift and swap");
                     // wait for input
