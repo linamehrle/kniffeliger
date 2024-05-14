@@ -162,8 +162,8 @@ public class GameWindowController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         logger.info("Game Window initialized");
-        Font.loadFont(getClass().getResourceAsStream("/resources/fonts/SpaceAge.ttf"), 14);
-        logger.trace("Font loaded");
+        // Font.loadFont(getClass().getResourceAsStream("/resources/fonts/SpaceAge.ttf"), 14);
+        // logger.trace("Font loaded");
 
         //Set this instance of GameWindowController as controller in main
         Main.setGameWindowController(this);
@@ -699,7 +699,7 @@ public class GameWindowController implements Initializable {
      * @param informationText
      * String to be displayed in information box
      */
-    //TODO: Move layout (font, colours) to CSS?
+
     public void displayInformationText(String informationText) {
         TextFlow textFlow = new TextFlow();
         //Background colour
