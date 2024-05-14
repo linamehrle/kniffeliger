@@ -21,17 +21,19 @@ import java.util.ResourceBundle;
 public class TrailerController implements Initializable {
 
     private static Logger logger = Starter.getLogger();
-    private LobbyWindowController lobbyWindowController;
 
     @FXML
     private MediaView trailerMediaView;
     private MediaPlayer trailerPlayer;
 
 
-
+    /**
+     * Initialize method that is called when TrailerWindow.fxml is loaded
+     * @param location
+     * @param resources
+     */
     public void initialize(URL location, ResourceBundle resources) {
 
-        lobbyWindowController = Main.getLobbyWindowController();
         // Load Roll button animation
         try {
             trailerPlayer = GameWindowHelper.loadMedia("trailer.mp4");
