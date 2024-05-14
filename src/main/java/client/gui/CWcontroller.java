@@ -163,7 +163,7 @@ public class CWcontroller implements Initializable {
         hBox.setPadding(new Insets(5, 5, 5, 10));
 
         Text text = new Text(messageFromServer);
-        text.setFill(Color.web("#000000"));
+        text.setFill(Color.web("#FFFFFF"));
 
         TextFlow textFlow = new TextFlow(text);
 
