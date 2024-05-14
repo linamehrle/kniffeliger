@@ -7,9 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import animatefx.animation.BounceIn;
-import animatefx.animation.FadeOutDownBig;
-import animatefx.animation.Flash;
+import animatefx.animation.*;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -42,7 +40,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 import org.apache.logging.log4j.Logger;
-import animatefx.animation.JackInTheBox;
 import animatefx.util.ParallelAnimationFX;
 import animatefx.util.SequentialAnimationFX;
 import starter.Starter;
@@ -120,6 +117,8 @@ public class GameWindowController implements Initializable {
     private ToggleButton muteButton;
     @FXML
     private MediaView leverRoll;
+    @FXML
+    private Button infoButton;
 
     public ObservableList<DiceGUImplementation> diceList = FXCollections.observableArrayList();
     public ObservableList<DiceGUImplementation> diceListOther = FXCollections.observableArrayList();
@@ -157,6 +156,8 @@ public class GameWindowController implements Initializable {
     private FadeOutDownBig startButtonAnimationFade;
     private Flash startButtonAnimationFlash;
     private BounceIn highScoreButtonBounce;
+    private FadeOutRightBig shiftAnimationFade;
+    private FadeOutUpBig swapAnimationFade;
 
 
 
@@ -292,9 +293,15 @@ public class GameWindowController implements Initializable {
         highScoreButtonBounce = new BounceIn(highScoreButton);
         highScoreButtonBounce.setResetOnFinished(true);
 
+        shiftAnimationFade = new FadeOutRightBig(entrySheet);
+        shiftAnimationFade.setResetOnFinished(true);
+
+        swapAnimationFade = new FadeOutUpBig(entrySheet);
+        swapAnimationFade.setResetOnFinished(true);
+
 
         
-        // Load sounds
+        // Load media / audio
         try {
             gameMainThemePlayer = GameWindowHelper.loadMedia("gameTheme.mp3");
             gameMainThemePlayer.setAutoPlay(true);
@@ -443,6 +450,7 @@ public class GameWindowController implements Initializable {
      */
     public void rotateSheetsAction(ActionEvent event) {
         buttonSoundEffect1.play();
+        shiftAnimationFade.play();
         ClientOutput.send(CommandsClientToServer.SHFT, "entry sheets shifted by one");
     }
 
@@ -475,6 +483,11 @@ public class GameWindowController implements Initializable {
         startButtonAnimationFlash.play();
         ClientOutput.send(CommandsClientToServer.PREP, "prepare for game");
         logger.info("Game Start initialized by GUI");
+    }
+
+    @FXML
+    public void infoButtonAction (ActionEvent event){
+
     }
 
     /**
