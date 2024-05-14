@@ -34,8 +34,6 @@ public class Lobby {
     private ArrayList<Player> playersInLobby = new ArrayList<>();
     private Logger logger = Starter.getLogger();
 
-    private int playersThatAreReadyCount;
-
     /**
      * Constructor for the lobby, the initial status is open
      * @param name
@@ -45,7 +43,6 @@ public class Lobby {
         this.name = name;
         this.status = "open";
         this.gameManager = new GameManager();
-        playersThatAreReadyCount = 0;
     }
 
     /**
@@ -107,13 +104,6 @@ public class Lobby {
      */
     public synchronized void startGame(Player player) {
         logger.debug("TRYING TO START GAME with player " + player.getUsername());
-
-        playersThatAreReadyCount++;
-
-        if (playersThatAreReadyCount != playersInLobby.size()) {
-            logger.debug("not all players have finished initialising");
-            return;
-        }
 
         if (status.equals("ongoing game")) {
             logger.info("Game is already running");
