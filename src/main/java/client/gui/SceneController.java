@@ -36,7 +36,7 @@ public class SceneController {
             lobbyWindowController.muteMainTheme();
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/GameWindow.fxml"));
             root = loader.load();
-            scene = new Scene(root);
+            scene = new Scene(root, 1133, 700);
             mainWindow.setScene(scene);
             mainWindow.show();
         } catch (IOException e) {
@@ -55,7 +55,7 @@ public class SceneController {
             gameWindowController.muteMainTheme();
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/LobbyWindow.fxml"));
             root = loader.load();
-            scene = new Scene(root);
+            scene = new Scene(root, 809, 500);
             mainWindow.setScene(scene);
             mainWindow.show();
         } catch (IOException e) {
@@ -91,6 +91,7 @@ public class SceneController {
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/ActionDicePlayerAndFieldWindow.fxml"));
             Parent root3 = loader.load();
             Stage stage = new Stage();
+            stage.setMaximized(true);
             scene = new Scene(root3);
             stage.setScene(scene);
             stage.show();
