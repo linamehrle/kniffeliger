@@ -140,5 +140,10 @@ public enum CommandsClientToServer {
     /**
      * Informs the server to initiate preparations for the game start
      */
-    PREP
+    PREP,
+
+    /**
+     * Used when the client uses a cheat code
+     */
+    CHET
 }

@@ -73,6 +73,10 @@ public class ServerInputHelper implements Runnable {
             case LOPL -> Communication.sendToPlayer(CommandsServerToClient.LOPL, player, player.getLobby().getPlayersInLobbyAsString());
             case RUSR -> Communication.sendToPlayer(CommandsServerToClient.TUSR, player, player.getUsername());
             case PREP -> player.getLobby().prepareForGame(player);
+            case CHET -> {
+                player.getLobby().getGameManager().cheatCode(player);
+                player.setCheatCodesUsed(player.getCheatCodesUsed() + 1);
+            }
             default -> logger.info("unknown command received from client " + message);
 
         }

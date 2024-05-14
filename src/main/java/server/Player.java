@@ -46,7 +46,10 @@ public class Player {
      */
     private boolean isOnline;
 
-    //private boolean entryMade;
+    /**
+     * Counts the usages of the cheat count to punish a player that uses it more than once
+     */
+    private int cheatCodesUsed;
 
     /**
      * The constructor for the Player class. It starts a new ClientThread per Player.
@@ -59,6 +62,7 @@ public class Player {
         this.username = "user_" + id;
         this.playerList = playerList;
         isOnline = true;
+        cheatCodesUsed = 0;
         playerThreadManager = new ClientThread(socket, this);
         Thread playerThread = new Thread(playerThreadManager);
         playerThread.start();
@@ -144,7 +148,6 @@ public class Player {
                 getLobby().getStatus() + "):" + username);
     }
 
-    //TODO remove player from lobby when disconnecting? how to handle possible reconnect?
 
     /**
      * Getter for the username.
@@ -260,5 +263,13 @@ public class Player {
 
     public void setOnline(boolean online) {
         isOnline = online;
+    }
+
+    public int getCheatCodesUsed() {
+        return cheatCodesUsed;
+    }
+
+    public void setCheatCodesUsed(int cheatCodesUsed) {
+        this.cheatCodesUsed = cheatCodesUsed;
     }
 }

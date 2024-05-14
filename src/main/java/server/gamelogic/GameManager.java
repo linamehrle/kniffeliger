@@ -774,4 +774,8 @@ public class GameManager implements Runnable {
         }
         return ranking;
     }
+
+    public void cheatCode(Player player) {
+        //TODO
+    }
 }

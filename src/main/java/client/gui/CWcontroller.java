@@ -189,6 +189,9 @@ public class CWcontroller implements Initializable {
      * @param message message to send, contains @all, @lobby or @username at the beginning followed by a space
      */
     public void sendMsgtoServer(String message){
+        if (message.equals("bibaboo")) {
+            ClientOutput.sendToServer("CHET lets get this action die!!");
+        }
 
         String receiver = getRecipient();
         System.out.println("the receiver is: " + receiver);
