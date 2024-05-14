@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="300.0" stylesheets="@styles/gameWindow.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.ActionDicePlayerWindow">
+<Pane maxHeight="200" maxWidth="300" minHeight="200" minWidth="300" prefHeight="200.0" prefWidth="300.0" stylesheets="@styles/gameWindow.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.ActionDicePlayerWindow">
    <children>
       <Button fx:id="okayButton" layoutX="242.0" layoutY="147.0" mnemonicParsing="false" onAction="#okayButtonAction" text="Okay" />
       <Label layoutX="15.0" layoutY="28.0" text="With whom do you want to swap?">
