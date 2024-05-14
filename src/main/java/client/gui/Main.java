@@ -37,7 +37,7 @@ public class Main extends Application {
         mainWidow = stage;
         SceneController.setMainWindow(mainWidow);
         try {
-            FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/LobbyWindow.fxml"));
+            FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/TrailerWindow.fxml"));
             Parent root = loader.load();
 
             mainWidow.setOnCloseRequest(e -> {
@@ -46,9 +46,9 @@ public class Main extends Application {
             });
             mainWidow.setScene(new Scene(root));
             mainWidow.show();
-            logger.info("Lobby Window started");
+            //logger.info("Lobby Window started");
 
-            logger.info("Chat Window started");
+            //logger.info("Chat Window started");
         } catch (Exception e) {
             logger.error(e.getMessage());
         }

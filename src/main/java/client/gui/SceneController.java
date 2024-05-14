@@ -33,6 +33,7 @@ public class SceneController {
         logger.info("Switching to the game window");
         try {
             LobbyWindowController lobbyWindowController = Main.getLobbyWindowController();
+
             lobbyWindowController.muteMainTheme();
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/GameWindow.fxml"));
             root = loader.load();
@@ -52,8 +53,24 @@ public class SceneController {
         logger.info("switching to the lobby window");
         try {
             GameWindowController gameWindowController = Main.getGameWindowController();
-            gameWindowController.muteMainTheme();
+            if (gameWindowController != null) {
+                gameWindowController.muteMainTheme();
+            }
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/LobbyWindow.fxml"));
+            root = loader.load();
+            scene = new Scene(root, 809, 500);
+            mainWindow.setScene(scene);
+            mainWindow.show();
+        } catch (IOException e) {
+            logger.warn(e.getMessage());
+        }
+    }
+
+    public static void changeToTrailerWindow(ActionEvent event)  {
+        logger.info("switching to the trailer window");
+
+        try {
+            FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/TrailerWindow.fxml"));
             root = loader.load();
             scene = new Scene(root, 809, 500);
             mainWindow.setScene(scene);

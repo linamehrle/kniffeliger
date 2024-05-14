@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import animatefx.animation.BounceIn;
-import animatefx.animation.FadeOutDownBig;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -18,6 +17,7 @@ import javafx.scene.control.TreeView;
 import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -214,9 +214,18 @@ public class LobbyWindowController implements Initializable {
         }
     }
 
+    /**
+     * Method to mute background music from external controller
+     */
     public void muteMainTheme() {
         lobbyMainThemePlayer.pause();
     }
+
+    public void setThemeVolume(double volume){
+        lobbyMainThemePlayer.setVolume(volume);
+    }
+
+
 
     /**
      * The initialize Method for the Lobby Window
@@ -276,7 +285,6 @@ public class LobbyWindowController implements Initializable {
         // Initialize animations
         highScoreButtonAnimationBounce = new BounceIn(enterLobbyButton);
         highScoreButtonAnimationBounce.setResetOnFinished(true);
-
 
 
         hasBeenInitialized = true;
