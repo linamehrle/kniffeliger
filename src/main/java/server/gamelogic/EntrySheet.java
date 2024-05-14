@@ -216,7 +216,6 @@ public class EntrySheet {
     public void setPlayer(Player newPlayer) {
         player = newPlayer;
         username = newPlayer.getUsername();
-        logger.debug("New Player: " + username);
     }
 
     /**
