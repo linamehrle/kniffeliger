@@ -186,8 +186,19 @@ public class EntrySheet {
         return totalPoints;
     }
 
+    /**
+     * The entry sheet gets -50 points if the player used a chat code more than once
+     */
     public void punishCheatCodes() {
-        //TODO
+        if (entrySheet.length == 14) {
+            Entry cheat = new Entry("cheat", -50);
+            entrySheet = new Entry[] {ones, twos, threes, fours, fives, sixes, threeOfAKind, fourOfAKind, fullHouse,
+                    smallStraight, largeStraight, kniffeliger, chance, pi, cheat};
+            cheat.setFinal();
+        } else {
+            entrySheet[14].setValue(entrySheet[14].getValue() - 50);
+        }
+        totalPoints = totalPoints - 50;
     }
 
     /**
@@ -295,7 +306,7 @@ public class EntrySheet {
      */
     public String printEntrySheet() {
         String message = username + ":";
-        for (int i = 0; i < ENTRY_SHEET_LENGTH; i++) {
+        for (int i = 0; i < entrySheet.length; i++) {
             if (entrySheet[i].getIsFinal()) {
                 message = message + entrySheet[i].getName() + " " + entrySheet[i].getValue() + ",";
             } else {
