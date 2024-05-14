@@ -308,7 +308,7 @@ public class EntrySheet {
         String message = username + ":";
         for (int i = 0; i < entrySheet.length; i++) {
             if (entrySheet[i].getIsFinal()) {
-                message = message + entrySheet[i].getName() + " " + entrySheet[i].getValue() + ",";
+                message = message + entrySheet[i].getName() + "         " + entrySheet[i].getValue() + ",";
             } else {
                 message = message + entrySheet[i].getName() + ",";
             }
