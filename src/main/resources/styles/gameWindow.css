@@ -1,7 +1,7 @@
 .root {
     -fx-font-size: 14px;
     -fx-font-family: "Arial";
-    -fx-background-color: #ff1493;
+    -fx-background-color: #ff4acd; /* #ff1493 */
 }
 
 .header-section {
@@ -135,15 +135,15 @@
     -fx-background-size: 80 80;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    -fx-background-color: #ff1493;
+    -fx-background-color: #e5017d;
 }
 
-#buttonMute {
+/*#buttonMute {
     -fx-background-image: url("../images/buttonMute.png");
     -fx-background-size: 80 80;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    /* -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 ); */
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
     -fx-background-color: #ff9acf;
 }
 
@@ -154,7 +154,7 @@
     -fx-background-position: center;
     -fx-background-color: #ff9acf;
     -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 20, 0.0 , 0 , 0 );
-}
+}*/
 
 #labelLogo {
     -fx-background-image: url("../images/kniffeliger.png");
