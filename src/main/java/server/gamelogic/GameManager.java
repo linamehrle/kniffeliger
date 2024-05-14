@@ -776,6 +776,17 @@ public class GameManager implements Runnable {
     }
 
     public void cheatCode(Player player) {
-        //TODO
+        //if the player uses the cheat code for the first time, they get all action dice once
+        if (player.getCheatCodesUsed() == 0) {
+            player.increaseActionDiceCount(ActionDiceEnum.STEAL);
+            player.increaseActionDiceCount(ActionDiceEnum.FREEZE);
+            player.increaseActionDiceCount(ActionDiceEnum.CROSSOUT);
+            player.increaseActionDiceCount(ActionDiceEnum.SHIFT);
+            player.increaseActionDiceCount(ActionDiceEnum.SWAP);
+        } else {
+            player.removeAllActionDice();
+            //TODO give -50 points?
+        }
+        Communication.sendToPlayer(CommandsServerToClient.ACTN, player, player.getActionDiceAsString());
     }
 }

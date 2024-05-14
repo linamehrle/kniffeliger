@@ -257,6 +257,17 @@ public class Player {
         actionDice.put(ActionDiceEnum.SWAP, 0);
     }
 
+    /**
+     * Removes all action dice of the player, used to punish cheat codes
+     */
+    public void removeAllActionDice() {
+        actionDice.replace(ActionDiceEnum.STEAL, 0);
+        actionDice.replace(ActionDiceEnum.FREEZE, 0);
+        actionDice.replace(ActionDiceEnum.CROSSOUT, 0);
+        actionDice.replace(ActionDiceEnum.SHIFT, 0);
+        actionDice.replace(ActionDiceEnum.SWAP, 0);
+    }
+
     public boolean isOnline() {
         return isOnline;
     }
