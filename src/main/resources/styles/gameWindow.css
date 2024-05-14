@@ -52,18 +52,17 @@
 
 .button {
     -fx-background-color: #ff9acf;
-    /* -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 ); */
-
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
 }
-.button:hover {
+/*.button:hover {
     -fx-background-color: #ff9acf;
     -fx-effect: none;
 }
 
 .button:pressed {
     -fx-background-color: #ff9acf;
-    /*-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 30, 0.0 , 0 , 0 );*/
-}
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 30, 0.0 , 0 , 0 );
+}*/
 
 
 #content-header {
@@ -141,14 +140,14 @@
     -fx-background-color: #ff9acf;
 }
 
-#buttonMute:selected {
+/*#buttonMute:selected {
     -fx-background-image: url("../images/buttonUnmute.png");
     -fx-background-size: 80 80;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-background-color: #ff9acf;
-    /* -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 20, 0.0 , 0 , 0 ); */
-}
+    /* -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 20, 0.0 , 0 , 0 );
+}*/
 
 #labelLogo {
     -fx-background-image: url("../images/kniffeliger.png");
