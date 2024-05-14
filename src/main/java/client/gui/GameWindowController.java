@@ -42,6 +42,7 @@ import javafx.util.Duration;
 import org.apache.logging.log4j.Logger;
 import starter.Starter;
 
+
 /**
  * This is the Controller class for the Game window, i.e. the window in which the gameplay happens.
  * It implements Initializable.

@@ -52,7 +52,7 @@
 
 .button {
     -fx-background-color: #ff9acf;
-    /* -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 ); */
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
 
 }
 .button:hover {
@@ -62,7 +62,7 @@
 
 .button:pressed {
     -fx-background-color: #ff9acf;
-    /*-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 30, 0.0 , 0 , 0 );*/
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 30, 0.0 , 0 , 0 );
 }
 
 
@@ -129,7 +129,7 @@
     -fx-background-size: 80 80;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    -fx-background-color: #ff1493;
+    -fx-background-color: black;
 }
 
 #buttonMute {
@@ -137,7 +137,7 @@
     -fx-background-size: 80 80;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    /* -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 ); */
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
     -fx-background-color: #ff9acf;
 }
 
@@ -147,7 +147,7 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-background-color: #ff9acf;
-    /* -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 20, 0.0 , 0 , 0 ); */
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 20, 0.0 , 0 , 0 );
 }
 
 #labelLogo {
