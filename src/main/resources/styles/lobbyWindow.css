@@ -131,7 +131,7 @@
 }
 
 #buttonLeaveGame {
-    -fx-background-image: url("../images/exit.png");
+    -fx-background-image: url("../images/buttonExit.png");
     -fx-background-size: 80 80;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
