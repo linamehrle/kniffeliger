@@ -22,7 +22,7 @@
          <content>
             <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1133.0">
                <children>
-                  <Label fx:id="usernameLabel" layoutX="509.0" layoutY="7.0" styleClass="header-section" text="Username">
+                  <Label fx:id="usernameLabel" layoutX="528.0" layoutY="14.0" styleClass="header-section" text="Username">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -77,29 +77,30 @@
                         <Label alignment="CENTER" prefWidth="80.0" text="swap" AnchorPane.leftAnchor="360.0" AnchorPane.topAnchor="5.0" />
                      </children>
                   </AnchorPane>
-                  <Button fx:id="startButton" layoutX="1021.0" layoutY="61.0" mnemonicParsing="false" onAction="#startGameAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" text="START" />
-                  <Button id="buttonLeaveGame" fx:id="leaveGameButton" alignment="BOTTOM_CENTER" layoutX="1021.0" layoutY="550.0" mnemonicParsing="false" onAction="#leaveGameAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" text="exit" textAlignment="CENTER" textFill="#f8f6f6">
-                     <font>
-                        <Font size="12.0" />
-                     </font>
-                  </Button>
-                  <Button id="buttonLeaveLobby" fx:id="leaveLobbyButton" layoutX="873.0" layoutY="550.0" mnemonicParsing="false" onAction="#leaveLobbyAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" text="leave Lobby" />
+                  <Button id="buttonStartGame" fx:id="startButton" layoutX="1021.0" layoutY="61.0" mnemonicParsing="false" onAction="#startGameAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" />
+                  <Button id="buttonLeaveGame" fx:id="leaveGameButton" alignment="BOTTOM_CENTER" layoutX="1021.0" layoutY="550.0" mnemonicParsing="false" onAction="#leaveGameAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" text="EXIT" textAlignment="CENTER" textFill="#f8f6f6" />
+                  <Button id="buttonLeaveLobby" fx:id="leaveLobbyButton" layoutX="873.0" layoutY="550.0" mnemonicParsing="false" onAction="#leaveLobbyAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" />
                   <fx:include fx:id="chatWindow" layoutX="850.0" layoutY="155.0" source="chatwindow.fxml" AnchorPane.rightAnchor="-10.0" AnchorPane.topAnchor="155.0" />
-                  <ListView fx:id="diceBox" layoutX="415.0" layoutY="163.0" onMouseClicked="#diceClick" orientation="HORIZONTAL" prefHeight="103.0" prefWidth="400.0" AnchorPane.leftAnchor="360.0" AnchorPane.topAnchor="150.0" />
-                  <Button fx:id="highScoreButton" layoutX="901.0" layoutY="61.0" mnemonicParsing="false" onAction="#highScoreAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" text="High Score" />
+                  <ListView id="diceBox" fx:id="diceBox" layoutX="415.0" layoutY="163.0" onMouseClicked="#diceClick" orientation="HORIZONTAL" prefHeight="103.0" prefWidth="400.0" AnchorPane.leftAnchor="360.0" AnchorPane.topAnchor="150.0" />
+                  <Button id="buttonHighScore" fx:id="highScoreButton" layoutX="901.0" layoutY="61.0" mnemonicParsing="false" onAction="#highScoreAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" />
                   <ListView fx:id="entrySheet" layoutX="60.0" layoutY="80.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="275.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="40.0" />
-                  <Button fx:id="endTurnButton" layoutX="380.0" layoutY="315.0" mnemonicParsing="false" onMouseClicked="#endTurnAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" text="END TURN" />
+                  <Button id="buttonEndTurn" fx:id="endTurnButton" layoutX="380.0" layoutY="315.0" mnemonicParsing="false" onMouseClicked="#endTurnAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" textAlignment="CENTER" wrapText="true" />
                   <Label layoutX="559.0" layoutY="158.0" text="Dice" AnchorPane.leftAnchor="550.0" AnchorPane.topAnchor="130.0" />
-                  <Button id="buttonEnter" fx:id="entryEnterButton" layoutX="255.0" layoutY="550.0" mnemonicParsing="false" onMouseClicked="#entryEnterButtonAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" text="Enter" />
-                  <Slider fx:id="volumeSlider" blockIncrement="0.1" layoutX="825.0" layoutY="239.0" max="1.0" orientation="VERTICAL" prefHeight="125.0" prefWidth="17.0" scaleX="2.0" scaleY="2.0" value="0.5" />
+                  <Button id="buttonEnter" fx:id="entryEnterButton" layoutX="255.0" layoutY="538.0" mnemonicParsing="false" onMouseClicked="#entryEnterButtonAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" />
+                  <Slider fx:id="volumeSlider" blendMode="COLOR_BURN" blockIncrement="0.1" layoutX="825.0" layoutY="239.0" max="1.0" orientation="VERTICAL" prefHeight="125.0" prefWidth="17.0" scaleX="2.0" scaleY="2.0" value="0.5" />
                   <ToggleButton id="buttonMute" fx:id="muteButton" layoutX="793.0" layoutY="61.0" mnemonicParsing="false" onAction="#muteButtonAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" />
                   <Label fx:id="totalPointsLabel" layoutX="210.0" layoutY="547.0" text="0" />
                   <ScrollPane layoutX="411.0" layoutY="54.0" vbarPolicy="NEVER" AnchorPane.leftAnchor="360.0" AnchorPane.topAnchor="40.0">
                      <content>
-                        <VBox fx:id="informationBox" prefHeight="80.0" prefWidth="398.0" />
+                        <VBox id="informationBox" fx:id="informationBox" prefHeight="80.0" prefWidth="398.0" />
                      </content>
                   </ScrollPane>
                   <Label id="labelLogo" layoutX="431.0" layoutY="575.0" prefHeight="55.0" prefWidth="298.0" />
+                  <Label alignment="CENTER" layoutX="901.0" layoutY="150.0" prefWidth="80.0" text="High Score" wrapText="true" />
+                  <Label alignment="CENTER" layoutX="1021.0" layoutY="150.0" prefWidth="80.0" text="Start Game" wrapText="true" />
+                  <Label alignment="CENTER" layoutX="255.0" layoutY="626.0" prefWidth="80.0" text="Make Entry" wrapText="true" />
+                  <Label alignment="CENTER" layoutX="380.0" layoutY="294.0" prefWidth="80.0" text="END TURN" />
+                  <Label alignment="CENTER" layoutX="873.0" layoutY="530.0" prefWidth="80.0" text="HOME" />
                </children>
                <padding>
                   <Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />

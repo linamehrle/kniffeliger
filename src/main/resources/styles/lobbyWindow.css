@@ -1,7 +1,7 @@
 .root {
     -fx-font-size: 14px;
     -fx-font-family: "Arial";
-    -fx-background-color: #ff1493;
+    -fx-background-color: #ffa8d7; /* #ff1493 */
 }
 
 .header-section {
@@ -50,19 +50,24 @@
     -fx-max-width: 200px;
 }
 
-.button {
-    -fx-background-color: #ff9acf;
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
 
+.button {
+    -fx-background-color: #e5017d;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
 }
 .button:hover {
-    -fx-background-color: #ff9acf;
+    -fx-background-color: #e5017d;
     -fx-effect: none;
 }
 
 .button:pressed {
-    -fx-background-color: #ff9acf;
+    -fx-background-color: #e5017d; /* #ff9acf */
     -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 30, 0.0 , 0 , 0 );
+}
+
+.list-view {
+    -fx-background-color: #fe9ace;
+    -fx-border-color: white ;
 }
 
 
@@ -121,7 +126,8 @@
 
 #buttonRoll {
     -fx-background-color: transparent;
-    -fx-text-fill: #ff9acf;
+    -fx-text-fill: #e5017d;
+    -fx-effect: none;
 }
 
 #buttonLeaveGame {
@@ -137,8 +143,8 @@
     -fx-background-size: 80 80;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
+    -fx-background-color:  #e5017d;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
-    -fx-background-color: #ff9acf;
 }
 
 #buttonMute:selected {
@@ -146,8 +152,43 @@
     -fx-background-size: 80 80;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
-    -fx-background-color: #ff9acf;
+    -fx-background-color:  #e5017d;
     -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 20, 0.0 , 0 , 0 );
+}
+
+#buttonEnter {
+    -fx-background-image: url("../images/buttonEnter.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
+
+#buttonLeaveLobby {
+    -fx-background-image: url("../images/buttonHome.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
+
+#buttonStartGame {
+    -fx-background-image: url("../images/buttonStartGame.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
+
+#buttonHighScore {
+    -fx-background-image: url("../images/buttonHighScore.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
+
+#buttonEndTurn {
+    -fx-background-image: url("../images/buttonEndTurn.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
 }
 
 #labelLogo {
@@ -158,6 +199,19 @@
     -fx-background-color: #7d0041;
 
 }
+
+#informationBox {
+    -fx-background-color: #fe9ace;
+    -fx-border-color: white ;
+    -fx-font-size: 18;
+}
+
+#diceBox {
+    -fx-background-color: #fe9ace;
+    -fx-border-color: white ;
+}
+
+
 
 
 

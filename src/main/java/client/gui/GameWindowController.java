@@ -729,11 +729,10 @@ public class GameWindowController implements Initializable {
     public void displayInformationText(String informationText) {
         TextFlow textFlow = new TextFlow();
         //Background colour
-        textFlow.setStyle(
-                "-fx-background-color: rgb(233, 233, 235);");
+        //textFlow.setStyle("-fx-background-color: rgb(233, 233, 235);");
         Text displayText = new Text(informationText);
         //Font
-        displayText.setFont(Font.font("Courier New"));
+        //displayText.setFont(Font.font("Courier New"));
 
         Platform.runLater(new Runnable() {
             @Override
