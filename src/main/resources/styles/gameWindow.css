@@ -204,6 +204,13 @@ list-view. .list-cell:filled:hover {
     -fx-background-position:center;
 }
 
+#buttonInfo {
+    -fx-background-image: url("../images/buttonInfo.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
+
 #labelLogo {
     -fx-background-image: url("../images/kniffeliger.png");
     -fx-background-size: 151 55;

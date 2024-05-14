@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -81,7 +82,12 @@
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <VBox id="informationBox" fx:id="informationBox" layoutX="416.0" layoutY="530.0" prefHeight="80.0" prefWidth="398.0" />
+                  <ScrollPane hbarPolicy="NEVER" layoutX="416.0" layoutY="530.0">
+                     <content>
+                        <VBox id="informationBox" fx:id="informationBox" prefHeight="80.0" prefWidth="398.0" />
+                     </content>
+                  </ScrollPane>
+                  <Button id="buttonInfo" fx:id="infoButton" layoutX="1021.0" layoutY="17.0" mnemonicParsing="false" onAction="#infoButtonAction" prefHeight="80.0" prefWidth="80.0" />
                </children>
                <padding>
                   <Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
