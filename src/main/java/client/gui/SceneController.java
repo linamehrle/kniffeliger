@@ -91,8 +91,7 @@ public class SceneController {
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/ActionDicePlayerAndFieldWindow.fxml"));
             Parent root3 = loader.load();
             Stage stage = new Stage();
-            stage.setMaximized(true);
-            scene = new Scene(root3);
+            scene = new Scene(root3, 300, 200);
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
@@ -111,7 +110,7 @@ public class SceneController {
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/ActionDicePlayerWindow.fxml"));
             Parent root3 = loader.load();
             Stage stage = new Stage();
-            scene = new Scene(root3);
+            scene = new Scene(root3, 300, 200);
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
