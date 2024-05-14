@@ -6,9 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-import animatefx.animation.BounceIn;
-import animatefx.animation.FadeOutDownBig;
-import animatefx.animation.Flash;
+
+import animatefx.animation.*;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -140,12 +139,6 @@ public class GameWindowController implements Initializable {
      * form the playerToEntrySheetMap
      */
     private ArrayList<ListView<String>> secondTabListViews = new ArrayList<>();
-
-    // Buttons to test slot animations
-    @FXML
-    private HBox slotBox;
-    @FXML
-    private Button slotStart;
     private AudioClip buttonSoundEffect1;
     private AudioClip buttonSoundEffect2;
     private MediaPlayer rollButtonAnimation;
@@ -199,7 +192,6 @@ public class GameWindowController implements Initializable {
         GameWindowHelper.loadImagesToArray(numberImages, "number");
         ImageView number1 = new ImageView();
         number1.setImage(numberImages[1]);
-        slotBox.getChildren().add(number1);
         logger.info("Dice images loaded into GUI");
 
         //Cell factory for primary dice selection box
@@ -945,10 +937,8 @@ public class GameWindowController implements Initializable {
         //TODO reset the frozen entries, i.e. remove the cross out etc.
     }
 
-    public void slotStartAction(ActionEvent event){
-        Node number = slotBox.getChildren().get(0);
-        Timeline timeline = new Timeline();
 
 
-    }
+
+
 }

@@ -105,15 +105,5 @@
             </AnchorPane>
         </content>
       </Tab>
-      <Tab text="testTab">
-        <content>
-          <AnchorPane fx:id="testTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-               <children>
-                  <HBox fx:id="slotBox" layoutX="243.0" layoutY="113.0" prefHeight="200.0" prefWidth="200.0" />
-                  <Button fx:id="slotStart" layoutX="471.0" layoutY="213.0" mnemonicParsing="false" text="Play" />
-               </children>
-            </AnchorPane>
-        </content>
-      </Tab>
   </tabs>
 </TabPane>
