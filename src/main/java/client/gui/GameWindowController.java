@@ -6,11 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-import animatefx.animation.BounceIn;
-import animatefx.animation.FadeOutDownBig;
-import animatefx.animation.FadeOutRightBig;
-import animatefx.animation.FadeOutUpBig;
-import animatefx.animation.Flash;
+
+import animatefx.animation.*;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -149,8 +146,8 @@ public class GameWindowController implements Initializable {
     private Flash startButtonAnimationFlash;
     private BounceIn highScoreButtonBounce;
     private FadeOutRightBig shiftAnimationFade;
-    private FadeOutUpBig swapAnimationFade;
-
+    private RotateOutDownLeft swapAnimationFade;
+    private Flash stealAnimationFlash;
 
 
 
@@ -287,8 +284,11 @@ public class GameWindowController implements Initializable {
         shiftAnimationFade = new FadeOutRightBig(entrySheet);
         shiftAnimationFade.setResetOnFinished(true);
 
-        swapAnimationFade = new FadeOutUpBig(entrySheet);
+        swapAnimationFade = new RotateOutDownLeft(entrySheet);
         swapAnimationFade.setResetOnFinished(true);
+
+        stealAnimationFlash = new Flash(entrySheet);
+        stealAnimationFlash.setResetOnFinished(true);
 
 
 
@@ -423,6 +423,7 @@ public class GameWindowController implements Initializable {
      */
     public void stealEntryAction(ActionEvent event) {
         buttonSoundEffect1.play();
+        stealAnimationFlash.play();
         SceneController.showActionPlayerAndFieldWindow(playersInLobby, "steal");
     }
 
@@ -451,6 +452,7 @@ public class GameWindowController implements Initializable {
      */
     public void swapSheetsAction(ActionEvent event) {
         buttonSoundEffect1.play();
+        swapAnimationFade.play();
         SceneController.showActionPlayerWindow(playersInLobby);
     }
 
