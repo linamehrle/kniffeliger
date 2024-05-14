@@ -115,11 +115,11 @@ public class CWcontroller implements Initializable {
             TextFlow textFlow = new TextFlow(text);
             textFlow.setStyle(
                     "-fx-color: rgb(239, 242, 255);" +
-                            "-fx-background-color: rgb(15, 125, 242);" +
+                            "-fx-background-color: #ff9acf;" +
                             "-fx-background-radius: 20px;");
 
             textFlow.setPadding(new Insets(5, 10, 5, 10));
-            text.setFill(Color.color(0.934, 0.925, 0.996));
+            text.setFill(Color.web("#000000"));
 
             hBox.getChildren().add(textFlow);
             msgDisplayAll.getChildren().add(hBox);
@@ -163,11 +163,12 @@ public class CWcontroller implements Initializable {
         hBox.setPadding(new Insets(5, 5, 5, 10));
 
         Text text = new Text(messageFromServer);
+        text.setFill(Color.web("#000000"));
 
         TextFlow textFlow = new TextFlow(text);
 
         textFlow.setStyle(
-                "-fx-background-color: rgb(233, 233, 235);" +
+                "-fx-background-color: #e5017d;" +
                         "-fx-background-radius: 20px;");
 
         textFlow.setPadding(new Insets(5, 10, 5, 10));

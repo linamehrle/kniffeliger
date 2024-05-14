@@ -64,6 +64,7 @@ dependencies {
     implementation 'org.openjfx:javafx-graphics:19.0.2.1'
     implementation 'org.apache.logging.log4j:log4j-api:2.23.1'
     implementation 'org.apache.logging.log4j:log4j-core:2.23.1'
+    api 'io.github.typhon0:AnimateFX:1.2.4'
 
     // dependencies for testing
     testImplementation(platform('org.junit:junit-bom:5.10.2'))

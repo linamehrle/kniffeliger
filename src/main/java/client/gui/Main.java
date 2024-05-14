@@ -44,7 +44,7 @@ public class Main extends Application {
                 //e.consume();
                 exit();
             });
-            mainWidow.setScene(new Scene(root, 600, 400));
+            mainWidow.setScene(new Scene(root));
             mainWidow.show();
             logger.info("Lobby Window started");
 
