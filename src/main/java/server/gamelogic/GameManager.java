@@ -189,7 +189,7 @@ public class GameManager implements Runnable {
 
                                 // send dices to all
                                 Communication.broadcastToAll(CommandsServerToClient.ALDI, playerArraysList, rolledDice);
-                                Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "ALEA IACTA EST! (the die is cast)");
+                                //Communication.broadcastToAll(CommandsServerToClient.BRCT, playerArraysList, "ALEA IACTA EST! (the die is cast)");
 
                                 if (allDiceSaved(allDice)) {
                                     Communication.sendToPlayer(CommandsServerToClient.SAVE, currentPlayer, "0 1 2 3 4 ");
