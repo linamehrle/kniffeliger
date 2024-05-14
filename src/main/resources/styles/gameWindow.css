@@ -1,7 +1,7 @@
 .root {
     -fx-font-size: 14px;
     -fx-font-family: "Arial";
-    -fx-background-color: #ff4acd; /* #ff1493 */
+    -fx-background-color: #ff1493;
 }
 
 .header-section {
@@ -56,6 +56,7 @@
     -fx-pref-width: 200px;
     -fx-max-width: 200px;
 }
+
 
 .button {
     -fx-background-color: #ff9acf;
@@ -130,13 +131,13 @@
     -fx-text-fill: #ff9acf;
 }
 
-#buttonLeaveGame {
+/*#buttonLeaveGame {
     -fx-background-image: url("../images/exit.png");
     -fx-background-size: 80 80;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-background-color: #e5017d;
-}
+}*/
 
 /*#buttonMute {
     -fx-background-image: url("../images/buttonMute.png");
@@ -166,9 +167,7 @@
 }
 
 
-#tab1{
-    -fx-background-color: pink;
-}
+
 
 
 
