@@ -154,9 +154,9 @@ public class GameWindowController implements Initializable {
     private MediaPlayer rollButtonAnimation;
 
     // Animations
-    private BounceIn startButtonAnimationBounce;
+    private FadeOutDownBig startButtonAnimationFade;
     private Flash startButtonAnimationFlash;
-    private FadeOutDownBig highScoreButtonFade;
+    private BounceIn highScoreButtonBounce;
 
 
 
@@ -283,14 +283,14 @@ public class GameWindowController implements Initializable {
         disableAllGameFields();
 
         // Initialize animations
-        startButtonAnimationBounce = new BounceIn(startButton);
-        startButtonAnimationBounce.setResetOnFinished(true);
+        startButtonAnimationFade = new FadeOutDownBig(startButton);
+        // startButtonAnimationFade.setResetOnFinished(true);
 
         startButtonAnimationFlash = new Flash(startButton);
         startButtonAnimationFlash.setResetOnFinished(true);
 
-        highScoreButtonFade = new FadeOutDownBig(highScoreButton);
-        highScoreButtonFade.setResetOnFinished(true);
+        highScoreButtonBounce = new BounceIn(highScoreButton);
+        highScoreButtonBounce.setResetOnFinished(true);
 
 
         
@@ -472,7 +472,7 @@ public class GameWindowController implements Initializable {
     @FXML
     public void startGameAction(ActionEvent event) {
         buttonSoundEffect1.play();
-        startButtonAnimationBounce.play();
+        startButtonAnimationFlash.play();
         ClientOutput.send(CommandsClientToServer.PREP, "prepare for game");
         logger.info("Game Start initialized by GUI");
     }
@@ -486,7 +486,7 @@ public class GameWindowController implements Initializable {
         disableAllActionButtons();
         initTabOther();
         buttonSoundEffect2.play();
-        startButtonAnimationFlash.play();
+        startButtonAnimationFade.play();
     }
 
     /**
@@ -566,7 +566,7 @@ public class GameWindowController implements Initializable {
      */
     public void highScoreAction() {
         buttonSoundEffect1.play();
-        highScoreButtonFade.play();
+        highScoreButtonBounce.play();
         SceneController.showHighScoreWindow();
     }
 

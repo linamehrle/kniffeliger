@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import animatefx.animation.BounceIn;
 import animatefx.animation.FadeOutDownBig;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -58,7 +59,7 @@ public class LobbyWindowController implements Initializable {
 
     private boolean hasBeenInitialized = false;
 
-    private FadeOutDownBig highScoreButtonAnimationFade;
+    private BounceIn highScoreButtonAnimationBounce;
 
     MediaPlayer lobbyMainThemePlayer;
 
@@ -98,7 +99,7 @@ public class LobbyWindowController implements Initializable {
      * Opens the high score pup up window when the high score button is pressed
      */
     public void highScoreAction() {
-        highScoreButtonAnimationFade.play();
+        highScoreButtonAnimationBounce.play();
         SceneController.showHighScoreWindow();
     }
 
@@ -273,8 +274,8 @@ public class LobbyWindowController implements Initializable {
         }
 
         // Initialize animations
-        highScoreButtonAnimationFade = new FadeOutDownBig(enterLobbyButton);
-        highScoreButtonAnimationFade.setResetOnFinished(true);
+        highScoreButtonAnimationBounce = new BounceIn(enterLobbyButton);
+        highScoreButtonAnimationBounce.setResetOnFinished(true);
 
 
 
