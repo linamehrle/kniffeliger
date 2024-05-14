@@ -220,10 +220,9 @@ list-view. .list-cell:filled:hover {
     -fx-text-fill: #e5017d;
 }
 
-/*#diceBox {
-    -fx-background-color: #ffa8d7;
-    -fx-border-color: white ;
-}*/
+#diceBox .list-view .list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: #ffa8d7; /* linear-gradient(#ffa8d7 0%, #e5017d 50%, #7d0041 100%); */
+}
 
 
 
