@@ -13,6 +13,11 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
+/**
+ * Controller class for TrailerWindow.fxml
+ * GUI window that plays the trailer
+ */
 public class TrailerController implements Initializable {
 
     private static Logger logger = Starter.getLogger();
@@ -37,6 +42,7 @@ public class TrailerController implements Initializable {
 
         trailerMediaView.setMediaPlayer(trailerPlayer);
 
+        // Open LobbyWindow after trailer has finished playing
         trailerPlayer.setOnEndOfMedia(new Runnable() {
             @Override
             public void run() {
