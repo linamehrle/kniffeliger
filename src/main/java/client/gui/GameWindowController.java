@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import animatefx.animation.BounceIn;
 import animatefx.animation.FadeOutDownBig;
+import animatefx.animation.FadeOutRightBig;
+import animatefx.animation.FadeOutUpBig;
 import animatefx.animation.Flash;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -40,8 +42,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 import org.apache.logging.log4j.Logger;
-import animatefx.util.ParallelAnimationFX;
-import animatefx.util.SequentialAnimationFX;
 import starter.Starter;
 
 
