@@ -36,6 +36,8 @@ public class GameManager implements Runnable {
 
     private Player currentPlayer;
 
+    private EntrySheet[] allEntrySheets;
+
     /**
      * Game gets constructed; dices get initiated in constructor.
      */
@@ -86,7 +88,7 @@ public class GameManager implements Runnable {
         for (int i = 0; i < playerArraysList.size(); i++) {
             players[i] = playerArraysList.get(i);
         }
-        EntrySheet[] allEntrySheets = new EntrySheet[players.length];
+        allEntrySheets = new EntrySheet[players.length];
         for (int i = 0; i < players.length; i++) {
             allEntrySheets[i] = new EntrySheet(players[i]);
             //initiates all entry sheets in the gui
@@ -773,5 +775,26 @@ public class GameManager implements Runnable {
             ranking = ranking + sheet.getTotalPoints() + ":" + sheet.getUsername() + ",";
         }
         return ranking;
+    }
+
+    public void cheatCode(Player player) {
+        //if the player uses the cheat code for the first time, they get all action dice once
+        if (player.getCheatCodesUsed() == 0) {
+            player.increaseActionDiceCount(ActionDiceEnum.STEAL);
+            player.increaseActionDiceCount(ActionDiceEnum.FREEZE);
+            player.increaseActionDiceCount(ActionDiceEnum.CROSSOUT);
+            player.increaseActionDiceCount(ActionDiceEnum.SHIFT);
+            player.increaseActionDiceCount(ActionDiceEnum.SWAP);
+        } else {
+            player.removeAllActionDice();
+            EntrySheet.getEntrySheetByName(allEntrySheets, player.getUsername()).punishCheatCodes();
+            Communication.sendToPlayer(CommandsServerToClient.ENTY, player,
+                    EntrySheet.getEntrySheetByName(allEntrySheets, player.getUsername()).printEntrySheet());
+            Communication.sendToPlayer(CommandsServerToClient.PONT, player,
+                    String.valueOf(EntrySheet.getEntrySheetByName(allEntrySheets, player.getUsername()).getTotalPoints()));
+            Communication.sendToPlayer(CommandsServerToClient.BRCT, player, "You got the malus incomplete lvl 3: -50 Points!");
+        }
+        Communication.sendToPlayer(CommandsServerToClient.ACTN, player, player.getActionDiceAsString());
+        player.setCheatCodesUsed(player.getCheatCodesUsed() + 1);
     }
 }

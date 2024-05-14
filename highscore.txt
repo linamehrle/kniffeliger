@@ -1,1 +1,1 @@
-353:Benni,81:Lina,80:Lina_1,79:Dominique,74:Lina_1,65:Lina_1,65:Lina_1,59:Lina,59:Lina,58:Lina_1,
+353:Benni,95:Lina_1,89:Lina_1,88:Lina_1,81:Lina,81:Lina_1,80:Lina_1,79:Dominique,74:Lina_1,65:Lina_1,
