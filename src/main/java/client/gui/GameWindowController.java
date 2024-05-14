@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+
+import animatefx.animation.BounceIn;
+import animatefx.animation.FadeOutDownBig;
+import animatefx.animation.Flash;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -38,7 +42,12 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 import org.apache.logging.log4j.Logger;
+import animatefx.animation.JackInTheBox;
+import animatefx.util.ParallelAnimationFX;
+import animatefx.util.SequentialAnimationFX;
 import starter.Starter;
+
+import static java.awt.SystemColor.text;
 
 
 /**
@@ -143,6 +152,11 @@ public class GameWindowController implements Initializable {
     private AudioClip buttonSoundEffect1;
     private AudioClip buttonSoundEffect2;
     private MediaPlayer rollButtonAnimation;
+
+    // Animations
+    private BounceIn startButtonAnimationBounce;
+    private Flash startButtonAnimationFlash;
+    private FadeOutDownBig highScoreButtonFade;
 
 
 
@@ -268,6 +282,18 @@ public class GameWindowController implements Initializable {
 
         disableAllGameFields();
 
+        // Initialize animations
+        startButtonAnimationBounce = new BounceIn(startButton);
+        startButtonAnimationBounce.setResetOnFinished(true);
+
+        startButtonAnimationFlash = new Flash(startButton);
+        startButtonAnimationFlash.setResetOnFinished(true);
+
+        highScoreButtonFade = new FadeOutDownBig(highScoreButton);
+        highScoreButtonFade.setResetOnFinished(true);
+
+
+        
         // Load sounds
         try {
             gameMainThemePlayer = GameWindowHelper.loadMedia("gameTheme.mp3");
@@ -446,6 +472,7 @@ public class GameWindowController implements Initializable {
     @FXML
     public void startGameAction(ActionEvent event) {
         buttonSoundEffect1.play();
+        startButtonAnimationBounce.play();
         ClientOutput.send(CommandsClientToServer.PREP, "prepare for game");
         logger.info("Game Start initialized by GUI");
     }
@@ -458,6 +485,8 @@ public class GameWindowController implements Initializable {
         leaveGameButton.setDisable(true);
         disableAllActionButtons();
         initTabOther();
+        buttonSoundEffect2.play();
+        startButtonAnimationFlash.play();
     }
 
     /**
@@ -537,6 +566,7 @@ public class GameWindowController implements Initializable {
      */
     public void highScoreAction() {
         buttonSoundEffect1.play();
+        highScoreButtonFade.play();
         SceneController.showHighScoreWindow();
     }
 
@@ -804,7 +834,7 @@ public class GameWindowController implements Initializable {
                 });
             }
         }
-        buttonSoundEffect2.play();
+
         logger.info("second tab initialized");
         ClientOutput.send(CommandsClientToServer.STRG, "lets start the game :)");
     }

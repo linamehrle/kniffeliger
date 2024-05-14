@@ -3,6 +3,8 @@ package client.gui;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import animatefx.animation.FadeOutDownBig;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -56,6 +58,8 @@ public class LobbyWindowController implements Initializable {
 
     private boolean hasBeenInitialized = false;
 
+    private FadeOutDownBig highScoreButtonAnimationFade;
+
     MediaPlayer lobbyMainThemePlayer;
 
     /**
@@ -94,6 +98,7 @@ public class LobbyWindowController implements Initializable {
      * Opens the high score pup up window when the high score button is pressed
      */
     public void highScoreAction() {
+        highScoreButtonAnimationFade.play();
         SceneController.showHighScoreWindow();
     }
 
@@ -266,6 +271,10 @@ public class LobbyWindowController implements Initializable {
         } catch (FileNotFoundException e) {
             logger.info("Audio file 'lobbyTheme.mp3' not found.");
         }
+
+        // Initialize animations
+        highScoreButtonAnimationFade = new FadeOutDownBig(enterLobbyButton);
+        highScoreButtonAnimationFade.setResetOnFinished(true);
 
 
 
