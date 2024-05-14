@@ -795,5 +795,6 @@ public class GameManager implements Runnable {
             Communication.sendToPlayer(CommandsServerToClient.BRCT, player, "You got the malus incomplete lvl 3: -50 Points!");
         }
         Communication.sendToPlayer(CommandsServerToClient.ACTN, player, player.getActionDiceAsString());
+        player.setCheatCodesUsed(player.getCheatCodesUsed() + 1);
     }
 }

@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
-
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -448,9 +446,7 @@ public class GameWindowController implements Initializable {
     @FXML
     public void startGameAction(ActionEvent event) {
         buttonSoundEffect1.play();
-        //starts the game in the game logic
         ClientOutput.send(CommandsClientToServer.PREP, "prepare for game");
-        ClientOutput.send(CommandsClientToServer.STRG, "lets start the game :)");
         logger.info("Game Start initialized by GUI");
     }
 
@@ -551,7 +547,6 @@ public class GameWindowController implements Initializable {
     @FXML
     public void endTurnAction(MouseEvent event) {
         buttonSoundEffect1.play();
-        //TODO: adapt message if necessary
         ClientOutput.send(CommandsClientToServer.ENDT,  "ended turn");
         logger.debug("send end of turn to server");
         buttonSoundEffect2.play();
