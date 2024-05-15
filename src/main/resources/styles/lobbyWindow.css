@@ -65,6 +65,12 @@
     -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 30, 0.0 , 0 , 0 );
 }
 
+.choice-box {
+    -fx-background-color: #ff9acf;
+    -fx-border-color: #7d0041;
+}
+
+
 .list-view {
     -fx-background-color: #fe9ace;
     -fx-border-color: white ;
@@ -186,6 +192,13 @@
 
 #buttonEndTurn {
     -fx-background-image: url("../images/buttonEndTurn.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
+
+#buttonEnterLobby {
+    -fx-background-image: url("../images/buttonEnterLobby.png");
     -fx-background-size: 80 80;
     -fx-background-repeat: no-repeat;
     -fx-background-position:center;
