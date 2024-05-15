@@ -36,7 +36,7 @@ public class TrailerController implements Initializable {
 
         // Load Roll button animation
         try {
-            trailerPlayer = GameWindowHelper.loadMedia("trailer_neu.mp4");
+            trailerPlayer = GameWindowHelper.loadMedia("Trailer_mit_Untertitel.mp4");
             logger.trace("Animation file 'trailer.mp4' loaded.");
         } catch (FileNotFoundException e) {
             logger.info("Animation file 'trailer.mp4' not found.");
