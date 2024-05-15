@@ -16,6 +16,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import org.apache.logging.log4j.LogManager;
@@ -63,6 +64,10 @@ public class LobbyWindowController implements Initializable {
 
     MediaPlayer lobbyMainThemePlayer;
 
+    private AudioClip buttonSoundEffect1;
+    private AudioClip buttonSoundEffect2;
+    private AudioClip buttonSoundEffect3;
+
     /**
      * Handles when the button createLobby is pressed, sends the request to create a new lobby to the server
      */
@@ -71,6 +76,7 @@ public class LobbyWindowController implements Initializable {
         ClientOutput.send(CommandsClientToServer.CRLO, lobbyName);
         createLobbyButton.setDisable(true);
         lobbyTextField.clear();
+        buttonSoundEffect1.play();
     }
 
     /**
@@ -82,6 +88,7 @@ public class LobbyWindowController implements Initializable {
         ClientOutput.send(CommandsClientToServer.ENLO, splitLobbyAndStatus[0]);
         enterLobbyButton.setDisable(true); //TODO deactivate button also when list is not selected?
         SceneController.switchToGameWindow(event);
+        buttonSoundEffect2.play();
     }
 
     /**
@@ -93,6 +100,7 @@ public class LobbyWindowController implements Initializable {
         ClientOutput.send(CommandsClientToServer.CHNA, username);
         changeUsernameButton.setDisable(true);
         usernameTextField.clear();
+        buttonSoundEffect3.play();
     }
 
     /**
@@ -101,6 +109,7 @@ public class LobbyWindowController implements Initializable {
     public void highScoreAction() {
         highScoreButtonAnimationBounce.play();
         SceneController.showHighScoreWindow();
+        buttonSoundEffect3.play();
     }
 
     /**
@@ -285,6 +294,17 @@ public class LobbyWindowController implements Initializable {
         // Initialize animations
         highScoreButtonAnimationBounce = new BounceIn(enterLobbyButton);
         highScoreButtonAnimationBounce.setResetOnFinished(true);
+
+
+        // Load sound effects
+        try {
+            buttonSoundEffect1 = GameWindowHelper.loadSoundEffect("button1.mp3");
+            buttonSoundEffect2 = GameWindowHelper.loadSoundEffect("soundEffect2.mp3");
+            buttonSoundEffect3 = GameWindowHelper.loadSoundEffect("button3.mp3");
+            logger.trace("Sound effects loaded.");
+        } catch (FileNotFoundException e) {
+            logger.info("Sound effects not found.");
+        }
 
 
         hasBeenInitialized = true;

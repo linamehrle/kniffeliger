@@ -145,6 +145,7 @@ public class GameWindowController implements Initializable {
     private ArrayList<ListView<String>> secondTabListViews = new ArrayList<>();
     private AudioClip buttonSoundEffect1;
     private AudioClip buttonSoundEffect2;
+    private AudioClip buttonSoundEffect3;
     private MediaPlayer rollButtonAnimation;
 
     // Animations
@@ -322,6 +323,7 @@ public class GameWindowController implements Initializable {
         try {
             buttonSoundEffect1 = GameWindowHelper.loadSoundEffect("button1.mp3");
             buttonSoundEffect2 = GameWindowHelper.loadSoundEffect("soundEffect2.mp3");
+            buttonSoundEffect3 = GameWindowHelper.loadSoundEffect("button3.mp3");
             logger.trace("Sound effects loaded.");
         } catch (FileNotFoundException e) {
             logger.info("Sound effects not found.");
@@ -350,6 +352,7 @@ public class GameWindowController implements Initializable {
                 gameMainThemePlayer.setVolume(volumeSlider.getValue());
                 buttonSoundEffect1.setVolume(volumeSlider.getValue());
                 buttonSoundEffect2.setVolume(volumeSlider.getValue());
+                buttonSoundEffect3.setVolume(volumeSlider.getValue());
                 if (volumeSlider.getValue() == 0 && !muteButton.isSelected()) {
                     muteButton.fire();
                 } else if (volumeSlider.getValue() != 0 && muteButton.isSelected()) {
@@ -589,7 +592,7 @@ public class GameWindowController implements Initializable {
      * Method to open the high score list as a new window when pushing the highScoreButton
      */
     public void highScoreAction() {
-        buttonSoundEffect1.play();
+        buttonSoundEffect3.play();
         highScoreButtonBounce.play();
         SceneController.showHighScoreWindow();
     }
