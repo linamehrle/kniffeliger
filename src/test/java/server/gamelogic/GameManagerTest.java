@@ -4,6 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import server.Player;
 
+import java.util.HashMap;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 // get methods are not tested separately since they are used in tests anyway and tested with the other tests
@@ -27,10 +29,10 @@ class GameManagerTest {
         /**
          * Get the action dice of player.
          *
-         * @return all action dice of player saved in array.
+         * @return all action dice of player saved in a Hashmap.
          */
-        public ActionDice[] getActionDice() {
-            return actionDice;
+        public HashMap<ActionDiceEnum, Integer> getActionDice() {
+            return super.actionDice;
         }
 
         /**
@@ -43,23 +45,43 @@ class GameManagerTest {
         }
 
         /**
-         * Access private field id.
+         * Sets number of action dices according to the given number.
          *
-         * @return id of user
+         * @param stealCount
+         * @param freezeCount
+         * @param crossOutCount
+         * @param swapCount
+         * @param shiftCount
          */
-        public int getId() {
-            return super.id;
+        public void setActionDice(int stealCount, int freezeCount, int crossOutCount, int swapCount, int shiftCount) {
+            super.actionDice.put(ActionDiceEnum.STEAL, stealCount);
+            super.actionDice.put(ActionDiceEnum.FREEZE, freezeCount);
+            super.actionDice.put(ActionDiceEnum.CROSSOUT, crossOutCount);
+            super.actionDice.put(ActionDiceEnum.SHIFT, shiftCount);
+            super.actionDice.put(ActionDiceEnum.SWAP, swapCount);
         }
+    }
 
-        /**
-         * Set a new set of action dice.
-         *
-         * @param newActionDice new array of action dice a player can use.
-         */
-        public void setActionDices(ActionDice[] newActionDice) {
-            actionDice = newActionDice;
-        }
+    /**
+     * Method to create an Action Dice HashMap given counts.
+     *
+     * @param stealCount
+     * @param freezeCount
+     * @param crossOutCount
+     * @param swapCount
+     * @param shiftCount
+     * @return
+     */
+    public static HashMap<ActionDiceEnum, Integer> generateActionDice(int stealCount, int freezeCount, int crossOutCount, int swapCount, int shiftCount) {
+        HashMap<ActionDiceEnum, Integer> actionDice = new HashMap<>();
 
+        actionDice.put(ActionDiceEnum.STEAL, stealCount);
+        actionDice.put(ActionDiceEnum.FREEZE, freezeCount);
+        actionDice.put(ActionDiceEnum.CROSSOUT, crossOutCount);
+        actionDice.put(ActionDiceEnum.SHIFT, shiftCount);
+        actionDice.put(ActionDiceEnum.SWAP, swapCount);
+
+        return actionDice;
     }
 
     /**
@@ -76,6 +98,64 @@ class GameManagerTest {
             }
         }
         return result;
+    }
+
+    // depends on constant DIVISIBLE_BY field in GameManager
+    // at the moment it is DIVISIBLE_BY = 1
+    @Test
+    @DisplayName("Adds action dice to players action dice set.")
+    void addActionDiceTest() {
+        // initiate game manager to test methods
+        GameManager gm = new GameManager();
+        // divisible by DIVIDABLE_BY constant in game manager, then get an action dice
+        int DIVIDABLE_BY = gm.getDIVIDABLE_BY();
+        Dice d1 = new Dice();
+        Dice d2 = new Dice();
+        Dice d3 = new Dice();
+        Dice d4 = new Dice();
+        Dice d5 = new Dice();
+        Dice[] allDice = new Dice[]{d1, d2, d3, d4, d5};
+        gm.rollDice(allDice);
+
+        // get false if sum of dice is not dividable by DIVIDABLE_BY and true if it is dividable by DIVIDABLE_BY
+        boolean res = false;
+        int sum = 0;
+        for (Dice dice : allDice) {
+            sum += dice.getDiceValue();
+        }
+        if (sum % DIVIDABLE_BY == 0) {
+            res = true;
+        }
+
+        // generate players which have action dice
+        DummyPlayer lina = new DummyPlayer("lina");
+        DummyPlayer riccardo = new DummyPlayer("riccardo");
+
+        // set linas action dice to array below, riccardo's action dice stay 0
+        lina.setActionDice(1, 1, 1,1 ,1);
+
+        // add action dice
+        boolean addedToLinasActionDice = gm.addActionDice(allDice, lina);
+        boolean addedToRiccardosActionDice = gm.addActionDice(allDice, riccardo);
+
+        // test if action dice can be added
+        assertEquals(res, addedToLinasActionDice);
+
+        // check number of actn dices
+        int linaNumActDice = 0;
+        for (ActionDiceEnum actDice : lina.getActionDice().keySet()) {
+            linaNumActDice += lina.getActionDice().get(actDice);
+        }
+
+        assertTrue(5 <= linaNumActDice && linaNumActDice <= 11);
+        assertEquals(res, addedToRiccardosActionDice);
+
+        // check number of actn dices
+        int riccardoActDice = 0;
+        for (ActionDiceEnum actDice : riccardo.getActionDice().keySet()) {
+            riccardoActDice += riccardo.getActionDice().get(actDice);
+        }
+        assertTrue(0 <= riccardoActDice && riccardoActDice <= 5);
     }
 
     @Test
@@ -116,6 +196,72 @@ class GameManagerTest {
                 () -> assertTrue(GameManager.allDiceSaved(allSavedDice))
         );
 
+    }
+
+    @Test
+    @DisplayName("Tests the method that deletes an action dice out of an array")
+    void deleteActionDiceTest(){
+        // players that hold action dice (needed to apply the delete entry method)
+        DummyPlayer lina = new DummyPlayer("lina");
+        DummyPlayer riccardo = new DummyPlayer("riccardo");
+
+        // action dice for player
+        lina.setActionDice(1, 1, 1,1,1);
+        riccardo.setActionDice(0, 0, 1, 1,1);
+
+        // delete action dice
+        GameManager gm = new GameManager();
+        lina.decreaseActionDiceCount(ActionDiceEnum.SHIFT);
+        riccardo.decreaseActionDiceCount(ActionDiceEnum.CROSSOUT);
+
+        // control action dice to check
+
+        HashMap<ActionDiceEnum, Integer> controlActionDiceLina = generateActionDice(1, 1, 1, 1, 0);
+        HashMap<ActionDiceEnum, Integer> controlActionDiceRiccardo = generateActionDice(0, 0, 0, 1, 1);
+
+        assertAll(() -> assertEquals(controlActionDiceLina, lina.getActionDice()),
+                () -> assertEquals(controlActionDiceRiccardo, riccardo.getActionDice())
+        );
+    }
+
+    @Test
+    @DisplayName("Checks if it gets played correctly if player is not connected anymore.")
+    void playForPlayerTest() {
+        //TODO: add test for this method
+    }
+
+    @Test
+    @DisplayName("Checks if ranking is properly done.")
+    void rankingTest() {
+        // generate game manager
+        GameManager gm = new GameManager();
+
+        // generate two players with random entry sheets with one clearly having more total points (since range of randomly generated numbers is different)
+        // save entry sheets in an array
+        DummyPlayer lina = new DummyPlayer("lina");
+        EntrySheet linasEntrySheet = new EntrySheet(lina);
+        DummyPlayer loris = new DummyPlayer("loris");
+        EntrySheet  lorisEntrySheet = new EntrySheet(loris);
+        EntrySheet[] allEntrySheets = new EntrySheet[]{linasEntrySheet, lorisEntrySheet};
+
+        // random values for entry sheets
+        int[] winnerSheet = new int[14];
+        int[] loserSheet = new int[14];
+        for (int i = 0; i < winnerSheet.length; i++) {
+            winnerSheet[i] = (int) (Math.random() * 100 + 16);
+            loserSheet[i] = (int) (Math.random() * 15 + 1);
+        }
+
+        // add values to entry sheets
+        linasEntrySheet.setEntrySheet(winnerSheet);
+        lorisEntrySheet.setEntrySheet(loserSheet);
+
+        // get ranking
+        Player[] rankedPlayers = gm.ranking(allEntrySheets);
+
+        assertAll(() -> assertEquals("lina", rankedPlayers[1].getUsername()),
+                () -> assertEquals("loris", rankedPlayers[0].getUsername())
+        );
     }
 
     @Test
@@ -172,114 +318,6 @@ class GameManagerTest {
         for (Dice dice : allDice) {
             assertTrue(0 != dice.getDiceValue());
         }
-    }
-
-    // depends on constant DIVISIBLE_BY field in GameManager
-    // at the moment it is DIVISIBLE_BY = 1
-    @Test
-    @DisplayName("Adds action dice to players action dice set.")
-    void addActionDiceTest() {
-        // initiate game manager to test methods
-        GameManager gm = new GameManager();
-        // divisible by DIVIDABLE_BY constant in game manager, then get an action dice
-        int DIVIDABLE_BY = gm.getDIVIDABLE_BYE();
-        Dice d1 = new Dice();
-        Dice d2 = new Dice();
-        Dice d3 = new Dice();
-        Dice d4 = new Dice();
-        Dice d5 = new Dice();
-        Dice[] allDice = new Dice[]{d1, d2, d3, d4, d5};
-        gm.rollDice(allDice);
-
-        // get false if sum of dice is not dividable by DIVIDABLE_BY and true if it is dividable by DIVIDABLE_BY
-        boolean res = false;
-        int sum = 0;
-        for (Dice dice : allDice) {
-            sum += dice.getDiceValue();
-        }
-        if (sum % DIVIDABLE_BY == 0) {
-            res = true;
-        }
-
-        // generate players which have action dice
-        DummyPlayer lina = new DummyPlayer("lina");
-        DummyPlayer riccardo = new DummyPlayer("riccardo");
-
-        // set linas action dice to array below, riccardo's action dice stay 0
-        ActionDice[] actionDiceLina = new ActionDice[]{new ActionDice("steal"), new ActionDice("freeze"), new ActionDice("crossOut"), new ActionDice("shift"), new ActionDice("swap")};
-        lina.setActionDices(actionDiceLina);
-
-        // add action dice
-        boolean addedToLinasActionDice = gm.addActionDice(allDice, lina);
-        boolean addedToRiccardosActionDice = gm.addActionDice(allDice, riccardo);
-
-        // test if action dice can be added
-        assertEquals(res, addedToLinasActionDice);
-        assertTrue(6 <= lina.getActionDice().length && lina.getActionDice().length <= 11);
-        assertEquals(res, addedToRiccardosActionDice);
-        assertTrue(1 <= riccardo.getActionDice().length && riccardo.getActionDice().length <= 5);
-    }
-
-    @Test
-    @DisplayName("Tests the method that deletes an action dice out of an array")
-    void deleteActionDiceTest(){
-        // action dice for player
-        ActionDice[] actionDiceLina = new ActionDice[]{new ActionDice("steal"), new ActionDice("freeze"), new ActionDice("crossOut"), new ActionDice("shift"), new ActionDice("swap")};
-        ActionDice[] actionDiceRiccardo = new ActionDice[]{new ActionDice("crossOut"), new ActionDice("shift"), new ActionDice("swap")};
-
-        // players that hold action dice (needed to apply the delete entry method)
-        DummyPlayer lina = new DummyPlayer("lina");
-        DummyPlayer riccardo = new DummyPlayer("riccardo");
-        lina.setActionDices(actionDiceLina);
-        riccardo.setActionDices(actionDiceRiccardo);
-
-        // delete action dice
-        GameManager gm = new GameManager();
-        gm.deleteActionDice(lina, "shift");
-        gm.deleteActionDice(riccardo, "crossOut");
-
-        // control action dice to check
-        ActionDice[] controlActionDiceLina = new ActionDice[]{new ActionDice("steal"), new ActionDice("freeze"), new ActionDice("crossOut"), new ActionDice("swap")};
-        ActionDice[] controlActionDiceRiccardo = new ActionDice[]{new ActionDice("shift"), new ActionDice("swap")};
-
-        assertAll(() -> assertEquals(turnActionDiceToString(controlActionDiceLina), turnActionDiceToString(lina.getActionDice())),
-                () -> assertEquals(turnActionDiceToString(controlActionDiceRiccardo), turnActionDiceToString(riccardo.getActionDice()))
-        );
-    }
-
-    @Test
-    @DisplayName("Checks if ranking is properly done.")
-    void rankingTest() {
-        // generate game manager
-        GameManager gm = new GameManager();
-
-        // generate two players with random entry sheets with one clearly having more total points (since range of randomly generated numbers is different)
-        // save entry sheets in an array
-        DummyPlayer lina = new DummyPlayer("lina");
-        EntrySheet linasEntrySheet = new EntrySheet(lina);
-        DummyPlayer loris = new DummyPlayer("loris");
-        EntrySheet  lorisEntrySheet = new EntrySheet(loris);
-        EntrySheet[] allEntrySheets = new EntrySheet[]{linasEntrySheet, lorisEntrySheet};
-
-        // random values for entry sheets
-        int[] winnerSheet = new int[14];
-        int[] loserSheet = new int[14];
-        for (int i = 0; i < winnerSheet.length; i++) {
-            winnerSheet[i] = (int) (Math.random() * 100 + 16);
-            loserSheet[i] = (int) (Math.random() * 15 + 1);
-        }
-
-        // add values to entry sheets
-        linasEntrySheet.setEntrySheet(winnerSheet);
-        lorisEntrySheet.setEntrySheet(loserSheet);
-
-        // get ranking
-        Player[] rankedPlayers = gm.ranking(allEntrySheets);
-
-        assertAll(() -> assertEquals("lina", rankedPlayers[1].getUsername()),
-                () -> assertEquals("loris", rankedPlayers[0].getUsername())
-        );
-
     }
 
 }

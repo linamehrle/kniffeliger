@@ -1,0 +1,232 @@
+.root {
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+    -fx-background-color: #ffa8d7; /* #ff1493 */
+}
+
+.header-section {
+    -fx-padding: 10px;
+    -fx-font-size: 20px;
+    -fx-background-color: #fe9ace;
+}
+
+.header-section Label {
+    -fx-text-fill: #ff9acf;
+    -fx-padding: 10px;
+}
+
+
+.sidebar-section {
+    -fx-min-width: 200px;
+    -fx-pref-width: 200px;
+    -fx-max-width: 200px;
+    -fx-border-width: 1;
+    -fx-border-color: transparent #ff9acf transparent transparent;
+}
+
+.sidebar-section Label {
+    -fx-font-size: 18px;
+    -fx-padding: 10 15 10 15;
+    -fx-border-width: 1;
+    -fx-border-color: transparent transparent #ff9acf transparent;
+    -fx-min-width: 200px;
+    -fx-pref-width: 200px;
+    -fx-max-width: 200px;
+}
+
+.content-section {
+    -fx-padding: 10 20 10 20;
+    -fx-wrap-text: true;
+
+}
+
+.content-section Label {
+    -fx-font-size: 18px;
+    -fx-padding: 10 15 10 15;
+    -fx-border-width: 1;
+    -fx-border-color: transparent transparent #ff9acf transparent;
+    -fx-min-width: 200px;
+    -fx-pref-width: 200px;
+    -fx-max-width: 200px;
+}
+
+
+.button {
+    -fx-background-color: #e5017d;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
+}
+.button:hover {
+    -fx-background-color: #e5017d;
+    -fx-effect: none;
+}
+
+.button:pressed {
+    -fx-background-color: #e5017d; /* #ff9acf */
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 30, 0.0 , 0 , 0 );
+}
+
+.choice-box {
+    -fx-background-color: #ff9acf;
+    -fx-border-color: #7d0041;
+}
+
+
+.list-view {
+    -fx-background-color: #fe9ace;
+    -fx-border-color: white ;
+}
+
+
+#content-header {
+    -fx-font-size: 16px;
+    -fx-padding: 0 0 10 0;
+    -fx-font-weight: 700;
+}
+
+#content {
+    -fx-wrap-text: true;
+    -fx-font-size: 16px;
+}
+
+#footer-section {
+    -fx-alignment: center;
+    -fx-padding: 10 10 10 10;
+    -fx-border-width: 1;
+    -fx-border-color: #ee82ee ;
+}
+
+#buttonSwap {
+    -fx-background-image: url("../images/buttonSwap.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
+
+#buttonSteal {
+    -fx-background-image: url("../images/buttonSteal.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
+
+#buttonShift {
+    -fx-background-image: url("../images/buttonShift.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
+
+#buttonDelete {
+    -fx-background-image: url("../images/buttonDelete.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
+
+#buttonFreeze {
+    -fx-background-image: url("../images/buttonFreeze.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
+
+#buttonRoll {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e5017d;
+    -fx-effect: none;
+}
+
+#buttonLeaveGame {
+    -fx-background-image: url("../images/buttonExit.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: #e5017d;
+}
+
+#buttonMute {
+    -fx-background-image: url("../images/buttonMute.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color:  #e5017d;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
+}
+
+#buttonMute:selected {
+    -fx-background-image: url("../images/buttonUnmute.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color:  #e5017d;
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 20, 0.0 , 0 , 0 );
+}
+
+#buttonEnter {
+    -fx-background-image: url("../images/buttonEnter.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
+
+#buttonLeaveLobby {
+    -fx-background-image: url("../images/buttonHome.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
+
+#buttonStartGame {
+    -fx-background-image: url("../images/buttonStartGame.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
+
+#buttonHighScore {
+    -fx-background-image: url("../images/buttonHighScore.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
+
+#buttonEndTurn {
+    -fx-background-image: url("../images/buttonEndTurn.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
+
+#buttonEnterLobby {
+    -fx-background-image: url("../images/buttonEnterLobby.png");
+    -fx-background-size: 80 80;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+}
+
+#labelLogo {
+    -fx-background-image: url("../images/kniffeliger.png");
+    -fx-background-size: 302 110;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+    -fx-background-color: #7d0041;
+
+}
+
+#informationBox {
+    -fx-background-color: #fe9ace;
+    -fx-border-color: white ;
+    -fx-font-size: 18;
+}
+
+#diceBox {
+    -fx-background-color: #fe9ace;
+    -fx-border-color: white ;
+}
+
+
+
+
+
+
+

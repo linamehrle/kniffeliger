@@ -48,9 +48,6 @@ public class CWcontroller implements Initializable {
 
     //will be used later to select user for whisper chat
     String[] userList = new String[]{"dummy"};
-    //private List<String> userNameList;
-    //ArrayList<Player> playerList;
-    //private ClientOutput networkManager;
 
     /**
      * Initializer for the ChatWindow is called when FXML is loaded
@@ -118,11 +115,11 @@ public class CWcontroller implements Initializable {
             TextFlow textFlow = new TextFlow(text);
             textFlow.setStyle(
                     "-fx-color: rgb(239, 242, 255);" +
-                            "-fx-background-color: rgb(15, 125, 242);" +
+                            "-fx-background-color: #ff9acf;" +
                             "-fx-background-radius: 20px;");
 
             textFlow.setPadding(new Insets(5, 10, 5, 10));
-            text.setFill(Color.color(0.934, 0.925, 0.996));
+            text.setFill(Color.web("#000000"));
 
             hBox.getChildren().add(textFlow);
             msgDisplayAll.getChildren().add(hBox);
@@ -152,11 +149,6 @@ public class CWcontroller implements Initializable {
         this.recipient = recipient;
     }
 
-    //private class getClickID implements EventHandler<Event>{
-        //@Override
-        //public void handle(Event evt) {
-            //}
-    //}
 
     /**
      * This method adds text to a VBox. It is used to display received messages
@@ -171,11 +163,12 @@ public class CWcontroller implements Initializable {
         hBox.setPadding(new Insets(5, 5, 5, 10));
 
         Text text = new Text(messageFromServer);
+        text.setFill(Color.web("#FFFFFF"));
 
         TextFlow textFlow = new TextFlow(text);
 
         textFlow.setStyle(
-                "-fx-background-color: rgb(233, 233, 235);" +
+                "-fx-background-color: #e5017d;" +
                         "-fx-background-radius: 20px;");
 
         textFlow.setPadding(new Insets(5, 10, 5, 10));
@@ -197,12 +190,9 @@ public class CWcontroller implements Initializable {
      * @param message message to send, contains @all, @lobby or @username at the beginning followed by a space
      */
     public void sendMsgtoServer(String message){
-
-        //at the moment the default is to send a message to everybody (if no @... is at the beginning)
-        /*if (message.charAt(0) != '@') {
-            ClientOutput.sendToServer("CHAT " + message);
-            return;
-        }*/
+        if (message.equals("thisisnotapdf")) {
+            ClientOutput.sendToServer("CHET lets get this action die!!");
+        }
 
         String receiver = getRecipient();
         System.out.println("the receiver is: " + receiver);
@@ -243,19 +233,19 @@ public class CWcontroller implements Initializable {
         choiceBox.setItems(userNameList);
         userNameList.addAll(values);
     }
-    //public void setNetworkManager(ClientOutput clientOutput){
-        //this.networkManager = clientOutput;
-    //}
 
     /**
      * method to display message in main display area of chat window (on left side in light gray)
      * @param message message to be displayed
      */
     public void displayReceivedMessage(String message) {
-        //display this in the chat window, message is "username: message"
         addMsgReceived(message, msgDisplayAll);
     }
 
+    /**
+     * Updates the list of player to choose from for the whisper chat
+     * @param playerlist
+     */
     public void updatePlayerList(String playerlist) {
         playerlist = "all,lobby," + playerlist;
         userList = playerlist.split(",");

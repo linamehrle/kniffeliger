@@ -11,7 +11,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+
+import animatefx.animation.Flash;
+import animatefx.animation.Wobble;
+import animatefx.animation.ZoomOut;
 import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
 
@@ -40,6 +45,10 @@ public class ActionDicePlayerAndFieldController implements Initializable {
 
     private String action;
 
+    private Wobble freezeAnimationWobble;
+    private ZoomOut deleteAnimationSwing;
+    private Flash stealAnimationFlash;
+
     /**
      * When the okay button is hit, the choice made is sent to the server and the window is closed.
      * @param event
@@ -52,12 +61,21 @@ public class ActionDicePlayerAndFieldController implements Initializable {
         }
 
         switch (action) {
-            case "freeze" -> ClientOutput.send(CommandsClientToServer.FRZE,
-                    playerChoiceBox.getValue() + " " + fieldChoiceBox.getValue());
-            case "steal" -> ClientOutput.send(CommandsClientToServer.STEA,
-                    playerChoiceBox.getValue() + " " + fieldChoiceBox.getValue());
-            case "delete" -> ClientOutput.send(CommandsClientToServer.COUT,
-                    playerChoiceBox.getValue() + " " + fieldChoiceBox.getValue());
+            case "freeze" -> {
+                ClientOutput.send(CommandsClientToServer.FRZE,
+                        playerChoiceBox.getValue() + " " + fieldChoiceBox.getValue());
+                freezeAnimationWobble.play();
+            }
+            case "steal" -> {
+                ClientOutput.send(CommandsClientToServer.STEA,
+                        playerChoiceBox.getValue() + " " + fieldChoiceBox.getValue());
+                stealAnimationFlash.play();
+            }
+            case "delete" -> {
+                ClientOutput.send(CommandsClientToServer.COUT,
+                        playerChoiceBox.getValue() + " " + fieldChoiceBox.getValue());
+                deleteAnimationSwing.play();
+            }
         }
 
         Stage stage = (Stage) okayButton.getScene().getWindow();
@@ -69,7 +87,7 @@ public class ActionDicePlayerAndFieldController implements Initializable {
      * @param playerList the current players in the game
      * @param action the action that will be performed, i.e. "freeze" or "steal" etc.
      */
-    public void setUp(ArrayList<String> playerList, String action) {
+    public void setUp(ArrayList<String> playerList, String action, ListView<String> entrySheet) {
 
         this.action = action;
         this.playerList = playerList;
@@ -83,6 +101,16 @@ public class ActionDicePlayerAndFieldController implements Initializable {
         setChoiceBox(playerChoiceBox, playerArray);
 
         questionLabel.setText("What do you want to " + action+ "?");
+
+        //initiate animations
+        stealAnimationFlash = new Flash(entrySheet);
+        stealAnimationFlash.setResetOnFinished(true);
+
+        freezeAnimationWobble = new Wobble(entrySheet);
+        freezeAnimationWobble.setResetOnFinished(true);
+
+        deleteAnimationSwing = new ZoomOut(entrySheet);
+        deleteAnimationSwing.setResetOnFinished(true);
     }
 
     /**

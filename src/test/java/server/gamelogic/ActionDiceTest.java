@@ -6,6 +6,7 @@ import server.Player;
 
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -70,6 +71,16 @@ class ActionDiceTest {
 
     }
 
+    public int getRandomWithExclusion(Random rnd, int start, int end, int... exclude) {
+        int random = start + rnd.nextInt(end - start + 1 - exclude.length);
+        for (int ex : exclude) {
+            if (random < ex) {
+                break;
+            }
+            random++;
+        }
+        return random;
+    }
 
     /*
     * ##################################################################################################################
@@ -78,10 +89,10 @@ class ActionDiceTest {
     */
 
     /**
-     * Helper method to initiate random entry sheets with random values from 5 to 50.
+     * Helper method to initiate random entry sheets with random values from 5 to 50 and sets them final.
      *
-     * @param player
-     * @return
+     * @param player whose entries will be made
+     * @return the filled EntrySheet
      */
     public EntrySheet initiateRandomEntrySheet(Player player){
         EntrySheet playersEntrySheet = new EntrySheet(player);
@@ -90,6 +101,20 @@ class ActionDiceTest {
             i = (int) Math.floor(Math.random() * 50 + 5);
         }
         playersEntrySheet.setEntrySheet(randomArray);
+        return playersEntrySheet;
+    }
+
+    /**
+     * Helper method to initiate random entry sheets with random values from 5 to 50 without setting them final.
+     *
+     * @param player whose entries will be made
+     * @return the filled EntrySheet
+     */
+    public EntrySheet initiateRandomEntrySheetWithoutFinal(Player player){
+        EntrySheet playersEntrySheet = new EntrySheet(player);
+        for (Entry entry : playersEntrySheet.getAsArray()){
+            entry.setValue((int) Math.floor(Math.random() * 50 + 5));
+        }
         return playersEntrySheet;
     }
 
@@ -112,6 +137,7 @@ class ActionDiceTest {
         linasHelpersEntrySheet.setEntrySheet(linasEntrySheet.getEntryValues());
         riccardosHelpersEntrySheet.setEntrySheet(riccardosEntrySheet.getEntryValues());
 
+        // random index to access random entry in entry sheets
         int randomIndex = (int) Math.floor(Math.random() * 13 + 0);
         ActionDice.steal(linasEntrySheet, riccardosEntrySheet, riccardosEntrySheet.getEntryNames()[randomIndex]);
         assertAll(() -> assertEquals(riccardosHelpersEntrySheet.getAsArray()[randomIndex].getValue(), linasEntrySheet.getAsArray()[randomIndex].getValue()),
@@ -216,6 +242,99 @@ class ActionDiceTest {
         ActionDice.swap(linasEntrySheet, riccardosEntrySheet);
         assertAll(() -> assertEquals(riccardosHelpersEntrySheet.getEntryValues()[randomIndex], linasEntrySheet.getEntryValues()[randomIndex]),
                 () -> assertEquals(linasHelpersEntrySheet.getEntryValues()[randomIndex], riccardosEntrySheet.getEntryValues()[randomIndex])
+        );
+    }
+
+    //##################################################################################################################
+    // UNHAPPY TESTS
+    //##################################################################################################################
+    @Test
+    @DisplayName("Checks if player can steal if entry is final entries.")
+    void unhappyStealTest(){
+        // victim
+        DummyPlayer lina = new DummyPlayer("lina");
+        EntrySheet linasEntrySheet = initiateRandomEntrySheetWithoutFinal(lina);
+
+        // thief
+        DummyPlayer riccardo = new DummyPlayer("riccardo");
+        EntrySheet riccardosEntrySheet = new EntrySheet(riccardo);
+
+        // random index to access random entry in entry sheets and set all final except the one with random index
+        int randomIndex = (int) Math.floor(Math.random() * 13 + 0);
+
+        // sets all entries of victim as final except for the one at randomIndex
+        for (int i = 0; i < linasEntrySheet.getAsArray().length; i++){
+            if (i != randomIndex){
+                linasEntrySheet.getAsArray()[i].setFinal();
+            }
+        }
+
+        // random index that are not the one we chose
+        Random rnd = new Random();
+        int randomWithExclusion = getRandomWithExclusion(rnd, 0, 13, randomIndex);
+
+        assertAll(() -> assertTrue(ActionDice.steal(riccardosEntrySheet, linasEntrySheet, riccardosEntrySheet.getEntryNames()[randomWithExclusion])),
+                () -> assertFalse(ActionDice.steal(riccardosEntrySheet, linasEntrySheet, riccardosEntrySheet.getEntryNames()[randomIndex]))
+        );
+    }
+
+    @Test
+    @DisplayName("Checks if player can freeze final entries.")
+    void unhappyFreezeTest(){
+        // victim
+        DummyPlayer lina = new DummyPlayer("lina");
+        EntrySheet linasEntrySheet = initiateRandomEntrySheetWithoutFinal(lina);
+
+        // thief
+        DummyPlayer riccardo = new DummyPlayer("riccardo");
+        EntrySheet riccardosEntrySheet = new EntrySheet(riccardo);
+
+        // random index to access random entry in entry sheets and set all final except the one with random index
+        int randomIndex = (int) Math.floor(Math.random() * 13 + 0);
+
+        // sets all entries of victim as final except for the one at randomIndex
+        for (int i = 0; i < linasEntrySheet.getAsArray().length; i++){
+            if (i != randomIndex){
+                linasEntrySheet.getAsArray()[i].setFinal();
+            }
+        }
+
+        // random index that are not the one we chose
+        Random rnd = new Random();
+        int randomWithExclusion = getRandomWithExclusion(rnd, 0, 13, randomIndex);
+
+        assertAll(() -> assertFalse(ActionDice.freeze(riccardosEntrySheet, linasEntrySheet, riccardosEntrySheet.getEntryNames()[randomWithExclusion])),
+                () -> assertTrue(ActionDice.freeze(riccardosEntrySheet, linasEntrySheet, riccardosEntrySheet.getEntryNames()[randomIndex]))
+        );
+    }
+
+    @Test
+    @DisplayName("Checks if player can cross out final entries.")
+    void unhappyCrossOutTest(){
+        // victim
+        DummyPlayer lina = new DummyPlayer("lina");
+        EntrySheet linasEntrySheet = initiateRandomEntrySheetWithoutFinal(lina);
+
+        // thief
+        DummyPlayer riccardo = new DummyPlayer("riccardo");
+        EntrySheet riccardosEntrySheet = new EntrySheet(riccardo);
+
+        // random index to access random entry in entry sheets and set all final except the one with random index
+        int randomIndex = (int) Math.floor(Math.random() * 13 + 0);
+
+        // sets all entries of victim as final except for the one at randomIndex
+        for (int i = 0; i < linasEntrySheet.getAsArray().length; i++){
+            if (i != randomIndex){
+                linasEntrySheet.getAsArray()[i].setFinal();
+            }
+        }
+
+        // random index that are not the one we chose
+        Random rnd = new Random();
+        int randomWithExclusion = getRandomWithExclusion(rnd, 0, 13, randomIndex);
+
+        assertAll(() -> assertTrue(ActionDice.crossOut(riccardosEntrySheet, linasEntrySheet, riccardosEntrySheet.getEntryNames()[randomWithExclusion])),
+                () -> assertFalse(ActionDice.crossOut(riccardosEntrySheet, linasEntrySheet, riccardosEntrySheet.getEntryNames()[randomIndex]))
         );
     }
 

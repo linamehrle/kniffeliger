@@ -2,8 +2,9 @@ package server;
 
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import org.apache.logging.log4j.Logger;
-import server.gamelogic.ActionDice;
+import server.gamelogic.ActionDiceEnum;
 import server.networking.ClientThread;
 import server.networking.CommandsServerToClient;
 import server.networking.Communication;
@@ -23,10 +24,32 @@ public class Player {
     private static int counter = 0;
     protected int id;
     protected String username;
-    private ActionDice[] actionDice;
+
+    /**
+     * This map saves all the action dice a player gets during the game, the first field is the name of the action dice
+     * and the second the current count of this specific action die
+     */
+    protected HashMap<ActionDiceEnum, Integer> actionDice = new HashMap<>();
     private ClientThread playerThreadManager;
     private ArrayList<Player> playerList;
     private Lobby lobby;
+
+    /**
+     * Boolean that indicates if a player is in a running game, this is needed to handle disconnects accordingly
+     */
+    private boolean isInGame;
+
+    /**
+     * Boolean that indicates if a player that is in a game is actually online.
+     * This is needed so the game logic can "play for the player" in case of a connection loss to make
+     * reconnecting possible
+     */
+    private boolean isOnline;
+
+    /**
+     * Counts the usages of the cheat count to punish a player that uses it more than once
+     */
+    private int cheatCodesUsed;
 
     /**
      * The constructor for the Player class. It starts a new ClientThread per Player.
@@ -38,6 +61,8 @@ public class Player {
         this.id = counter;
         this.username = "user_" + id;
         this.playerList = playerList;
+        isOnline = true;
+        cheatCodesUsed = 0;
         playerThreadManager = new ClientThread(socket, this);
         Thread playerThread = new Thread(playerThreadManager);
         playerThread.start();
@@ -49,6 +74,7 @@ public class Player {
      */
     public Player(String username) {
         this.username = username;
+        prepareForGame();
     }
 
     /**
@@ -122,7 +148,6 @@ public class Player {
                 getLobby().getStatus() + "):" + username);
     }
 
-    //TODO remove player from lobby when disconnecting? how to handle possible reconnect?
 
     /**
      * Getter for the username.
@@ -145,8 +170,38 @@ public class Player {
      *
      * @return all action dice of player saved in array.
      */
-    public ActionDice[] getActionDice() {
-        return actionDice;
+    public int getActionDiceCount(ActionDiceEnum diceName) {
+        return actionDice.get(diceName);
+    }
+
+    /**
+     * Increases the counter of the given action ba exactly one
+     * @param diceName
+     */
+    public void increaseActionDiceCount(ActionDiceEnum diceName) {
+        int currentCount = actionDice.get(diceName);
+        actionDice.replace(diceName, currentCount + 1);
+    }
+
+    /**
+     * Decreases the counter of the given action ba exactly one
+     * @param diceName
+     */
+    public void decreaseActionDiceCount(ActionDiceEnum diceName) {
+        int currentCount = actionDice.get(diceName);
+        actionDice.replace(diceName, currentCount - 1);
+    }
+
+    /**
+     * Returns the list of action dices and how many the player has as a String
+     * @return a String in the form of: "actionName:count,actionName:count,..."
+     */
+    public String getActionDiceAsString() {
+        String actionDiceAsString = "";
+        for (ActionDiceEnum actionDie : actionDice.keySet()) {
+            actionDiceAsString += actionDie.toString() + ":" + actionDice.get(actionDie) + ",";
+        }
+        return actionDiceAsString;
     }
 
     /**
@@ -154,7 +209,7 @@ public class Player {
      *
      * @param newActionDice new array of action dice a player can use.
      */
-    public void setActionDices(ActionDice[] newActionDice) {
+    public void setActionDices(HashMap<ActionDiceEnum, Integer> newActionDice) {
         actionDice = newActionDice;
     }
 
@@ -188,5 +243,44 @@ public class Player {
      */
     public void setLobby(Lobby lobby) {
         this.lobby = lobby;
+    }
+
+    /**
+     * Prepares all necessary variables in the player fo the game, i.e. the list of action dices and the boolean isInGame
+     */
+    public void prepareForGame() {
+        isInGame = true;
+        actionDice.put(ActionDiceEnum.STEAL, 0);
+        actionDice.put(ActionDiceEnum.FREEZE, 0);
+        actionDice.put(ActionDiceEnum.CROSSOUT, 0);
+        actionDice.put(ActionDiceEnum.SHIFT, 0);
+        actionDice.put(ActionDiceEnum.SWAP, 0);
+    }
+
+    /**
+     * Removes all action dice of the player, used to punish cheat codes
+     */
+    public void removeAllActionDice() {
+        actionDice.replace(ActionDiceEnum.STEAL, 0);
+        actionDice.replace(ActionDiceEnum.FREEZE, 0);
+        actionDice.replace(ActionDiceEnum.CROSSOUT, 0);
+        actionDice.replace(ActionDiceEnum.SHIFT, 0);
+        actionDice.replace(ActionDiceEnum.SWAP, 0);
+    }
+
+    public boolean isOnline() {
+        return isOnline;
+    }
+
+    public void setOnline(boolean online) {
+        isOnline = online;
+    }
+
+    public int getCheatCodesUsed() {
+        return cheatCodesUsed;
+    }
+
+    public void setCheatCodesUsed(int cheatCodesUsed) {
+        this.cheatCodesUsed = cheatCodesUsed;
     }
 }

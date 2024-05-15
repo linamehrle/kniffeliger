@@ -10,7 +10,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+
+import animatefx.animation.RotateOutDownLeft;
 import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
 
@@ -26,6 +29,8 @@ public class ActionDicePlayerWindow implements Initializable {
 
     private String[] playerArray;
 
+    private RotateOutDownLeft swapAnimationFade;
+
     /**
      * When the okay button is hit, the choice made is sent to the server and the window is closed.
      * @param event
@@ -38,6 +43,7 @@ public class ActionDicePlayerWindow implements Initializable {
 
         ClientOutput.send(CommandsClientToServer.SWAP, (String) playerChoiceBox.getValue());
 
+        swapAnimationFade.play();
 
         Stage stage = (Stage) okayButton.getScene().getWindow();
         stage.close();
@@ -47,7 +53,7 @@ public class ActionDicePlayerWindow implements Initializable {
      * Initiates the choice boxes with the current player list and entries as well as the question text at the top
      * @param playerList the current players in the game
      */
-    public void setUp(ArrayList<String> playerList) {
+    public void setUp(ArrayList<String> playerList, ListView<String> entrySheet) {
 
         playerArray = new String[playerList.size()];
         for (int i = 0; i < playerArray.length; i++) {
@@ -55,6 +61,9 @@ public class ActionDicePlayerWindow implements Initializable {
         }
 
         setChoiceBox(playerChoiceBox, playerArray);
+
+        swapAnimationFade = new RotateOutDownLeft(entrySheet);
+        swapAnimationFade.setResetOnFinished(true);
     }
 
     /**

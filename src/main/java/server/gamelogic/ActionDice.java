@@ -1,11 +1,16 @@
 package server.gamelogic;
-import server.Player;
+import java.util.ArrayList;
 
+import org.apache.logging.log4j.Logger;
+import server.Player;
+import starter.Starter;
 
 /**
  * Class that contains the action dice and all the methods that enforce the actions of the action dice.
  */
 public class ActionDice {
+
+    private static Logger logger = Starter.getLogger();
 
     // name of action player can perform
     private final String actionName;
@@ -36,7 +41,8 @@ public class ActionDice {
     }
 
     /**
-     * Lets you steal an entry from another player. Returns String with message, if entry could be stolen.
+     * Lets you steal an entry from another player. Returns String with message, if entry could be stolen. An entry can
+     * only be stolen if it is final on the victims sheet and not final on the villains sheet.
      *
      * @param entrySheetVillain player that steals entry
      * @param entrySheetVictim player that entry is stolen from
@@ -47,19 +53,22 @@ public class ActionDice {
         // assigns names and entry sheets to villain and victim
         String nameVillain = entrySheetVillain.getUsername();
         String nameVictim = entrySheetVictim.getUsername();
-        Entry[] entriesVillain = entrySheetVictim.getAsArray();
+        Entry[] entriesVillain = entrySheetVillain.getAsArray();
         Entry[] entriesVictim = entrySheetVictim.getAsArray();
 
         // return value
         boolean gotStolen = false;
 
-        for (int i = 0; i < EntrySheet.getEntrySheetLength(); i++){
+        for (int i = 0; i < EntrySheet.getEntrySheetLength(); i++) {
             // entries can only be stolen if the following things are true:
             // 1. Villain does not steal from his own sheet
             // 2. Villain does not steal an entry that is already final on his or her (or their) entry sheet
             // 3. Entry name is valid and exists on an entry sheet
             // 4. Chosen entry is not final on victims entry sheet
-            if (!nameVictim.equals(nameVillain) && !entriesVillain[i].getIsFinal() && entriesVictim[i].getName().equals(stolenEntry) && entriesVictim[i].getIsFinal()){
+            if (!nameVictim.equals(nameVillain)
+                    && !entriesVillain[i].getIsFinal()
+                    && entriesVictim[i].getName().equals(stolenEntry)
+                    && entriesVictim[i].getIsFinal()) {
                 entrySheetVillain.addEntry(entriesVictim[i]);
                 entrySheetVictim.deleteEntry(stolenEntry);
                 gotStolen = true;
@@ -132,7 +141,7 @@ public class ActionDice {
     public static boolean shift(EntrySheet[] playersSheets){
         Player helper = playersSheets[0].getPlayer();
         for (int i = 0; i < playersSheets.length - 1; i++) {
-            playersSheets[i].setPlayer(playersSheets[i + 1].getPlayer());
+            playersSheets[i].setPlayer(playersSheets[i+1].getPlayer());
         }
         playersSheets[playersSheets.length - 1].setPlayer(helper);
         return true;
@@ -162,7 +171,7 @@ public class ActionDice {
      * @param actionDice to be printed
      * @return String to display array
      */
-    public static String printActionDice(ActionDice[] actionDice){
+    /*public static String printActionDice(ActionDice[] actionDice){
         String result = "Your action dice is/are: ";
         if (actionDice == null) {
             result = result + "[]";
@@ -177,6 +186,6 @@ public class ActionDice {
             }
             return result;
         }
-    }
+    }*/
 
 }

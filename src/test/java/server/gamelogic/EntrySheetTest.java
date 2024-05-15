@@ -1,10 +1,7 @@
 package server.gamelogic;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -398,6 +395,143 @@ class EntrySheetTest {
     void piTest() {
         assertAll(() -> assertEquals(31, EntrySheet.pi(pi1)),
                 () -> assertEquals(31, EntrySheet.pi(pi2))
+        );
+    }
+
+    //##################################################################################################################
+    // UNHAPPY TESTING
+    //##################################################################################################################
+
+    @Test
+    @DisplayName("UNHAPPY TEST: tests if you can delete entry that is not final yet.")
+    void deleteUnfinalEntryTest() {
+        // generate dummy player and its entry sheet to test if we can delete an entry that is not final
+        DummyPlayer lina = new DummyPlayer("lina");
+        EntrySheet linasEntrySheet = new EntrySheet(lina);
+        Entry[] linasEntrySheetAsArray = linasEntrySheet.getAsArray();
+
+        // random index to get random entry of linas entry sheet that should not be final
+        int randomIndex = (int) (Math.random() * 13);
+
+        // saves the value of randomly chosen entry that should not be set to final
+        int valueOfRandomEntry = 0;
+
+        // sets values of entry sheet to a random number between 5 and 100
+        // all entries are final except for random entry: random entry has a value but is not final
+        for (int i = 0; i < linasEntrySheetAsArray.length; i++) {
+            linasEntrySheetAsArray[i].setValue((int) Math.floor(Math.random() * 100 + 5));
+            if (i != randomIndex) {
+                linasEntrySheetAsArray[i].setFinal();
+            } else {
+                valueOfRandomEntry = linasEntrySheetAsArray[i].getValue();
+            }
+        }
+
+        // saves in new variable so we can run test
+        int randomEntryValue = valueOfRandomEntry;
+
+        // tries to delete random entry in sheet
+        linasEntrySheet.deleteEntry(linasEntrySheet.getEntryNames()[randomIndex]);
+
+        // tests
+        assertAll(() -> assertEquals(randomEntryValue, linasEntrySheet.getEntryValues()[randomIndex]),
+                () -> assertFalse(0 == linasEntrySheet.getEntryValues()[randomIndex])
+        );
+    }
+
+    @Test
+    @DisplayName("UNHAPPY TEST: tests if you can set a new value on a final entry.")
+    void makeEntryOnFinalEntryTest() {
+        // generate dummy player and its entry sheet to test if setFinal prevents player from setting new value to entry
+        DummyPlayer lina = new DummyPlayer("lina");
+        EntrySheet linasEntrySheet = new EntrySheet(lina);
+
+        // sets values of entry sheet to a random number between 5 and 100
+        for (Entry entry : linasEntrySheet.getAsArray()) {
+            entry.setValue((int) Math.floor(Math.random() * 100 + 5));
+            entry.setFinal();
+        }
+
+        // random index to get random entry of linas entry sheet
+        int randomIndex = (int) (Math.random() * 13);
+
+        // get random entry value of linas entry sheet
+        int valueOfRandomEntry = linasEntrySheet.getEntryValues()[randomIndex];
+
+        // tries to set value of random entry to another random number from 101 to 200
+        int newValueOfRandomEntry = (int) Math.floor(Math.random() * 200 + 101);
+        Entry newRandomEntry = new Entry(linasEntrySheet.getEntryNames()[randomIndex], newValueOfRandomEntry);
+        linasEntrySheet.addEntry(newRandomEntry);
+
+        // tests
+        assertAll(() -> assertEquals(valueOfRandomEntry, linasEntrySheet.getEntryValues()[randomIndex]),
+                () -> assertFalse(newValueOfRandomEntry == linasEntrySheet.getEntryValues()[randomIndex])
+        );
+    }
+
+    @Test
+    @DisplayName("UNHAPPY TEST: tests if you can add entry to a frozen entry.")
+    void makeEntryOnFrozenEntryTest() {
+        // generate dummy player and its entry sheet to test if frozen status prevents player from setting new value to entry
+        DummyPlayer lina = new DummyPlayer("lina");
+        EntrySheet linasEntrySheet = new EntrySheet(lina);
+
+        // sets values of entry sheet to a random number between 5 and 100
+        for (Entry entry : linasEntrySheet.getAsArray()) {
+            entry.setValue((int) Math.floor(Math.random() * 100 + 5));
+            entry.setFrozenStatus(true);
+        }
+
+        // random index to get random entry of linas entry sheet
+        int randomIndex = (int) (Math.random() * 13);
+
+        // get random entry value of linas entry sheet
+        int valueOfRandomEntry = linasEntrySheet.getEntryValues()[randomIndex];
+
+        // tries to set value of random entry to another random number from 101 to 200
+        int newValueOfRandomEntry = (int) Math.floor(Math.random() * 200 + 101);
+        Entry newRandomEntry = new Entry(linasEntrySheet.getEntryNames()[randomIndex], newValueOfRandomEntry);
+        linasEntrySheet.addEntry(newRandomEntry);
+
+        // tests
+        assertAll(() -> assertEquals(valueOfRandomEntry, linasEntrySheet.getEntryValues()[randomIndex]),
+                () -> assertFalse(newValueOfRandomEntry == linasEntrySheet.getEntryValues()[randomIndex])
+        );
+    }
+
+    @Test
+    @DisplayName("Checks if entry validation can be made by a final entry.")
+    void makeEntryValidationOnFinalEntryTest() {
+        // get game manager to roll dice
+        GameManager gm = new GameManager();
+
+        // generate dummy player and its entry sheet to test if setFinal prevents player from setting new value to entry
+        DummyPlayer lina = new DummyPlayer("lina");
+        EntrySheet linasEntrySheet = new EntrySheet(lina);
+
+        // generate and roll dice
+        Dice[] allDices = new Dice[]{new Dice(), new Dice(), new Dice(), new Dice(), new Dice()};
+        gm.rollDice(allDices);
+
+
+        // sets values of entry sheet to a random number between 5 and 100
+        for (Entry entry : linasEntrySheet.getAsArray()) {
+            entry.setValue((int) Math.floor(Math.random() * 100 + 5));
+            entry.setFinal();
+        }
+
+        // random index to get random entry of linas entry sheet
+        int randomIndex = (int) (Math.random() * 13);
+
+        // get random entry value of linas entry sheet
+        int valueOfRandomEntry = linasEntrySheet.getEntryValues()[randomIndex];
+
+        // tries to set value of random entry with entryValidation method
+        EntrySheet.entryValidation(linasEntrySheet, linasEntrySheet.getEntryNames()[randomIndex], allDices);
+
+        // tests
+        assertAll(() -> assertEquals(valueOfRandomEntry, linasEntrySheet.getEntryValues()[randomIndex]),
+                () -> assertFalse(EntrySheet.entryValidation(linasEntrySheet, linasEntrySheet.getEntryNames()[randomIndex], allDices))
         );
     }
 

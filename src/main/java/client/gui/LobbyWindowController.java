@@ -1,7 +1,10 @@
 package client.gui;
 
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import animatefx.animation.BounceIn;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -13,6 +16,8 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import client.networking.ClientOutput;
 import client.networking.CommandsClientToServer;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -54,6 +59,10 @@ public class LobbyWindowController implements Initializable {
 
     private boolean hasBeenInitialized = false;
 
+    private BounceIn highScoreButtonAnimationBounce;
+
+    MediaPlayer lobbyMainThemePlayer;
+
     /**
      * Handles when the button createLobby is pressed, sends the request to create a new lobby to the server
      */
@@ -90,6 +99,7 @@ public class LobbyWindowController implements Initializable {
      * Opens the high score pup up window when the high score button is pressed
      */
     public void highScoreAction() {
+        highScoreButtonAnimationBounce.play();
         SceneController.showHighScoreWindow();
     }
 
@@ -205,6 +215,19 @@ public class LobbyWindowController implements Initializable {
     }
 
     /**
+     * Method to mute background music from external controller
+     */
+    public void muteMainTheme() {
+        lobbyMainThemePlayer.pause();
+    }
+
+    public void setThemeVolume(double volume){
+        lobbyMainThemePlayer.setVolume(volume);
+    }
+
+
+
+    /**
      * The initialize Method for the Lobby Window
      * @param location
      * The location used to resolve relative paths for the root object, or
@@ -251,9 +274,19 @@ public class LobbyWindowController implements Initializable {
             }
         });
 
+        try {
+            lobbyMainThemePlayer = GameWindowHelper.loadMedia("lobbyTheme.mp3");
+            lobbyMainThemePlayer.play();
+            logger.trace("Audio file 'lobbyTheme.mp3' loaded.");
+        } catch (FileNotFoundException e) {
+            logger.info("Audio file 'lobbyTheme.mp3' not found.");
+        }
+
+        // Initialize animations
+        highScoreButtonAnimationBounce = new BounceIn(enterLobbyButton);
+        highScoreButtonAnimationBounce.setResetOnFinished(true);
+
+
         hasBeenInitialized = true;
     }
-
-    //TODO popUps when something is not done right?
-    //TODO show personalized welcome, ie integrate username
 }
