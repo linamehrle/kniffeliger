@@ -98,7 +98,7 @@ public enum CommandsServerToClient {
     COUT,
 
     /**
-     * Communicates the updated entry to the client to display in the gui
+     * Communicates the updated entry sheet to the client to display in the gui
      */
     ENTY,
 
@@ -145,7 +145,28 @@ public enum CommandsServerToClient {
     /**
      * Transmits username
      */
-    TUSR
+    TUSR,
+
+    /**
+     * Communicates the current total points of a player to show in the console
+     */
+    PONT,
+
+    /**
+     * Communicates to the gui to prepare for the game start, e.g. initiate the second tab and enable/disable the
+     * right buttons
+     */
+    STRG,
+
+    /**
+     * Communicates to the client, that the sent dice were saved successfully
+     */
+    SAVE,
+
+    /**
+     * Sends to the client that a turn has been endet successfully
+     */
+    ENDT
 
 
 }

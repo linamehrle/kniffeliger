@@ -6,6 +6,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import org.apache.logging.log4j.Logger;
+import server.Player;
 import starter.Starter;
 
 /**
@@ -17,11 +18,14 @@ public class ServerOutput {
 
     private BufferedWriter out;
 
+    private Player player;
+
     /**
      * The constructor for ServerOutput, it starts the output stream to the client.
      * @param socket
      */
-    public ServerOutput(Socket socket) {
+    public ServerOutput(Socket socket, Player player) {
+        this.player = player;
 
         try {
             out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
