@@ -76,8 +76,8 @@
                   <ToggleButton id="buttonMute" fx:id="muteButton" layoutX="14.0" layoutY="530.0" mnemonicParsing="false" onAction="#muteButtonAction" prefHeight="80.0" prefWidth="80.0" styleClass="content-section" />
                   <Label fx:id="totalPointsLabel" layoutX="354.0" layoutY="85.0" text="0" />
                   <Label id="labelLogo" layoutX="466.0" layoutY="14.0" prefHeight="55.0" prefWidth="298.0" />
-                  <MediaView fx:id="leverRoll" fitHeight="150.0" fitWidth="150.0" layoutX="540.0" layoutY="225.0" AnchorPane.leftAnchor="540.0" AnchorPane.topAnchor="200.0" />
-                  <Button id="buttonRoll" fx:id="rollButton" alignment="BOTTOM_CENTER" layoutX="505.0" layoutY="225.0" mnemonicParsing="false" onAction="#rollActionSend" prefHeight="150.0" prefWidth="150.0" styleClass="header-section" text="ROLL" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="540.0" AnchorPane.topAnchor="200.0">
+                  <MediaView fx:id="leverRoll" fitHeight="150.0" fitWidth="150.0" layoutX="540.0" layoutY="225.0" AnchorPane.leftAnchor="525.0" AnchorPane.topAnchor="200.0" />
+                  <Button id="buttonRoll" fx:id="rollButton" alignment="BOTTOM_CENTER" layoutX="505.0" layoutY="225.0" mnemonicParsing="false" onAction="#rollActionSend" prefHeight="150.0" prefWidth="150.0" styleClass="header-section" text="ROLL" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="525.0" AnchorPane.topAnchor="200.0">
                      <font>
                         <Font size="18.0" />
                      </font>
