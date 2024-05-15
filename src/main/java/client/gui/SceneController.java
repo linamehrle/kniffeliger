@@ -8,6 +8,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.Logger;
 import starter.Starter;
@@ -162,6 +166,23 @@ public class SceneController {
         }
 
         winnerController.setWinner(winner);
+    }
+
+    /**
+     * This method opens a scroll pane which shows a png file with information about the game
+     */
+    public static void openInfoWindow() {
+        Image image = new Image("/images/Anleitung.png");
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(1000);
+        ScrollPane scrollPane = new ScrollPane(imageView);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        StackPane root = new StackPane();
+        root.getChildren().add(scrollPane);
+        Stage stage = new Stage();
+        Scene scene = new Scene(root, 1000, 600);
+        stage.setScene(scene);
+        stage.show();
     }
 
     /**

@@ -498,7 +498,7 @@ public class GameWindowController implements Initializable {
 
     @FXML
     public void infoButtonAction (ActionEvent event){
-
+        SceneController.openInfoWindow();
     }
 
     /**
