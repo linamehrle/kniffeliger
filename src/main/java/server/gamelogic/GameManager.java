@@ -19,7 +19,7 @@ public class GameManager implements Runnable {
     // fixed number of rounds
     private final int ROUNDS = EntrySheet.getEntrySheetLength();
     // number which all the dice should be dividable by so person gets the action dice
-    private final int DIVIDABLE_BY = 1;
+    private final int DIVIDABLE_BY = 3;
 
     // answer of user during game
     private volatile String input;
