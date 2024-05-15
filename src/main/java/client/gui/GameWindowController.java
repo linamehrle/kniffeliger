@@ -894,7 +894,6 @@ public class GameWindowController implements Initializable {
                 }
             }
         });
-
     }
 
     /**

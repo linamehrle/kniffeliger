@@ -178,8 +178,18 @@ public class GameManager implements Runnable {
                                 // set about to roll to true so player cannot steal anymore
                                 aboutToRoll = true;
 
-                                // rolls dice
-                                String rolledDice = rollDice(allDice);
+                                String rolledDice = "";
+                                if (round == 1 && currentPlayer.equals(playerArraysList.get(0))) {
+                                    rolledDice = "3 1 4 1 5";
+                                    allDice[0].setDiceValue(3);
+                                    allDice[1].setDiceValue(1);
+                                    allDice[2].setDiceValue(4);
+                                    allDice[3].setDiceValue(1);
+                                    allDice[4].setDiceValue(5);
+                                } else {
+                                    // rolls dice
+                                    rolledDice = rollDice(allDice);
+                                }
 
                                 logger.log(gameLogic, "Dices were rolled.");
                                 logger.log(gameLogic, "Rolled: " + rolledDice);

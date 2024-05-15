@@ -47,6 +47,10 @@ public class Dice {
         return diceValue;
     }
 
+    public void setDiceValue(int value) {
+        diceValue = value;
+    }
+
     /**
      * Transforms Dice-array to int-array.
      *
