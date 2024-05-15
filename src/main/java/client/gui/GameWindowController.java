@@ -6,10 +6,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-
-import animatefx.animation.*;
+import animatefx.animation.Bounce;
+import animatefx.animation.BounceIn;
+import animatefx.animation.FadeInDownBig;
+import animatefx.animation.FadeOutDownBig;
+import animatefx.animation.FadeOutRightBig;
+import animatefx.animation.Flash;
+import animatefx.animation.RotateOutDownLeft;
+import animatefx.animation.Wobble;
+import animatefx.animation.ZoomOut;
 import animatefx.util.SequentialAnimationFX;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -18,7 +24,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -434,8 +439,8 @@ public class GameWindowController implements Initializable {
      */
     public void stealEntryAction(ActionEvent event) {
         buttonSoundEffect1.play();
-        stealAnimationFlash.play();
-        SceneController.showActionPlayerAndFieldWindow(playersInLobby, "steal");
+        //stealAnimationFlash.play(); // animations now play when the okay button is pressed
+        SceneController.showActionPlayerAndFieldWindow(playersInLobby, "steal", entrySheet);
     }
 
     /**
@@ -444,8 +449,8 @@ public class GameWindowController implements Initializable {
      */
     public void freezeEntryButton(ActionEvent event) {
         buttonSoundEffect1.play();
-        freezeAnimationWobble.play();
-        SceneController.showActionPlayerAndFieldWindow(playersInLobby, "freeze");
+        //freezeAnimationWobble.play();
+        SceneController.showActionPlayerAndFieldWindow(playersInLobby, "freeze", entrySheet);
     }
 
     /**
@@ -464,8 +469,8 @@ public class GameWindowController implements Initializable {
      */
     public void swapSheetsAction(ActionEvent event) {
         buttonSoundEffect1.play();
-        swapAnimationFade.play();
-        SceneController.showActionPlayerWindow(playersInLobby);
+        //swapAnimationFade.play();
+        SceneController.showActionPlayerWindow(playersInLobby, entrySheet);
     }
 
     /**
@@ -474,8 +479,8 @@ public class GameWindowController implements Initializable {
      */
     public void deleteEntryAction(ActionEvent event) {
         buttonSoundEffect1.play();
-        deleteAnimationSwing.play();
-        SceneController.showActionPlayerAndFieldWindow(playersInLobby, "delete");
+        //deleteAnimationSwing.play();
+        SceneController.showActionPlayerAndFieldWindow(playersInLobby, "delete", entrySheet);
     }
 
     /**

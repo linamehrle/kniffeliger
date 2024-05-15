@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.Logger;
 import starter.Starter;
@@ -102,7 +103,7 @@ public class SceneController {
      * @param playerList
      * @param action
      */
-    public static void showActionPlayerAndFieldWindow(ArrayList<String> playerList, String action) {
+    public static void showActionPlayerAndFieldWindow(ArrayList<String> playerList, String action, ListView<String> entrySheet) {
         logger.info("trying to open the action dice window");
         try {
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/ActionDicePlayerAndFieldWindow.fxml"));
@@ -114,14 +115,14 @@ public class SceneController {
         } catch (IOException e) {
             logger.warn(e.getMessage());
         }
-        actionDicePlayerAndFieldWindow.setUp(playerList, action);
+        actionDicePlayerAndFieldWindow.setUp(playerList, action, entrySheet);
     }
 
     /**
      * Opens the ActionDicePlayerWindow
      * @param playerList
      */
-    public static void showActionPlayerWindow(ArrayList<String> playerList) {
+    public static void showActionPlayerWindow(ArrayList<String> playerList, ListView<String> entrySheet) {
         logger.info("trying to open the action dice window");
         try {
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/ActionDicePlayerWindow.fxml"));
@@ -133,7 +134,7 @@ public class SceneController {
         } catch (IOException e) {
             logger.warn(e.getMessage());
         }
-        actionDicePlayerWindow.setUp(playerList);
+        actionDicePlayerWindow.setUp(playerList, entrySheet);
     }
 
     /**
