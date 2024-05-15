@@ -12,11 +12,6 @@ public enum CommandsServerToClient {
     BRCT,
 
     /**
-     *  Used to confirm name change to client
-     */
-    CHNA,
-
-    /**
      * Used to send a ping to check for connection losses
      */
     PING,
@@ -83,34 +78,14 @@ public enum CommandsServerToClient {
     STRT,
 
     /**
-     * Communicates to the gui that a player has stolen an entry of another player
-     */
-    STEA,
-
-    /**
      * Communicates to the gui that a player has frozen an entry of another player
      */
     FRZE,
 
     /**
-     * Communicates to the gui that a player has crossed out an entry of another player
-     */
-    COUT,
-
-    /**
      * Communicates the updated entry sheet to the client to display in the gui
      */
     ENTY,
-
-    /**
-     * Communicates a shift of entry sheets to the gui
-     */
-    SHFT,
-
-    /**
-     * Communicates a swap of entry sheets to the gui
-     */
-    SWAP,
 
     /**
      * Communicates that a player has gotten an action die
@@ -138,11 +113,6 @@ public enum CommandsServerToClient {
     ALES,
 
     /**
-     * Communicates the GUI to initialize the entry sheets of the other players on tab 2
-     */
-    INES,
-
-    /**
      * Transmits username
      */
     TUSR,
@@ -167,6 +137,5 @@ public enum CommandsServerToClient {
      * Sends to the client that a turn has been endet successfully
      */
     ENDT
-
 
 }

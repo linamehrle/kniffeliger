@@ -51,7 +51,6 @@ public class ClientInputHelper implements Runnable {
 
         //switch case for the different possible incoming commands
         switch (cmd) {
-            case CHNA -> logger.info("Your username is now " + input[1]);
             case QUIT -> gameManager.disconnect();
             case PING -> clientOutput.send(CommandsClientToServer.PONG, input[1]);
             case PONG -> pong.updatePong(input[1]);
